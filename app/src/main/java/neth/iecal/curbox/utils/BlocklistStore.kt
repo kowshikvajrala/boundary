@@ -46,6 +46,7 @@ object BlocklistStore {
     private class LoadedList(val modifiedAt: Long, val domains: Set<String>)
 
     private val loaded = ConcurrentHashMap<String, LoadedList>()
+    private val downloading = ConcurrentHashMap.newKeySet<String>()
     private val gson = Gson()
     @Volatile private var dir: File? = null
 
@@ -85,6 +86,15 @@ object BlocklistStore {
         return source
     }
 
+    /** Registers a built in list again if it was deleted, and returns the stored copy. */
+    @Synchronized
+    fun ensureSource(source: Source): Source {
+        val current = sources()
+        current.find { it.id == source.id }?.let { return it }
+        saveSources(current + source)
+        return source
+    }
+
     @Synchronized
     fun removeSource(id: String) {
         saveSources(sources().filterNot { it.id == id })
@@ -96,6 +106,16 @@ object BlocklistStore {
     fun download(id: String): Int {
         val directory = dir ?: throw IOException("Blocklists are not ready yet")
         val source = sources().find { it.id == id } ?: throw IOException("Unknown list")
+        if (!downloading.add(id)) throw IOException("This list is already downloading")
+        try {
+            return downloadInto(directory, source)
+        } finally {
+            downloading.remove(id)
+        }
+    }
+
+    private fun downloadInto(directory: File, source: Source): Int {
+        val id = source.id
         directory.mkdirs()
 
         val connection = URL(source.url).openConnection() as HttpURLConnection

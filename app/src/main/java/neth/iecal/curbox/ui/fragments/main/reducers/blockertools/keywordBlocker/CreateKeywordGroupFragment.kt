@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.text.NumberFormat
 import java.util.*
 
 class CreateKeywordGroupFragment : Fragment() {
@@ -40,6 +42,7 @@ class CreateKeywordGroupFragment : Fragment() {
         const val FRAGMENT_ID = "create_keyword_group"
         private const val FILE_BUFFER_SIZE = 64 * 1024
         private const val KEYWORD_LIST_URL = "https://github.com/curbox-app/website_packs"
+        private const val ADULT_LIST_ID = "adult"
     }
 
     private var _binding: FragmentCreateKeywordGroupBinding? = null
@@ -49,6 +52,7 @@ class CreateKeywordGroupFragment : Fragment() {
     private var selectedKeywords = linkedSetOf<String>()
     private val keywordAdapter by lazy { KeywordAdapter() }
     private var isEditing = false
+    private var isSyncingAdultSwitch = false
     private var existingGroupId: String? = null
 
     private val importLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -92,6 +96,7 @@ class CreateKeywordGroupFragment : Fragment() {
                     binding.etGroupName.setText(group.name)
                     selectedKeywords = keywords
                     keywordAdapter.submitList(keywordItems)
+                    syncAdultSwitch()
 
                     group.config?.let { scheduledConfig ->
                         viewModel.currentTimeConfig = scheduledConfig.schedule
@@ -105,6 +110,22 @@ class CreateKeywordGroupFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        binding.switchBlockAdult.setOnCheckedChangeListener { _, isChecked ->
+            if (isSyncingAdultSwitch) return@setOnCheckedChangeListener
+            if (isChecked) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val adult = withContext(Dispatchers.IO) {
+                        BlocklistStore.ensureSource(BlocklistStore.DEFAULT_SOURCES.first { it.id == ADULT_LIST_ID })
+                    }
+                    addBlocklists(listOf(adult))
+                }
+            } else {
+                selectedKeywords.remove(BlocklistStore.keywordFor(ADULT_LIST_ID))
+                updateKeywordsList()
+            }
+        }
+        binding.btnMoreBlocklists.setOnClickListener { showBlocklistPicker() }
+
         binding.btnAddKeyword.setOnClickListener {
             val kw = binding.etKeyword.text.toString().trim()
             if (kw.isNotEmpty() && selectedKeywords.add(kw)) {
@@ -194,9 +215,7 @@ class CreateKeywordGroupFragment : Fragment() {
 
     private fun showBlocklistPicker() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val downloaded = withContext(Dispatchers.IO) {
-                BlocklistStore.sources().filter { it.updatedAtMs > 0L }
-            }
+            val sources = withContext(Dispatchers.IO) { BlocklistStore.sources() }
             val openManager = { _: android.content.DialogInterface, _: Int ->
                 startActivity(Intent(requireContext(), neth.iecal.curbox.ui.activity.FragmentActivity::class.java).apply {
                     putExtra("fragment", BlocklistsFragment.FRAGMENT_ID)
@@ -205,23 +224,45 @@ class CreateKeywordGroupFragment : Fragment() {
             val builder = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.blocklists_pick_title)
                 .setNeutralButton(R.string.blocklists_manage, openManager)
-            if (downloaded.isEmpty()) {
+            if (sources.isEmpty()) {
                 builder.setMessage(R.string.blocklists_none_downloaded)
                     .setNegativeButton(R.string.cancel, null)
                     .show()
                 return@launch
             }
-            val keywords = downloaded.map { BlocklistStore.keywordFor(it.id) }
-            val checked = BooleanArray(keywords.size) { keywords[it] in selectedKeywords }
-            builder.setMultiChoiceItems(downloaded.map { it.name }.toTypedArray(), checked) { _, which, isChecked ->
+            val checked = BooleanArray(sources.size) { BlocklistStore.keywordFor(sources[it].id) in selectedKeywords }
+            builder.setMultiChoiceItems(sources.map { it.name }.toTypedArray(), checked) { _, which, isChecked ->
                 checked[which] = isChecked
             }
                 .setPositiveButton(R.string.add) { _, _ ->
-                    keywords.filterIndexed { index, _ -> checked[index] }.forEach { selectedKeywords.add(it) }
-                    updateKeywordsList()
+                    addBlocklists(sources.filterIndexed { index, _ -> checked[index] })
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
+        }
+    }
+
+    /** Adds each list's keyword to the group and downloads any list that is not on the phone yet. */
+    private fun addBlocklists(sources: List<BlocklistStore.Source>) {
+        sources.forEach { selectedKeywords.add(BlocklistStore.keywordFor(it.id)) }
+        updateKeywordsList()
+
+        val appContext = requireContext().applicationContext
+        sources.filter { it.updatedAtMs == 0L }.forEach { source ->
+            Toast.makeText(appContext, getString(R.string.blocklists_downloading, source.name), Toast.LENGTH_SHORT).show()
+            // Not tied to this screen, so the download finishes even after the group is saved.
+            CoroutineScope(Dispatchers.IO).launch {
+                val message = try {
+                    val count = BlocklistStore.download(source.id)
+                    BlocklistsFragment.requestBlockerRefresh(appContext)
+                    appContext.getString(R.string.blocklists_update_done, NumberFormat.getIntegerInstance().format(count))
+                } catch (e: Exception) {
+                    appContext.getString(R.string.blocklists_update_failed, e.message.orEmpty())
+                }
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(appContext, message, Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
@@ -276,6 +317,13 @@ class CreateKeywordGroupFragment : Fragment() {
 
     private fun updateKeywordsList() {
         keywordAdapter.submitList(selectedKeywords.toList())
+        syncAdultSwitch()
+    }
+
+    private fun syncAdultSwitch() {
+        isSyncingAdultSwitch = true
+        binding.switchBlockAdult.isChecked = BlocklistStore.keywordFor(ADULT_LIST_ID) in selectedKeywords
+        isSyncingAdultSwitch = false
     }
 
     inner class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.ViewHolder>() {

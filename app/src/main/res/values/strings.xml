@@ -2032,5 +2032,9 @@
     <string name="blocklists_add_to_group">Add a blocklist</string>
     <string name="blocklists_pick_title">Pick blocklists</string>
     <string name="blocklists_manage">Manage lists</string>
-    <string name="blocklists_none_downloaded">You have no downloaded lists yet. Open Manage lists to get one.</string>
+    <string name="blocklists_none_downloaded">You have no lists yet. Open Manage lists to add one.</string>
+    <string name="blocklists_adult_switch">Block adult sites</string>
+    <string name="blocklists_adult_switch_desc">Adds list:adult, a list of about 90,000 adult sites. It follows this group\'s schedule and usage limit, just like your keywords.</string>
+    <string name="blocklists_more">More blocklists</string>
+    <string name="blocklists_downloading">Downloading %1$s</string>
 </resources>
