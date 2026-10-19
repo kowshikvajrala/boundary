@@ -32,7 +32,8 @@ class KeywordBlockerViewModel(application: Application) : AndroidViewModel(appli
     private val _temporaryDisableAvailable = MutableStateFlow(true)
     val temporaryDisableAvailable: StateFlow<Boolean> = _temporaryDisableAvailable
 
-    var currentUsageConfig = AppUsageConfig()
+    // New groups block right away. People add a daily allowance only when they want one.
+    var currentUsageConfig = AppUsageConfig(uniformLimit = 0)
     var currentTimeConfig = AppTimeConfig.allDay()
     var warningScrnConfig = AppBlockerWarningScreenConfig()
 
