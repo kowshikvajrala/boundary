@@ -69,6 +69,7 @@ android {
         versionName = "1.0.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         resValue("string", "app_name", appName)
+        resValue("string", "blocker_service_label", "$appName App Blocker")
 
         buildConfigField("Boolean", "SUPPORTS_UI_HIDER", "true")
         buildConfigField("Boolean", "SUPPORTS_ANTI_UNINSTALL", "true")

@@ -1,2 +1,3 @@
 • New "Block adult sites" switch when you create or edit a keyword group. It adds the adult sites list and downloads it for you if needed.
 • "More blocklists" lets you add any of your lists to a group from the same screen.
+• The accessibility service is now called "Boundary App Blocker" in your phone settings, and the app says Boundary everywhere.

@@ -47,7 +47,7 @@ object SettingsBackupCodec {
         val json = bytes.toString(Charsets.UTF_8.name())
         validateDepth(json)
         val root = JsonParser.parseString(json).asJsonObject
-        require(root.get("format")?.asString == FORMAT) { "Not a Curbox settings backup" }
+        require(root.get("format")?.asString == FORMAT) { "Not a Boundary settings backup" }
         require(root.get("version")?.toString() == VERSION.toString()) { "Unsupported backup version" }
         val payload = root.getAsJsonObject("settings") ?: error("Missing settings")
         validateJson(payload)

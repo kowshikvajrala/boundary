@@ -255,9 +255,9 @@ class InfoFragment : Fragment() {
             )
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_SUBJECT, "Curbox Crash Logs")
+                putExtra(Intent.EXTRA_SUBJECT, "Boundary Crash Logs")
                 putExtra(Intent.EXTRA_STREAM, logUri)
-                clipData = ClipData.newUri(context.contentResolver, "Curbox Crash Logs", logUri)
+                clipData = ClipData.newUri(context.contentResolver, "Boundary Crash Logs", logUri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             startActivity(Intent.createChooser(intent, "Share Crash Logs"))
