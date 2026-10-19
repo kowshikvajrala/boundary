@@ -42,7 +42,7 @@ class AppBlocker : BaseBlocker() {
         /**
          * Refreshes information about warning screen, cheat hours and blocked app list
          */
-        const val INTENT_ACTION_REFRESH_APP_BLOCKER = "neth.iecal.curbox.refresh.appblocker"
+        const val INTENT_ACTION_REFRESH_APP_BLOCKER = "app.boundary.blocker.refresh.appblocker"
 
         /**
          * Add cooldown to an app group.
@@ -50,9 +50,9 @@ class AppBlocker : BaseBlocker() {
          * selected_time: Long -> Duration of cooldown in millis
          * result_id : String -> ID of the app group to be put into cooldown
          */
-        const val INTENT_ACTION_REFRESH_APP_BLOCKER_COOLDOWN = "neth.iecal.curbox.refresh.appblocker.cooldown"
+        const val INTENT_ACTION_REFRESH_APP_BLOCKER_COOLDOWN = "app.boundary.blocker.refresh.appblocker.cooldown"
         const val INTENT_ACTION_WARNING_SCREEN_VISIBILITY =
-            "neth.iecal.curbox.appblocker.warning_screen_visibility"
+            "app.boundary.blocker.appblocker.warning_screen_visibility"
         const val EXTRA_WARNING_SCREEN_VISIBLE = "warning_screen_visible"
         private const val TARGET_EVENTS_MASK = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
     }

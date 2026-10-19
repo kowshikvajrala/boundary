@@ -34,9 +34,9 @@ class ReelBlocker : BaseBlocker() {
 
     companion object {
         private const val TIMER_NOTIFICATION_ID = 1003
-        const val INTENT_ACTION_REFRESH_REEL_BLOCKER = "neth.iecal.curbox.refresh.reelblocker"
+        const val INTENT_ACTION_REFRESH_REEL_BLOCKER = "app.boundary.blocker.refresh.reelblocker"
         const val INTENT_ACTION_REFRESH_REEL_BLOCKER_COOLDOWN =
-            "neth.iecal.curbox.refresh.reelblocker.cooldown"
+            "app.boundary.blocker.refresh.reelblocker.cooldown"
 
 
         private const val TARGET_EVENTS_MASK = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or

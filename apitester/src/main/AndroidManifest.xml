@@ -4,10 +4,10 @@
     <!-- Needed on Android 11+ so we can see and bind Curbox's exported API. -->
     <queries>
         <intent>
-            <action android:name="neth.iecal.curbox.api.BIND" />
+            <action android:name="app.boundary.blocker.api.BIND" />
         </intent>
         <intent>
-            <action android:name="neth.iecal.curbox.api.REQUEST_PERMISSION" />
+            <action android:name="app.boundary.blocker.api.REQUEST_PERMISSION" />
         </intent>
     </queries>
 

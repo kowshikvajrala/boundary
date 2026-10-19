@@ -28,7 +28,7 @@ import java.util.Calendar
 class GrayScaleFilter : BaseBlocker() {
 
     companion object {
-        const val INTENT_ACTION_REFRESH_GRAYSCALE = "neth.iecal.curbox.refresh.grayscale"
+        const val INTENT_ACTION_REFRESH_GRAYSCALE = "app.boundary.blocker.refresh.grayscale"
         private const val TARGET_EVENTS_MASK = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
     }
 

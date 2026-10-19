@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -25,6 +26,7 @@ import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.KeywordGroup
 import neth.iecal.curbox.data.models.ScheduledUsageConfig
 import neth.iecal.curbox.databinding.FragmentCreateKeywordGroupBinding
+import neth.iecal.curbox.utils.BlocklistStore
 import neth.iecal.curbox.utils.KeywordFileCodec
 import java.io.BufferedReader
 import java.io.BufferedWriter
@@ -164,6 +166,10 @@ class CreateKeywordGroupFragment : Fragment() {
                     importLauncher.launch("text/plain")
                     true
                 }
+                R.id.action_add_blocklist -> {
+                    showBlocklistPicker()
+                    true
+                }
                 R.id.action_export -> {
                     val fileName = "keywords_${binding.etGroupName.text.toString().ifEmpty { "group" }}.txt"
                     exportLauncher.launch(fileName)
@@ -184,6 +190,39 @@ class CreateKeywordGroupFragment : Fragment() {
             }
         }
         popup.show()
+    }
+
+    private fun showBlocklistPicker() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val downloaded = withContext(Dispatchers.IO) {
+                BlocklistStore.sources().filter { it.updatedAtMs > 0L }
+            }
+            val openManager = { _: android.content.DialogInterface, _: Int ->
+                startActivity(Intent(requireContext(), neth.iecal.curbox.ui.activity.FragmentActivity::class.java).apply {
+                    putExtra("fragment", BlocklistsFragment.FRAGMENT_ID)
+                })
+            }
+            val builder = MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.blocklists_pick_title)
+                .setNeutralButton(R.string.blocklists_manage, openManager)
+            if (downloaded.isEmpty()) {
+                builder.setMessage(R.string.blocklists_none_downloaded)
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+                return@launch
+            }
+            val keywords = downloaded.map { BlocklistStore.keywordFor(it.id) }
+            val checked = BooleanArray(keywords.size) { keywords[it] in selectedKeywords }
+            builder.setMultiChoiceItems(downloaded.map { it.name }.toTypedArray(), checked) { _, which, isChecked ->
+                checked[which] = isChecked
+            }
+                .setPositiveButton(R.string.add) { _, _ ->
+                    keywords.filterIndexed { index, _ -> checked[index] }.forEach { selectedKeywords.add(it) }
+                    updateKeywordsList()
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+        }
     }
 
     private fun importKeywordsFromFile(uri: Uri) {

@@ -80,6 +80,12 @@ class KeywordBlockerFragment : Fragment() {
                     viewModel.setBlockAllExceptSupported(newValue)
                     true
                 }
+                R.id.menu_blocklists -> {
+                    startActivity(Intent(requireContext(), FragmentActivity::class.java).apply {
+                        putExtra("fragment", BlocklistsFragment.FRAGMENT_ID)
+                    })
+                    true
+                }
                 R.id.menu_help -> {
                     val url = "https://curbox.app/docs/reducers/keyword-blocker/"
                     try {

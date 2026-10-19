@@ -26,8 +26,8 @@ import java.util.concurrent.Executors
  */
 class MainActivity : AppCompatActivity() {
 
-    private val actionBind = "neth.iecal.curbox.api.BIND"
-    private val actionRequestPermission = "neth.iecal.curbox.api.REQUEST_PERMISSION"
+    private val actionBind = "app.boundary.blocker.api.BIND"
+    private val actionRequestPermission = "app.boundary.blocker.api.REQUEST_PERMISSION"
 
     private var api: ICurboxApi? = null
     private var curboxPackage: String? = null

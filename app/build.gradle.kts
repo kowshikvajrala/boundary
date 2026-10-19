@@ -1,12 +1,16 @@
 import java.util.Locale
+import java.util.Properties
 
-// Public OAuth web client ID used to verify Google ID tokens. The Google button
-// stays hidden when it is absent so release builds never expose a dead action.
-val googleWebClientId = providers.gradleProperty("CURBOX_GOOGLE_WEB_CLIENT_ID")
-    .orElse(providers.environmentVariable("CURBOX_GOOGLE_WEB_CLIENT_ID"))
-    .getOrElse("")
+// The app's identity. Changing either after publishing makes it a different app.
+val appId = "app.boundary.blocker"
+val appName = "Boundary"
 
-fun String.asBuildConfigString(): String = "\"${replace("\\", "\\\\").replace("\"", "\\\"")}\""
+// Release signing secrets live outside git in keystore.properties at the repo root:
+// storeFile, storePassword, keyAlias, keyPassword.
+val keystoreProperties = Properties().apply {
+    val file = rootProject.file("keystore.properties")
+    if (file.exists()) file.inputStream().use(::load)
+}
 
 plugins {
     alias(libs.plugins.android.application)
@@ -51,7 +55,6 @@ androidComponents {
 android {
     namespace = "neth.iecal.curbox"
     compileSdk = 35
-    flavorDimensions += "version"
 
     lint {
         disable.add("NullSafeMutableLiveData")
@@ -59,65 +62,33 @@ android {
     }
 
     defaultConfig {
-        applicationId = "neth.iecal.curbox"
+        applicationId = appId
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "6"
+        versionCode = 1
+        versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        resValue("string", "app_name", "Curbox")
+        resValue("string", "app_name", appName)
 
-        // Every flavor ships every feature unless it opts out below.
         buildConfigField("Boolean", "SUPPORTS_UI_HIDER", "true")
         buildConfigField("Boolean", "SUPPORTS_ANTI_UNINSTALL", "true")
         // Holds WRITE_SECURE_SETTINGS (granted once via Shizuku) so grayscale can
         // flip secure settings directly instead of shelling out per toggle.
         buildConfigField("Boolean", "SUPPORTS_WRITE_SECURE_SETTINGS", "true")
+        // Cloud sync talks to Curbox's own servers, so this build ships without it.
+        buildConfigField("Boolean", "FDROID_VARIANT", "true")
     }
 
-    productFlavors {
-        // Fully offline, otherwise every feature except cross device sync.
-        create("fdroid") {
-            dimension = "version"
-            versionNameSuffix = "-fdroid"
-            buildConfigField("Boolean", "FDROID_VARIANT", "true")
-        }
-
-        // Everything: sync plus all blocker features.
-        create("full") {
-            dimension = "version"
-            versionNameSuffix = "-full"
-            buildConfigField("Boolean", "FDROID_VARIANT", "false")
-            // Staging switch for the FCM push migration. While false, the realtime
-            // websocket + poll stay on (no regression) and FCM only adds background
-            // delivery. Flip to true once FCM is verified end to end: realtime is
-            // then dropped and the poll slows right down, which is where the memory
-            // and battery win lands.
-            buildConfigField("Boolean", "SYNC_USE_FCM", "true")
-            buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", googleWebClientId.asBuildConfigString())
-        }
-
-        // Play Store policy build: keeps sync but strips the UI hider and anti
-        // uninstall (no device admin), see src/playstore/AndroidManifest.xml.
-        create("playstore") {
-            dimension = "version"
-            versionNameSuffix = "-playstore"
-            buildConfigField("Boolean", "FDROID_VARIANT", "false")
-            buildConfigField("Boolean", "SYNC_USE_FCM", "true")
-            buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", googleWebClientId.asBuildConfigString())
-            buildConfigField("Boolean", "SUPPORTS_UI_HIDER", "false")
-            buildConfigField("Boolean", "SUPPORTS_ANTI_UNINSTALL", "false")
-            buildConfigField("Boolean", "SUPPORTS_WRITE_SECURE_SETTINGS", "false")
+    signingConfigs {
+        create("release") {
+            if (keystoreProperties.isNotEmpty()) {
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
         }
     }
-
-    sourceSets {
-        // Cross device sync code shared by the full and playstore flavors.
-        // F-Droid never compiles it, so that build stays offline.
-        getByName("full") { java.srcDir("src/sync/java") }
-        getByName("playstore") { java.srcDir("src/sync/java") }
-    }
-
 
     splits {
         abi {
@@ -133,25 +104,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-            // required because of hardcoded f-droid values
-            applicationVariants.all {
-                val variant = this
-                if (variant.flavorName == "fdroid") {
-                    variant.outputs
-                        .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-                        .forEach { output ->
-                            val outputFileName = "app-fdroid-universal-release-unsigned.apk"
-                            println("OutputFileName: $outputFileName")
-                            output.outputFileName = outputFileName
-                        }
-                }
+            if (keystoreProperties.isNotEmpty()) {
+                signingConfig = signingConfigs.getByName("release")
             }
-        }
-        debug {
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
-            resValue("string", "app_name", "Debug Curbox")
         }
     }
     compileOptions {
@@ -195,33 +150,6 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.kotlinx.coroutines.android)
 
-    // Cross device sync. These live only in the full and playstore flavors so the
-    // F-Droid build compiles with no network, no auth, and no Supabase code at all.
-    "fullImplementation"(libs.okhttp)
-    "fullImplementation"(libs.androidx.security.crypto)
-    "fullImplementation"(libs.androidx.work.runtime.ktx)
-    "playstoreImplementation"(libs.okhttp)
-    "playstoreImplementation"(libs.androidx.security.crypto)
-    "playstoreImplementation"(libs.androidx.work.runtime.ktx)
-    "fullImplementation"(libs.androidx.credentials)
-    "fullImplementation"(libs.androidx.credentials.play.services.auth)
-    "fullImplementation"(libs.googleid)
-    "playstoreImplementation"(libs.androidx.credentials)
-    "playstoreImplementation"(libs.androidx.credentials.play.services.auth)
-    "playstoreImplementation"(libs.googleid)
-    // Play Store flavor sells the yearly Sync Premium subscription through
-    // Google Play. The directly distributed full flavor uses Polar instead.
-    "playstoreImplementation"("com.android.billingclient:billing:9.1.0")
-
-    // FCM push, sync flavors ONLY, so the phone can sync instantly in the
-    // background without holding a websocket open. F-Droid never pulls in Firebase
-    // or Google Play Services. Initialised manually from FcmConfig, so the
-    // google-services Gradle plugin and google-services.json are NOT required.
-    "fullImplementation"(platform("com.google.firebase:firebase-bom:33.5.1"))
-    "fullImplementation"("com.google.firebase:firebase-messaging")
-    "playstoreImplementation"(platform("com.google.firebase:firebase-bom:33.5.1"))
-    "playstoreImplementation"("com.google.firebase:firebase-messaging")
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -231,6 +159,10 @@ dependencies {
 
 }
 androidComponents {
+    // Only the signed release build exists.
+    beforeVariants { variant ->
+        if (variant.buildType == "debug") variant.enable = false
+    }
     onVariants { variant ->
         val variantName = variant.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
         tasks.register("installAndGrantAccessibility$variantName") {

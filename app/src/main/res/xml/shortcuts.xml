@@ -8,7 +8,7 @@
         android:shortcutLongLabel="@string/focus_mode">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="neth.iecal.curbox"
+            android:targetPackage="app.boundary.blocker"
             android:targetClass="neth.iecal.curbox.ui.activity.ShortcutActivity" />
         <categories android:name="digiipaws" />
         <capability-binding android:key="actions.intent.CREATE_MESSAGE" />

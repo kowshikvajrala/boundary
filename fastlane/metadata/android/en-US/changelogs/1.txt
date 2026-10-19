@@ -1,0 +1,5 @@
+First release of Boundary.
+
+• New full screen wait screen before a blocked app opens
+• Blocklists: block thousands of sites at once with lists like the adult sites list, and update them any time
+• Add your own blocklists from any link

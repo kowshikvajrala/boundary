@@ -29,7 +29,7 @@ class NodePickerService : Service() {
     companion object {
         private const val CHANNEL_ID = "node_picker_channel"
         private const val NOTIFICATION_ID = 2002
-        private const val ACTION_STOP_SERVICE = "neth.iecal.curbox.nodepicker.STOP_SERVICE"
+        private const val ACTION_STOP_SERVICE = "app.boundary.blocker.nodepicker.STOP_SERVICE"
 
         fun start(context: Context) {
             context.startForegroundService(Intent(context, NodePickerService::class.java))

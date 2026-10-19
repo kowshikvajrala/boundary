@@ -15,6 +15,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -50,7 +51,6 @@ import neth.iecal.curbox.anti_stimulants.MindfulMessage
 class WarningActivity : AppCompatActivity() {
 
     private var proceedTimer: CountDownTimer? = null
-    private var dialog: AlertDialog? = null
 
     private var vibrator: Vibrator? = null
 
@@ -278,13 +278,14 @@ class WarningActivity : AppCompatActivity() {
                 }.start()
         }
 
-        dialog = MaterialAlertDialogBuilder(this)
-            .setView(binding.root)
-            .setCancelable(isDialogCancelable)
-            .setOnCancelListener {
-                finishAffinity()
+        setContentView(binding.root)
+        // The blocked app sits right under this screen, so back must not reveal it.
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isDialogCancelable) finishAffinity()
             }
-            .show()
+        })
+        binding.btnCloseX.setOnClickListener { binding.btnCancel.performClick() }
 
         binding.warningMsg.text = warningScreenConfig.message.random()
 
@@ -305,7 +306,6 @@ class WarningActivity : AppCompatActivity() {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
-            dialog?.dismiss()
             finishAffinity()
         }
 
@@ -709,7 +709,6 @@ class WarningActivity : AppCompatActivity() {
         proceedTimer?.cancel()
         mathRetryTimer?.cancel()
         vibrator?.cancel()
-        dialog?.dismiss()
     }
 
     private fun sendRefreshRequest(
@@ -743,7 +742,6 @@ class WarningActivity : AppCompatActivity() {
 
     private fun closeWarningScreen() {
         sendWarningScreenVisibility(false)
-        dialog?.dismiss()
         finishAffinity()
     }
 

@@ -18,7 +18,7 @@ class ReelsWidgetProvider : AppWidgetProvider() {
 
     companion object {
         private const val TAG = "ReelsWidgetProvider"
-        private const val ACTION_WIDGET_REFRESH = "neth.iecal.curbox.reels.WIDGET_REFRESH"
+        private const val ACTION_WIDGET_REFRESH = "app.boundary.blocker.reels.WIDGET_REFRESH"
     }
 
     override fun onUpdate(

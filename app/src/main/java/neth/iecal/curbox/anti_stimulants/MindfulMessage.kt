@@ -24,7 +24,7 @@ class MindfulMessage {
         /**
          * must be provided packagename, duration to display and intent text
          */
-        const val ADD_NEW_INTENT = "neth.iecal.curbox.ACTION_NEW_INTENT"
+        const val ADD_NEW_INTENT = "app.boundary.blocker.ACTION_NEW_INTENT"
         private const val TARGET_EVENTS_MASK = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
     }
     private lateinit var service: BaseBlockingService

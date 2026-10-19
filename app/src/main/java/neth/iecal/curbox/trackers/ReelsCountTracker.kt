@@ -33,7 +33,7 @@ import neth.iecal.curbox.utils.TimeTools
 class ReelsCountTracker {
 
     companion object {
-        const val INTENT_ACTION_REFRESH_REEL_COUNTER = "neth.iecal.curbox.refresh.reel_counter"
+        const val INTENT_ACTION_REFRESH_REEL_COUNTER = "app.boundary.blocker.refresh.reel_counter"
     }
 
     private lateinit var service: BaseBlockingService

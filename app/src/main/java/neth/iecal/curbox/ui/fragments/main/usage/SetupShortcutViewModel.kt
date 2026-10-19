@@ -44,7 +44,7 @@ class SetupShortcutViewModel(application: Application) : AndroidViewModel(applic
                 if (it.groupId == groupId) it.copy(isActive = isActive) else it
             }
             dataStoreManager.updateGrayscaleGroups(updatedGroups)
-            getApplication<Application>().sendBroadcast(Intent("neth.iecal.curbox.ACTION_REFRESH_GRAYSCALE"))
+            getApplication<Application>().sendBroadcast(Intent("app.boundary.blocker.ACTION_REFRESH_GRAYSCALE"))
         }
     }
 }

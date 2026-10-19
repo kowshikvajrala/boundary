@@ -40,7 +40,7 @@ import neth.iecal.curbox.services.BaseBlockingService
 class UiHider : BaseBlocker() {
 
     companion object {
-        const val INTENT_ACTION_REFRESH_UI_HIDER = "neth.iecal.curbox.refresh.uihider"
+        const val INTENT_ACTION_REFRESH_UI_HIDER = "app.boundary.blocker.refresh.uihider"
         private const val MIN_RUN_INTERVAL_MS = 80L
         private val SETTLE_RETRY_DELAYS_MS = longArrayOf(200L, 500L, 1_000L, 2_000L)
     }

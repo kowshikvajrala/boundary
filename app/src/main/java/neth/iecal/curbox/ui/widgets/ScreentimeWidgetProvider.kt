@@ -33,7 +33,7 @@ class ScreentimeWidgetProvider : AppWidgetProvider() {
 
     companion object {
         private const val TAG = "ScreentimeWidgetProvider"
-        private const val ACTION_WIDGET_REFRESH = "neth.iecal.curbox.screentime.WIDGET_REFRESH"
+        private const val ACTION_WIDGET_REFRESH = "app.boundary.blocker.screentime.WIDGET_REFRESH"
         private const val DEFAULT_WIDGET_HEIGHT_DP = 229
         private const val HEADER_HEIGHT_DP = 96
         private const val APP_ROW_HEIGHT_DP = 44

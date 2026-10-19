@@ -13,6 +13,7 @@ object KeywordMatcher {
      * Compiles a collection of keyword patterns into pre-built regexes and literals.
      *
      * Pattern types:
+     *   list:<id>  – every domain in a downloaded blocklist (see [BlocklistStore])
      *   r:<expr>   – raw regex (e.g. r:(?:shorts|reels))
      *   *  / ?     – glob wildcard (* = any chars, ? = one char)
      *   otherwise  – URL-aware literal (domain, path, or plain word)
@@ -24,7 +25,12 @@ object KeywordMatcher {
             val keyword = input.trim()
             if (keyword.isEmpty()) continue
 
+            val listId = BlocklistStore.idFromKeyword(keyword)
             when {
+                listId != null -> {
+                    BlocklistStore.preload(listId)
+                    literals.add(BlocklistStore.keywordFor(listId))
+                }
                 keyword.startsWith("r:", ignoreCase = true) ->
                     runCatching { Regex(keyword.substring(2), RegexOption.IGNORE_CASE) }.getOrNull()
                         ?.let { regexes.add(it) }
@@ -81,6 +87,11 @@ object KeywordMatcher {
      */
     private fun matchesLiteral(keyword: String, urlIdentifier: String): Boolean {
         val url = normalize(urlIdentifier)
+
+        BlocklistStore.idFromKeyword(keyword)?.let { listId ->
+            val host = url.substringBefore('/').substringBefore('?').substringBefore('#').substringBefore(':')
+            return BlocklistStore.matchesHost(listId, host)
+        }
 
         if (keyword.startsWith("/")) {
             val pathStart = url.indexOf('/')

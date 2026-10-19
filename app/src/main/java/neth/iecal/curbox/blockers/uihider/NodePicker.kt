@@ -39,8 +39,8 @@ import neth.iecal.curbox.services.NodePickerService
 class NodePicker : BaseBlocker(), NodePickerOverlay.Listener {
 
     companion object {
-        const val ACTION_OPEN = "neth.iecal.curbox.nodepicker.OPEN"
-        const val ACTION_STOP = "neth.iecal.curbox.nodepicker.STOP"
+        const val ACTION_OPEN = "app.boundary.blocker.nodepicker.OPEN"
+        const val ACTION_STOP = "app.boundary.blocker.nodepicker.STOP"
         private const val MAX_VISIT = 6000
     }
 

@@ -2008,4 +2008,29 @@
     <string name="onboarding_finish_failed">Could not finish setup. Please try again.</string>
     <string name="usage_select_background_art">Select background art</string>
     <string name="usage_background_art_random">Random</string>
+    <!-- Blocklists -->
+    <string name="blocklists_title">Blocklists</string>
+    <string name="blocklists_description">Big lists of sites made by other people. Add a list to a keyword group to block every site on it, for example all adult sites.</string>
+    <string name="blocklists_add">Add list</string>
+    <string name="blocklists_update">Update</string>
+    <string name="blocklists_download">Download</string>
+    <string name="blocklists_updating">Updating</string>
+    <string name="blocklists_name_hint">Name</string>
+    <string name="blocklists_url_hint">Link to the list</string>
+    <string name="blocklists_url_invalid">Enter a link that starts with https://</string>
+    <string name="blocklists_name_required">Enter a name</string>
+    <string name="blocklists_not_downloaded">Not downloaded yet</string>
+    <string name="blocklists_status">%1$s sites. Updated %2$s</string>
+    <string name="blocklists_keyword_label">Keyword: %1$s</string>
+    <string name="blocklists_update_done">Updated. This list has %1$s sites.</string>
+    <string name="blocklists_update_failed">Could not update the list. %1$s</string>
+    <string name="blocklists_delete_title">Delete this list?</string>
+    <string name="blocklists_delete_message">Its sites will no longer be blocked.</string>
+    <string name="blocklists_in_use_title">This list is in use</string>
+    <string name="blocklists_in_use_message">Remove %1$s from your keyword groups and focus groups first. Then you can delete it.</string>
+    <string name="blocklists_menu">Blocklists</string>
+    <string name="blocklists_add_to_group">Add a blocklist</string>
+    <string name="blocklists_pick_title">Pick blocklists</string>
+    <string name="blocklists_manage">Manage lists</string>
+    <string name="blocklists_none_downloaded">You have no downloaded lists yet. Open Manage lists to get one.</string>
 </resources>

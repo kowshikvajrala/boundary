@@ -60,8 +60,8 @@ class KeywordBlocker : BaseBlocker() {
     private val blockerScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     @Volatile private var destroyed = false
     companion object {
-        const val INTENT_ACTION_REFRESH_CONFIG = "neth.iecal.curbox.refresh.keywordblocker.config"
-        const val INTENT_ACTION_REFRESH_KEYWORD_BLOCKER_COOLDOWN = "neth.iecal.curbox.refresh.keywordblocker.cooldown"
+        const val INTENT_ACTION_REFRESH_CONFIG = "app.boundary.blocker.refresh.keywordblocker.config"
+        const val INTENT_ACTION_REFRESH_KEYWORD_BLOCKER_COOLDOWN = "app.boundary.blocker.refresh.keywordblocker.cooldown"
         private const val TARGET_EVENTS_MASK =
             AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED or AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
         private const val BLOCK_SUPPRESSION_MS = 5_000L
