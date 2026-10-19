@@ -1,2 +1,1 @@
-• New keyword groups now block right away. Before, they allowed 60 minutes a day first. You can still set a daily allowance in Usage limits.
 • The accessibility service now shows as Boundary in your phone settings, so you can tell it apart from Curbox.
