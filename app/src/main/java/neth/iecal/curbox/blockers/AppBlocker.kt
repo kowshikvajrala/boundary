@@ -73,6 +73,7 @@ class AppBlocker : BaseBlocker() {
     )
 
     private val blockedAppsList = ConcurrentHashMap<String, MutableList<AppGroupEntry>>()
+    private val groupNames = ConcurrentHashMap<String, String>()
     // Holds the warning config last shown per group, used for the cooldown intent's default duration.
     private val appBlockerWarningScrnConfgs = ConcurrentHashMap<String, AppBlockerWarningScreenConfig>()
 
@@ -250,6 +251,7 @@ class AppBlocker : BaseBlocker() {
 
                 val newBlockedAppsList = ConcurrentHashMap<String, MutableList<AppGroupEntry>>()
                 settings.blockedAppGroups.upgradeLegacyAppGroupConfigs().forEach { group ->
+                    groupNames[group.id] = group.name
                     if (!group.isActive) return@forEach
 
                     try {
@@ -367,17 +369,23 @@ class AppBlocker : BaseBlocker() {
         return false
     }
 
+    // Counts down to the soonest unlock ending and, when several groups are unlocked, lists each one.
     private fun showNextCooldownNotification() {
         val now = System.currentTimeMillis()
-        val next = cooldownGroupsList.filterValues { it > now }.minByOrNull { it.value }
+        val active = cooldownGroupsList.filterValues { it > now }
+        val next = active.minByOrNull { it.value }
         if (next == null) {
             notificationManager.stopTimer()
             return
         }
+        val breakdown = active.entries.associate { (groupId, endMs) ->
+            (groupNames[groupId] ?: groupId) to endMs
+        }
         notificationManager.startTimer(
             totalMillis = next.value - now,
-            timerId = "app_cooldown:${next.key}:${next.value}",
+            timerId = "app_cooldown:" + active.entries.sortedBy { it.key }.joinToString(",") { "${it.key}=${it.value}" },
             title = service.getString(R.string.notification_remaining_usage_lockdown),
+            breakdown = breakdown,
             onFinishCallback = { showNextCooldownNotification() }
         )
     }
@@ -442,6 +450,10 @@ class AppBlocker : BaseBlocker() {
             }
 
             if (warningConfig.isWarningDialogHidden) return
+            if (warningConfig.isProceedDisabled) {
+                service.blockedPill.show(packageName, warningConfig.message.filter { it.isNotBlank() }.randomOrNull() ?: service.getString(R.string.blocked_pill_fallback))
+                return
+            }
             isWarningScreenVisible = true
 
             handler.postDelayed({

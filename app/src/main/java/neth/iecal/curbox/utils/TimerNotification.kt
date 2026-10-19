@@ -46,6 +46,8 @@ class TimerNotification(
     private var timerJob: Job? = null
 
     private var currentTimerId = ""
+    // Label -> wall clock end time, listed under the main countdown when several run at once.
+    @Volatile private var breakdown: Map<String, Long> = emptyMap()
 
     init {
         createNotificationChannel()
@@ -56,6 +58,7 @@ class TimerNotification(
         isCountdown: Boolean = true,
         title: String = "Timer",
         timerId: String = "focusMode",
+        breakdown: Map<String, Long> = emptyMap(),
         onTickCallback: ((Long) -> Unit)? = null,
         onFinishCallback: (() -> Unit)? = null,
     ) {
@@ -69,6 +72,7 @@ class TimerNotification(
         stopTimer() // Cleans up any old state safely
 
         currentTimerId = timerId
+        this.breakdown = breakdown
         _timerState.value = TimerState.RUNNING
 
         // Setup the cached notification UI title
@@ -143,24 +147,39 @@ class TimerNotification(
 
     private fun updateNotificationUI(remainingMillis: Long) {
         runCatching {
-            val hours = remainingMillis / 3_600_000
-            val minutes = (remainingMillis % 3_600_000) / 60_000
-            val seconds = (remainingMillis % 60_000) / 1_000
+            val timeString = formatDuration(remainingMillis)
 
-            val timeString = if (hours > 0) {
-                "%02d:%02d:%02d".format(hours, minutes, seconds)
-            } else {
-                "%02d:%02d".format(minutes, seconds)
+            val now = System.currentTimeMillis()
+            val lines = breakdown.entries.sortedBy { it.value }.map { (label, endMs) ->
+                "$label  ${formatDuration((endMs - now).coerceAtLeast(0L))}"
             }
+            val style = if (lines.size > 1) {
+                NotificationCompat.InboxStyle().also { inbox -> lines.forEach(inbox::addLine) }
+            } else {
+                null
+            }
+            val contentText = if (lines.size > 1) lines.joinToString(" · ") else timeString
 
             val notification = notificationBuilder
-                .setContentText(timeString)
+                .setContentText(contentText)
                 .setContentInfo(timeString)
+                .setStyle(style)
                 .build()
 
             notificationManager.notify(notificationId, notification)
         }.onFailure { exception ->
             Log.e(TAG, "Failed to show notification: ${exception.message}", exception)
+        }
+    }
+
+    private fun formatDuration(millis: Long): String {
+        val hours = millis / 3_600_000
+        val minutes = (millis % 3_600_000) / 60_000
+        val seconds = (millis % 60_000) / 1_000
+        return if (hours > 0) {
+            "%02d:%02d:%02d".format(hours, minutes, seconds)
+        } else {
+            "%02d:%02d".format(minutes, seconds)
         }
     }
 

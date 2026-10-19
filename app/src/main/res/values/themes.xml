@@ -68,13 +68,9 @@
         <item name="fontFamily">@font/inter</item>
     </style>
 
-    <style name="Theme.Curbox.WarningFullScreen" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">@color/warning_accent</item>
-        <item name="android:windowBackground">@color/warning_background</item>
-        <item name="android:statusBarColor">@color/warning_background</item>
-        <item name="android:navigationBarColor">@color/warning_background</item>
-        <item name="android:fontFamily">@font/inter</item>
-        <item name="fontFamily">@font/inter</item>
+    <!-- Same look as the rest of the app, including wallpaper colors and dark mode. -->
+    <style name="Theme.Curbox.WarningFullScreen" parent="Theme.Curbox">
+        <item name="android:windowBackground">?attr/colorSurface</item>
     </style>
 
 </resources>

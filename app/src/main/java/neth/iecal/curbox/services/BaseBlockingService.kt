@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.CancellationException
 import neth.iecal.curbox.CrashLogger
 import neth.iecal.curbox.R
+import neth.iecal.curbox.ui.overlay.BlockedPillOverlay
 import neth.iecal.curbox.utils.DataStoreManager
 import neth.iecal.curbox.utils.ServiceProtectionManager
 import kotlin.lazy
@@ -28,6 +29,9 @@ open class BaseBlockingService : AccessibilityService() {
     val dataStoreManager  by lazy {
         DataStoreManager(this)
     }
+
+    /** Shown instead of the warning screen when a group can never be unlocked. */
+    val blockedPill by lazy { BlockedPillOverlay(this) }
 
     private val protectionScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var lastHeartbeatMs = 0L
@@ -127,6 +131,7 @@ open class BaseBlockingService : AccessibilityService() {
             protectionScope.cancel()
         } catch (_: Exception) {
         }
+        blockedPill.release()
     }
 
     override fun onInterrupt() {

@@ -1,0 +1,3 @@
+• The wait screen now uses the Boundary logo and the same colors as the rest of the app, including dark mode.
+• Groups set to never unlock no longer open a full screen. A small note with the app icon shows at the top instead.
+• When more than one group is unlocked, the notification now shows the time left for each of them.

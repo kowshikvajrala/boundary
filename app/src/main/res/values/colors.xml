@@ -144,7 +144,4 @@
     <color name="md_theme_surfaceContainer_highContrast">#1B211F</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#252B2A</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#303634</color>
-
-    <color name="warning_background">#0F1333</color>
-    <color name="warning_accent">#5D67F6</color>
 </resources>

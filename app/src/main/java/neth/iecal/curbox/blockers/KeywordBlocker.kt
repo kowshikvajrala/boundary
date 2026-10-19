@@ -291,6 +291,10 @@ class KeywordBlocker : BaseBlocker() {
         Thread.sleep(1000)
 
         if (group.warningScreenConfig.isWarningDialogHidden) return
+        if (group.warningScreenConfig.isProceedDisabled) {
+            service.blockedPill.show(packageName, group.warningScreenConfig.message.filter { it.isNotBlank() }.randomOrNull() ?: service.getString(R.string.blocked_pill_fallback))
+            return
+        }
 
         Handler(Looper.getMainLooper()).postDelayed({
             if (destroyed) return@postDelayed

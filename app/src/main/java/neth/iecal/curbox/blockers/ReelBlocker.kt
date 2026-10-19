@@ -70,6 +70,10 @@ class ReelBlocker : BaseBlocker() {
                 service.pressBack()
 
                 if (reelBlockerConfig.warningScreenConfig.isWarningDialogHidden) return
+                if (reelBlockerConfig.warningScreenConfig.isProceedDisabled) {
+                    service.blockedPill.show(viewId, reelBlockerConfig.warningScreenConfig.message.filter { it.isNotBlank() }.randomOrNull() ?: service.getString(R.string.blocked_pill_fallback))
+                    return
+                }
                 val dialogIntent = Intent(service, WarningActivity::class.java)
                 dialogIntent.flags =
                     Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

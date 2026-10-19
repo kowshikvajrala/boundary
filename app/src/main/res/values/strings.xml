@@ -2029,6 +2029,7 @@
     <string name="blocklists_in_use_title">This list is in use</string>
     <string name="blocklists_in_use_message">Remove %1$s from your keyword groups and focus groups first. Then you can delete it.</string>
     <string name="blocklists_menu">Blocklists</string>
+    <string name="blocked_pill_fallback">Blocked for now</string>
     <string name="blocklists_add_to_group">Add a blocklist</string>
     <string name="blocklists_pick_title">Pick blocklists</string>
     <string name="blocklists_manage">Manage lists</string>
