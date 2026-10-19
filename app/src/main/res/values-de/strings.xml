@@ -106,7 +106,7 @@
     <string name="donate_prompt_give">Ich steuere etwas bei ❤</string>
     <string name="donate_prompt_share">Ich teile es stattdessen</string>
     <string name="donate_prompt_later">Vielleicht später</string>
-    <string name="share_curbox_message">Ich benutze Curbox, um die Kontrolle über meine Bildschirmzeit zurückzugewinnen. Es ist kostenlos, prober es aus: https://curbox.app</string>
+    <string name="share_boundary_message">Ich benutze Curbox, um die Kontrolle über meine Bildschirmzeit zurückzugewinnen. Es ist kostenlos, prober es aus: https://curbox.app</string>
     <string name="system_diagnostics">Systemdiagnosen</string>
     <string name="view_and_share_application_crash_logs">Betrachte und teile Absturzberichte, um zu helfen, Boundary zu verbessern</string>
     <string name="view_crash_logs">Absturzberichte ansehen</string>

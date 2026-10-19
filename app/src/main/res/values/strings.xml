@@ -113,7 +113,7 @@
     <string name="donate_prompt_give">I\'ll chip in ❤</string>
     <string name="donate_prompt_share">I\'ll share it instead</string>
     <string name="donate_prompt_later">Maybe later</string>
-    <string name="share_curbox_message">I\'ve been using Curbox to take back control of my screen time. It\'s free, give it a try: https://curbox.app</string>
+    <string name="share_boundary_message">I\'ve been using Curbox to take back control of my screen time. It\'s free, give it a try: https://curbox.app</string>
     <string name="system_diagnostics">System Diagnostics</string>
     <string name="view_and_share_application_crash_logs">View and share application crash logs to help improve Boundary.</string>
     <string name="view_crash_logs">View Crash Logs</string>

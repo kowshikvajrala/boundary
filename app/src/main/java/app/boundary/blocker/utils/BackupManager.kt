@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import app.boundary.blocker.services.ServiceWatchdogJob
 
 class BackupManager(context: Context) {
     private val app = context.applicationContext
@@ -25,7 +26,7 @@ class BackupManager(context: Context) {
         val settings = input.use(SettingsBackupCodec::decode)
         dataStore.restoreSettingsDuringOnboarding(settings)
         if (settings.serviceProtectionConfig.isEnabled) {
-            app.boundary.blocker.services.ServiceWatchdogJob.schedule(app)
+            ServiceWatchdogJob.schedule(app)
             ServiceProtectionManager.reinforceBackgroundExecution(app)
         }
     }
