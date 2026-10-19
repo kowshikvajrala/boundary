@@ -31,7 +31,7 @@
     <string name="focus_completion_rate">達成率</string>
     <string name="focus_top_tags">よく使うタグ</string>
     <string name="quick_setup_guide">クイックセットアップガイド</string>
-    <string name="boundary_needs_accessibility_permissions_to_help">スクリーンタイムを記録するために、Boundaryにはユーザー補助の権限が必要です。設定手順はアプリのインストール方法によって異なります。</string>
+    <string name="curbox_needs_accessibility_permissions_to_help">スクリーンタイムを記録するために、Boundaryにはユーザー補助の権限が必要です。設定手順はアプリのインストール方法によって異なります。</string>
     <string name="fdroid_installation">F-Droidでのインストール</string>
     <string name="installed_via_fdroid_appnyoure_all_set">✅ F-Droidアプリからインストールしましたか？\nこれで準備完了です！次のステップでユーザー補助の設定を行ってください。\n\n⚠️ F-Droidのウェブサイトからダウンロードしましたか？\n権限の問題を避けるため、F-Droidアプリからインストールし直してください。</string>
     <string name="apk_installation">APKでのインストール</string>
@@ -71,8 +71,8 @@
     <string name="join_the_focus_pack">フォーカス仲間に参加する</string>
     <string name="dont_fix_your_screen_time_alone">スクリーンタイムの問題を一人で抱え込まないでください。同じ思いを持つ仲間が支え合い、集中のコツを共有するDiscordに参加しましょう。</string>
     <string name="join_the_discord">Discordに参加する</string>
-    <string name="boundaryapp">\@curb.me</string>
-    <string name="follow_boundary">Boundaryをフォローする</string>
+    <string name="curboxapp">\@curb.me</string>
+    <string name="follow_curbox">Boundaryをフォローする</string>
     <string name="label_instagram">Instagram</string>
     <string name="about_the_developer">開発者について</string>
     <string name="view_on_github">GitHubで見る ↗</string>
@@ -86,7 +86,7 @@
     <string name="donate_prompt_give">支援します ❤</string>
     <string name="donate_prompt_share">代わりにシェアします</string>
     <string name="donate_prompt_later">また今度</string>
-    <string name="share_boundary_message">Curboxを使ってスクリーンタイムのコントロールを取り戻しています。無料なので、ぜひ試してみてください：https://curbox.app</string>
+    <string name="share_curbox_message">Curboxを使ってスクリーンタイムのコントロールを取り戻しています。無料なので、ぜひ試してみてください：https://curbox.app</string>
     <string name="system_diagnostics">システム診断</string>
     <string name="view_and_share_application_crash_logs">アプリのクラッシュログを確認・共有して、Boundaryの改善に役立ててください。</string>
     <string name="view_crash_logs">クラッシュログを見る</string>
@@ -158,7 +158,7 @@
     <string name="search_recursively_for_blocked_keywords_on">画面上のすべてのテキストフィールドでブロック対象のキーワードを再帰的に検索する</string>
     <string name="block_all_browsers_except_supported_ones">対応していないブラウザをブロック</string>
     <string name="select_ignored_apps">除外するアプリを選択</string>
-    <string name="activity_powered_by">POWERED BY BOUNDARY</string>
+    <string name="activity_powered_by">POWERED BY CURBOX</string>
     <string name="your_digital_wellbeing">あなたのデジタルウェルビーイング</string>
     <string name="total_today">今日の合計</string>
     <string name="most_used">よく使うアプリ</string>

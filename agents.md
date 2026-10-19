@@ -1,16 +1,16 @@
-# Boundary agent guide
+# Curbox agent guide
 
-Boundary is an Android screen time manager. One accessibility service blocks apps, short videos, keywords, and selected UI elements.
+Curbox is an Android screen time manager. One accessibility service blocks apps, short videos, keywords, and selected UI elements.
 
 This file applies to the whole repository. Preserve more specific instructions if a nested `AGENTS.md` is added later.
 
 ## Start here
 
-- Modules: `:app` and `:apitester`. The latter is a sample client for the Boundary API.
+- Modules: `:app` and `:apitester`. The latter is a sample client for the Curbox API.
 - Language and UI: Kotlin, classic Views, Fragments, and ViewBinding.
 - Do not add Jetpack Compose or the Navigation component.
 - JVM target: 1.8.
-- Package root: `app/src/main/java/app/boundary/blocker`.
+- Package root: `app/src/main/java/neth/iecal/curbox`.
 - Prefer the smallest change that follows the nearest existing implementation.
 - Readability is more important than cleverness. Follow the style of each file you touch.
 - Ask before making an architectural change. Explain the user impact before changing the Room schema because migrations are destructive.
@@ -50,7 +50,7 @@ The app runs in three processes:
 
 | Process | Main component |
 | --- | --- |
-| Main | UI and `Boundary` application initialization guarded by `isMainProcess()` |
+| Main | UI and `Curbox` application initialization guarded by `isMainProcess()` |
 | `:app_blocker_service` | `AppBlockerService` |
 | `:crash_handler` | `CrashLogActivity` |
 
@@ -59,7 +59,7 @@ This has concrete consequences:
 - Access Room only through `AppDatabase.getInstance()`. It enables multi instance invalidation.
 - Access settings only through `DataStoreManager` in `utils/DataStore.kt`.
 - Never create a second DataStore for the same file. `DataStoreManager` owns the `MultiProcessDataStoreFactory` singleton.
-- Do not assume initialization guarded by `Boundary.isMainProcess()` also ran in the service process.
+- Do not assume initialization guarded by `Curbox.isMainProcess()` also ran in the service process.
 - Sync initializes only in the main process.
 - UI to service configuration updates use broadcasts unless that feature already collects the settings flow. Follow the feature's existing pattern.
 
@@ -142,7 +142,7 @@ Feature broadcasts use companion constants such as `AppBlocker.INTENT_ACTION_REF
 - `trackers/`: app usage, website usage, and short video counts. `WebsiteUsageTracker` has a 15 second heartbeat for browsers that omit URL change events.
 - `anti_stimulants/`: `AutoDnd`, `GrayScaleFilter`, and `MindfulMessage`. Combine DND requests through `AppBlockerService.syncDndState()`.
 - `hardcoded/`: all per app view IDs and configuration. Do not inline these values in feature code.
-- `api/`: the exported AIDL service, user approval flow, and auth store. Keep responses consistent with flavor flags. See `BOUNDARY_API.md` and the `:apitester` client.
+- `api/`: the exported AIDL service, user approval flow, and auth store. Keep responses consistent with flavor flags. See `CURBOX_API.md` and the `:apitester` client.
 
 User facing blocking screens go through `ui/activity/WarningActivity` with the appropriate `Constants.WARNING_SCREEN_MODE_*` value.
 
@@ -205,13 +205,13 @@ Use the check that matches the change. Documentation only changes do not need a 
 
 - `testFullDebugUnitTest` includes `CryptoBoxTest` and UI hider `ScriptLanguageTest`.
 - Build all three flavors after changing shared source, source sets, manifests, BuildConfig gates, or optional feature wiring.
-- Use the install task only when an emulator or device is available. It installs, grants accessibility through adb, and launches Debug Boundary.
+- Use the install task only when an emulator or device is available. It installs, grants accessibility through adb, and launches Debug Curbox.
 - Lint does not abort builds, so inspect relevant warnings rather than treating a successful build as proof that lint is clean.
-- Debug builds use the `.debug` application ID suffix and the name `Debug Boundary`.
+- Debug builds use the `.debug` application ID suffix and the name `Debug Curbox`.
 - If a relevant check cannot run, say why in the handoff.
 
 ## Reference docs
 
 - `CONTRIBUTING.md`: contributor workflows
-- `BOUNDARY_API.md`: API contract and integration guide
+- `CURBOX_API.md`: API contract and integration guide
 - `Readme.md`: product overview

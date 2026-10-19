@@ -4,12 +4,12 @@
         android:enabled="true"
         android:icon="@drawable/ic_launcher_foreground"
         android:shortcutShortLabel="@string/focus_mode"
-        android:shortcutId="boundary_focus_mode_shortcut"
+        android:shortcutId="curbox_focus_mode_shortcut"
         android:shortcutLongLabel="@string/focus_mode">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="app.boundary.blocker"
-            android:targetClass="app.boundary.blocker.ui.activity.ShortcutActivity" />
+            android:targetClass="neth.iecal.curbox.ui.activity.ShortcutActivity" />
         <categories android:name="digiipaws" />
         <capability-binding android:key="actions.intent.CREATE_MESSAGE" />
     </shortcut>

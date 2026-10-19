@@ -1,16 +1,16 @@
-Boundary (eski adıyla Digipauwse), dijital denge için geliştirilmiş ücretsiz ve açık kaynaklı bir uygulama engelleyici ve ekran süresi takip aracıdır. Uygulamaları, web sitelerini, Reels ve Shorts akışlarını engelle; ekran süreni azaltıp odağını geri kazan.
+Curbox (eski adıyla Digipauwse), dijital denge için geliştirilmiş ücretsiz ve açık kaynaklı bir uygulama engelleyici ve ekran süresi takip aracıdır. Uygulamaları, web sitelerini, Reels ve Shorts akışlarını engelle; ekran süreni azaltıp odağını geri kazan.
 
 <b>Uygulamaları ve web sitelerini engelle</b>
 
 • <b>Uygulama ve Web Sitesi Engelleyici</b>: Dikkatini dağıtan herhangi bir uygulamayı veya web sitesini tamamen engelle.
 • <b>URL Yolu Engelleme</b>: YouTube’un geri kalanı çalışmaya devam ederken yalnızca m.youtube.com/shorts gibi belirli bir site bölümünü engelle.
 • <b>Kısa Video Engelleyici</b>: Instagram Reels ve YouTube Shorts akışlarını kapat; akışın seni yeniden içine çekmesini durdur.
-• <b>Kaldırma Koruması</b>: Boundary’u kaldırmayı veya engelleme hizmetini kapatmayı zorlaştır.
+• <b>Kaldırma Koruması</b>: Curbox’u kaldırmayı veya engelleme hizmetini kapatmayı zorlaştır.
 • <b>Ayar Değişikliği Gecikmesi</b>: Kuralları zayıflatan değişiklikleri uygulanmadan önce bekletir ve kararını yeniden değerlendirmen için sana zaman verir.
 
 <b>Yalnızca dikkatini dağıtan bölümleri gizle</b>
 
-Ayrıntılı Arayüz Gizleme, tüm uygulamayı engellemeden dikkat dağıtan bölümleri gizler. Boundary seçtiğin alanı sade bir katmanla kapatır, geri kalanı çalışmaya devam eder. Örneğin YouTube ana akışını veya Instagram Keşfet’i gizlerken arama ve arkadaş gönderilerini kullanmaya devam edebilirsin. Ne göreceğine sen karar verirsin.
+Ayrıntılı Arayüz Gizleme, tüm uygulamayı engellemeden dikkat dağıtan bölümleri gizler. Curbox seçtiğin alanı sade bir katmanla kapatır, geri kalanı çalışmaya devam eder. Örneğin YouTube ana akışını veya Instagram Keşfet’i gizlerken arama ve arkadaş gönderilerini kullanmaya devam edebilirsin. Ne göreceğine sen karar verirsin.
 
 <b>Odağını koru</b>
 
@@ -44,6 +44,6 @@ Bir programdaki tüm kullanım süren dolduğunda yeniden erişim kazanmak için
 
 <b>Geliştiriciler için tasarlandı</b>
 
-<b>Boundary API</b>, onay verdiğin uygulamaların Odak Modu’nu başlatmasına, Boundary ayarlarını değiştirmesine ve kullanım istatistiklerini okumasına izin verir. Hangi uygulamaların erişim alacağına sen karar verirsin.
+<b>Curbox API</b>, onay verdiğin uygulamaların Odak Modu’nu başlatmasına, Curbox ayarlarını değiştirmesine ve kullanım istatistiklerini okumasına izin verir. Hangi uygulamaların erişim alacağına sen karar verirsin.
 
-Boundary; dikkat dağıtan uygulamaları ve web sitelerini engellemek, ekran süresini azaltmak ve odağını geri kazanmak isteyen herkes için geliştirildi. Ücretsiz, açık kaynaklı ve reklamsız.
+Curbox; dikkat dağıtan uygulamaları ve web sitelerini engellemek, ekran süresini azaltmak ve odağını geri kazanmak isteyen herkes için geliştirildi. Ücretsiz, açık kaynaklı ve reklamsız.

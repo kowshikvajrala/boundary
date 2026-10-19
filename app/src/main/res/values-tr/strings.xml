@@ -39,7 +39,7 @@
     <item quantity="other">• %1$s (%2$d oturum)</item>
   </plurals>
   <string name="quick_setup_guide">Hızlı Kurulum Rehberi</string>
-  <string name="boundary_needs_accessibility_permissions_to_help">Boundary, ekran süreni takip etmene yardımcı olmak için erişilebilirlik izinlerine ihtiyaç duyar. Kurulum adımları, uygulamayı nasıl yüklediğine göre değişir.</string>
+  <string name="curbox_needs_accessibility_permissions_to_help">Boundary, ekran süreni takip etmene yardımcı olmak için erişilebilirlik izinlerine ihtiyaç duyar. Kurulum adımları, uygulamayı nasıl yüklediğine göre değişir.</string>
   <string name="fdroid_installation">F-Droid Kurulumu</string>
   <string name="installed_via_fdroid_appnyoure_all_set">✅ F-Droid uygulaması üzerinden mi yükledin?\nHer şey hazır! Sonraki adımda erişilebilirlik kurulumunu tamamlaman yeterli.\n\n⚠️ F-Droid web sitesinden mi indirdin?\nİzin sorunlarını önlemek için uygulamayı F-Droid uygulaması üzerinden yükle.</string>
   <string name="apk_installation">APK Kurulumu</string>
@@ -80,14 +80,14 @@
   <string name="join_the_focus_pack">Odak Ekibine Katıl</string>
   <string name="dont_fix_your_screen_time_alone">Ekran süreni tek başına azaltmaya çalışma. Birbirini motive eden, hedeflerine bağlı kalmalarına yardımcı olan ve odaklanma yöntemlerini paylaşan insanların bulunduğu Discord topluluğumuza katıl.</string>
   <string name="join_the_discord">Discord\'a Katıl</string>
-  <string name="boundaryapp">\@curb.me</string>
-  <string name="follow_boundary">Boundary\'u Takip Et</string>
+  <string name="curboxapp">\@curb.me</string>
+  <string name="follow_curbox">Boundary\'u Takip Et</string>
   <string name="label_instagram">Instagram</string>
   <string name="label_github">GitHub</string>
-  <string name="boundary_github_repo">boundary-android</string>
-  <string name="boundary_also_on">Boundary’u Burada da Bul</string>
+  <string name="curbox_github_repo">curbox-android</string>
+  <string name="curbox_also_on">Boundary’u Burada da Bul</string>
   <string name="label_browser_extension">Tarayıcı Uzantısı</string>
-  <string name="boundary_extension_repo">boundary-extension</string>
+  <string name="curbox_extension_repo">curbox-extension</string>
   <string name="about_the_developer">Geliştirici Hakkında</string>
   <string name="view_on_github">GitHub\'da Görüntüle ↗</string>
   <string name="donate_title">Bağış Yap</string>
@@ -100,7 +100,7 @@
   <string name="donate_prompt_give">Ben de katkıda bulunacağım ❤</string>
   <string name="donate_prompt_share">Bunun yerine paylaşacağım</string>
   <string name="donate_prompt_later">Belki daha sonra</string>
-  <string name="share_boundary_message">Ekran sürem üzerindeki kontrolü geri kazanmak için Curbox kullanıyorum. Ücretsiz, sen de dene: https://curbox.app</string>
+  <string name="share_curbox_message">Ekran sürem üzerindeki kontrolü geri kazanmak için Curbox kullanıyorum. Ücretsiz, sen de dene: https://curbox.app</string>
   <string name="system_diagnostics">Sistem Tanılama</string>
   <string name="view_and_share_application_crash_logs">Boundary’u geliştirmeye yardım etmek için uygulama çökme günlüklerini görüntüle ve paylaş.</string>
   <string name="view_crash_logs">Çökme Günlüklerini Görüntüle</string>
@@ -202,7 +202,7 @@
   <string name="search_recursively_for_blocked_keywords_on">Ekrandaki tüm metin alanlarını ve alt öğeleri engellenen anahtar kelimeler için tara</string>
   <string name="block_all_browsers_except_supported_ones">Desteklenmeyen tarayıcıları engelle</string>
   <string name="select_ignored_apps">Yok Sayılacak Uygulamaları Seç</string>
-  <string name="activity_powered_by">BOUNDARY DESTEĞİYLE</string>
+  <string name="activity_powered_by">CURBOX DESTEĞİYLE</string>
   <string name="your_digital_wellbeing">Dijital Dengen</string>
   <string name="total_today">BUGÜNKÜ TOPLAM</string>
   <string name="most_used">EN ÇOK KULLANILAN</string>

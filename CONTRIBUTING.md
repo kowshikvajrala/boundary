@@ -1,6 +1,6 @@
-# Contributing to Boundary
+# Contributing to Curbox
 
-Thank you for your interest in contributing to Boundary! Boundary is an advanced screentime management tool for Android that utilizes accessibility services to help users manage their digital well-being.
+Thank you for your interest in contributing to Curbox! Curbox is an advanced screentime management tool for Android that utilizes accessibility services to help users manage their digital well-being.
 
 ## Index
 1. [Quick Contribute](#quick-contribute) 
@@ -19,21 +19,21 @@ Thank you for your interest in contributing to Boundary! Boundary is an advanced
 If you're new to the project, here are some easy ways to get started:
 
 ### 1. Translating the App
-Help make Boundary accessible to more people by translating it into your language.
+Help make Curbox accessible to more people by translating it into your language.
 - Find the base strings file at `app/src/main/res/values/strings.xml`.
 - Create a new directory `values-<language-code>` (e.g., `values-fr` for French) in `app/src/main/res/`.
 - Copy `strings.xml` to your new directory and translate the text within the `<string>` tags.
 - Please do not open a pull request if you're just going to use AI. I can do that too and perhaps better.
 
 ### 2. Adding Support for a New Browser
-Boundary needs to know the ID of the URL bar to track website usage.
-- Open `app/src/main/java/app/boundary/blocker/hardcoded/BrowserUrlBarIds.kt`.
+Curbox needs to know the ID of the URL bar to track website usage.
+- Open `app/src/main/java/neth/iecal/curbox/hardcoded/BrowserUrlBarIds.kt`.
 - Add a new entry to `URL_BAR_ID_LIST` with the package name and the `displayUrlBarId`.
 - **Tip:** Chromium-based browsers usually use `com.android.chrome:id/url_bar` (prefixed with their package name), and Firefox-based ones often use `ADDRESSBAR_URL_BOX`. Simply copy the config from firefox or chrome, replace the packagename with the mods package name.
 
 ### 3. Adding Support for App Mods (Instagram/YouTube)
 If you use a modded version of Instagram or YouTube, you can add support for reel tracking/counting.
-- Open `app/src/main/java/app/boundary/blocker/hardcoded/ReelAppConfig.kt`.
+- Open `app/src/main/java/neth/iecal/curbox/hardcoded/ReelAppConfig.kt`.
 - Find the entry for the original app (e.g., `com.google.android.youtube`).
 - Copy that entry and create a new one with the mod's package name replaced (e.g., `app.revanced.android.youtube`).
 - Usually, mods keep the same internal IDs, so you just need to update the package name keys.
@@ -54,7 +54,7 @@ If you use a modded version of Instagram or YouTube, you can add support for ree
 
 ## Project Architecture
 
-Boundary follows a compartmentalization style centered around two primary accessibility services:
+Curbox follows a compartmentalization style centered around two primary accessibility services:
 
 1.  **Usage Tracking (`UsageTrackingService`):** Features that track usage (e.g., `AppUsageTracker`, `ReelsCountTracker`).
 2.  **App Blocker (`AppBlockerService`):** Features that perform actions like blocking apps, reels, or keywords (runs in a separate Android process).
@@ -63,8 +63,8 @@ Boundary follows a compartmentalization style centered around two primary access
 
 Each feature is a compartmentalized class that receives a service instance in `onServiceConnected()`. Setup logic, including loading configurations and registering broadcast receivers, should occur within this method.
 
-- **Blockers:** Located in `app/src/main/java/app/boundary/blocker/blockers`.
-- **Trackers:** Located in `app/src/main/java/app/boundary/blocker/trackers`.
+- **Blockers:** Located in `app/src/main/java/neth/iecal/curbox/blockers`.
+- **Trackers:** Located in `app/src/main/java/neth/iecal/curbox/trackers`.
 - **Performance:** High-memory tasks (like reel/view blocking) that traverse the UI tree should run in background workers, while low-memory tasks run directly in `onAccessibilityEvent`.
 
 ## Code Style & Standards
@@ -90,9 +90,9 @@ Each feature is a compartmentalized class that receives a service instance in `o
 
 ## Data Storage
 
-- **Room DB:** For large datasets (logs, usage analytics) in `app/src/main/java/app/boundary/blocker/data/db`.
+- **Room DB:** For large datasets (logs, usage analytics) in `app/src/main/java/neth/iecal/curbox/data/db`.
 - **DataStore:** For user configurations and simple settings.
-- **Models:** Raw data classes are kept in `app/src/main/java/app/boundary/blocker/data/models`.
+- **Models:** Raw data classes are kept in `app/src/main/java/neth/iecal/curbox/data/models`.
 
 ## Contribution Workflow
 

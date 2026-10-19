@@ -19,7 +19,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Boundary API Tester"
+                android:text="Curbox API Tester"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:paddingBottom="8dp" />
@@ -27,7 +27,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1) Connect   2) Request permission (allow in Boundary)   3) Run commands"
+                android:text="1) Connect   2) Request permission (allow in Curbox)   3) Run commands"
                 android:paddingBottom="12dp" />
 
             <Button
@@ -52,7 +52,7 @@
                 android:id="@+id/btn_dump"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dump everything Boundary knows" />
+                android:text="Dump everything Curbox knows" />
 
             <TextView
                 android:layout_width="wrap_content"

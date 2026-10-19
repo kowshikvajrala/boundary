@@ -20,6 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 # The usage screen discovers ASCII art strings by their resource field names.
--keepclassmembers class app.boundary.blocker.R$string {
+-keepclassmembers class neth.iecal.curbox.R$string {
     public static int ascii*;
 }

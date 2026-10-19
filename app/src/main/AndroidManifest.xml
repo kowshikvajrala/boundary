@@ -24,14 +24,14 @@
         android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     <application
-        android:name=".Boundary"
+        android:name=".Curbox"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Boundary"
+        android:theme="@style/Theme.Curbox"
         tools:targetApi="34">
 
         <activity
@@ -39,14 +39,14 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Boundary.WarningFullScreen" />
+            android:theme="@style/Theme.Curbox.WarningFullScreen" />
 
         <activity
             android:name=".ui.activity.PendingChangeReviewActivity"
             android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Boundary.TransparentDialog" />
+            android:theme="@style/Theme.Curbox.TransparentDialog" />
         
         <activity
             android:name=".ui.activity.FragmentActivity"
@@ -75,7 +75,7 @@
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="boundary" android:host="focus" />
+                <data android:scheme="curbox" android:host="focus" />
             </intent-filter>
         </activity>
 
@@ -83,7 +83,7 @@
             android:name=".ui.activity.CrashLogActivity"
             android:process=":crash_handler"
             android:exported="false"
-            android:theme="@style/Theme.Boundary" />
+            android:theme="@style/Theme.Curbox" />
 
         <service
             android:name=".services.AppBlockerService"
@@ -205,21 +205,21 @@
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
-        <!-- Boundary API: bound service other apps talk to, Shizuku style -->
+        <!-- Curbox API: bound service other apps talk to, Shizuku style -->
         <service
-            android:name=".api.BoundaryApiService"
+            android:name=".api.CurboxApiService"
             android:exported="true">
             <intent-filter>
                 <action android:name="app.boundary.blocker.api.BIND" />
             </intent-filter>
         </service>
 
-        <!-- Boundary API: the Allow or Deny screen a client opens to ask for access -->
+        <!-- Curbox API: the Allow or Deny screen a client opens to ask for access -->
         <activity
             android:name=".api.ApiPermissionActivity"
             android:exported="true"
             android:excludeFromRecents="true"
-            android:theme="@style/Theme.Boundary.TransparentDialog">
+            android:theme="@style/Theme.Curbox.TransparentDialog">
             <intent-filter>
                 <action android:name="app.boundary.blocker.api.REQUEST_PERMISSION" />
                 <category android:name="android.intent.category.DEFAULT" />

@@ -1,4 +1,0 @@
-• Boundary is now Boundary all the way through, including inside the app's code.
-• After updating, turn the accessibility service back on: Settings, Accessibility, Boundary App Blocker. If you use tamper protection, turn on device admin again too. Re add any home screen widgets.
-• NFC tags written by older versions need to be written again.
-• You can restore settings backups made in Curbox.

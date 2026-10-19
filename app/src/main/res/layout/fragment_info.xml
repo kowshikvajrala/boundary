@@ -222,7 +222,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/follow_boundary"
+                    android:text="@string/follow_curbox"
                     style="@style/TextAppearance.Material3.LabelLarge"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:letterSpacing="0.08"
@@ -250,7 +250,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
-                        android:text="@string/boundaryapp"
+                        android:text="@string/curboxapp"
                         style="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="?attr/colorOnSurfaceVariant"/>
 
@@ -282,7 +282,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
-                        android:text="@string/boundary_github_repo"
+                        android:text="@string/curbox_github_repo"
                         style="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="?attr/colorOnSurfaceVariant"/>
 
@@ -313,7 +313,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/boundary_also_on"
+                    android:text="@string/curbox_also_on"
                     style="@style/TextAppearance.Material3.LabelLarge"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:letterSpacing="0.08"
@@ -341,7 +341,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
-                        android:text="@string/boundary_extension_repo"
+                        android:text="@string/curbox_extension_repo"
                         style="@style/TextAppearance.Material3.BodyMedium"
                         android:textColor="?attr/colorOnSurfaceVariant"/>
 

@@ -1,4 +1,4 @@
-• Boundary API: Onaylı uygulamalar Boundary’tan öğeleri engellemesini isteyebilir.
+• Curbox API: Onaylı uygulamalar Curbox’tan öğeleri engellemesini isteyebilir.
 • Zayıflatıcı ayar değişiklikleri artık gecikmeli uygulanıyor.
 • Kaldırma koruması güçlendirildi.
 • Snapchat Spotlight ve hikâye engelleme eklendi.

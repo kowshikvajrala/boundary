@@ -31,7 +31,7 @@
     <string name="focus_completion_rate">Completadas</string>
     <string name="focus_top_tags">Etiquetas más usadas</string>
     <string name="quick_setup_guide">Guía rápida de configuración</string>
-    <string name="boundary_needs_accessibility_permissions_to_help">Boundary necesita permisos de accesibilidad para ayudarte a monitorear tu tiempo en pantalla. El proceso de configuración varía según cómo instalaste la app.</string>
+    <string name="curbox_needs_accessibility_permissions_to_help">Boundary necesita permisos de accesibilidad para ayudarte a monitorear tu tiempo en pantalla. El proceso de configuración varía según cómo instalaste la app.</string>
     <string name="fdroid_installation">Instalación con F-Droid</string>
     <string name="installed_via_fdroid_appnyoure_all_set">✅ ¿La instalaste desde la app de F-Droid?\n¡Todo listo! Solo sigue la configuración de accesibilidad en el siguiente paso.\n\n⚠️ ¿La descargaste desde la página web de F-Droid?\nInstálala mejor desde la app de F-Droid para evitar problemas de permisos.</string>
     <string name="apk_installation">Instalación con APK</string>
@@ -71,8 +71,8 @@
     <string name="join_the_focus_pack">Únete a la Manada de Enfoque</string>
     <string name="dont_fix_your_screen_time_alone">No enfrentes solo tu tiempo en pantalla. Únete a nuestro Discord de personas con ideas afines que se apoyan entre sí y comparten estrategias de enfoque para mejorar.</string>
     <string name="join_the_discord">Únete al Discord</string>
-    <string name="boundaryapp">\@curb.me</string>
-    <string name="follow_boundary">Sigue a Boundary</string>
+    <string name="curboxapp">\@curb.me</string>
+    <string name="follow_curbox">Sigue a Boundary</string>
     <string name="label_instagram">Instagram</string>
     <string name="about_the_developer">Sobre el desarrollador</string>
     <string name="view_on_github">Ver en GitHub ↗</string>
@@ -86,7 +86,7 @@
     <string name="donate_prompt_give">Voy a aportar ❤</string>
     <string name="donate_prompt_share">Prefiero compartirlo</string>
     <string name="donate_prompt_later">Tal vez más tarde</string>
-    <string name="share_boundary_message">He estado usando Curbox para recuperar el control de mi tiempo en pantalla. Es gratis, pruébalo: https://curbox.app</string>
+    <string name="share_curbox_message">He estado usando Curbox para recuperar el control de mi tiempo en pantalla. Es gratis, pruébalo: https://curbox.app</string>
     <string name="system_diagnostics">Diagnóstico del sistema</string>
     <string name="view_and_share_application_crash_logs">Consulta y comparte los registros de fallos de la app para ayudar a mejorar Boundary.</string>
     <string name="view_crash_logs">Ver registros de fallos</string>
@@ -158,7 +158,7 @@
     <string name="search_recursively_for_blocked_keywords_on">Busca palabras clave bloqueadas en cada campo de texto en pantalla</string>
     <string name="block_all_browsers_except_supported_ones">Bloquear navegador no compatible</string>
     <string name="select_ignored_apps">Seleccionar apps ignoradas</string>
-    <string name="activity_powered_by">CON TECNOLOGÍA DE BOUNDARY</string>
+    <string name="activity_powered_by">CON TECNOLOGÍA DE CURBOX</string>
     <string name="your_digital_wellbeing">Tu bienestar digital</string>
     <string name="total_today">TOTAL DE HOY</string>
     <string name="most_used">MÁS USADAS</string>
