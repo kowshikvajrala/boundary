@@ -7,7 +7,7 @@
     android:paddingHorizontal="24dp"
     android:paddingTop="8dp">
 
-    <neth.iecal.curbox.ui.views.ColorWheelView
+    <app.boundary.blocker.ui.views.ColorWheelView
         android:id="@+id/colorWheel"
         android:layout_width="240dp"
         android:layout_height="240dp"

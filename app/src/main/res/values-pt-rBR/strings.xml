@@ -31,7 +31,7 @@
     <string name="focus_completion_rate">Concluídas</string>
     <string name="focus_top_tags">Principais tags</string>
     <string name="quick_setup_guide">Guia rápido de configuração</string>
-    <string name="curbox_needs_accessibility_permissions_to_help">O Boundary precisa das permissões de acessibilidade para te ajudar a monitorar seu tempo de tela. O processo de configuração varia de acordo com a forma como você instalou o app.</string>
+    <string name="boundary_needs_accessibility_permissions_to_help">O Boundary precisa das permissões de acessibilidade para te ajudar a monitorar seu tempo de tela. O processo de configuração varia de acordo com a forma como você instalou o app.</string>
     <string name="fdroid_installation">Instalação pelo F-Droid</string>
     <string name="installed_via_fdroid_appnyoure_all_set">✅ Instalou pelo app F-Droid?\nTudo pronto! Só siga a configuração de acessibilidade na próxima etapa.\n\n⚠️ Baixou pelo site do F-Droid?\nInstale pelo app F-Droid em vez disso para evitar problemas de permissão.</string>
     <string name="apk_installation">Instalação por APK</string>
@@ -71,8 +71,8 @@
     <string name="join_the_focus_pack">Entre para a Turma do Foco</string>
     <string name="dont_fix_your_screen_time_alone">Não resolva seu tempo de tela sozinho. Entre no nosso Discord de pessoas com ideias parecidas, se apoiando e trocando estratégias de foco para melhorar juntas.</string>
     <string name="join_the_discord">Entrar no Discord</string>
-    <string name="curboxapp">\@curb.me</string>
-    <string name="follow_curbox">Siga o Boundary</string>
+    <string name="boundaryapp">\@curb.me</string>
+    <string name="follow_boundary">Siga o Boundary</string>
     <string name="label_instagram">Instagram</string>
     <string name="about_the_developer">Sobre o desenvolvedor</string>
     <string name="view_on_github">Ver no GitHub ↗</string>
@@ -158,7 +158,7 @@
     <string name="search_recursively_for_blocked_keywords_on">Busque palavras-chave bloqueadas em todo campo de texto na tela</string>
     <string name="block_all_browsers_except_supported_ones">Bloquear navegador não compatível</string>
     <string name="select_ignored_apps">Selecionar apps ignorados</string>
-    <string name="activity_powered_by">FEITO COM CURBOX</string>
+    <string name="activity_powered_by">FEITO COM BOUNDARY</string>
     <string name="your_digital_wellbeing">Seu bem-estar digital</string>
     <string name="total_today">TOTAL HOJE</string>
     <string name="most_used">MAIS USADOS</string>

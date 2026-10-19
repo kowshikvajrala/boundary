@@ -16,7 +16,7 @@
         android:background="?attr/colorOutlineVariant"
         android:backgroundTint="?attr/colorOutlineVariant" />
 
-    <neth.iecal.curbox.ui.views.FocusSafeNestedScrollView
+    <app.boundary.blocker.ui.views.FocusSafeNestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -90,6 +90,6 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false" />
         </LinearLayout>
-    </neth.iecal.curbox.ui.views.FocusSafeNestedScrollView>
+    </app.boundary.blocker.ui.views.FocusSafeNestedScrollView>
 
 </LinearLayout>

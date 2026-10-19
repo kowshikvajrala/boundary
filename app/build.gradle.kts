@@ -53,7 +53,7 @@ androidComponents {
 }
 
 android {
-    namespace = "neth.iecal.curbox"
+    namespace = "app.boundary.blocker"
     compileSdk = 35
 
     lint {
@@ -65,8 +65,8 @@ android {
         applicationId = appId
         minSdk = 26
         targetSdk = 35
-        versionCode = 3
-        versionName = "1.0.2"
+        versionCode = 4
+        versionName = "1.0.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         resValue("string", "app_name", appName)
         resValue("string", "blocker_service_label", "$appName App Blocker")
@@ -76,7 +76,7 @@ android {
         // Holds WRITE_SECURE_SETTINGS (granted once via Shizuku) so grayscale can
         // flip secure settings directly instead of shelling out per toggle.
         buildConfigField("Boolean", "SUPPORTS_WRITE_SECURE_SETTINGS", "true")
-        // Cloud sync talks to Curbox's own servers, so this build ships without it.
+        // Cloud sync talks to Boundary's own servers, so this build ships without it.
         buildConfigField("Boolean", "FDROID_VARIANT", "true")
     }
 
@@ -177,7 +177,7 @@ androidComponents {
                 Thread.sleep(2000)
                 // Grant Accessibility Permission
                 exec {
-                    val baseId = "neth.iecal.curbox"
+                    val baseId = "app.boundary.blocker"
                     val services = "$appId/$baseId.services.AppBlockerService"
 
                     commandLine(adbPath, "shell", "settings", "put", "secure", "enabled_accessibility_services", services)
@@ -185,7 +185,7 @@ androidComponents {
 
                 // Launch MainActivity
                 exec {
-                    val baseId = "neth.iecal.curbox"
+                    val baseId = "app.boundary.blocker"
                     commandLine(adbPath, "shell", "am", "start", "-n", "$appId/$baseId.ui.activity.FragmentActivity")
                 }
             }

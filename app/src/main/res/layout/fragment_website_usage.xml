@@ -48,7 +48,7 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <neth.iecal.curbox.ui.views.WeeklyBarGraphView
+            <app.boundary.blocker.ui.views.WeeklyBarGraphView
                 android:id="@+id/weekly_bar_graph"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <neth.iecal.curbox.ui.views.FlowerBloomLoadingView
+        <app.boundary.blocker.ui.views.FlowerBloomLoadingView
             android:layout_width="160dp"
             android:layout_height="80dp" />
     </LinearLayout>

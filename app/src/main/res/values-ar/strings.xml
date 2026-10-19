@@ -31,7 +31,7 @@
     <string name="focus_completion_rate">نسبة الإكمال</string>
     <string name="focus_top_tags">أكثر الوسوم استخدامًا</string>
     <string name="quick_setup_guide">دليل الإعداد السريع</string>
-    <string name="curbox_needs_accessibility_permissions_to_help">يحتاج Boundary إلى إذن الوصول المساعد ليساعدك على متابعة وقت استخدام شاشتك. تختلف خطوات الإعداد حسب طريقة تثبيت التطبيق.</string>
+    <string name="boundary_needs_accessibility_permissions_to_help">يحتاج Boundary إلى إذن الوصول المساعد ليساعدك على متابعة وقت استخدام شاشتك. تختلف خطوات الإعداد حسب طريقة تثبيت التطبيق.</string>
     <string name="fdroid_installation">التثبيت عبر F-Droid</string>
     <string name="installed_via_fdroid_appnyoure_all_set">✅ ثبّته عبر تطبيق F-Droid؟\nكل شيء جاهز! اتبع فقط خطوات إعداد إمكانية الوصول في الخطوة التالية.\n\n⚠️ نزّلته من موقع F-Droid؟\nيُرجى التثبيت عبر تطبيق F-Droid بدلًا من ذلك لتجنب مشاكل الأذونات.</string>
     <string name="apk_installation">التثبيت عبر ملف APK</string>
@@ -71,8 +71,8 @@
     <string name="join_the_focus_pack">انضم إلى مجموعة التركيز</string>
     <string name="dont_fix_your_screen_time_alone">لا تواجه مشكلة وقت الشاشة وحدك. انضم إلى مجتمعنا على Discord مع أشخاص يشاركونك التفكير نفسه، يحفّزون بعضهم ويتبادلون استراتيجيات التركيز لتحسين أنفسهم.</string>
     <string name="join_the_discord">انضم إلى Discord</string>
-    <string name="curboxapp">\@curb.me</string>
-    <string name="follow_curbox">تابع Boundary</string>
+    <string name="boundaryapp">\@curb.me</string>
+    <string name="follow_boundary">تابع Boundary</string>
     <string name="label_instagram">Instagram</string>
     <string name="about_the_developer">عن المطوّر</string>
     <string name="view_on_github">عرض على GitHub ↗</string>
@@ -158,7 +158,7 @@
     <string name="search_recursively_for_blocked_keywords_on">ابحث بشكل متكرر عن الكلمات المفتاحية المحجوبة في كل حقل نص على الشاشة</string>
     <string name="block_all_browsers_except_supported_ones">حجب المتصفحات غير المدعومة</string>
     <string name="select_ignored_apps">اختيار التطبيقات المتجاهلة</string>
-    <string name="activity_powered_by">بدعم من CURBOX</string>
+    <string name="activity_powered_by">بدعم من BOUNDARY</string>
     <string name="your_digital_wellbeing">صحتك الرقمية</string>
     <string name="total_today">المجموع اليوم</string>
     <string name="most_used">الأكثر استخدامًا</string>

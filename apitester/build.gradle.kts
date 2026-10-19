@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "neth.iecal.curbox.apitester"
+    namespace = "app.boundary.apitester"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "neth.iecal.curbox.apitester"
+        applicationId = "app.boundary.apitester"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-Curbox (formerly Digipauwse) is a free and open source app blocker and screen time tracker built for digital wellbeing and a real digital detox. As an app blocker it lets you block apps, websites, reels and shorts, then watch your screen time drop and your focus come back.
+Boundary (formerly Digipauwse) is a free and open source app blocker and screen time tracker built for digital wellbeing and a real digital detox. As an app blocker it lets you block apps, websites, reels and shorts, then watch your screen time drop and your focus come back.
 
 <b>Block apps and websites</b>
 
@@ -6,12 +6,12 @@ Curbox (formerly Digipauwse) is a free and open source app blocker and screen ti
 • <b>URL Path Blocking</b>: block just one part of a site, like m.youtube.com/shorts, while the rest of YouTube still works
 • <b>Short Form Content Blocker</b>: shut off Instagram Reels and YouTube Shorts so the feed stops pulling you back
 • <b>Instagram DM Exception</b>: choose to allow Reels opened from your DM inbox
-• <b>Tamper Protection</b>: make it difficult to uninstall Curbox or turn off its blocking service
+• <b>Tamper Protection</b>: make it difficult to uninstall Boundary or turn off its blocking service
 • <b>Settings Change Delay</b>: make weaker rule changes wait before they take effect, giving you time to reconsider
 
 <b>Hide only the distracting parts</b>
 
-Granular UI Hiding lets you remove the trap inside an app without losing the app. Curbox lays a clean overlay over the exact area you pick, so everything else keeps working. For example, hide the YouTube home feed but keep search, blank out the Instagram explore tab, or the entire home feed while allowing posts from friends. You stay in control of what you see.
+Granular UI Hiding lets you remove the trap inside an app without losing the app. Boundary lays a clean overlay over the exact area you pick, so everything else keeps working. For example, hide the YouTube home feed but keep search, blank out the Instagram explore tab, or the entire home feed while allowing posts from friends. You stay in control of what you see.
 
 
 <b>Stay focused</b>
@@ -50,12 +50,12 @@ When you use all the time available in a schedule, you decide what it takes to g
 
 <b>Keep your setup</b>
 
-Back up and restore your Curbox data so you can keep your setup when you need it again.
+Back up and restore your Boundary data so you can keep your setup when you need it again.
 
 
 <b>Built for developers</b>
 
-The <b>Curbox API</b> lets approved apps start Focus Mode, change Curbox settings, and read usage statistics. You stay in control of which apps receive access.
+The <b>Boundary API</b> lets approved apps start Focus Mode, change Boundary settings, and read usage statistics. You stay in control of which apps receive access.
 
 
-Curbox is the app blocker for anyone who wants to block distracting apps and websites, cut screen time, and take back their focus. Free, open source, no ads.
+Boundary is the app blocker for anyone who wants to block distracting apps and websites, cut screen time, and take back their focus. Free, open source, no ads.

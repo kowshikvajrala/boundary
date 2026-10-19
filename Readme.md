@@ -1,6 +1,6 @@
 <div align="center">
   <img src="fastlane/metadata/android/en-US/images/icon.png" style="width: 30%;" />
-   <h2>Curbox</h2>
+   <h2>Boundary</h2>
    
    [![GitHub contributors](https://img.shields.io/github/contributors/nethical6/curbox)](https://github.com/nethical6/curbox/graphs/contributors)
    [![Discord Server](https://img.shields.io/badge/Discord%20Server-white?style=flat&logo=discord)](https://discord.com/invite/Vs9mwUtuCN)
@@ -8,13 +8,13 @@
 
 </div>
 
-Curbox (formerly Digipauwse) is a powerful open source utility for Android built to help you reclaim your time and master your digital habits. It provides a suite of tools designed to break the cycle of screen addiction through granular control and deep insights.
+Boundary is a fork of [Curbox](https://github.com/curbox-app/curbox-android) by Nethical, released under the same GPL 3.0 license. It is a powerful open source utility for Android built to help you reclaim your time and master your digital habits. It provides a suite of tools designed to break the cycle of screen addiction through granular control and deep insights.
 
 <div align="center">
 <table>
 	<tr>
-		<td><a href="https://trendshift.io/repositories/14634?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-14634" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/14634" alt="curbox-app%2Fcurbox-android | Trendshift" width="250" height="55"/></a></td>
-		<td><a href="https://trendshift.io/repositories/14634?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-14634" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/14634/daily?language=Kotlin" alt="curbox-app%2Fcurbox-android | Trendshift" width="250" height="55"/></a></td>
+		<td><a href="https://trendshift.io/repositories/14634?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-14634" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/14634" alt="curbox-app%2Fboundary-android | Trendshift" width="250" height="55"/></a></td>
+		<td><a href="https://trendshift.io/repositories/14634?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-14634" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/14634/daily?language=Kotlin" alt="curbox-app%2Fboundary-android | Trendshift" width="250" height="55"/></a></td>
 	</tr>
 </table>
 </div>
@@ -33,9 +33,9 @@ Click on any image to enlarge it.
 </table>
 </div>
 
-### Why Curbox Stands Out
+### Why Boundary Stands Out
 
-Most screen time tools are closed source. This raises concerns about your private usage data being tracked or sold. Curbox takes a different path.
+Most screen time tools are closed source. This raises concerns about your private usage data being tracked or sold. Boundary takes a different path.
 * Open Source Transparency
 The entire codebase is public. Anyone can verify how the app works. This ensures there are no hidden trackers or malicious behaviors. Open source doesn't mean anyone can see how you use the app. 
 
@@ -75,11 +75,11 @@ Please open an issue if your review is not included, Thank you so much!
 
 ### In-Depth Feature Analysis
 
-Curbox goes beyond simple app timers. It targets the specific triggers that lead to mindless scrolling.
+Boundary goes beyond simple app timers. It targets the specific triggers that lead to mindless scrolling.
 
 #### Blocking & Control
 - **App & Website Blocking:** Block distracting apps and websites completely.
-- **Tamper Protection:** Make it difficult to uninstall curbox and changing configurations.
+- **Tamper Protection:** Make it difficult to uninstall boundary and changing configurations.
 - **Short-Form Content Blocker:** Specifically target Instagram Reels and YouTube Shorts.
 - **Granular UI Hiding:** Block specific parts of an app's UI (e.g., block the entire YouTube home feed while allowing searches or hide instagram feed while allowing posts and messages from friends).
 - **URL Path Blocking:** Block specific sections of a website (e.g., block `m.youtube.com/shorts/*` but allow `m.youtube.com`).
@@ -111,11 +111,11 @@ Define what happens when you try to open an app after its scheduled usage is fin
 
 
 #### For Developers
-- **[Curbox API](CURBOX_API.md):** Let your apps directly interact with curbox and start focus modes, change settings, get usage stats, etc. Requires user permission
+- **[Boundary API](BOUNDARY_API.md):** Let your apps directly interact with boundary and start focus modes, change settings, get usage stats, etc. Requires user permission
 
 ### Contributing
 
-We welcome contributions from the community! If you want to help improve Curbox, please follow these steps:
+We welcome contributions from the community! If you want to help improve Boundary, please follow these steps:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bugfix.
@@ -141,7 +141,7 @@ for a new browser, etc.
 
 ### License
 
-Curbox is licensed under the GPL 3 or later license. You are free to use, modify, and distribute this software in accordance with the license.
+Boundary is licensed under the GPL 3 or later license. You are free to use, modify, and distribute this software in accordance with the license.
 
 ### Contact
 

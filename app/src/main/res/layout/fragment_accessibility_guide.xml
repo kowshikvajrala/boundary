@@ -60,7 +60,7 @@
                 android:gravity="center"
                 android:letterSpacing="0.02"
                 android:lineSpacingMultiplier="1.2"
-                android:text="@string/curbox_needs_accessibility_permissions_to_help"
+                android:text="@string/boundary_needs_accessibility_permissions_to_help"
                 android:textColor="?attr/colorOnSurfaceVariant" />
 
             <com.google.android.material.card.MaterialCardView

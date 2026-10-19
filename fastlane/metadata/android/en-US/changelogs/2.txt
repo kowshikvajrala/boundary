@@ -1,1 +1,1 @@
-• The accessibility service now shows as Boundary in your phone settings, so you can tell it apart from Curbox.
+• The accessibility service now shows as Boundary in your phone settings, so you can tell it apart from Boundary.

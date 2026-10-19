@@ -1,16 +1,16 @@
-Curbox (Digipaws) è un blocco app e monitoraggio del tempo di utilizzo gratuito e open source, pensato per il benessere digitale e un vero detox digitale. Come blocco app ti permette di bloccare app, siti, reels e shorts, così vedi calare il tuo tempo di utilizzo e torni a concentrarti.
+Boundary (Digipaws) è un blocco app e monitoraggio del tempo di utilizzo gratuito e open source, pensato per il benessere digitale e un vero detox digitale. Come blocco app ti permette di bloccare app, siti, reels e shorts, così vedi calare il tuo tempo di utilizzo e torni a concentrarti.
 
 <b>Blocca app e siti</b>
 
 • <b>Blocco app e siti</b>: blocca del tutto qualsiasi app o sito che ti distrae
 • <b>Blocco per percorso URL</b>: blocca solo una parte di un sito, come m.youtube.com/shorts, mentre il resto di YouTube continua a funzionare
 • <b>Blocco dei contenuti brevi</b>: spegni i Reels di Instagram e gli Shorts di YouTube così il feed smette di richiamarti
-• <b>Protezione anti manomissione</b>: rende difficile disinstallare Curbox o cambiare le impostazioni
+• <b>Protezione anti manomissione</b>: rende difficile disinstallare Boundary o cambiare le impostazioni
 • <b>Ritardo delle modifiche alle impostazioni</b>: ritarda le modifiche che indeboliscono le regole, dandoti tempo per ripensarci
 
 <b>Nascondi solo le parti che distraggono</b>
 
-Il nascondimento preciso dell'interfaccia ti fa togliere la trappola dentro un'app senza perdere l'app. Curbox stende uno strato pulito sull'area esatta che scegli, così tutto il resto continua a funzionare. Per esempio, nascondi il feed home di YouTube ma tieni la ricerca, oscura la scheda esplora di Instagram, o l'intero feed home lasciando vedere i post degli amici. Sei tu a decidere cosa vedi.
+Il nascondimento preciso dell'interfaccia ti fa togliere la trappola dentro un'app senza perdere l'app. Boundary stende uno strato pulito sull'area esatta che scegli, così tutto il resto continua a funzionare. Per esempio, nascondi il feed home di YouTube ma tieni la ricerca, oscura la scheda esplora di Instagram, o l'intero feed home lasciando vedere i post degli amici. Sei tu a decidere cosa vedi.
 
 
 <b>Resta concentrato</b>
@@ -49,7 +49,7 @@ Quando provi ad aprire qualcosa fuori dal suo orario, decidi tu cosa serve per r
 
 <b>Per gli sviluppatori</b>
 
-L'<b>API di Curbox</b> permette alle app autorizzate di avviare la Modalità Focus, cambiare le impostazioni di Curbox e leggere le statistiche d'uso. Sei tu a decidere quali app ricevono l'accesso.
+L'<b>API di Boundary</b> permette alle app autorizzate di avviare la Modalità Focus, cambiare le impostazioni di Boundary e leggere le statistiche d'uso. Sei tu a decidere quali app ricevono l'accesso.
 
 
-Curbox è il blocco app per chi vuole bloccare app e siti che distraggono, ridurre il tempo di utilizzo e riprendersi la concentrazione. Gratis, open source, senza pubblicità.
+Boundary è il blocco app per chi vuole bloccare app e siti che distraggono, ridurre il tempo di utilizzo e riprendersi la concentrazione. Gratis, open source, senza pubblicità.

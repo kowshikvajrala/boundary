@@ -25,7 +25,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Curbox"
+rootProject.name = "Boundary"
 include(":app")
 include(":apitester")
  

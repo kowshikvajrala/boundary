@@ -38,7 +38,7 @@
     <string name="focus_completion_rate">Hoàn thành</string>
     <string name="focus_top_tags">Thẻ hàng đầu</string>
     <string name="quick_setup_guide">Hướng dẫn thiết lập nhanh</string>
-    <string name="curbox_needs_accessibility_permissions_to_help">Boundary cần có quyền Trợ năng để giúp bạn theo dõi thời gian sử dụng thiết bị của mình. Quá trình thiết lập khác nhau tùy theo cách bạn cài đặt ứng dụng.</string>
+    <string name="boundary_needs_accessibility_permissions_to_help">Boundary cần có quyền Trợ năng để giúp bạn theo dõi thời gian sử dụng thiết bị của mình. Quá trình thiết lập khác nhau tùy theo cách bạn cài đặt ứng dụng.</string>
     <string name="fdroid_installation">Cài đặt F-Droid</string>
     <string name="installed_via_fdroid_appnyoure_all_set">✅ Đã cài đặt qua ứng dụng F-Droid?\nBạn đã hoàn tất! Chỉ cần làm theo thiết lập trợ năng ở bước tiếp theo.\n\n⚠️ Bạn đã tải xuống từ trang web F-Droid?\nHãy cài đặt thông qua ứng dụng F-Droid để tránh các vấn đề về quyền.</string>
     <string name="apk_installation">Cài đặt APK</string>
@@ -78,14 +78,14 @@
     <string name="join_the_focus_pack">Tham gia gói tập trung</string>
     <string name="dont_fix_your_screen_time_alone">Đừng cố định thời gian sử dụng thiết bị của bạn một mình. Tham gia Discord của chúng tôi với những người cùng chí hướng, giúp nhau có trách nhiệm và chia sẻ các chiến lược tập trung để cải thiện bản thân.</string>
     <string name="join_the_discord">Tham gia vào sự bất hòa</string>
-    <string name="curboxapp">\@curb.me</string>
-    <string name="follow_curbox">Theo dõi Boundary</string>
+    <string name="boundaryapp">\@curb.me</string>
+    <string name="follow_boundary">Theo dõi Boundary</string>
     <string name="label_instagram">Instagram</string>
     <string name="label_github">GitHub</string>
-    <string name="curbox_github_repo">lề đường-android</string>
-    <string name="curbox_also_on">Boundary cũng bật</string>
+    <string name="boundary_github_repo">lề đường-android</string>
+    <string name="boundary_also_on">Boundary cũng bật</string>
     <string name="label_browser_extension">Tiện ích mở rộng trình duyệt</string>
-    <string name="curbox_extension_repo">phần mở rộng lề đường</string>
+    <string name="boundary_extension_repo">phần mở rộng lề đường</string>
     <string name="about_the_developer">Giới thiệu về nhà phát triển</string>
     <string name="view_on_github">Xem trên GitHub ↗</string>
     <string name="donate_title">Quyên tặng</string>
@@ -200,7 +200,7 @@
     <string name="search_recursively_for_blocked_keywords_on">Tìm kiếm đệ quy các từ khóa bị chặn trên mọi trường văn bản trên màn hình</string>
     <string name="block_all_browsers_except_supported_ones">Chặn trình duyệt không được hỗ trợ</string>
     <string name="select_ignored_apps">Chọn ứng dụng bị bỏ qua</string>
-    <string name="activity_powered_by">ĐƯỢC CUNG CẤP BỞI CURBOX</string>
+    <string name="activity_powered_by">ĐƯỢC CUNG CẤP BỞI BOUNDARY</string>
     <string name="your_digital_wellbeing">Sức khỏe kỹ thuật số của bạn</string>
     <string name="total_today">TỔNG HÔM NAY</string>
     <string name="most_used">ĐƯỢC SỬ DỤNG NHIỀU NHẤT</string>

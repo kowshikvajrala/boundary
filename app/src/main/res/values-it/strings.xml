@@ -32,7 +32,7 @@
     <string name="focus_completion_rate">Completate</string>
     <string name="focus_top_tags">Tag principali</string>
     <string name="quick_setup_guide">Guida rapida alla configurazione</string>
-    <string name="curbox_needs_accessibility_permissions_to_help">
+    <string name="boundary_needs_accessibility_permissions_to_help">
         Boundary necessita dei permessi di accessibilità per aiutarti a monitorare il tempo trascorso sullo schermo. Il processo di configurazione varia in base a come hai installato l\'app.
     </string>
     <string name="fdroid_installation">Installazione F-Droid</string>
@@ -88,7 +88,7 @@
     <string name="reduce_visual_stimulation">Riduci la stimolazione visiva</string>
     <string name="fuel_the_developer">Offri un caffè allo sviluppatore ☕</string>
     <string name="hello_this_is_nethical_the_creator">
-        Ciao, sono Nethical, il creatore di Curbox. Ho 17 anni e frequento il liceo, con una grande passione per la tecnologia e i computer. Qualche anno fa non riuscivo a trovare una soluzione gratuita per bloccare le app che soddisfacesse davvero le mie esigenze, quindi ho deciso di crearne una io stesso. Se trovi Curbox utile, considera anche una piccola donazione per supportarne lo sviluppo continuo. Grazie!
+        Ciao, sono Nethical, il creatore di Boundary. Ho 17 anni e frequento il liceo, con una grande passione per la tecnologia e i computer. Qualche anno fa non riuscivo a trovare una soluzione gratuita per bloccare le app che soddisfacesse davvero le mie esigenze, quindi ho deciso di crearne una io stesso. Se trovi Boundary utile, considera anche una piccola donazione per supportarne lo sviluppo continuo. Grazie!
     </string>
     <string name="support_the_project">Supporta il progetto ↗</string>
     <string name="join_the_focus_pack">Unisciti al Focus Pack 🐾</string>

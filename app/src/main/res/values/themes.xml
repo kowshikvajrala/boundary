@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.Curbox" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Boundary" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/md_theme_primary</item>
         <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
@@ -52,14 +52,14 @@
         <item name="fontFamily">@font/inter</item>
     </style>
 
-    <style name="Theme.Curbox" parent="Base.Theme.Curbox" />
+    <style name="Theme.Boundary" parent="Base.Theme.Boundary" />
 
-    <style name="Theme.Curbox.Onboarding" parent="Theme.Curbox">
+    <style name="Theme.Boundary.Onboarding" parent="Theme.Boundary">
         <item name="android:fontFamily">@font/coolvetica</item>
         <item name="fontFamily">@font/coolvetica</item>
     </style>
 
-    <style name="Theme.Curbox.TransparentDialog" parent="Theme.Material3.DayNight">
+    <style name="Theme.Boundary.TransparentDialog" parent="Theme.Material3.DayNight">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -68,7 +68,7 @@
         <item name="fontFamily">@font/inter</item>
     </style>
 
-    <style name="Theme.Curbox.WarningFullScreen" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="Theme.Boundary.WarningFullScreen" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/warning_accent</item>
         <item name="android:windowBackground">@color/warning_background</item>
         <item name="android:statusBarColor">@color/warning_background</item>

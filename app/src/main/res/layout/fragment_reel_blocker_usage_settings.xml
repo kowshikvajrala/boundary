@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<neth.iecal.curbox.ui.views.FocusSafeNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<app.boundary.blocker.ui.views.FocusSafeNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -18,4 +18,4 @@
             android:nestedScrollingEnabled="false" />
 
     </LinearLayout>
-</neth.iecal.curbox.ui.views.FocusSafeNestedScrollView>
+</app.boundary.blocker.ui.views.FocusSafeNestedScrollView>

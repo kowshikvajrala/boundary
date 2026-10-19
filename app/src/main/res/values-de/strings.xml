@@ -45,7 +45,7 @@
         <item quantity="other">• %1$s (%2$d Sitzungen)</item>
     </plurals>
     <string name="quick_setup_guide">Schnelleinrichtung</string>
-    <string name="curbox_needs_accessibility_permissions_to_help">Boundary benötigt Berechtigung für Bedieungshilfen um dir beim verfolgen deiner Bilschirmzeit zu helfen. Der Einrichtungsprozess hängt davon ab, wie du die App installiert hast.</string>
+    <string name="boundary_needs_accessibility_permissions_to_help">Boundary benötigt Berechtigung für Bedieungshilfen um dir beim verfolgen deiner Bilschirmzeit zu helfen. Der Einrichtungsprozess hängt davon ab, wie du die App installiert hast.</string>
     <string name="fdroid_installation">F-Droid Installation</string>
     <string name="installed_via_fdroid_appnyoure_all_set">✅ Über F-Droid installiert?\nAlles klar! Folge einfach den Anweisungen im nächsten Schritt.\n\n⚠️ Von der F-Droid Website installiert?\nBitte intalliere Boundary durch die F-Droid App um Berechtigungsprobleme zu vermeiden.</string>
     <string name="apk_installation">APK Installation</string>
@@ -86,14 +86,14 @@
     <string name="join_the_focus_pack">Werde Teil der Fokus Gemeinschaft</string>
     <string name="dont_fix_your_screen_time_alone">Repariere deine Bilschirmzeit nicht alleine. Tritt unserem Discord bei um Gleichgesinnte zu treffen, die sich gegenseitig unterstützen und Strategien teilen, um sich selbst zu verbessern.</string>
     <string name="join_the_discord">Tritt dem Discord bei</string>
-    <string name="curboxapp">\@curb.me</string>
-    <string name="follow_curbox">Folge Boundary</string>
+    <string name="boundaryapp">\@curb.me</string>
+    <string name="follow_boundary">Folge Boundary</string>
     <string name="label_instagram">Instagram</string>
     <string name="label_github">GitHub</string>
-    <string name="curbox_github_repo">curbox-android</string>
-    <string name="curbox_also_on">Boundary auch hier</string>
+    <string name="boundary_github_repo">boundary-android</string>
+    <string name="boundary_also_on">Boundary auch hier</string>
     <string name="label_browser_extension">Browsererweiterung</string>
-    <string name="curbox_extension_repo">curbox-extension</string>
+    <string name="boundary_extension_repo">boundary-extension</string>
     <string name="about_the_developer">Über den Entwickler</string>
     <string name="view_on_github">Auf GitHub ansehen ↗</string>
     <string name="donate_title">Spenden</string>
@@ -207,7 +207,7 @@
     <string name="search_recursively_for_blocked_keywords_on">Rekursiv nach gesperrten Stichwörtern in allen Texten auf dem Bildschirm suchen</string>
     <string name="block_all_browsers_except_supported_ones">Nicht unterstützte Browser blockieren</string>
     <string name="select_ignored_apps">Ignorierte Apps auswählen</string>
-    <string name="activity_powered_by">BETRIEBEN VON CURBOX</string>
+    <string name="activity_powered_by">BETRIEBEN VON BOUNDARY</string>
     <string name="your_digital_wellbeing">Dein digitales Wohlbefinden</string>
     <string name="total_today">SUMME HEUTE</string>
     <string name="most_used">AM MEISTEN VERWENDET</string>

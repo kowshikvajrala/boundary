@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a reproducible bug or unexpected behavior in Curbox.
+description: Report a reproducible bug or unexpected behavior in Boundary.
 title: "[Bug]: "
 labels: ["bug"]
 assignees: []
@@ -38,8 +38,8 @@ body:
     id: environment
     attributes:
       label: Environment
-      description: Device model, OS version, Curbox version.
-      placeholder: e.g., OnePlus 9, Android 14, Curbox 1.2.1
+      description: Device model, OS version, Boundary version.
+      placeholder: e.g., OnePlus 9, Android 14, Boundary 1.2.1
 
   - type: textarea
     id: additional
