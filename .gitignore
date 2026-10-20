@@ -16,6 +16,6 @@ build/
 local.properties
 /test-code*
 .idea/
-agents.md
-AGENT.mdkeystore.properties
+AGENT.md
+keystore.properties
 *.jks
