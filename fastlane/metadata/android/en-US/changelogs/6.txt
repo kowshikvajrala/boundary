@@ -1,0 +1,1 @@
+• Boundary's accessibility service now declares itself as an accessibility tool. Some banking apps that refused to open while Boundary was on may now work. Apps that also check where Boundary was installed from may still refuse.
