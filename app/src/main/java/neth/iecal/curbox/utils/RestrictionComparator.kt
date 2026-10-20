@@ -57,20 +57,12 @@ object RestrictionComparator {
                     !current.isAppUsageTrackingEnabled || proposed.isAppUsageTrackingEnabled
                 GatedSettingsField.WEBSITE_USAGE_TRACKING ->
                     !current.isWebsiteUsageTrackingEnabled || proposed.isWebsiteUsageTrackingEnabled
-                GatedSettingsField.BANKING_PAUSE ->
-                    bankingPause(current.bankingPauseConfig, proposed.bankingPauseConfig)
                 GatedSettingsField.CHANGE_DELAY ->
                     changeDelay(current.settingsChangeDelayConfig2, proposed.settingsChangeDelayConfig2)
             }
         } catch (e: Exception) {
             false
         }
-    }
-
-    /** Every paused app is a hole in blocking, so turning it on or adding apps must wait. */
-    fun bankingPause(old: neth.iecal.curbox.data.models.BankingPauseConfig, new: neth.iecal.curbox.data.models.BankingPauseConfig): Boolean {
-        if (!new.isEnabled) return true
-        return old.isEnabled && old.packages.containsAll(new.packages)
     }
 
     fun changeDelay(old: SettingsChangeDelayConfig, new: SettingsChangeDelayConfig): Boolean {

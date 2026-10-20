@@ -385,10 +385,6 @@ class DataStoreManager(private val context: Context) {
         updateGated(GatedSettingsField.WEBSITE_USAGE_TRACKING) { isEnabled }
     }
 
-    suspend fun updateBankingPauseConfig(transform: (neth.iecal.curbox.data.models.BankingPauseConfig) -> neth.iecal.curbox.data.models.BankingPauseConfig) {
-        updateGated(GatedSettingsField.BANKING_PAUSE) { transform(it.bankingPauseConfig) }
-    }
-
     suspend fun updateMindfulMessageConfig(config: neth.iecal.curbox.data.models.MindfulMessageConfig) {
         updateGated(GatedSettingsField.MINDFUL_MESSAGES) { config }
     }
@@ -699,9 +695,6 @@ class DataStoreManager(private val context: Context) {
                 GatedSettingsField.WEBSITE_USAGE_TRACKING -> settings.copy(
                     isWebsiteUsageTrackingEnabled = gson.fromJson(valueJson, Boolean::class.java)
                 )
-                GatedSettingsField.BANKING_PAUSE -> settings.copy(
-                    bankingPauseConfig = gson.fromJson(valueJson, neth.iecal.curbox.data.models.BankingPauseConfig::class.java)
-                )
                 GatedSettingsField.CHANGE_DELAY -> {
                     val prefs = gson.fromJson(valueJson, SettingsChangeDelayPrefs::class.java)
                     settings.copy(settingsChangeDelayConfig2 = settings.settingsChangeDelayConfig2.copy(
@@ -727,7 +720,6 @@ class DataStoreManager(private val context: Context) {
                 GatedSettingsField.UI_HIDER -> settings.uiHiderConfig
                 GatedSettingsField.APP_USAGE_TRACKING -> settings.isAppUsageTrackingEnabled
                 GatedSettingsField.WEBSITE_USAGE_TRACKING -> settings.isWebsiteUsageTrackingEnabled
-                GatedSettingsField.BANKING_PAUSE -> settings.bankingPauseConfig
                 GatedSettingsField.CHANGE_DELAY -> SettingsChangeDelayPrefs(
                     isEnabled = settings.settingsChangeDelayConfig2.isEnabled,
                     delayMinutes = settings.settingsChangeDelayConfig2.delayMinutes.coerceIn(

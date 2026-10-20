@@ -1,3 +1,0 @@
-• New Banking pause, in Reducers. Pick banking apps that refuse to open while Boundary is on. Boundary turns itself off while one is open and back on when you leave.
-• Add a home screen shortcut for a banking app if it still complains. The shortcut turns Boundary off before the bank app starts.
-• To let Boundary turn itself back on, run the adb command shown on the Banking pause screen once. Without it you get a notification to turn it back on yourself.

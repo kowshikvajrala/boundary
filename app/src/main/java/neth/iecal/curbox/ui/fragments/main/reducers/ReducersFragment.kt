@@ -137,13 +137,6 @@ class ReducersFragment : Fragment() {
             startActivity(intent)
         }
 
-        view.findViewById<MaterialCardView>(R.id.card_banking_pause).setOnClickListener {
-            val intent = Intent(requireContext(), FragmentActivity::class.java).apply {
-                putExtra("fragment", neth.iecal.curbox.ui.fragments.main.reducers.advanced.BankingPauseFragment.FRAGMENT_ID)
-            }
-            startActivity(intent)
-        }
-
         val reducerLogsHeader = view.findViewById<View>(R.id.reducer_logs_header)
         val reducerLogsContent = view.findViewById<View>(R.id.reducer_logs_content)
         val reducerLogsArrow = view.findViewById<ImageView>(R.id.reducer_logs_arrow)

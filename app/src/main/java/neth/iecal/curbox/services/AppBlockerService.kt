@@ -58,7 +58,6 @@ class AppBlockerService : BaseBlockingService() {
     private val mindfulMessage = MindfulMessage()
     private val websiteUsageTracker = WebsiteUsageTracker()
     private val appUsageTracker = AppUsageTracker()
-    private val bankingPauseTrigger = BankingPauseTrigger()
 
     private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
@@ -90,7 +89,6 @@ class AppBlockerService : BaseBlockingService() {
         super.onAccessibilityEvent(event)
 
         try {
-            bankingPauseTrigger.onEvent(event)
             if (BuildConfig.SUPPORTS_ANTI_UNINSTALL) {
                 antiUninstallBlocker.doAntiUninstallCheck(event)
             }
@@ -176,7 +174,6 @@ class AppBlockerService : BaseBlockingService() {
         reelBlocker.setupBlocker(this)
         reelScriptRunner.setup(this)
         keywordBlocker.setupBlocker(this)
-        bankingPauseTrigger.setup(this)
         grayScaleFilter.setup(this)
         if (BuildConfig.SUPPORTS_UI_HIDER) {
             uiHider.setupBlocker(this)
@@ -199,7 +196,6 @@ class AppBlockerService : BaseBlockingService() {
         appBlocker.setupReceivers()
         reelBlocker.setupReceivers()
         keywordBlocker.setupReceivers()
-        bankingPauseTrigger.setupReceivers()
         grayScaleFilter.setupReceivers()
         if (BuildConfig.SUPPORTS_UI_HIDER) {
             uiHider.setupReceivers()
@@ -239,7 +235,6 @@ class AppBlockerService : BaseBlockingService() {
         cleanupFeature("reel blocker") { reelBlocker.removeReceivers() }
         cleanupFeature("app blocker") { appBlocker.onDestroy() }
         cleanupFeature("keyword blocker") { keywordBlocker.removeReceivers() }
-        cleanupFeature("banking pause") { bankingPauseTrigger.onDestroy() }
         cleanupFeature("grayscale") { grayScaleFilter.unregisterReceivers() }
         if (BuildConfig.SUPPORTS_UI_HIDER) {
             cleanupFeature("UI hider") { uiHider.removeReceivers() }

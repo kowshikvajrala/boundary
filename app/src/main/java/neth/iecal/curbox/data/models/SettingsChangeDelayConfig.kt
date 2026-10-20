@@ -16,7 +16,6 @@ enum class GatedSettingsField {
     UI_HIDER,
     APP_USAGE_TRACKING,
     WEBSITE_USAGE_TRACKING,
-    BANKING_PAUSE,
     CHANGE_DELAY
 }
 

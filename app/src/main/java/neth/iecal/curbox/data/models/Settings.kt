@@ -26,6 +26,5 @@ data class Settings(
     val nextWebsiteRecheckTime: Long = 0L,
     val serviceProtectionConfig: ServiceProtectionConfig = ServiceProtectionConfig(),
     val antiUninstallConfig2: AntiUninstallConfig = AntiUninstallConfig(),
-    val bankingPauseConfig: BankingPauseConfig = BankingPauseConfig(),
     val settingsChangeDelayConfig2: SettingsChangeDelayConfig = SettingsChangeDelayConfig()
 )

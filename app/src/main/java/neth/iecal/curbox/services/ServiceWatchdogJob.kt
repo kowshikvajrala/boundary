@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 import neth.iecal.curbox.R
 import neth.iecal.curbox.ui.activity.FragmentActivity
 import neth.iecal.curbox.ui.fragments.main.reducers.advanced.ServiceProtectionFragment
-import neth.iecal.curbox.utils.BankingPause
 import neth.iecal.curbox.utils.DataStoreManager
 import neth.iecal.curbox.utils.ServiceProtectionManager
 import java.util.concurrent.TimeUnit
@@ -41,8 +40,7 @@ class ServiceWatchdogJob : JobService() {
         scope.launch {
             try {
                 val config = DataStoreManager(applicationContext).settings.first().serviceProtectionConfig
-                // The service is off on purpose while a banking app is open.
-                if (config.isEnabled && !BankingPause.isPaused(applicationContext)) {
+                if (config.isEnabled) {
                     if (config.selfHealWithShizuku && ServiceProtectionManager.canSelfHeal()) {
                         ServiceProtectionManager.healNow(applicationContext)
                     } else if (!ServiceProtectionManager.isAppBlockerEnabled(applicationContext)) {
