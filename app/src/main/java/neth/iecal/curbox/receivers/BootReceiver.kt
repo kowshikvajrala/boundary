@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import neth.iecal.curbox.services.ServiceWatchdogJob
+import neth.iecal.curbox.utils.BankingPause
 import neth.iecal.curbox.utils.ServiceProtectionManager
 
 /**
@@ -15,6 +16,11 @@ import neth.iecal.curbox.utils.ServiceProtectionManager
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         try {
+            // A reboot or update ends any banking pause, so blocking comes back on its own.
+            if (BankingPause.isPaused(context)) {
+                BankingPause.clearPaused(context)
+                BankingPause.setServiceEnabled(context, true)
+            }
             ServiceWatchdogJob.schedule(context)
             ServiceProtectionManager.healNow(context)
         } catch (e: Exception) {

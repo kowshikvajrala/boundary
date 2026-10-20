@@ -34,6 +34,25 @@
         android:theme="@style/Theme.Curbox"
         tools:targetApi="34">
 
+        <!-- Exported so home screen shortcuts can open it. It only acts on apps already in the
+             banking pause list. -->
+        <activity
+            android:name=".ui.activity.BankingLaunchActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Curbox.TransparentDialog" />
+
+        <service
+            android:name=".services.BankingPauseService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Turns app blocking back on when the user leaves a banking app" />
+        </service>
+
         <activity
             android:name=".ui.activity.WarningActivity"
             android:excludeFromRecents="true"

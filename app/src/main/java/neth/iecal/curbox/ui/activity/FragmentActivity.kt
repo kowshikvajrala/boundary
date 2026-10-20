@@ -107,6 +107,7 @@ class FragmentActivity : AppCompatActivity() {
             AntiUninstallFragment.FRAGMENT_ID,
             ServiceProtectionFragment.FRAGMENT_ID,
             SettingsChangeDelayFragment.FRAGMENT_ID,
+            neth.iecal.curbox.ui.fragments.main.reducers.advanced.BankingPauseFragment.FRAGMENT_ID,
             CreateKeywordGroupFragment.FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.blockertools.keywordBlocker.BlocklistsFragment.FRAGMENT_ID -> {
                 // Hide bottom nav for these standalone fragments
@@ -134,6 +135,7 @@ class FragmentActivity : AppCompatActivity() {
                     AntiUninstallFragment.FRAGMENT_ID -> AntiUninstallFragment()
                     ServiceProtectionFragment.FRAGMENT_ID -> ServiceProtectionFragment()
                     SettingsChangeDelayFragment.FRAGMENT_ID -> SettingsChangeDelayFragment()
+                    neth.iecal.curbox.ui.fragments.main.reducers.advanced.BankingPauseFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.advanced.BankingPauseFragment()
                     else -> AccessibilityGuide()
                 }
                 fragment.arguments = intent.extras
