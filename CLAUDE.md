@@ -33,7 +33,11 @@ Boundary is a personal fork of [Curbox](https://github.com/curbox-app/curbox-and
 
 `.github/workflows/release.yml` runs on a `v*` tag push: unit tests, signed `assembleRelease`, then a GitHub release with `boundary-<version>.apk`. The release notes come from `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`.
 
-1. Bump `versionCode` and `versionName` in `app/build.gradle.kts`. **`versionCode` must always go up and is never reused**, even for deleted releases, because Android will not install a lower code over a higher one.
+1. Bump `versionCode` and `versionName` in `app/build.gradle.kts`. **`versionCode` must always go up by 1 and is never reused**, even for deleted releases, because Android will not install a lower code over a higher one. Choose `versionName` by semantic versioning, based on what the release contains (the owner asked for this from 1.0.10 on):
+   - **Patch** (`1.1.0` → `1.1.1`): only fixes; nothing new for the owner to learn.
+   - **Minor** (`1.1.3` → `1.2.0`): adds a feature or visibly changes how one works, while existing setups keep working. Reset patch to 0.
+   - **Major** (`1.4.2` → `2.0.0`): breaks or reshapes existing use, for example the owner must redo setup (re enable accessibility, re add widgets) or lose data. Reset minor and patch to 0, and confirm with the owner first.
+   - A release with both fixes and a feature is a minor bump. When unsure, say which bump you chose and why.
 2. Write `changelogs/<versionCode>.txt` in plain, user facing language.
 3. Commit, then `git tag -a vX.Y.Z -m "Boundary X.Y.Z"`, push `main`, push the tag.
 4. Poll with `gh api repos/kowshikvajrala/boundary/actions/runs/<id> --jq '.status, .conclusion'`. `gh run watch` often dies on GitHub API 502 errors.
@@ -90,3 +94,5 @@ Behavior notes:
 | 1.0.8 | 9 | Eye breaks |
 | 1.0.9 | 10 | Live countdown on the Eye breaks card |
 | 1.0.10 | 11 | Unlock time counts only while the apps are in use |
+
+Versions up to 1.0.10 only bumped the patch number, even for features. From the next release, follow semantic versioning (see Releasing); the next feature release is 1.1.0 with versionCode 12.
