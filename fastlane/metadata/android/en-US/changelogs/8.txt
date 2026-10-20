@@ -1,1 +1,2 @@
 • Removed Banking pause.
+• Boundary's accessibility service no longer declares itself as an accessibility tool, since it did not help banking apps open.
