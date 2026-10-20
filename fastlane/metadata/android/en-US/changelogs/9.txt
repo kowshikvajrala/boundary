@@ -1,0 +1,2 @@
+• New Eye breaks, in Reducers. After every 20 minutes of screen time, a small reminder asks you to look at something far away for 20 seconds. Tap the card to choose 20, 30, 45 or 60 minutes.
+• Turning the screen off for 20 seconds or more counts as a break.

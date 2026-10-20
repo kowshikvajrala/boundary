@@ -58,6 +58,7 @@ class AppBlockerService : BaseBlockingService() {
     private val mindfulMessage = MindfulMessage()
     private val websiteUsageTracker = WebsiteUsageTracker()
     private val appUsageTracker = AppUsageTracker()
+    private val eyeBreakReminder = neth.iecal.curbox.anti_stimulants.EyeBreakReminder()
 
     private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
@@ -186,6 +187,7 @@ class AppBlockerService : BaseBlockingService() {
         reelUsageTracker.setup(this)
         reelsCountTracker.setup(this, reelsOverlayManager, reelUsageTracker::onReelCounted)
         mindfulMessage.setup(this)
+        eyeBreakReminder.setup(this)
         websiteUsageTracker.setup(this) { observation ->
             websiteObservationChannel.trySend(observation)
         }
@@ -244,6 +246,7 @@ class AppBlockerService : BaseBlockingService() {
             cleanupFeature("anti uninstall") { antiUninstallBlocker.onDestroy() }
         }
         cleanupFeature("mindful messages") { mindfulMessage.onDestroy() }
+        cleanupFeature("eye breaks") { eyeBreakReminder.onDestroy() }
         cleanupFeature("reel counter") { reelsCountTracker.onDestroy() }
         cleanupFeature("reel usage") { reelUsageTracker.onDestroy() }
         cleanupFeature("website usage") { websiteUsageTracker.onDestroy() }

@@ -15,8 +15,8 @@ import android.widget.TextView
 import neth.iecal.curbox.R
 
 /**
- * A small pill at the top of the screen, shown instead of the full warning screen when a
- * group can never be unlocked. It ignores touches and hides itself after a moment.
+ * A small pill at the top of the screen. Shown instead of the full warning screen when a group
+ * can never be unlocked, and for eye break reminders. It ignores touches and hides itself.
  */
 class BlockedPillOverlay(private val service: AccessibilityService) {
 
@@ -30,13 +30,16 @@ class BlockedPillOverlay(private val service: AccessibilityService) {
     private val hideRunnable = Runnable { hide() }
     private var pillView: View? = null
 
-    /** Safe to call from any thread. [packageName] supplies the icon; null hides it. */
-    fun show(packageName: String?, message: String) {
+    /**
+     * Safe to call from any thread. [packageName] supplies the icon unless [iconRes] is given;
+     * with neither, the icon is hidden.
+     */
+    fun show(packageName: String?, message: String, visibleMs: Long = VISIBLE_MS, iconRes: Int? = null) {
         handler.post {
             try {
                 removeNow()
                 val view = LayoutInflater.from(service).inflate(R.layout.overlay_blocked_pill, null)
-                val icon = packageName?.let {
+                val icon = iconRes?.let { service.getDrawable(it) } ?: packageName?.let {
                     runCatching { service.packageManager.getApplicationIcon(it) }.getOrNull()
                 }
                 view.findViewById<ImageView>(R.id.pill_icon).apply {
@@ -63,11 +66,22 @@ class BlockedPillOverlay(private val service: AccessibilityService) {
                 view.alpha = 0f
                 view.translationY = -16 * density
                 view.animate().alpha(1f).translationY(0f).setDuration(ANIMATION_MS).start()
-                handler.postDelayed(hideRunnable, VISIBLE_MS)
+                handler.postDelayed(hideRunnable, visibleMs)
             } catch (e: Exception) {
                 Log.e("BlockedPillOverlay", "Could not show blocked pill", e)
             }
         }
+    }
+
+    /** Changes the text of the pill on screen, if one is showing. */
+    fun updateMessage(message: String) {
+        handler.post {
+            pillView?.findViewById<TextView>(R.id.pill_text)?.text = message
+        }
+    }
+
+    fun hideNow() {
+        handler.post { removeNow() }
     }
 
     fun release() {

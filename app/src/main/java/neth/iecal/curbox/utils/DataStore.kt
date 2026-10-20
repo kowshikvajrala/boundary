@@ -393,6 +393,11 @@ class DataStoreManager(private val context: Context) {
         updateGated(GatedSettingsField.UI_HIDER) { transform(it.uiHiderConfig.normalized()) }
     }
 
+    // A gentle reminder, not a restriction, so it is not held by the settings change delay.
+    suspend fun updateEyeBreakConfig(transform: (neth.iecal.curbox.data.models.EyeBreakConfig) -> neth.iecal.curbox.data.models.EyeBreakConfig) {
+        settingsDataStore.updateData { it.copy(eyeBreakConfig = transform(it.eyeBreakConfig)) }
+    }
+
     suspend fun updateReelCounterOverlayConfig(config: neth.iecal.curbox.data.models.ReelCounterOverlayConfig) {
         settingsDataStore.updateData { it.copy(reelCounterOverlayConfig = config) }
     }

@@ -2029,6 +2029,12 @@
     <string name="blocklists_in_use_title">This list is in use</string>
     <string name="blocklists_in_use_message">Remove %1$s from your keyword groups and focus groups first. Then you can delete it.</string>
     <string name="blocklists_menu">Blocklists</string>
+    <string name="eye_break_title">Eye breaks</string>
+    <string name="eye_break_subtitle_on">Every %1$d minutes of screen time, look far away for 20 seconds</string>
+    <string name="eye_break_subtitle_off">Rest your eyes with the 20 20 20 rule</string>
+    <string name="eye_break_interval_title">Remind me every</string>
+    <string name="eye_break_minutes">%1$d minutes</string>
+    <string name="eye_break_message">Look at something far away · %1$ds</string>
     <string name="blocked_pill_fallback">Blocked for now</string>
     <string name="blocklists_add_to_group">Add a blocklist</string>
     <string name="blocklists_pick_title">Pick blocklists</string>

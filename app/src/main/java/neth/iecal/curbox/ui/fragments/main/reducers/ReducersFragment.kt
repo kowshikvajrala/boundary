@@ -7,6 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import neth.iecal.curbox.data.models.EyeBreakConfig
+import neth.iecal.curbox.utils.DataStoreManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import neth.iecal.curbox.BuildConfig
@@ -158,5 +166,51 @@ class ReducersFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupEyeBreakCard(view)
+    }
+
+    private fun setupEyeBreakCard(view: View) {
+        val card = view.findViewById<MaterialCardView>(R.id.card_eye_break)
+        val switch = view.findViewById<MaterialSwitch>(R.id.switch_eye_break)
+        val subtitle = view.findViewById<TextView>(R.id.tv_eye_break_subtitle)
+        val dataStore = DataStoreManager(requireContext())
+        var config = EyeBreakConfig()
+
+        fun save(transform: (EyeBreakConfig) -> EyeBreakConfig) {
+            viewLifecycleOwner.lifecycleScope.launch { dataStore.updateEyeBreakConfig(transform) }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            dataStore.settings.collectLatest { settings ->
+                config = settings.eyeBreakConfig
+                switch.setOnCheckedChangeListener(null)
+                switch.isChecked = config.isEnabled
+                switch.setOnCheckedChangeListener { _, isChecked -> save { it.copy(isEnabled = isChecked) } }
+                subtitle.text = if (config.isEnabled) {
+                    getString(R.string.eye_break_subtitle_on, config.intervalMinutes)
+                } else {
+                    getString(R.string.eye_break_subtitle_off)
+                }
+            }
+        }
+
+        card.setOnClickListener {
+            val options = listOf(20, 30, 45, 60)
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.eye_break_interval_title)
+                .setSingleChoiceItems(
+                    options.map { getString(R.string.eye_break_minutes, it) }.toTypedArray(),
+                    options.indexOf(config.intervalMinutes)
+                ) { dialog, which ->
+                    save { it.copy(isEnabled = true, intervalMinutes = options[which]) }
+                    dialog.dismiss()
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+        }
     }
 }
