@@ -4,6 +4,7 @@ Boundary is a personal fork of [Curbox](https://github.com/curbox-app/curbox-and
 
 - Repo: `kowshikvajrala/boundary` (private). Remote `origin`; Curbox is remote `upstream`.
 - Architecture, invariants and code conventions: @agents.md (Curbox's own guide). Follow it, including the settings change delay checklist for gated fields and the rule that the accessibility service must never crash.
+- **Where agents.md is out of date for this fork:** there are no `full`, `playstore` or `fdroid` flavors, no `src/sync` or `src/fdroid` folders, no debug builds and no cloud sync. Ignore its flavor table, sync notes and `./gradlew ...FullDebug` commands; this file's Releasing section replaces them. Everything about the accessibility service, multiple processes, settings and Room still applies.
 
 ## Owner preferences
 
