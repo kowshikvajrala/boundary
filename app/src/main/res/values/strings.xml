@@ -2035,6 +2035,8 @@
     <string name="eye_break_interval_title">Remind me every</string>
     <string name="eye_break_minutes">%1$d minutes</string>
     <string name="eye_break_message">Look at something far away · %1$ds</string>
+    <string name="eye_break_status_next">Next break in %1$s</string>
+    <string name="eye_break_status_break">Break now. Look far away for %1$ds</string>
     <string name="blocked_pill_fallback">Blocked for now</string>
     <string name="blocklists_add_to_group">Add a blocklist</string>
     <string name="blocklists_pick_title">Pick blocklists</string>

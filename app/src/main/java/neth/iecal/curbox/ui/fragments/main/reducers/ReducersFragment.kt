@@ -8,6 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.IntentFilter
+import android.os.SystemClock
+import androidx.core.content.ContextCompat
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import neth.iecal.curbox.anti_stimulants.EyeBreakReminder
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
@@ -168,17 +177,61 @@ class ReducersFragment : Fragment() {
         return view
     }
 
+    // Eye break card. The schedule lives in the blocker service process and arrives by broadcast.
+    private var eyeBreakConfig = EyeBreakConfig()
+    private var eyeBreakNextAtMs = 0L
+    private var eyeBreakEndsAtMs = 0L
+    private var eyeBreakSubtitle: TextView? = null
+    private var eyeBreakTicker: Job? = null
+
+    private val eyeBreakStatusReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action != EyeBreakReminder.ACTION_STATUS) return
+            eyeBreakNextAtMs = intent.getLongExtra(EyeBreakReminder.EXTRA_NEXT_AT, 0L)
+            eyeBreakEndsAtMs = intent.getLongExtra(EyeBreakReminder.EXTRA_BREAK_ENDS_AT, 0L)
+            renderEyeBreakSubtitle()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupEyeBreakCard(view)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val context = requireContext()
+        ContextCompat.registerReceiver(
+            context,
+            eyeBreakStatusReceiver,
+            IntentFilter(EyeBreakReminder.ACTION_STATUS),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+        context.sendBroadcast(Intent(EyeBreakReminder.ACTION_STATUS_REQUEST).setPackage(context.packageName))
+        eyeBreakTicker = viewLifecycleOwner.lifecycleScope.launch {
+            while (isActive) {
+                renderEyeBreakSubtitle()
+                delay(1_000L)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        eyeBreakTicker?.cancel()
+        runCatching { requireContext().unregisterReceiver(eyeBreakStatusReceiver) }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        eyeBreakSubtitle = null
+    }
+
     private fun setupEyeBreakCard(view: View) {
         val card = view.findViewById<MaterialCardView>(R.id.card_eye_break)
         val switch = view.findViewById<MaterialSwitch>(R.id.switch_eye_break)
-        val subtitle = view.findViewById<TextView>(R.id.tv_eye_break_subtitle)
+        eyeBreakSubtitle = view.findViewById(R.id.tv_eye_break_subtitle)
         val dataStore = DataStoreManager(requireContext())
-        var config = EyeBreakConfig()
 
         fun save(transform: (EyeBreakConfig) -> EyeBreakConfig) {
             viewLifecycleOwner.lifecycleScope.launch { dataStore.updateEyeBreakConfig(transform) }
@@ -186,15 +239,11 @@ class ReducersFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             dataStore.settings.collectLatest { settings ->
-                config = settings.eyeBreakConfig
+                eyeBreakConfig = settings.eyeBreakConfig
                 switch.setOnCheckedChangeListener(null)
-                switch.isChecked = config.isEnabled
+                switch.isChecked = eyeBreakConfig.isEnabled
                 switch.setOnCheckedChangeListener { _, isChecked -> save { it.copy(isEnabled = isChecked) } }
-                subtitle.text = if (config.isEnabled) {
-                    getString(R.string.eye_break_subtitle_on, config.intervalMinutes)
-                } else {
-                    getString(R.string.eye_break_subtitle_off)
-                }
+                renderEyeBreakSubtitle()
             }
         }
 
@@ -204,13 +253,29 @@ class ReducersFragment : Fragment() {
                 .setTitle(R.string.eye_break_interval_title)
                 .setSingleChoiceItems(
                     options.map { getString(R.string.eye_break_minutes, it) }.toTypedArray(),
-                    options.indexOf(config.intervalMinutes)
+                    options.indexOf(eyeBreakConfig.intervalMinutes)
                 ) { dialog, which ->
                     save { it.copy(isEnabled = true, intervalMinutes = options[which]) }
                     dialog.dismiss()
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
+        }
+    }
+
+    private fun renderEyeBreakSubtitle() {
+        val subtitle = eyeBreakSubtitle ?: return
+        val now = SystemClock.elapsedRealtime()
+        subtitle.text = when {
+            !eyeBreakConfig.isEnabled -> getString(R.string.eye_break_subtitle_off)
+            eyeBreakEndsAtMs > now ->
+                getString(R.string.eye_break_status_break, ((eyeBreakEndsAtMs - now + 999) / 1_000L).toInt())
+            eyeBreakNextAtMs > now -> {
+                val totalSeconds = (eyeBreakNextAtMs - now + 999) / 1_000L
+                getString(R.string.eye_break_status_next, "%d:%02d".format(totalSeconds / 60, totalSeconds % 60))
+            }
+            // No schedule heard yet, for example while the blocker service is off.
+            else -> getString(R.string.eye_break_subtitle_on, eyeBreakConfig.intervalMinutes)
         }
     }
 }
