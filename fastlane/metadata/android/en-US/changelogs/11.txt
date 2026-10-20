@@ -1,0 +1,2 @@
+• Unlock time now only counts while you are using the unlocked apps. Leave the app or turn the screen off and the time stops; open the app again and it continues.
+• Time left over is kept for an hour. After that it is dropped and you unlock again as usual.

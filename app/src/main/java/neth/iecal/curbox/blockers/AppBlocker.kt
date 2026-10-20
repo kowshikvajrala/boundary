@@ -54,6 +54,8 @@ class AppBlocker : BaseBlocker() {
         const val INTENT_ACTION_WARNING_SCREEN_VISIBILITY =
             "app.boundary.blocker.appblocker.warning_screen_visibility"
         const val EXTRA_WARNING_SCREEN_VISIBLE = "warning_screen_visible"
+        /** A frozen unlock is dropped if its apps are not opened again within this time. */
+        private const val MAX_PAUSED_UNLOCK_MS = 60 * 60_000L
         private const val TARGET_EVENTS_MASK = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
     }
 
@@ -74,6 +76,25 @@ class AppBlocker : BaseBlocker() {
 
     private val blockedAppsList = ConcurrentHashMap<String, MutableList<AppGroupEntry>>()
     private val groupNames = ConcurrentHashMap<String, String>()
+
+    // Unlocks only count down while their apps are in front. Leaving freezes what is left.
+    private data class PausedUnlock(val remainingMs: Long, val pausedAtMs: Long)
+    private val pausedUnlocks = ConcurrentHashMap<String, PausedUnlock>()
+    private val groupPackagesById = ConcurrentHashMap<String, Set<String>>()
+    private val onEachOpenGroupIds = ConcurrentHashMap.newKeySet<String>()
+    // Windows that can sit over an app without the user leaving it, such as the keyboard.
+    private val passThroughPackages = ConcurrentHashMap.newKeySet<String>()
+
+    private val screenOffReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action != Intent.ACTION_SCREEN_OFF) return
+            handler.post {
+                pauseAllRunningUnlocks()
+                // Re check the app that shows after unlock so its unlock resumes.
+                lastPackage = ""
+            }
+        }
+    }
     // Holds the warning config last shown per group, used for the cooldown intent's default duration.
     private val appBlockerWarningScrnConfgs = ConcurrentHashMap<String, AppBlockerWarningScreenConfig>()
 
@@ -111,6 +132,11 @@ class AppBlocker : BaseBlocker() {
         }
 
         clearFinishedOnEachOpenSessions(packageName)
+        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
+            packageName !in passThroughPackages
+        ) {
+            syncUnlocksWithForegroundApp(packageName)
+        }
 
         val now = System.currentTimeMillis()
 
@@ -222,10 +248,12 @@ class AppBlocker : BaseBlocker() {
             filter,
             ContextCompat.RECEIVER_EXPORTED
         )
+        service.registerReceiver(screenOffReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF))
     }
 
     fun onDestroy() {
         service.unregisterReceiver(refreshReceiver)
+        runCatching { service.unregisterReceiver(screenOffReceiver) }
         notificationManager.release()
         handler.removeCallbacksAndMessages(null)
         activeRunnables.clear()
@@ -240,6 +268,12 @@ class AppBlocker : BaseBlocker() {
         prefs = service.getSharedPreferences("app_blocker_prefs", Context.MODE_PRIVATE)
         usageStats = UsageStatsHelper(service)
         loadPersistedData()
+        passThroughPackages.clear()
+        passThroughPackages.add("com.android.systemui")
+        runCatching {
+            val imm = service.getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+            imm.inputMethodList.forEach { passThroughPackages.add(it.packageName) }
+        }
 
         ignoredApps.add(getCurrentKeyboardPackageName(service)?:"com.google.android.inputmethod.latin")
         ignoredApps.add("com.google.android.apps.wellbeing")
@@ -252,6 +286,8 @@ class AppBlocker : BaseBlocker() {
                 val newBlockedAppsList = ConcurrentHashMap<String, MutableList<AppGroupEntry>>()
                 settings.blockedAppGroups.upgradeLegacyAppGroupConfigs().forEach { group ->
                     groupNames[group.id] = group.name
+                    groupPackagesById[group.id] = group.selectedPackages.map(String::trim).toSet()
+                    if (group.warningScreenConfig.isOnOpenConfig) onEachOpenGroupIds.add(group.id) else onEachOpenGroupIds.remove(group.id)
                     if (!group.isActive) return@forEach
 
                     try {
@@ -314,6 +350,7 @@ class AppBlocker : BaseBlocker() {
             currentTimeMillis + durationMillis
         }
 
+        pausedUnlocks.remove(groupId)
         putCooldownTo(groupId, realTimeEndMillis)
         showNextCooldownNotification()
         setUpForcedRefreshChecker("cooldown:$groupId", realTimeEndMillis, groupId)
@@ -330,6 +367,12 @@ class AppBlocker : BaseBlocker() {
     }
 
     private fun loadPersistedData() {
+        val pausedKeys = prefs.getStringSet("paused_unlock_keys", setOf()) ?: setOf()
+        pausedKeys.forEach { groupId ->
+            val remaining = prefs.getLong("paused_unlock_left_$groupId", 0L)
+            val pausedAt = prefs.getLong("paused_unlock_at_$groupId", 0L)
+            if (remaining > 0L) pausedUnlocks[groupId] = PausedUnlock(remaining, pausedAt)
+        }
         val cooldownKeys = prefs.getStringSet("cooldown_keys", setOf()) ?: setOf()
         cooldownKeys.forEach { groupId ->
             val endTime = prefs.getLong("cooldown_$groupId", 0L)
@@ -346,6 +389,11 @@ class AppBlocker : BaseBlocker() {
             cooldownGroupsList.forEach { (groupId, endTime) ->
                 putLong("cooldown_$groupId", endTime)
             }
+            putStringSet("paused_unlock_keys", pausedUnlocks.keys.toSet())
+            pausedUnlocks.forEach { (groupId, paused) ->
+                putLong("paused_unlock_left_$groupId", paused.remainingMs)
+                putLong("paused_unlock_at_$groupId", paused.pausedAtMs)
+            }
         }
     }
 
@@ -356,13 +404,64 @@ class AppBlocker : BaseBlocker() {
 
     private fun removeCooldownFrom(groupId: String) {
         cooldownGroupsList.remove(groupId)
+        pausedUnlocks.remove(groupId)
         prefs.edit {
             remove("cooldown_$groupId")
             putStringSet("cooldown_keys", cooldownGroupsList.keys.toSet())
         }
     }
 
+    /**
+     * Freezes the unlock of every group whose apps are not in front, and lets a frozen unlock run
+     * again when one of its apps comes back. Unlocks for "each open" groups end on leaving instead.
+     */
+    private fun syncUnlocksWithForegroundApp(packageName: String) {
+        val now = System.currentTimeMillis()
+        var changed = false
+        cooldownGroupsList.forEach { (groupId, endMs) ->
+            if (groupId in onEachOpenGroupIds || endMs <= now) return@forEach
+            val groupPackages = groupPackagesById[groupId] ?: return@forEach
+            if (packageName !in groupPackages) {
+                pauseUnlock(groupId, endMs - now, now)
+                changed = true
+            }
+        }
+        pausedUnlocks.forEach { (groupId, paused) ->
+            if (packageName !in groupPackagesById[groupId].orEmpty()) return@forEach
+            pausedUnlocks.remove(groupId)
+            // Time left over from long ago is not saved up for later.
+            if (now - paused.pausedAtMs <= MAX_PAUSED_UNLOCK_MS) {
+                val endMs = now + paused.remainingMs
+                cooldownGroupsList[groupId] = endMs
+                setUpForcedRefreshChecker("cooldown:$groupId", endMs, groupId)
+            }
+            changed = true
+        }
+        if (changed) {
+            persistCooldownData()
+            showNextCooldownNotification()
+        }
+    }
+
+    private fun pauseUnlock(groupId: String, remainingMs: Long, now: Long) {
+        cooldownGroupsList.remove(groupId)
+        prefs.edit { remove("cooldown_$groupId") }
+        activeRunnables.remove("cooldown:$groupId")?.let(handler::removeCallbacks)
+        pausedUnlocks[groupId] = PausedUnlock(remainingMs, now)
+    }
+
+    private fun pauseAllRunningUnlocks() {
+        val now = System.currentTimeMillis()
+        val running = cooldownGroupsList.filter { (groupId, endMs) -> groupId !in onEachOpenGroupIds && endMs > now }
+        if (running.isEmpty()) return
+        running.forEach { (groupId, endMs) -> pauseUnlock(groupId, endMs - now, now) }
+        persistCooldownData()
+        showNextCooldownNotification()
+    }
+
     private fun isGroupInCooldown(groupId: String, now: Long = System.currentTimeMillis()): Boolean {
+        // A frozen unlock still has time left; it starts running again once its app is in front.
+        pausedUnlocks[groupId]?.let { if (now - it.pausedAtMs <= MAX_PAUSED_UNLOCK_MS) return true }
         val endTime = cooldownGroupsList[groupId] ?: return false
         if (endTime > now) return true
         removeCooldownFrom(groupId)
