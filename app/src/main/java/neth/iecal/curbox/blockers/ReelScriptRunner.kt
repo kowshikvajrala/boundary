@@ -84,8 +84,7 @@ class ReelScriptRunner {
                     "class" to event.className?.toString(),
                     "fromIndex" to event.fromIndex.toDouble(),
                     "toIndex" to event.toIndex.toDouble(),
-                    "itemCount" to event.itemCount.toDouble(),
-                    "scrollY" to event.scrollY.toDouble()
+                    "itemCount" to event.itemCount.toDouble()
                 )
             ),
             scriptId = "reel::$packageName",

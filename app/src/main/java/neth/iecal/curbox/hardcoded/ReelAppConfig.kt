@@ -172,15 +172,10 @@ class ReelAppConfig {
                     }
                     if not hasPlayer { return null }
 
-                    # Pages carry no text, so the pager's scroll position tells videos apart.
-                    # Compose reports it as a page index; fall back to pixels if it ever is not.
-                    if event.type != "scrolled" { return "" }
-                    position = event.scrollY
-                    if position > 1000 { position = round(position / viewer.h) }
-                    return "position:" + str(position)
+                    # Pages carry no text to tell videos apart, so X is blocked but not counted.
+                    return ""
                 """.trimIndent(),
-                deduplicateComparators = false,
-                initialComparator = "position:0"
+                countsReels = false
             )
         )
 

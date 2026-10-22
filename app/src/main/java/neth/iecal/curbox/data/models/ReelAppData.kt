@@ -8,11 +8,14 @@ import android.view.accessibility.AccessibilityEvent
  * Returning null means the current screen is not a reel screen.
  * Position based detectors can seed their first page with [initialComparator] and disable
  * comparator deduplication when positions are reused across viewer sessions.
+ * Set [countsReels] to false when an app's reels can't be told apart reliably: it is still
+ * blocked, but the reel counter ignores it.
  */
 data class ReelAppData(
     val scriptSource: String,
     val comparisonResultCleanser: (String) -> String = { it },
     val eventType: Int = AccessibilityEvent.TYPE_VIEW_SCROLLED,
     val deduplicateComparators: Boolean = true,
-    val initialComparator: String? = null
+    val initialComparator: String? = null,
+    val countsReels: Boolean = true
 )

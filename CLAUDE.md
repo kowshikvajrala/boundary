@@ -55,7 +55,7 @@ GitHub Actions quirks seen here: a tag push sometimes does not start a run (star
 | Blocklists: download domain lists (HaGeZi NSFW is built in as `list:adult`, or any https link) and use them as `list:<id>` keywords | `utils/BlocklistStore.kt`, `KeywordMatcher`, `keywordBlocker/BlocklistsFragment.kt`, the "Block adult sites" switch in `CreateKeywordGroupFragment` |
 | The unlock notification lists every unlocked group with its own time left | `AppBlocker.showNextCooldownNotification`, `utils/TimerNotification.kt` (`breakdown`) |
 | Unlock time counts only while the group's apps are in front; leftover time is frozen for up to 1 hour | `AppBlocker.syncUnlocksWithForegroundApp`, `pausedUnlocks` |
-| X (Twitter) in the Reels blocker and counter. Its viewer is Compose with no ids or text, so it is matched by tree path and full screen size, and videos are told apart by the pager scroll position (`event.scrollY`) | `hardcoded/ReelAppConfig.kt`, `blockers/ReelScriptRunner.kt` |
+| X (Twitter) in the Reels blocker and counter. Its viewer is Compose with no ids or text, so it is matched by tree path and full screen size. It is blocked but not counted (`countsReels = false`): counting by pager scroll position was unreliable, so the owner had it removed in 1.1.1 | `hardcoded/ReelAppConfig.kt`, `ReelAppData.countsReels`, `ReelsCountTracker` |
 | Eye breaks (20 20 20 rule) with a live countdown on the Reducers card | `anti_stimulants/EyeBreakReminder.kt` (in the service, broadcasts its schedule), `ReducersFragment.setupEyeBreakCard` |
 
 Behavior notes:
@@ -96,5 +96,6 @@ Behavior notes:
 | 1.0.9 | 10 | Live countdown on the Eye breaks card |
 | 1.0.10 | 11 | Unlock time counts only while the apps are in use |
 | 1.1.0 | 12 | X (Twitter) full screen videos in the Reels blocker and counter |
+| 1.1.1 | 13 | X removed from the reel counter (count was unreliable); still blocked |
 
 Versions up to 1.0.10 only bumped the patch number, even for features. From 1.1.0 on, releases follow semantic versioning (see Releasing).

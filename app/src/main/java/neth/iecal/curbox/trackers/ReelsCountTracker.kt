@@ -97,7 +97,7 @@ class ReelsCountTracker {
             val pkg = event?.packageName?.toString() ?: return
             if (ignored.contains(pkg)) return
 
-            val data = reelData[pkg]
+            val data = reelData[pkg]?.takeIf { it.countsReels }
 
             if (data != null) {
                 if (dynamicComparator == null) {

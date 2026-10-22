@@ -1,0 +1,1 @@
+• X (Twitter) videos are no longer counted by the short video counter, because the count was not reliable. Block Short Form Content still blocks them as before.
