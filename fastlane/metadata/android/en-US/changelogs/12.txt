@@ -1,0 +1,1 @@
+• Block Short Form Content and the short video counter now work in X (Twitter). They cover the full screen video player you swipe through. Videos playing inside your normal timeline are not affected.

@@ -147,6 +147,40 @@ class ReelAppConfig {
                 """.trimIndent(),
                 eventType = AccessibilityEvent.TYPE_VIEW_SCROLLED or
                     AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
+            ),
+
+            "com.twitter.android" to ReelAppData(
+                scriptSource = """
+                    ${isOnScreenFunction()}
+
+                    # X's full screen video viewer is Compose with no ids or text, so match it by
+                    # its place in the tree and by covering the whole screen.
+                    viewer = find(path="androidx.compose.ui.platform.ComposeView[0]>android.view.View[0]>android.view.View[0]>android.view.View[0]>android.view.View[0]>android.view.View[0]>android.view.View[0]>android.view.View[0]", scrollable=true)
+                    if not isOnScreen(viewer) { return null }
+                    if viewer.top > 0 or viewer.w < screen.width * 0.95 or viewer.h < screen.height * 0.9 {
+                        return null
+                    }
+
+                    # Only videos: the current page embeds a player view, which photos do not.
+                    page = viewer.child(0)
+                    if page == null { return null }
+                    hasPlayer = false
+                    for item in page.children() {
+                        if item.class != null and containsIgnoreCase(item.class, "viewinterop") {
+                            hasPlayer = true
+                        }
+                    }
+                    if not hasPlayer { return null }
+
+                    # Pages carry no text, so the pager's scroll position tells videos apart.
+                    # Compose reports it as a page index; fall back to pixels if it ever is not.
+                    if event.type != "scrolled" { return "" }
+                    position = event.scrollY
+                    if position > 1000 { position = round(position / viewer.h) }
+                    return "position:" + str(position)
+                """.trimIndent(),
+                deduplicateComparators = false,
+                initialComparator = "position:0"
             )
         )
 
