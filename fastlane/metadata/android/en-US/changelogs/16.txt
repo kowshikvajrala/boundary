@@ -1,0 +1,1 @@
+• Fixed: the usage timer for an app (like Instagram) stopped counting down while you watched reels or shorts. The short video counter on screen was mistaken for leaving the app.

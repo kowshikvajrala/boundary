@@ -128,6 +128,9 @@ class AppBlocker : BaseBlocker() {
             isWarningScreenVisible = true
             return
         }
+        // Our own overlays (reel counter, pill) send events while another app stays in front.
+        // Treating those as leaving the app stopped the usage countdown, so skip them.
+        if (packageName == service.packageName && !isOwnAppInFront()) return
 
         if (lastPackage == packageName || ignoredApps.contains(packageName)) {
             return
@@ -478,6 +481,12 @@ class AppBlocker : BaseBlocker() {
         if (endTime > now) return true
         endUnlock(groupId)
         return false
+    }
+
+    private fun isOwnAppInFront(): Boolean = try {
+        service.rootInActiveWindow?.packageName?.toString() == service.packageName
+    } catch (_: Exception) {
+        false
     }
 
     /** A timed unlock ran out. Remembers when, so a lock after unlock can start from that moment. */

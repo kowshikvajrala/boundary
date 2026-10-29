@@ -87,7 +87,8 @@ class AppUsageTracker {
         val foreground = activePackage ?: event.packageName?.toString() ?: return
 
         if (foreground == ownPackage) {
-            endCurrentSession()
+            // Only a real Boundary screen ends the session, not one of its overlays.
+            if (activePackage == ownPackage) endCurrentSession()
             return
         }
         if (foreground.isEmpty() || foreground in IGNORED_PACKAGES) return
