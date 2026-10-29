@@ -71,7 +71,6 @@ class KeywordBlocker : BaseBlocker() {
         private const val BLOCK_SUPPRESSION_MS = 5_000L
         private const val REPLACEMENT_PAGE = "about:blank"
         private const val COOLDOWN_NOTIFICATION_ID = 1004
-        private const val HOME_CHECK_INTERVAL_MS = 60_000L
     }
 
     private lateinit var service: BaseBlockingService
@@ -89,7 +88,6 @@ class KeywordBlocker : BaseBlocker() {
     private lateinit var unlockLocks: UnlockLocks
     @Volatile private var isAwayMode = false
     @Volatile private var homeLocation = HomeLocation()
-    private var lastHomeCheckMs = 0L
     private lateinit var notificationManager: TimerNotification
     private var notifiedCooldownGroupId: String? = null
     private var observationJob: Job? = null
@@ -306,33 +304,8 @@ class KeywordBlocker : BaseBlocker() {
     private fun blockTarget(packageName: String, urlIdentifier: String, groupId: String): String =
         "$groupId\u0000$packageName\u0000$urlIdentifier"
 
-    /**
-     * During Away mode a blocked site is the moment to check whether the owner is home again.
-     * At home, Away mode ends and every blocker comes back. Runs at most once a minute, and only
-     * reads one location, which needs "Allow all the time" location access.
-     */
-    private fun checkIfBackHome() {
-        if (!isAwayMode || !homeLocation.isSet) return
-        val now = SystemClock.elapsedRealtime()
-        if (lastHomeCheckMs != 0L && now - lastHomeCheckMs < HOME_CHECK_INTERVAL_MS) return
-        lastHomeCheckMs = now
-        val home = homeLocation
-        Handler(Looper.getMainLooper()).post {
-            try {
-                HomeLocationChecker.currentLocation(service, CancellationSignal()) { result ->
-                    if (result !is HomeLocationChecker.Result.Found) return@currentLocation
-                    if (HomeLocationChecker.isAway(home, result.location)) return@currentLocation
-                    blockerScope.launch { service.dataStoreManager.endAwayMode() }
-                    Toast.makeText(service, R.string.away_mode_ended_home, Toast.LENGTH_LONG).show()
-                }
-            } catch (e: Exception) {
-                Log.e("KeywordBlocker", "Home check failed", e)
-            }
-        }
-    }
-
     private fun handleBlocking(group: KeywordGroup, packageName: String, lockEndsAt: Long = 0L) {
-        checkIfBackHome()
+        if (isAwayMode) AwayModeHomeCheck.checkIfBackHome(service, homeLocation)
         Thread.sleep(250)
         if (destroyed) return
         // Back + Home can leave the tab on the blocked page, so leave it from the URL bar.

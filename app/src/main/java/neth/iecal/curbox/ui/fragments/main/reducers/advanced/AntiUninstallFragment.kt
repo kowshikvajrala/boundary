@@ -214,7 +214,7 @@ class AntiUninstallFragment : Fragment() {
         } else {
             groupProtected.isVisible = false
             groupUnlocking.isVisible = true
-            cancelUnlockButton.isVisible = config.mode == AntiUninstallMode.COOLDOWN
+            cancelUnlockButton.isVisible = config.mode == AntiUninstallMode.COOLDOWN || config.mode == AntiUninstallMode.AWAY_FROM_HOME
             statusTitle.text = getString(R.string.anti_uninstall_status_unlocking_title)
             statusBody.text = getString(
                 R.string.anti_uninstall_status_unlocking_body,
@@ -229,7 +229,7 @@ class AntiUninstallFragment : Fragment() {
             R.plurals.anti_uninstall_summary_timed, config.timedUnlockDays, config.timedUnlockDays
         )
         AntiUninstallMode.COOLDOWN -> getString(R.string.anti_uninstall_summary_cooldown)
-        AntiUninstallMode.AWAY_FROM_HOME -> getString(R.string.anti_uninstall_summary_away)
+        AntiUninstallMode.AWAY_FROM_HOME -> getString(R.string.anti_uninstall_summary_cooldown)
     }
 
     private fun onEnableClicked() {
@@ -318,26 +318,13 @@ class AntiUninstallFragment : Fragment() {
                 .setNegativeButton(R.string.anti_uninstall_cancel, null)
                 .setPositiveButton(R.string.anti_uninstall_start) { _, _ -> startUnlockRequest() }
                 .show()
-            AntiUninstallMode.COOLDOWN -> MaterialAlertDialogBuilder(requireContext())
+            // The away from home method was removed; protection set with it waits a day like this one.
+            AntiUninstallMode.COOLDOWN, AntiUninstallMode.AWAY_FROM_HOME -> MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.anti_uninstall_turn_off)
                 .setMessage(R.string.anti_uninstall_cooldown_confirm)
                 .setNegativeButton(R.string.anti_uninstall_cancel, null)
                 .setPositiveButton(R.string.anti_uninstall_start) { _, _ -> startUnlockRequest() }
                 .show()
-            AntiUninstallMode.AWAY_FROM_HOME -> if (HomeLock.isAwayPassActive()) {
-                finishProtection()
-            } else {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.anti_uninstall_turn_off)
-                    .setMessage(R.string.anti_uninstall_away_not_verified)
-                    .setNegativeButton(R.string.anti_uninstall_cancel, null)
-                    .setPositiveButton(R.string.home_lock_title) { _, _ ->
-                        startActivity(Intent(requireContext(), FragmentActivity::class.java).apply {
-                            putExtra("fragment", HomeLockFragment.FRAGMENT_ID)
-                        })
-                    }
-                    .show()
-            }
         }
     }
 

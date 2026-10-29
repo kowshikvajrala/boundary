@@ -13,7 +13,7 @@ enum class AntiUninstallMode {
     /** Protection lifts one day after the user asks, and the request can be taken back anytime. */
     COOLDOWN,
 
-    /** Protection lifts at once, but only after "Check I am away" in Home lock passed. */
+    /** Removed. Kept so stored settings still load; it now behaves like [COOLDOWN]. */
     AWAY_FROM_HOME
 }
 

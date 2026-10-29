@@ -444,7 +444,7 @@ class DataStoreManager(private val context: Context) {
             if (current.settingsChangeDelayConfig2.isEnabled ||
                 current.settingsChangeDelayConfig2.requireTamperProtectionOff) return@updateData current
             val groups = current.blockedAppGroups.map { group ->
-                val lockedAtHome = HomeLock.usesLock(group.warningScreenConfig) && !HomeLock.isAwayPassActive()
+                val lockedAtHome = HomeLock.usesLock(group.warningScreenConfig)
                 if (group.id == groupId && group.isActive && lockedAtHome) refusedAtHome = true
                 if (group.id == groupId && group.isActive && !lockedAtHome) {
                     changed = true
@@ -474,7 +474,7 @@ class DataStoreManager(private val context: Context) {
                 current.settingsChangeDelayConfig2.requireTamperProtectionOff) return@updateData current
             val config = current.keywordBlockerConfig
             val groups = config.keywordGroups.map { group ->
-                val lockedAtHome = HomeLock.usesLock(group.warningScreenConfig) && !HomeLock.isAwayPassActive()
+                val lockedAtHome = HomeLock.usesLock(group.warningScreenConfig)
                 if (group.id == groupId && group.isActive && lockedAtHome) refusedAtHome = true
                 if (group.id == groupId && group.isActive && !lockedAtHome) {
                     changed = true
@@ -500,7 +500,7 @@ class DataStoreManager(private val context: Context) {
                 current.settingsChangeDelayConfig2.requireTamperProtectionOff ||
                 !current.reelBlockerConfig.isActive
             ) return@updateData current
-            if (HomeLock.usesLock(current.reelBlockerConfig.warningScreenConfig) && !HomeLock.isAwayPassActive()) {
+            if (HomeLock.usesLock(current.reelBlockerConfig.warningScreenConfig)) {
                 refusedAtHome = true
                 return@updateData current
             }
@@ -809,13 +809,13 @@ class DataStoreManager(private val context: Context) {
     }
 
     /**
-     * Saves a new home. Moving home is refused while a lock after unlock is in use, unless the
-     * user just proved they are away, because moving it would let them pretend to be away.
+     * Saves a new home. Moving home is refused while a lock after unlock is in use or Away mode is
+     * on, because moving it would let the owner count as away while at home.
      */
     suspend fun updateHomeLocation(home: HomeLocation): Boolean {
         var saved = false
         settingsDataStore.updateData { current ->
-            saved = !current.homeLocation.isSet || !HomeLock.hasAnyLock(current) || HomeLock.isAwayPassActive()
+            saved = !current.homeLocation.isSet || (!HomeLock.hasAnyLock(current) && !current.isAwayModeActive)
             if (saved) current.copy(homeLocation = home) else current
         }
         return saved
@@ -823,10 +823,6 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun updatePaymentPauseApps(apps: List<String>) {
         settingsDataStore.updateData { it.copy(paymentPauseApps = apps) }
-    }
-
-    suspend fun updateEmergencyOffWaitDays(days: Int) {
-        updateGated(GatedSettingsField.EMERGENCY_OFF_WAIT) { days.coerceIn(EMERGENCY_OFF_MIN_DAYS, EMERGENCY_OFF_MAX_DAYS) }
     }
 
     /** When Emergency off can be used again, or 0 when it can be used now. */
@@ -838,10 +834,12 @@ class DataStoreManager(private val context: Context) {
 
     /**
      * Emergency off: switches off every restriction at once, with no delay and no location
-     * check, then stays unavailable for [Settings.emergencyOffWaitDays]. Waiting changes are
-     * applied first, since the owner already asked for them. Returns false while still waiting.
+     * check, then stays unavailable for [waitDays], chosen now and fixed until it has passed.
+     * Waiting changes are applied first, since the owner already asked for them. Returns false
+     * while still waiting.
      */
-    suspend fun useEmergencyOff(): Boolean {
+    suspend fun useEmergencyOff(waitDays: Int): Boolean {
+        val days = waitDays.coerceIn(EMERGENCY_OFF_MIN_DAYS, EMERGENCY_OFF_MAX_DAYS)
         var used = false
         settingsDataStore.updateData { stored ->
             used = false
@@ -864,6 +862,7 @@ class DataStoreManager(private val context: Context) {
                     pendingChanges = emptyList()
                 ),
                 isAwayModeActive = false,
+                emergencyOffWaitDays = days,
                 emergencyOffLastUsedAtMs = now
             )
         }
@@ -874,11 +873,9 @@ class DataStoreManager(private val context: Context) {
         return used
     }
 
-    /** Starts Away mode. Only allowed while the away pass from Home lock is active. */
-    suspend fun startAwayMode(): Boolean {
-        if (!HomeLock.isAwayPassActive()) return false
+    /** Starts Away mode. Callers must have just found the owner away from home (Home lock screen). */
+    suspend fun startAwayMode() {
         settingsDataStore.updateData { it.copy(isAwayModeActive = true) }
-        return true
     }
 
     /** Ends Away mode and brings every blocker back. Always allowed, because it is stricter. */

@@ -1,0 +1,5 @@
+• Away mode is simpler: tap Turn on Away mode while you are out, and Boundary checks your location once. It only pauses blocking; nothing can be loosened while away.
+• Away mode now also ends when you open a blocked app or short videos at home, not only a blocked website.
+• Groups with Lock after unlock ends can only be loosened or deleted with Emergency off.
+• Emergency off now asks how many days until it can be used again when you use it, and that cannot be changed later.
+• The Away from home choice in tamper protection was removed. If you used it, it now works like One day wait.

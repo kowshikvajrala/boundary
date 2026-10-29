@@ -1,31 +1,16 @@
 package neth.iecal.curbox.utils
 
-import neth.iecal.curbox.data.models.AntiUninstallMode
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.GatedSettingsField
 import neth.iecal.curbox.data.models.Settings
 
 /**
  * Guards the lock after unlock. Anything that would weaken a group using it (turning the lock
- * off or shorter, loosening, pausing or deleting the group) is refused unless the user proved,
- * moments ago, that they are away from home.
- *
- * The pass lives in memory only, so it never survives a restart and only works in the process
- * that checked the location (the app's own screens).
+ * off or shorter, loosening, pausing or deleting the group) is always refused. Away mode only
+ * pauses blocking, so nothing loosened while away could carry over to home; Emergency off is
+ * the one way to loosen a locked group.
  */
 object HomeLock {
-    const val AWAY_PASS_MS = 10 * 60_000L
-    @Volatile
-    private var awayPassUntilMs = 0L
-
-    fun grantAwayPass() {
-        awayPassUntilMs = System.currentTimeMillis() + AWAY_PASS_MS
-    }
-
-    fun awayPassEndsAt(): Long = awayPassUntilMs.takeIf { it > System.currentTimeMillis() } ?: 0L
-
-    fun isAwayPassActive(): Boolean = awayPassEndsAt() > 0L
-
     fun usesLock(config: AppBlockerWarningScreenConfig): Boolean =
         config.lockAfterUnlockMs > 0L && !config.isOnOpenConfig
 
@@ -33,12 +18,10 @@ object HomeLock {
         settings.blockedAppGroups.any { it.isActive && usesLock(it.warningScreenConfig) } ||
             (settings.keywordBlockerConfig.isActive &&
                 settings.keywordBlockerConfig.keywordGroups.any { it.isActive && usesLock(it.warningScreenConfig) }) ||
-            (settings.reelBlockerConfig.isActive && usesLock(settings.reelBlockerConfig.warningScreenConfig)) ||
-            (settings.antiUninstallConfig2.isEnabled && settings.antiUninstallConfig2.mode == AntiUninstallMode.AWAY_FROM_HOME)
+            (settings.reelBlockerConfig.isActive && usesLock(settings.reelBlockerConfig.warningScreenConfig))
 
     /** True when [proposed] loosens something that is currently protected by a lock after unlock. */
     fun weakensLock(field: GatedSettingsField, current: Settings, proposed: Settings): Boolean {
-        if (isAwayPassActive()) return false
         return try {
             when (field) {
                 GatedSettingsField.APP_GROUPS ->

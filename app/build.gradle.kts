@@ -65,8 +65,8 @@ android {
         applicationId = appId
         minSdk = 26
         targetSdk = 35
-        versionCode = 26
-        versionName = "1.10.0"
+        versionCode = 27
+        versionName = "1.11.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         resValue("string", "app_name", appName)
         resValue("string", "blocker_service_label", "$appName App Blocker")

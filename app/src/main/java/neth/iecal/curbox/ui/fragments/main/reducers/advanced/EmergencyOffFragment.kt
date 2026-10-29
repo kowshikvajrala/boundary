@@ -1,15 +1,19 @@
 package neth.iecal.curbox.ui.fragments.main.reducers.advanced
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.Settings
@@ -26,6 +30,7 @@ class EmergencyOffFragment : Fragment() {
 
     companion object {
         const val FRAGMENT_ID = "emergency_off"
+        private const val DEFAULT_WAIT_DAYS = 30
     }
 
     private var _binding: FragmentEmergencyOffBinding? = null
@@ -42,17 +47,11 @@ class EmergencyOffFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         dataStore = DataStoreManager(requireContext())
         binding.btnEmergencyOff.setOnClickListener { confirmEmergencyOff() }
-        binding.btnSaveWait.setOnClickListener { saveWaitDays() }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                var filledWait = false
                 dataStore.settings.collect { settings ->
                     latest = settings
-                    if (!filledWait) {
-                        binding.emergencyWaitInput.setText(settings.emergencyOffWaitDays.toString())
-                        filledWait = true
-                    }
                     render(settings)
                 }
             }
@@ -74,34 +73,42 @@ class EmergencyOffFragment : Fragment() {
         }
     }
 
+    /** Asks how many days until it can be used again, then turns everything off. */
     private fun confirmEmergencyOff() {
-        val days = latest?.emergencyOffWaitDays ?: return
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.emergency_off_confirm_title)
-            .setMessage(resources.getQuantityString(R.plurals.emergency_off_confirm_message, days, days))
-            .setNegativeButton(android.R.string.cancel, null)
-            .setPositiveButton(R.string.emergency_off_button) { _, _ ->
-                viewLifecycleOwner.lifecycleScope.launch {
-                    val message = if (dataStore.useEmergencyOff()) R.string.emergency_off_done else R.string.emergency_off_not_yet
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-                }
-            }
-            .show()
-    }
-
-    private fun saveWaitDays() {
-        val days = binding.emergencyWaitInput.text?.toString()?.toIntOrNull()
-        if (days == null || days < DataStoreManager.EMERGENCY_OFF_MIN_DAYS || days > DataStoreManager.EMERGENCY_OFF_MAX_DAYS) {
-            binding.emergencyWaitLayout.error = getString(
-                R.string.emergency_off_wait_range,
-                DataStoreManager.EMERGENCY_OFF_MIN_DAYS,
-                DataStoreManager.EMERGENCY_OFF_MAX_DAYS
-            )
-            return
+        val context = requireContext()
+        val inputLayout = TextInputLayout(context).apply {
+            hint = getString(R.string.emergency_off_wait_input)
+            suffixText = getString(R.string.emergency_off_days)
+            setPadding(48, 16, 48, 0)
         }
-        binding.emergencyWaitLayout.error = null
-        // Raising applies at once; lowering waits through the settings change delay.
-        viewLifecycleOwner.lifecycleScope.launch { dataStore.updateEmergencyOffWaitDays(days) }
-        Toast.makeText(requireContext(), R.string.emergency_off_saved, Toast.LENGTH_SHORT).show()
+        val input = TextInputEditText(inputLayout.context).apply {
+            inputType = InputType.TYPE_CLASS_NUMBER
+            setText(DEFAULT_WAIT_DAYS.toString())
+            setSelectAllOnFocus(true)
+        }
+        inputLayout.addView(input)
+        val dialog = MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.emergency_off_confirm_title)
+            .setMessage(R.string.emergency_off_ask_days)
+            .setView(inputLayout)
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(R.string.emergency_off_button, null)
+            .show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val days = input.text?.toString()?.toIntOrNull()
+            if (days == null || days < DataStoreManager.EMERGENCY_OFF_MIN_DAYS || days > DataStoreManager.EMERGENCY_OFF_MAX_DAYS) {
+                inputLayout.error = getString(
+                    R.string.emergency_off_wait_range,
+                    DataStoreManager.EMERGENCY_OFF_MIN_DAYS,
+                    DataStoreManager.EMERGENCY_OFF_MAX_DAYS
+                )
+                return@setOnClickListener
+            }
+            dialog.dismiss()
+            viewLifecycleOwner.lifecycleScope.launch {
+                val message = if (dataStore.useEmergencyOff(days)) R.string.emergency_off_done else R.string.emergency_off_not_yet
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

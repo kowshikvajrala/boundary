@@ -99,6 +99,7 @@ class AppBlocker : BaseBlocker() {
     private val closeAppsWhileLockedIds = ConcurrentHashMap.newKeySet<String>()
     @Volatile private var paymentPauseApps: Set<String> = emptySet()
     @Volatile private var isAwayMode = false
+    @Volatile private var homeLocation = neth.iecal.curbox.data.models.HomeLocation()
     private var lastPaymentPauseStartMs = 0L
     // The app in front before the current one. Null until the first switch after the service
     // starts, so a pause that ends while the payment app is open does not start a new one.
@@ -172,6 +173,7 @@ class AppBlocker : BaseBlocker() {
         if (isAwayMode) {
             notificationManager.stopTimer()
             lastPackage = packageName
+            if (blockedAppsList.containsKey(packageName)) AwayModeHomeCheck.checkIfBackHome(service, homeLocation)
             return
         }
 
@@ -357,6 +359,7 @@ class AppBlocker : BaseBlocker() {
 
                 paymentPauseApps = settings.paymentPauseApps.toSet()
                 isAwayMode = settings.isAwayModeActive
+                homeLocation = settings.homeLocation
 
                 // Atomic-like update of the maps
                 blockedAppsList.clear()

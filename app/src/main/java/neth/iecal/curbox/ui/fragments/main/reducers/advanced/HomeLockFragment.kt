@@ -28,8 +28,8 @@ import neth.iecal.curbox.utils.PermissionUtils
 import neth.iecal.curbox.utils.SettingsChangeDelayUtils
 
 /**
- * Sets the owner's home and checks whether they are away from it. Being away grants a short
- * pass that lets locks after unlock be loosened (see [HomeLock]).
+ * Sets the owner's home and turns on Away mode after checking the owner is away from it.
+ * While Away mode is on, locks after unlock can be loosened (see [HomeLock]).
  */
 class HomeLockFragment : Fragment() {
 
@@ -76,7 +76,7 @@ class HomeLockFragment : Fragment() {
         dataStore = DataStoreManager(requireContext())
 
         binding.btnSetHome.setOnClickListener { withLocation(::setHomeHere) }
-        binding.btnCheckAway.setOnClickListener { withLocation(::checkAway) }
+        binding.btnCheckAway.setOnClickListener { confirmAwayMode() }
         binding.btnEndAwayMode.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch { dataStore.endAwayMode() }
         }
@@ -90,7 +90,6 @@ class HomeLockFragment : Fragment() {
                 }
             }
         }
-        HomeLock.awayPassEndsAt().takeIf { it > 0L }?.let(::showAwayPass)
     }
 
     override fun onDestroyView() {
@@ -159,27 +158,21 @@ class HomeLockFragment : Fragment() {
             when {
                 !home.isSet -> showAwayStatus(getString(R.string.home_lock_needs_home))
                 HomeLocationChecker.isAway(home, location) -> {
-                    HomeLock.grantAwayPass()
-                    showAwayPass(HomeLock.awayPassEndsAt())
-                    confirmTurnOffAll()
+                    dataStore.startAwayMode()
+                    showAwayStatus(getString(R.string.home_lock_all_off))
+                    if (!PermissionUtils.hasBackgroundLocationPermission(requireContext())) requestBackgroundLocation()
                 }
                 else -> showAwayStatus(getString(R.string.home_lock_at_home))
             }
         }
     }
 
-    private fun confirmTurnOffAll() {
+    /** Explains Away mode, then checks the location; Away mode starts only if the owner is away. */
+    private fun confirmAwayMode() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.home_lock_turn_off_all_title)
             .setMessage(R.string.home_lock_turn_off_all_message)
-            .setPositiveButton(R.string.home_lock_turn_off_all_confirm) { _, _ ->
-                viewLifecycleOwner.lifecycleScope.launch {
-                    if (dataStore.startAwayMode()) {
-                        showAwayStatus(getString(R.string.home_lock_all_off))
-                        if (!PermissionUtils.hasBackgroundLocationPermission(requireContext())) requestBackgroundLocation()
-                    }
-                }
-            }
+            .setPositiveButton(R.string.home_lock_turn_off_all_confirm) { _, _ -> withLocation(::checkAway) }
             .setNegativeButton(R.string.home_lock_turn_off_all_cancel, null)
             .show()
     }
@@ -206,11 +199,6 @@ class HomeLockFragment : Fragment() {
             return
         }
         backgroundLocationLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-    }
-
-    private fun showAwayPass(endsAtMs: Long) {
-        val remaining = SettingsChangeDelayUtils.formatRemaining(requireContext(), endsAtMs - System.currentTimeMillis())
-        showAwayStatus(getString(R.string.home_lock_away_ok, remaining))
     }
 
     private fun showAwayStatus(message: String) {
