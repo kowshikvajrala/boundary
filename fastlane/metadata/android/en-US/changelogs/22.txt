@@ -1,0 +1,3 @@
+• Lock after unlock ends now closes the group's apps, so they do not run in the background while locked. You can turn this off per group with "Close the apps while locked".
+• With notification access, notifications from locked apps are hidden until the lock ends, then come back.
+• Payment pause starts by itself when you open one of your payment apps. The app reopens a second later with Boundary paused.

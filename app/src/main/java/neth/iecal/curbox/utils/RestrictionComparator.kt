@@ -320,6 +320,7 @@ object RestrictionComparator {
         val dialogHiddenOk = !o.isWarningDialogHidden || n.isWarningDialogHidden
         val proceedDelayOk = n.proceedDelayInSecs >= o.proceedDelayInSecs
         val lockAfterOk = n.lockAfterUnlockMs >= o.lockAfterUnlockMs
+        val closeAppsOk = o.lockAfterUnlockMs <= 0L || !o.closeAppsWhileLocked || n.closeAppsWhileLocked
         val vibrateOk = !o.vibrateAndIncBrightness || n.vibrateAndIncBrightness
         val proceedLimitOk = when {
             o.proceedLimitEnabled && !n.proceedLimitEnabled -> false
@@ -360,7 +361,7 @@ object RestrictionComparator {
 
         return onEachOpenOk && cooldownOk && dynamicIntervalOk &&
             proceedDisabledOk && dialogHiddenOk &&
-            proceedDelayOk && lockAfterOk && vibrateOk && proceedLimitOk && qrOk && nfcOk && typingOk && intentOk &&
+            proceedDelayOk && lockAfterOk && closeAppsOk && vibrateOk && proceedLimitOk && qrOk && nfcOk && typingOk && intentOk &&
             adaptiveMathOk && adaptiveMathQuestionCountOk && adaptiveMathStartingLevelOk &&
             focusGoalOk && intentMinLengthOk
     }

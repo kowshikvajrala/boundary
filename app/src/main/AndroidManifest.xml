@@ -21,6 +21,8 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- Closes a locked group's apps while its lock after unlock runs. -->
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <!-- Lets a payment pause see which app is in front while the accessibility service is off. -->
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
@@ -71,6 +73,14 @@
         <activity
             android:name=".ui.activity.SelectAppsActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.PaymentPauseStartActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name=".nfc.NfcTriggerActivity"
@@ -139,6 +149,17 @@
             android:name=".services.PaymentPauseJob"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".services.LockedAppNotificationListener"
+            android:exported="true"
+            android:label="@string/locked_notifications_listener_label"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:process=":app_blocker_service">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
 
         <service
             android:name=".services.PaymentPauseWatchService"

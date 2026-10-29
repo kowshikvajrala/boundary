@@ -1,5 +1,9 @@
 package neth.iecal.curbox.blockers
 
+import android.app.ActivityManager
+import neth.iecal.curbox.ui.activity.PaymentPauseStartActivity
+import neth.iecal.curbox.utils.PermissionUtils
+import android.os.SystemClock
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -19,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import neth.iecal.curbox.Constants
 import neth.iecal.curbox.R
+import neth.iecal.curbox.services.LockedAppNotificationListener
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.AppGroupConfig
 import neth.iecal.curbox.data.models.AppUsageConfig
@@ -56,6 +61,15 @@ class AppBlocker : BaseBlocker() {
         const val EXTRA_WARNING_SCREEN_VISIBLE = "warning_screen_visible"
         /** A frozen unlock is dropped if its apps are not opened again within this time. */
         private const val MAX_PAUSED_UNLOCK_MS = 60 * 60_000L
+        private const val CLOSE_AFTER_HOME_MS = 1_500L
+        private const val PAYMENT_PAUSE_DEBOUNCE_MS = 10_000L
+
+        // Package -> when its lock ends. Read by LockedAppNotificationListener in this process.
+        @Volatile
+        private var lockedPackagesUntil: Map<String, Long> = emptyMap()
+
+        fun lockedUntil(packageName: String): Long = lockedPackagesUntil[packageName] ?: 0L
+        private const val LOCK_CLOSE_INTERVAL_MS = 60_000L
         private const val TARGET_EVENTS_MASK = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
     }
 
@@ -83,6 +97,12 @@ class AppBlocker : BaseBlocker() {
     private val groupPackagesById = ConcurrentHashMap<String, Set<String>>()
     private val onEachOpenGroupIds = ConcurrentHashMap.newKeySet<String>()
     private val lockAfterMsById = ConcurrentHashMap<String, Long>()
+    private val closeAppsWhileLockedIds = ConcurrentHashMap.newKeySet<String>()
+    @Volatile private var paymentPauseApps: Set<String> = emptySet()
+    private var lastPaymentPauseStartMs = 0L
+    // The app in front before the current one. Null until the first switch after the service
+    // starts, so a pause that ends while the payment app is open does not start a new one.
+    private var lastWindowPackage: String? = null
     private lateinit var unlockLocks: UnlockLocks
     // Windows that can sit over an app without the user leaving it, such as the keyboard.
     private val passThroughPackages = ConcurrentHashMap.newKeySet<String>()
@@ -141,6 +161,11 @@ class AppBlocker : BaseBlocker() {
             packageName !in passThroughPackages
         ) {
             syncUnlocksWithForegroundApp(packageName)
+            val previousWindowPackage = lastWindowPackage
+            lastWindowPackage = packageName
+            if (previousWindowPackage != null && previousWindowPackage != packageName &&
+                maybeStartPaymentPause(packageName)
+            ) return
         }
 
         val now = System.currentTimeMillis()
@@ -149,7 +174,7 @@ class AppBlocker : BaseBlocker() {
             for (entry in entries) {
                 val lockEndsAt = lockEndsAt(entry, now)
                 if (lockEndsAt > 0L) {
-                    showLockedPill(packageName, lockEndsAt)
+                    showLockedPill(packageName, entry.groupId, lockEndsAt)
                     return
                 }
             }
@@ -302,6 +327,7 @@ class AppBlocker : BaseBlocker() {
                     groupPackagesById[group.id] = group.selectedPackages.map(String::trim).toSet()
                     if (group.warningScreenConfig.isOnOpenConfig) onEachOpenGroupIds.add(group.id) else onEachOpenGroupIds.remove(group.id)
                     lockAfterMsById[group.id] = group.warningScreenConfig.lockAfterUnlockMs
+                    if (group.warningScreenConfig.closeAppsWhileLocked) closeAppsWhileLockedIds.add(group.id) else closeAppsWhileLockedIds.remove(group.id)
                     if (!group.isActive) return@forEach
 
                     try {
@@ -321,11 +347,21 @@ class AppBlocker : BaseBlocker() {
                     }
                 }
 
+                paymentPauseApps = settings.paymentPauseApps.toSet()
+
                 // Atomic-like update of the maps
                 blockedAppsList.clear()
                 blockedAppsList.putAll(newBlockedAppsList)
 
                 Log.d("AppBlocker", "Loaded ${blockedAppsList.size} scheduled usage apps")
+
+                // Locks that were running before a restart keep their apps closed too.
+                handler.post {
+                    refreshLockedPackages()
+                    lockAfterMsById.keys
+                        .filter { lockEndsAt(it) > 0L && !activeRunnables.containsKey("lockclose:$it") }
+                        .forEach(::keepLockedAppsClosed)
+                }
                 
                 // Force a check for the currently open app after settings change
                 handler.post {
@@ -494,6 +530,98 @@ class AppBlocker : BaseBlocker() {
         val endedAt = cooldownGroupsList[groupId]
         removeCooldownFrom(groupId)
         if (endedAt != null && groupId !in onEachOpenGroupIds) unlockLocks.unlockEnded(groupId, endedAt)
+        refreshLockedPackages()
+        if (lockEndsAt(groupId) > 0L) {
+            // Give the forced re check a moment to send the user home, then close the apps.
+            handler.postDelayed({ closeLockedApps(groupId) }, CLOSE_AFTER_HOME_MS)
+            keepLockedAppsClosed(groupId)
+        }
+    }
+
+    /**
+     * Closes the group's apps while its lock runs, so they do not keep running in the background.
+     * Android only lets a normal app close apps that are in the background, and never one that
+     * is playing media with a notification.
+     */
+    /**
+     * Opening a payment app starts a payment pause on its own. The app has already seen this
+     * service, so it is sent home and closed, and the pause reopens it fresh once the service
+     * is off. Blocked apps are refused by [PaymentPause.start] itself.
+     */
+    private fun maybeStartPaymentPause(packageName: String): Boolean {
+        if (packageName !in paymentPauseApps || blockedAppsList.containsKey(packageName)) return false
+        if (!PermissionUtils.hasWriteSecureSettings(service)) return false
+        val now = SystemClock.elapsedRealtime()
+        if (now - lastPaymentPauseStartMs < PAYMENT_PAUSE_DEBOUNCE_MS) return true
+        lastPaymentPauseStartMs = now
+        service.pressHome()
+        lastPackage = ""
+        handler.postDelayed({
+            try {
+                val activityManager = service.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+                activityManager.killBackgroundProcesses(packageName)
+                service.startActivity(
+                    Intent(service, PaymentPauseStartActivity::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        .putExtra(PaymentPauseStartActivity.EXTRA_PACKAGE, packageName)
+                )
+            } catch (e: Exception) {
+                Log.e("AppBlocker", "Could not start a payment pause", e)
+            }
+        }, CLOSE_AFTER_HOME_MS)
+        return true
+    }
+
+    /** Works out which apps are locked right now and hides their notifications. */
+    private fun refreshLockedPackages() {
+        val now = System.currentTimeMillis()
+        val locked = HashMap<String, Long>()
+        lockAfterMsById.keys.forEach { groupId ->
+            val endsAt = lockEndsAt(groupId, now)
+            if (endsAt <= 0L) return@forEach
+            groupPackagesById[groupId].orEmpty().forEach { pkg ->
+                if (pkg != service.packageName && endsAt > (locked[pkg] ?: 0L)) locked[pkg] = endsAt
+            }
+        }
+        lockedPackagesUntil = locked
+        if (locked.isNotEmpty()) LockedAppNotificationListener.instance?.snoozeLockedNow()
+    }
+
+    private fun closeLockedApps(groupId: String) {
+        if (groupId !in closeAppsWhileLockedIds) return
+        val activityManager = service.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        groupPackagesById[groupId].orEmpty()
+            .filter { it != service.packageName }
+            .forEach { pkg ->
+                try {
+                    activityManager.killBackgroundProcesses(pkg)
+                } catch (e: Exception) {
+                    Log.e("AppBlocker", "Could not close $pkg", e)
+                }
+            }
+    }
+
+    /** Closes the group's apps again every minute until its lock ends, in case they restart. */
+    private fun keepLockedAppsClosed(groupId: String) {
+        val key = "lockclose:$groupId"
+        activeRunnables[key]?.let(handler::removeCallbacks)
+        val runnable = object : Runnable {
+            override fun run() {
+                try {
+                    refreshLockedPackages()
+                    if (lockEndsAt(groupId) <= 0L) {
+                        activeRunnables.remove(key)
+                        return
+                    }
+                    closeLockedApps(groupId)
+                } catch (e: Exception) {
+                    Log.e("AppBlocker", "Lock close check failed", e)
+                }
+                handler.postDelayed(this, LOCK_CLOSE_INTERVAL_MS)
+            }
+        }
+        activeRunnables[key] = runnable
+        handler.postDelayed(runnable, LOCK_CLOSE_INTERVAL_MS)
     }
 
     private fun lockEndsAt(groupId: String, now: Long = System.currentTimeMillis()): Long {
@@ -508,12 +636,14 @@ class AppBlocker : BaseBlocker() {
         return lockEndsAt(entry.groupId, now)
     }
 
-    private fun showLockedPill(packageName: String, lockEndsAt: Long) {
+    private fun showLockedPill(packageName: String, groupId: String, lockEndsAt: Long) {
         if (!service.isDelayOver(1000)) return
         notificationManager.stopTimer()
         service.pressHome()
         lastPackage = ""
         service.blockedPill.show(packageName, UnlockLocks.pillText(service, lockEndsAt))
+        handler.postDelayed({ closeLockedApps(groupId) }, CLOSE_AFTER_HOME_MS)
+        if (!activeRunnables.containsKey("lockclose:$groupId")) keepLockedAppsClosed(groupId)
     }
 
     // Counts down to the soonest unlock ending and, when several groups are unlocked, lists each one.

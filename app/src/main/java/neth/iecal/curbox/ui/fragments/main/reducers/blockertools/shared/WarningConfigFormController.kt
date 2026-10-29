@@ -2,9 +2,12 @@ package neth.iecal.curbox.ui.fragments.main.reducers.blockertools.shared
 
 import android.transition.AutoTransition
 import android.transition.TransitionManager
+import android.content.Intent
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -125,6 +128,10 @@ internal class WarningConfigFormController(
         val lockAfterSeconds = config.lockAfterUnlockMs / 1000L
         binding.lockAfterSwitch.isChecked = lockAfterSeconds > 0
         binding.lockAfterInputs.isVisible = lockAfterSeconds > 0
+        binding.lockAfterCloseSwitch.isChecked = config.closeAppsWhileLocked
+        // Closing apps only applies to app groups, the only form that supports "each open".
+        binding.lockAfterCloseSwitch.isVisible = supportsOnEachOpen
+        binding.lockAfterCloseDesc.isVisible = supportsOnEachOpen
         lockAfterField.bind(if (lockAfterSeconds > 0) lockAfterSeconds else DEFAULT_LOCK_AFTER_SECONDS)
         updateLockAfterAvailability()
 
@@ -192,6 +199,11 @@ internal class WarningConfigFormController(
         )
         proceedDelayField.setupListeners()
         lockAfterField.setupListeners()
+        binding.btnLockAfterNotificationAccess.setOnClickListener {
+            runCatching {
+                fragment.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+            }
+        }
         binding.lockAfterSwitch.setOnCheckedChangeListener { _, isChecked ->
             TransitionManager.beginDelayedTransition(binding.mainContentContainer, AutoTransition())
             binding.lockAfterInputs.isVisible = isChecked
@@ -326,6 +338,15 @@ internal class WarningConfigFormController(
     private fun updateLockAfterAvailability() {
         binding.lockAfterSwitch.isEnabled = isLockAfterAvailable()
         binding.lockAfterHomeNote.isVisible = !isHomeLocationSet && !binding.lockAfterSwitch.isChecked
+        refreshNotificationAccess()
+    }
+
+    /** Shows the notification access prompt while the lock is on and the access is missing. */
+    fun refreshNotificationAccess() {
+        val context = fragment.context ?: return
+        val hasAccess = NotificationManagerCompat.getEnabledListenerPackages(context)
+            .contains(context.packageName)
+        binding.lockAfterNotificationSetup.isVisible = binding.lockAfterSwitch.isChecked && !hasAccess
     }
 
     fun createConfig(
@@ -369,6 +390,7 @@ internal class WarningConfigFormController(
             } else {
                 0L
             },
+            closeAppsWhileLocked = binding.lockAfterCloseSwitch.isChecked,
             vibrateAndIncBrightness = binding.switchVibrateBrightness.isChecked,
             proceedLimitEnabled = binding.proceedLimitSwitch.isChecked,
             allowedProceeds = numericInputValue(binding.allowedProceedsInput).toInt(),

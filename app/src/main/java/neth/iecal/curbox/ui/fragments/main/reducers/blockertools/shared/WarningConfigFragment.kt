@@ -121,6 +121,12 @@ class WarningConfigFragment : Fragment() {
         nfcController?.stopTap()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Coming back from Android's notification access screen.
+        formController?.refreshNotificationAccess()
+    }
+
     override fun onDestroyView() {
         nfcController?.stopTap()
         formController = null

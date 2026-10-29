@@ -251,6 +251,47 @@
                             android:value="30.0"
                             android:valueFrom="1.0"
                             android:valueTo="60.0" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/lock_after_close_switch"
+                            style="@style/TextAppearance.Material3.TitleSmall"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:checked="true"
+                            android:text="@string/lock_after_close_title"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/lock_after_close_desc"
+                            style="@style/TextAppearance.Material3.BodySmall"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/lock_after_close_desc"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/lock_after_notification_setup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/TextAppearance.Material3.BodySmall"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lock_after_notifications_desc" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_lock_after_notification_access"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="0dp"
+                                android:text="@string/lock_after_notifications_grant" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

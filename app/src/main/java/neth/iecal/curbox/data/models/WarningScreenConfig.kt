@@ -38,6 +38,8 @@ data class AppBlockerWarningScreenConfig(
     val isOnOpenConfig: Boolean = false,
     /** After a timed unlock runs out, the group stays fully locked this long, with no wait screen. 0 is off. */
     val lockAfterUnlockMs: Long = 0L,
+    /** App groups only: close the group's apps in the background while that lock runs. */
+    val closeAppsWhileLocked: Boolean = true,
 )
 
 class WarningMessagesAdapter : TypeAdapter<List<String>>() {

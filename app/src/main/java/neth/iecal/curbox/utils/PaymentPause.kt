@@ -11,6 +11,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.Process
 import android.provider.Settings
 import android.text.TextUtils
@@ -43,6 +45,7 @@ object PaymentPause {
     private const val KEY_ENDS_AT = "ends_at"
     private const val CHANNEL_ID = "payment_pause"
     const val NOTIFICATION_ID = 7716
+    private const val OPEN_APP_DELAY_MS = 700L
 
     /** Android's Settings, app installers and the phone makers' security apps that can stop apps. */
     private val SETTINGS_PACKAGES = setOf(
@@ -82,9 +85,12 @@ object PaymentPause {
             return false
         }
         startWatching(context, endsAt)
-        context.packageManager.getLaunchIntentForPackage(packageName)?.let {
-            context.startActivity(it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-        }
+        // Give Android a moment to really stop the service, so the app starts without seeing it.
+        Handler(Looper.getMainLooper()).postDelayed({
+            context.packageManager.getLaunchIntentForPackage(packageName)?.let {
+                context.startActivity(it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            }
+        }, OPEN_APP_DELAY_MS)
         return true
     }
 
