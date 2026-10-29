@@ -1,0 +1,1 @@
+• Fixed: right after the phone restarted, tamper protection was not ready for a moment, so Boundary could be uninstalled. It now guards from the moment Boundary starts.

@@ -37,6 +37,9 @@ class AntiUninstallBlocker : BaseBlocker() {
     }
 
     @Volatile private var config: AntiUninstallConfig = AntiUninstallConfig()
+    // Settings take a moment to load after a reboot. Until then the default config says "off",
+    // which left the device admin screen unguarded for that moment.
+    @Volatile private var isConfigLoaded = false
     private var lastScreenScan = 0L
     private lateinit var service: AppBlockerService
     private var settingsJob: kotlinx.coroutines.Job? = null
@@ -47,7 +50,10 @@ class AntiUninstallBlocker : BaseBlocker() {
         this.service = service
         settingsJob?.cancel()
         settingsJob = CoroutineScope(Dispatchers.IO).launch {
-            service.dataStoreManager.settings.collectLatest { config = it.antiUninstallConfig2 }
+            service.dataStoreManager.settings.collectLatest {
+                config = it.antiUninstallConfig2
+                isConfigLoaded = true
+            }
         }
     }
 
@@ -58,10 +64,11 @@ class AntiUninstallBlocker : BaseBlocker() {
     fun doAntiUninstallCheck(event: AccessibilityEvent?) {
         event ?: return
         val current = config
-        if (!current.isEnabled) return
+        // Before settings load, an active device admin is taken to mean protection is on.
+        if (isConfigLoaded && !current.isEnabled) return
 
         // A finished timed or cooldown unlock lifts protection for good.
-        if (AntiUninstallManager.isUnlockComplete(current)) {
+        if (isConfigLoaded && AntiUninstallManager.isUnlockComplete(current)) {
             finishUnlock()
             return
         }

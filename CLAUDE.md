@@ -97,6 +97,7 @@ Behavior notes:
 - A string kept unchanged on purpose must keep its resource name too, or the code referencing it breaks.
 - Kotlin raw strings (`"""`) do not process escapes. `ScriptLanguageTest` had `\\n` inside one and failed until fixed. Curbox's own CI never ran the unit tests.
 - Boundary's own overlays (reel counter, pill) send accessibility events with Boundary's package while another app is in front. Treat an own package event as "Boundary in front" only when `rootInActiveWindow` is Boundary, or app timers stop (fixed in 1.3.1).
+- Blockers read settings from a DataStore flow that emits a moment after the service starts, so their config starts as the default (off). `AntiUninstallBlocker` therefore treats an active device admin as "protected" until its config has loaded, and is set up first in `onServiceConnected` (fixed after the owner could reach uninstall right after a reboot).
 - `AppBlocker` also runs its check on `TYPE_WINDOW_CONTENT_CHANGED`, which the keyboard emits. Logic about "which app is in front" must use window state changes only and skip the keyboard and system UI.
 - Append to files with a trailing newline. An append without one once merged two `.gitignore` lines.
 
@@ -123,5 +124,6 @@ Behavior notes:
 | 1.3.2 | 17 | Donation popup removed; Info tab keeps only version, tracking, backup, crash logs, language |
 | 1.4.0 | 18 | Tamper protection "Away from home" method |
 | 1.5.0 | 19 | Payment pause (5 min, adb granted), ends early on blocked apps, browsers and Settings |
+| 1.5.1 | 20 | Tamper protection guards right after a reboot (before settings load; set up first) |
 
 Versions up to 1.0.10 only bumped the patch number, even for features. From 1.1.0 on, releases follow semantic versioning (see Releasing).

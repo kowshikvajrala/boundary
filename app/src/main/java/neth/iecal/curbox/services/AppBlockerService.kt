@@ -169,6 +169,10 @@ class AppBlockerService : BaseBlockingService() {
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onServiceConnected() {
         super.onServiceConnected()
+        // Tamper protection first, so the device admin screen is guarded as early as possible.
+        if (BuildConfig.SUPPORTS_ANTI_UNINSTALL) {
+            antiUninstallBlocker.setupBlocker(this)
+        }
         appBlocker.setupAppBlocker(this)
         focusModeBlocker.setupFocusMode(this)
         autoDnd.setup(this)
@@ -179,9 +183,6 @@ class AppBlockerService : BaseBlockingService() {
         if (BuildConfig.SUPPORTS_UI_HIDER) {
             uiHider.setupBlocker(this)
             nodePicker.setupBlocker(this)
-        }
-        if (BuildConfig.SUPPORTS_ANTI_UNINSTALL) {
-            antiUninstallBlocker.setupBlocker(this)
         }
 
         reelUsageTracker.setup(this)
