@@ -1,5 +1,6 @@
 package neth.iecal.curbox.utils
 
+import neth.iecal.curbox.data.models.AntiUninstallMode
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.GatedSettingsField
 import neth.iecal.curbox.data.models.Settings
@@ -33,7 +34,8 @@ object HomeLock {
         settings.blockedAppGroups.any { it.isActive && usesLock(it.warningScreenConfig) } ||
             (settings.keywordBlockerConfig.isActive &&
                 settings.keywordBlockerConfig.keywordGroups.any { it.isActive && usesLock(it.warningScreenConfig) }) ||
-            (settings.reelBlockerConfig.isActive && usesLock(settings.reelBlockerConfig.warningScreenConfig))
+            (settings.reelBlockerConfig.isActive && usesLock(settings.reelBlockerConfig.warningScreenConfig)) ||
+            (settings.antiUninstallConfig2.isEnabled && settings.antiUninstallConfig2.mode == AntiUninstallMode.AWAY_FROM_HOME)
 
     /** True when [proposed] loosens something that is currently protected by a lock after unlock. */
     fun weakensLock(field: GatedSettingsField, current: Settings, proposed: Settings): Boolean {

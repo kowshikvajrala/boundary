@@ -1,0 +1,2 @@
+• New tamper protection choice: Away from home. Protection turns off at once, but only after Check I am away in Home lock confirms you are out.
+• With protection off you can switch Boundary's accessibility off, for example when a payment app will not work with it on.

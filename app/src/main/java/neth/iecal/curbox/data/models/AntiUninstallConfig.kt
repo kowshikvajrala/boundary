@@ -11,7 +11,10 @@ enum class AntiUninstallMode {
     TIMED,
 
     /** Protection lifts one day after the user asks, and the request can be taken back anytime. */
-    COOLDOWN
+    COOLDOWN,
+
+    /** Protection lifts at once, but only after "Check I am away" in Home lock passed. */
+    AWAY_FROM_HOME
 }
 
 data class AntiUninstallConfig(

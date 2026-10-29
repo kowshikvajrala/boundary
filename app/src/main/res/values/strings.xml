@@ -1610,6 +1610,11 @@
     <string name="anti_uninstall_mode_timed_title">Timed</string>
     <string name="anti_uninstall_mode_timed_desc">Turn off on its own after a set number of days.</string>
     <string name="anti_uninstall_mode_cooldown_title">One day wait</string>
+    <string name="anti_uninstall_mode_away_title">Away from home</string>
+    <string name="anti_uninstall_mode_away_desc">Turn off protection at once, but only when you are away from home. Uses your home from Home lock.</string>
+    <string name="anti_uninstall_summary_away">Protection can only be turned off away from home. Go out, tap Check I am away in Home lock, then turn it off here.</string>
+    <string name="anti_uninstall_away_needs_home">Set your home in Home lock first.</string>
+    <string name="anti_uninstall_away_not_verified">You can turn this off only when you are away from home. Go out, open Home lock and tap Check I am away. Then come back here within 10 minutes.</string>
     <string name="anti_uninstall_mode_cooldown_desc">Request to turn off protection, then wait one day. The request can be cancelled at any time.</string>
     <string name="anti_uninstall_days_hint">Days to wait</string>
     <string name="anti_uninstall_days_error">Enter at least one day.</string>
