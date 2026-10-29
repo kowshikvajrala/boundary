@@ -126,6 +126,9 @@ class DataStoreManager(private val context: Context) {
     private val gson = Gson()
 
     companion object {
+        const val EMERGENCY_OFF_MIN_DAYS = 1
+        const val EMERGENCY_OFF_MAX_DAYS = 365
+
         @Volatile
         private var INSTANCE: androidx.datastore.core.DataStore<Settings>? = null
 
@@ -438,8 +441,8 @@ class DataStoreManager(private val context: Context) {
         var refusedAtHome = false
         var nextDeadline: Long? = null
         settingsDataStore.updateData { current ->
-            if (!HomeLock.isAwayPassActive() && (current.settingsChangeDelayConfig2.isEnabled ||
-                current.settingsChangeDelayConfig2.requireTamperProtectionOff)) return@updateData current
+            if (current.settingsChangeDelayConfig2.isEnabled ||
+                current.settingsChangeDelayConfig2.requireTamperProtectionOff) return@updateData current
             val groups = current.blockedAppGroups.map { group ->
                 val lockedAtHome = HomeLock.usesLock(group.warningScreenConfig) && !HomeLock.isAwayPassActive()
                 if (group.id == groupId && group.isActive && lockedAtHome) refusedAtHome = true
@@ -467,8 +470,8 @@ class DataStoreManager(private val context: Context) {
         var refusedAtHome = false
         var nextDeadline: Long? = null
         settingsDataStore.updateData { current ->
-            if (!HomeLock.isAwayPassActive() && (current.settingsChangeDelayConfig2.isEnabled ||
-                current.settingsChangeDelayConfig2.requireTamperProtectionOff)) return@updateData current
+            if (current.settingsChangeDelayConfig2.isEnabled ||
+                current.settingsChangeDelayConfig2.requireTamperProtectionOff) return@updateData current
             val config = current.keywordBlockerConfig
             val groups = config.keywordGroups.map { group ->
                 val lockedAtHome = HomeLock.usesLock(group.warningScreenConfig) && !HomeLock.isAwayPassActive()
@@ -493,8 +496,8 @@ class DataStoreManager(private val context: Context) {
         var refusedAtHome = false
         var nextDeadline: Long? = null
         settingsDataStore.updateData { current ->
-            if ((!HomeLock.isAwayPassActive() && (current.settingsChangeDelayConfig2.isEnabled ||
-                current.settingsChangeDelayConfig2.requireTamperProtectionOff)) ||
+            if (current.settingsChangeDelayConfig2.isEnabled ||
+                current.settingsChangeDelayConfig2.requireTamperProtectionOff ||
                 !current.reelBlockerConfig.isActive
             ) return@updateData current
             if (HomeLock.usesLock(current.reelBlockerConfig.warningScreenConfig) && !HomeLock.isAwayPassActive()) {
@@ -624,10 +627,7 @@ class DataStoreManager(private val context: Context) {
             }
             val timeGateActive = delayConfig.isEnabled && delayConfig.delayMinutes > 0
             tamperGated = delayConfig.requireTamperProtectionOff && current.antiUninstallConfig2.isEnabled
-            // With the Home lock away pass, every change applies at once, so the owner can clean
-            // up groups, the change delay and its tamper gate in one go.
             if ((!timeGateActive && !tamperGated) ||
-                HomeLock.isAwayPassActive() ||
                 RestrictionComparator.isSameOrStricter(field, current, proposed)
             ) {
                 tamperGated = false
@@ -728,6 +728,10 @@ class DataStoreManager(private val context: Context) {
                 GatedSettingsField.WEBSITE_USAGE_TRACKING -> settings.copy(
                     isWebsiteUsageTrackingEnabled = gson.fromJson(valueJson, Boolean::class.java)
                 )
+                GatedSettingsField.EMERGENCY_OFF_WAIT -> settings.copy(
+                    emergencyOffWaitDays = gson.fromJson(valueJson, Int::class.java)
+                        .coerceIn(EMERGENCY_OFF_MIN_DAYS, EMERGENCY_OFF_MAX_DAYS)
+                )
                 GatedSettingsField.CHANGE_DELAY -> {
                     val prefs = gson.fromJson(valueJson, SettingsChangeDelayPrefs::class.java)
                     settings.copy(settingsChangeDelayConfig2 = settings.settingsChangeDelayConfig2.copy(
@@ -753,6 +757,7 @@ class DataStoreManager(private val context: Context) {
                 GatedSettingsField.UI_HIDER -> settings.uiHiderConfig
                 GatedSettingsField.APP_USAGE_TRACKING -> settings.isAppUsageTrackingEnabled
                 GatedSettingsField.WEBSITE_USAGE_TRACKING -> settings.isWebsiteUsageTrackingEnabled
+                GatedSettingsField.EMERGENCY_OFF_WAIT -> settings.emergencyOffWaitDays
                 GatedSettingsField.CHANGE_DELAY -> SettingsChangeDelayPrefs(
                     isEnabled = settings.settingsChangeDelayConfig2.isEnabled,
                     delayMinutes = settings.settingsChangeDelayConfig2.delayMinutes.coerceIn(
@@ -818,6 +823,55 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun updatePaymentPauseApps(apps: List<String>) {
         settingsDataStore.updateData { it.copy(paymentPauseApps = apps) }
+    }
+
+    suspend fun updateEmergencyOffWaitDays(days: Int) {
+        updateGated(GatedSettingsField.EMERGENCY_OFF_WAIT) { days.coerceIn(EMERGENCY_OFF_MIN_DAYS, EMERGENCY_OFF_MAX_DAYS) }
+    }
+
+    /** When Emergency off can be used again, or 0 when it can be used now. */
+    fun emergencyOffAvailableAt(settings: Settings, now: Long = System.currentTimeMillis()): Long {
+        if (settings.emergencyOffLastUsedAtMs <= 0L) return 0L
+        val availableAt = settings.emergencyOffLastUsedAtMs + settings.emergencyOffWaitDays * 86_400_000L
+        return if (availableAt > now) availableAt else 0L
+    }
+
+    /**
+     * Emergency off: switches off every restriction at once, with no delay and no location
+     * check, then stays unavailable for [Settings.emergencyOffWaitDays]. Waiting changes are
+     * applied first, since the owner already asked for them. Returns false while still waiting.
+     */
+    suspend fun useEmergencyOff(): Boolean {
+        var used = false
+        settingsDataStore.updateData { stored ->
+            used = false
+            val now = System.currentTimeMillis()
+            if (emergencyOffAvailableAt(stored, now) > 0L) return@updateData stored
+            used = true
+            val current = overlayPendingChanges(stored)
+            val keywordBlocker = current.keywordBlockerConfig
+            current.copy(
+                blockedAppGroups = current.blockedAppGroups.map { it.copy(isActive = false, temporarilyDisabledUntilMs = 0L) },
+                keywordBlockerConfig = keywordBlocker.copy(
+                    isActive = false,
+                    keywordGroups = keywordBlocker.keywordGroups.map { it.copy(isActive = false, temporarilyDisabledUntilMs = 0L) }
+                ),
+                reelBlockerConfig = current.reelBlockerConfig.copy(isActive = false, temporarilyDisabledUntilMs = 0L),
+                antiUninstallConfig2 = current.antiUninstallConfig2.copy(isEnabled = false, unlockRequestedAtMs = 0L),
+                settingsChangeDelayConfig2 = current.settingsChangeDelayConfig2.copy(
+                    isEnabled = false,
+                    requireTamperProtectionOff = false,
+                    pendingChanges = emptyList()
+                ),
+                isAwayModeActive = false,
+                emergencyOffLastUsedAtMs = now
+            )
+        }
+        if (used) {
+            schedulePendingChanges()
+            runCatching { ServiceProtectionManager.removeDeviceAdmin(context) }
+        }
+        return used
     }
 
     /** Starts Away mode. Only allowed while the away pass from Home lock is active. */

@@ -606,6 +606,27 @@
     <string name="payment_pause_notification_title">Boundary is paused</string>
     <string name="payment_pause_notification_text">Blocking comes back on by itself when the timer ends.</string>
     <string name="home_lock_title">Home lock</string>
+    <string name="emergency_off_title">Emergency off</string>
+    <string name="emergency_off_card_subtitle">Turn everything off now, then wait to use it again</string>
+    <string name="emergency_off_desc">Turns off every restriction at once: app groups, website groups, short video blocking, locks, tamper protection and the settings change delay. No waiting and no location check. Your groups are kept, just switched off. After you use it, it stays unavailable for the number of days you choose below.</string>
+    <string name="emergency_off_available">Available now</string>
+    <string name="emergency_off_waiting">Used. Available again on %1$s</string>
+    <string name="emergency_off_button">Emergency off</string>
+    <string name="emergency_off_confirm_title">Turn everything off?</string>
+    <string name="emergency_off_done">Everything is off. Turn things back on in each blocker when you are ready.</string>
+    <string name="emergency_off_not_yet">Emergency off is not available yet.</string>
+    <string name="emergency_off_wait_heading">Days before it can be used again</string>
+    <string name="emergency_off_wait_desc">Raising this takes effect at once. Lowering it counts as loosening, so it waits through your settings change delay.</string>
+    <string name="emergency_off_wait_input">Wait</string>
+    <string name="emergency_off_days">days</string>
+    <string name="emergency_off_save">Save</string>
+    <string name="emergency_off_saved">Saved.</string>
+    <string name="emergency_off_wait_range">Choose between %1$d and %2$d days.</string>
+    <string name="change_delay_field_emergency_off_wait">Emergency off wait</string>
+    <plurals name="emergency_off_confirm_message">
+        <item quantity="one">Every restriction turns off right now, including tamper protection and the settings change delay. You will not be able to use Emergency off again for %1$d day.</item>
+        <item quantity="other">Every restriction turns off right now, including tamper protection and the settings change delay. You will not be able to use Emergency off again for %1$d days.</item>
+    </plurals>
     <string name="away_mode_on_title">Away mode is on</string>
     <string name="away_mode_on_desc">App groups, short video blocking and locks are paused. Website and keyword blocking still works. When a blocked site opens while you are home, everything comes back.</string>
     <string name="away_mode_background_needed">To notice you are home, Boundary needs location set to Allow all the time. It only reads it when a blocked site opens.</string>
@@ -632,7 +653,7 @@
     <string name="home_lock_turn_off_all_cancel">Not now</string>
     <string name="home_lock_all_off">Away mode is on.</string>
     <string name="home_lock_check_away">Check I am away</string>
-    <string name="home_lock_away_ok">You are away from home. For the next %1$s every change applies at once: delete or loosen groups, turn off the settings change delay and turn off tamper protection.</string>
+    <string name="home_lock_away_ok">You are away from home. Locks can be loosened for the next %1$s.</string>
     <string name="home_lock_at_home">You are at home, so locks cannot be loosened.</string>
     <string name="home_lock_needs_home">Set your home first.</string>
     <string name="home_lock_no_permission">Boundary needs location access to check this.</string>

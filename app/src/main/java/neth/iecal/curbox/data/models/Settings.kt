@@ -36,5 +36,9 @@ data class Settings(
      * locks stop; keyword blocking stays on, and the next blocked site checks if the owner is
      * home again, which ends it.
      */
-    val isAwayModeActive: Boolean = false
+    val isAwayModeActive: Boolean = false,
+    /** Days Emergency off stays unavailable after each use. Lowering it is gated. */
+    val emergencyOffWaitDays: Int = 30,
+    /** When Emergency off was last used, 0 for never. Written only by the emergency itself. */
+    val emergencyOffLastUsedAtMs: Long = 0L
 )

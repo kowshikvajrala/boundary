@@ -57,6 +57,8 @@ object RestrictionComparator {
                     !current.isAppUsageTrackingEnabled || proposed.isAppUsageTrackingEnabled
                 GatedSettingsField.WEBSITE_USAGE_TRACKING ->
                     !current.isWebsiteUsageTrackingEnabled || proposed.isWebsiteUsageTrackingEnabled
+                GatedSettingsField.EMERGENCY_OFF_WAIT ->
+                    proposed.emergencyOffWaitDays >= current.emergencyOffWaitDays
                 GatedSettingsField.CHANGE_DELAY ->
                     changeDelay(current.settingsChangeDelayConfig2, proposed.settingsChangeDelayConfig2)
             }

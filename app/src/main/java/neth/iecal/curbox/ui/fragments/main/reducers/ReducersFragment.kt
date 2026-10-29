@@ -130,6 +130,14 @@ class ReducersFragment : Fragment() {
             startActivity(intent)
         }
 
+        val emergencyOffCard = view.findViewById<MaterialCardView>(R.id.card_emergency_off)
+        emergencyOffCard.setOnClickListener {
+            val intent = Intent(requireContext(), FragmentActivity::class.java).apply {
+                putExtra("fragment", neth.iecal.curbox.ui.fragments.main.reducers.advanced.EmergencyOffFragment.FRAGMENT_ID)
+            }
+            startActivity(intent)
+        }
+
         val paymentPauseCard = view.findViewById<MaterialCardView>(R.id.card_payment_pause)
         paymentPauseCard.setOnClickListener {
             val intent = Intent(requireContext(), FragmentActivity::class.java).apply {

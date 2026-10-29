@@ -1,0 +1,2 @@
+• New Emergency off: one button that turns every restriction off at once, including tamper protection and the settings change delay, with no waiting. After you use it, it stays unavailable for the number of days you choose (30 by default).
+• The away pass no longer skips the settings change delay or turns off every kind of tamper protection. Away mode covers being out.
