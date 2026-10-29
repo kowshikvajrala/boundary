@@ -1,0 +1,2 @@
+• New Locks widget: shows each app group that is locked after an unlock, with a live countdown until it opens again.
+• New Payment pause widget: tap it, pick a payment app, and Boundary pauses for 5 minutes and opens it.

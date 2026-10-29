@@ -75,6 +75,13 @@
             android:exported="false" />
 
         <activity
+            android:name=".ui.activity.PaymentPauseChooserActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Curbox.TransparentDialog" />
+
+        <activity
             android:name=".ui.activity.PaymentPauseStartActivity"
             android:exported="false"
             android:excludeFromRecents="true"
@@ -213,6 +220,31 @@
 
         <meta-data android:name="android.app.shortcuts"
             android:resource="@xml/shortcuts" />
+
+        <receiver
+            android:name=".ui.widgets.LocksWidgetProvider"
+            android:exported="false"
+            android:label="@string/locks_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="app.boundary.blocker.widget.LOCKS_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_locks_metadata" />
+        </receiver>
+
+        <receiver
+            android:name=".ui.widgets.PaymentPauseWidgetProvider"
+            android:exported="false"
+            android:label="@string/payment_pause_title">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_payment_pause_metadata" />
+        </receiver>
 
         <receiver android:name=".ui.widgets.ReelsWidgetProvider"
             android:label="Reel Stats"

@@ -546,6 +546,13 @@
     <string name="locked_notifications_listener_label">Boundary locked app notifications</string>
     <string name="locked_after_unlock_pill">Locked. Opens again in %1$s</string>
     <string name="payment_pause_title">Payment pause</string>
+    <string name="payment_pause_widget_desc">Tap, pick a payment app, and Boundary pauses for 5 minutes.</string>
+    <string name="payment_pause_widget_choose">Pause and open</string>
+    <string name="locks_widget_label">Locks</string>
+    <string name="locks_widget_desc">Groups that are locked after an unlock, with the time left.</string>
+    <string name="locks_widget_title">Locked</string>
+    <string name="locks_widget_empty">Nothing is locked</string>
+    <string name="locks_widget_more">And %1$d more</string>
     <string name="payment_pause_card_subtitle">Turn blocking off for 5 minutes to pay</string>
     <string name="payment_pause_desc">Some payment apps refuse to work while an accessibility service is on. A payment pause turns Boundary off for 5 minutes and opens your payment app. After 5 minutes Boundary turns itself back on. You can also just open a payment app: Boundary starts the pause by itself and reopens the app. If you open a blocked app, a short video app, a browser or the Settings app during the pause, it ends at once.</string>
     <string name="payment_pause_permission_title">One time setup</string>
