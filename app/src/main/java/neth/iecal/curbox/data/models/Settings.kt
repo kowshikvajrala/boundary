@@ -27,5 +27,6 @@ data class Settings(
     val serviceProtectionConfig: ServiceProtectionConfig = ServiceProtectionConfig(),
     val antiUninstallConfig2: AntiUninstallConfig = AntiUninstallConfig(),
     val eyeBreakConfig: EyeBreakConfig = EyeBreakConfig(),
-    val settingsChangeDelayConfig2: SettingsChangeDelayConfig = SettingsChangeDelayConfig()
+    val settingsChangeDelayConfig2: SettingsChangeDelayConfig = SettingsChangeDelayConfig(),
+    val homeLocation: HomeLocation = HomeLocation()
 )

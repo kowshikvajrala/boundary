@@ -1,0 +1,5 @@
+• Wait before unlocking can now be set in seconds, minutes or hours. Long waits show a clock, like 4:59.
+• New: Lock after unlock ends. When your unlock time runs out, the app, website or short videos are fully locked for a time you choose. No wait screen and no way to open early.
+• New: Home lock. Set your home, and locks can only be turned off, shortened, paused or deleted when you are away from home.
+• When you are away from home, tap Check I am away to turn off all blocking at once.
+• Vibration on the wait screen now stops after 30 seconds.

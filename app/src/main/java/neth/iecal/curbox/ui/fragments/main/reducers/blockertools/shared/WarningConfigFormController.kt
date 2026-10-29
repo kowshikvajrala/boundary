@@ -8,6 +8,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -35,6 +36,25 @@ internal class WarningConfigFormController(
     private var focusGroupOptions: List<FocusGroupUnlockOption> = emptyList()
     private var selectedFocusGroupId = ""
     private val messageBoxes = mutableListOf<ItemWarningMessageBinding>()
+    private var isHomeLocationSet = false
+    private val proceedDelayField by lazy {
+        SecondsField(
+            binding.proceedDelaySlider,
+            binding.proceedDelayInput,
+            binding.proceedDelayInputLayout,
+            binding.proceedDelayUnitBtn,
+            minimumSeconds = 0f
+        )
+    }
+    private val lockAfterField by lazy {
+        SecondsField(
+            binding.lockAfterSlider,
+            binding.lockAfterInput,
+            binding.lockAfterInputLayout,
+            binding.lockAfterUnitBtn,
+            minimumSeconds = 1f
+        )
+    }
 
     fun bind(
         config: AppBlockerWarningScreenConfig,
@@ -100,9 +120,13 @@ internal class WarningConfigFormController(
         binding.fixedTimeSlider.value = fixedTimeMinutes.toFloat().coerceAtMost(120f)
         updateFixedTimeInput(fixedTimeMinutes)
 
-        val proceedDelay = config.proceedDelayInSecs.coerceAtLeast(0)
-        binding.proceedDelaySlider.value = proceedDelay.toFloat().coerceAtMost(60f)
-        updateProceedDelayInput(proceedDelay.toLong())
+        proceedDelayField.bind(config.proceedDelayInSecs.coerceAtLeast(0).toLong())
+
+        val lockAfterSeconds = config.lockAfterUnlockMs / 1000L
+        binding.lockAfterSwitch.isChecked = lockAfterSeconds > 0
+        binding.lockAfterInputs.isVisible = lockAfterSeconds > 0
+        lockAfterField.bind(if (lockAfterSeconds > 0) lockAfterSeconds else DEFAULT_LOCK_AFTER_SECONDS)
+        updateLockAfterAvailability()
 
         binding.proceedLimitSwitch.isChecked = config.proceedLimitEnabled
         binding.proceedLimitContainer.isVisible = config.proceedLimitEnabled
@@ -166,12 +190,13 @@ internal class WarningConfigFormController(
             maximumValue = { Long.MAX_VALUE / 60_000L },
             updateInput = ::updateFixedTimeInput
         )
-        setupNumericInput(
-            binding.proceedDelaySlider,
-            binding.proceedDelayInput,
-            binding.proceedDelayInputLayout,
-            updateInput = ::updateProceedDelayInput
-        )
+        proceedDelayField.setupListeners()
+        lockAfterField.setupListeners()
+        binding.lockAfterSwitch.setOnCheckedChangeListener { _, isChecked ->
+            TransitionManager.beginDelayedTransition(binding.mainContentContainer, AutoTransition())
+            binding.lockAfterInputs.isVisible = isChecked
+            updateLockAfterAvailability()
+        }
         binding.proceedLimitSwitch.setOnCheckedChangeListener { _, isChecked ->
             binding.proceedLimitContainer.isVisible = isChecked
         }
@@ -290,6 +315,19 @@ internal class WarningConfigFormController(
         binding.warningMsgRandomNote.isVisible = hasSeveral
     }
 
+    /** The lock after an unlock can only be turned on once a home is set, because home is what lets it be turned off. */
+    fun bindHomeLocation(isSet: Boolean) {
+        isHomeLocationSet = isSet
+        updateLockAfterAvailability()
+    }
+
+    private fun isLockAfterAvailable(): Boolean = isHomeLocationSet || binding.lockAfterSwitch.isChecked
+
+    private fun updateLockAfterAvailability() {
+        binding.lockAfterSwitch.isEnabled = isLockAfterAvailable()
+        binding.lockAfterHomeNote.isVisible = !isHomeLocationSet && !binding.lockAfterSwitch.isChecked
+    }
+
     fun createConfig(
         qrKeys: Map<String, Long>,
         nfcKeys: Map<String, Long>
@@ -325,7 +363,12 @@ internal class WarningConfigFormController(
                 ""
             },
             focusGoalRequiredMinutes = numericInputValue(binding.focusGoalMinutesInput).toInt(),
-            proceedDelayInSecs = numericInputValue(binding.proceedDelayInput).toInt(),
+            proceedDelayInSecs = proceedDelayField.seconds().toInt(),
+            lockAfterUnlockMs = if (binding.lockAfterSwitch.isChecked && isLockAfterAvailable()) {
+                lockAfterField.seconds() * 1000L
+            } else {
+                0L
+            },
             vibrateAndIncBrightness = binding.switchVibrateBrightness.isChecked,
             proceedLimitEnabled = binding.proceedLimitSwitch.isChecked,
             allowedProceeds = numericInputValue(binding.allowedProceedsInput).toInt(),
@@ -413,11 +456,8 @@ internal class WarningConfigFormController(
                 binding.fixedTimeInputLayout,
                 Long.MAX_VALUE / 60_000L
             ),
-            NumericInput(
-                binding.proceedDelaySlider,
-                binding.proceedDelayInput,
-                binding.proceedDelayInputLayout
-            ),
+            proceedDelayField.numericInput(),
+            lockAfterField.numericInput(),
             NumericInput(
                 binding.allowedProceedsSlider,
                 binding.allowedProceedsInput,
@@ -549,6 +589,8 @@ internal class WarningConfigFormController(
         binding.proceedDelayContainer.isVisible =
             challengeIndex != WarningUnlockSelectionMapper.NEVER_UNLOCK_INDEX &&
                 challengeIndex != -1
+        // An each open unlock never runs out on a timer, so there is nothing to lock after.
+        binding.lockAfterSection.isVisible = !isOnEachOpenEnabled()
         binding.qrSetupContainer.isVisible =
             challengeIndex == WarningUnlockSelectionMapper.EFFORT_INDEX &&
                 secondaryIndex == 0
@@ -644,10 +686,6 @@ internal class WarningConfigFormController(
         setNumericInputValue(binding.fixedTimeInput, value)
     }
 
-    private fun updateProceedDelayInput(value: Long) {
-        setNumericInputValue(binding.proceedDelayInput, value)
-    }
-
     private fun updateAllowedProceedsInput(value: Long) {
         setNumericInputValue(binding.allowedProceedsInput, value)
     }
@@ -687,12 +725,101 @@ internal class WarningConfigFormController(
         }
     }
 
+    /** A number with a Seconds, Minutes or Hours button. The value is kept in seconds. */
+    private inner class SecondsField(
+        private val slider: Slider,
+        private val input: TextInputEditText,
+        private val inputLayout: TextInputLayout,
+        private val unitButton: MaterialButton,
+        private val minimumSeconds: Float
+    ) {
+        fun bind(totalSeconds: Long) {
+            val (unitIndex, value) = when {
+                totalSeconds > 0 && totalSeconds % SECONDS_PER_HOUR == 0L ->
+                    HOURS_UNIT_INDEX to (totalSeconds / SECONDS_PER_HOUR)
+                totalSeconds > 0 && totalSeconds % SECONDS_PER_MINUTE == 0L ->
+                    MINUTES_UNIT_INDEX to (totalSeconds / SECONDS_PER_MINUTE)
+                else -> SECONDS_UNIT_INDEX to totalSeconds
+            }
+            unitButton.text = unitOptions()[unitIndex]
+            updateSliderBounds(unitIndex)
+            slider.value = value.toFloat().coerceIn(slider.valueFrom, slider.valueTo)
+            setNumericInputValue(input, value)
+        }
+
+        fun setupListeners() {
+            setupNumericInput(
+                slider,
+                input,
+                inputLayout,
+                maximumValue = ::maximumValue,
+                updateInput = { setNumericInputValue(input, it) }
+            )
+            unitButton.setOnClickListener { showUnitMenu(it) }
+        }
+
+        fun seconds(): Long = numericInputValue(input) * secondsForUnit(unitIndex())
+
+        fun numericInput() = NumericInput(slider, input, inputLayout, maximumValue())
+
+        private fun maximumValue(): Long = Int.MAX_VALUE.toLong() / secondsForUnit(unitIndex())
+
+        private fun showUnitMenu(anchor: View) {
+            PopupMenu(fragment.requireContext(), anchor).apply {
+                unitOptions().forEachIndexed { index, option ->
+                    menu.add(0, index, index, option)
+                }
+                setOnMenuItemClickListener { item ->
+                    unitButton.text = item.title
+                    updateSliderBounds(item.itemId)
+                    setNumericInputValue(input, slider.value.toLong())
+                    true
+                }
+                show()
+            }
+        }
+
+        private fun updateSliderBounds(unitIndex: Int) {
+            val (minimum, maximum) = when (unitIndex) {
+                MINUTES_UNIT_INDEX -> 1f to 60f
+                HOURS_UNIT_INDEX -> 1f to 24f
+                else -> minimumSeconds to 60f
+            }
+            val newValue = slider.value.coerceIn(minimum, maximum)
+            if (slider.value < minimum || slider.value > maximum) slider.value = minimum
+            slider.valueFrom = minimum
+            slider.valueTo = maximum
+            slider.value = newValue
+        }
+
+        private fun unitIndex(): Int =
+            unitOptions().indexOf(unitButton.text.toString()).coerceAtLeast(SECONDS_UNIT_INDEX)
+
+        private fun secondsForUnit(unitIndex: Int): Long = when (unitIndex) {
+            MINUTES_UNIT_INDEX -> SECONDS_PER_MINUTE
+            HOURS_UNIT_INDEX -> SECONDS_PER_HOUR
+            else -> 1L
+        }
+
+        private fun unitOptions(): List<String> = listOf(
+            fragment.getString(R.string.unit_seconds),
+            fragment.getString(R.string.unit_minutes),
+            fragment.getString(R.string.unit_hours)
+        )
+    }
+
     private companion object {
         const val MINUTES_INDEX = 0
         const val HOURS_INDEX = 1
         const val DAYS_INDEX = 2
         const val MINUTES_PER_HOUR = 60L
         const val MINUTES_PER_DAY = 1_440L
+        const val SECONDS_UNIT_INDEX = 0
+        const val MINUTES_UNIT_INDEX = 1
+        const val HOURS_UNIT_INDEX = 2
+        const val SECONDS_PER_MINUTE = 60L
+        const val SECONDS_PER_HOUR = 3_600L
+        const val DEFAULT_LOCK_AFTER_SECONDS = 30 * SECONDS_PER_MINUTE
         const val MIN_MATH_QUESTIONS = 1
         const val MAX_MATH_QUESTIONS = 10
         const val MIN_MATH_LEVEL = 1

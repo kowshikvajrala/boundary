@@ -82,6 +82,8 @@ class AppBlocker : BaseBlocker() {
     private val pausedUnlocks = ConcurrentHashMap<String, PausedUnlock>()
     private val groupPackagesById = ConcurrentHashMap<String, Set<String>>()
     private val onEachOpenGroupIds = ConcurrentHashMap.newKeySet<String>()
+    private val lockAfterMsById = ConcurrentHashMap<String, Long>()
+    private lateinit var unlockLocks: UnlockLocks
     // Windows that can sit over an app without the user leaving it, such as the keyboard.
     private val passThroughPackages = ConcurrentHashMap.newKeySet<String>()
 
@@ -141,6 +143,13 @@ class AppBlocker : BaseBlocker() {
         val now = System.currentTimeMillis()
 
         blockedAppsList[packageName]?.let { entries ->
+            for (entry in entries) {
+                val lockEndsAt = lockEndsAt(entry, now)
+                if (lockEndsAt > 0L) {
+                    showLockedPill(packageName, lockEndsAt)
+                    return
+                }
+            }
             for (entry in entries) {
                 if (!entry.warningConfig.isOnOpenConfig ||
                     isGroupInCooldown(entry.groupId, now)
@@ -266,6 +275,7 @@ class AppBlocker : BaseBlocker() {
             notificationManager = TimerNotification(service, TIMER_NOTIFICATION_ID)
         }
         prefs = service.getSharedPreferences("app_blocker_prefs", Context.MODE_PRIVATE)
+        unlockLocks = UnlockLocks(service, "app_blocker_unlock_locks")
         usageStats = UsageStatsHelper(service)
         loadPersistedData()
         passThroughPackages.clear()
@@ -288,6 +298,7 @@ class AppBlocker : BaseBlocker() {
                     groupNames[group.id] = group.name
                     groupPackagesById[group.id] = group.selectedPackages.map(String::trim).toSet()
                     if (group.warningScreenConfig.isOnOpenConfig) onEachOpenGroupIds.add(group.id) else onEachOpenGroupIds.remove(group.id)
+                    lockAfterMsById[group.id] = group.warningScreenConfig.lockAfterUnlockMs
                     if (!group.isActive) return@forEach
 
                     try {
@@ -336,6 +347,7 @@ class AppBlocker : BaseBlocker() {
 
     private fun handlePutCooldownIntentBroadcast(intent: Intent) {
         val groupId = intent.getStringExtra("result_id") ?: return
+        if (lockEndsAt(groupId) > 0L) return
 
         val durationMillis = intent.getLongExtra(
             "selected_time",
@@ -464,8 +476,35 @@ class AppBlocker : BaseBlocker() {
         pausedUnlocks[groupId]?.let { if (now - it.pausedAtMs <= MAX_PAUSED_UNLOCK_MS) return true }
         val endTime = cooldownGroupsList[groupId] ?: return false
         if (endTime > now) return true
-        removeCooldownFrom(groupId)
+        endUnlock(groupId)
         return false
+    }
+
+    /** A timed unlock ran out. Remembers when, so a lock after unlock can start from that moment. */
+    private fun endUnlock(groupId: String) {
+        val endedAt = cooldownGroupsList[groupId]
+        removeCooldownFrom(groupId)
+        if (endedAt != null && groupId !in onEachOpenGroupIds) unlockLocks.unlockEnded(groupId, endedAt)
+    }
+
+    private fun lockEndsAt(groupId: String, now: Long = System.currentTimeMillis()): Long {
+        if (groupId in onEachOpenGroupIds) return 0L
+        return unlockLocks.lockEndsAt(groupId, lockAfterMsById[groupId] ?: 0L, now)
+    }
+
+    /** Locked only while the group is enforcing, that is, inside its schedule and not unlocked. */
+    private fun lockEndsAt(entry: AppGroupEntry, now: Long): Long {
+        if (isGroupInCooldown(entry.groupId, now)) return 0L
+        if (entry.config.schedule.activeWindow(now) == null) return 0L
+        return lockEndsAt(entry.groupId, now)
+    }
+
+    private fun showLockedPill(packageName: String, lockEndsAt: Long) {
+        if (!service.isDelayOver(1000)) return
+        notificationManager.stopTimer()
+        service.pressHome()
+        lastPackage = ""
+        service.blockedPill.show(packageName, UnlockLocks.pillText(service, lockEndsAt))
     }
 
     // Counts down to the soonest unlock ending and, when several groups are unlocked, lists each one.
@@ -501,7 +540,7 @@ class AppBlocker : BaseBlocker() {
 
         val runnable = Runnable {
             try {
-                cooldownGroupId?.let(::removeCooldownFrom)
+                cooldownGroupId?.let(::endUnlock)
                 val currentPackage = service.rootInActiveWindow?.packageName?.toString()
                 if (currentPackage != null) {
                     lastPackage = ""

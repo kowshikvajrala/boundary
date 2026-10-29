@@ -81,7 +81,7 @@ object RestrictionComparator {
         }
     }
 
-    private fun appGroup(o: AppGroup, n: AppGroup): Boolean {
+    fun appGroup(o: AppGroup, n: AppGroup): Boolean {
         if (!temporaryDisableSameOrShorter(o.isActive, o.temporarilyDisabledUntilMs,
                 n.isActive, n.temporarilyDisabledUntilMs)) return false
         if (!n.selectedPackages.containsAll(o.selectedPackages)) return false
@@ -103,7 +103,7 @@ object RestrictionComparator {
         }
     }
 
-    private fun keywordGroup(o: KeywordGroup, n: KeywordGroup): Boolean {
+    fun keywordGroup(o: KeywordGroup, n: KeywordGroup): Boolean {
         if (!temporaryDisableSameOrShorter(o.isActive, o.temporarilyDisabledUntilMs,
                 n.isActive, n.temporarilyDisabledUntilMs)) return false
         if (!n.selectedKeywords.toHashSet().containsAll(o.selectedKeywords)) return false
@@ -319,6 +319,7 @@ object RestrictionComparator {
         val proceedDisabledOk = !o.isProceedDisabled || n.isProceedDisabled
         val dialogHiddenOk = !o.isWarningDialogHidden || n.isWarningDialogHidden
         val proceedDelayOk = n.proceedDelayInSecs >= o.proceedDelayInSecs
+        val lockAfterOk = n.lockAfterUnlockMs >= o.lockAfterUnlockMs
         val vibrateOk = !o.vibrateAndIncBrightness || n.vibrateAndIncBrightness
         val proceedLimitOk = when {
             o.proceedLimitEnabled && !n.proceedLimitEnabled -> false
@@ -359,7 +360,7 @@ object RestrictionComparator {
 
         return onEachOpenOk && cooldownOk && dynamicIntervalOk &&
             proceedDisabledOk && dialogHiddenOk &&
-            proceedDelayOk && vibrateOk && proceedLimitOk && qrOk && nfcOk && typingOk && intentOk &&
+            proceedDelayOk && lockAfterOk && vibrateOk && proceedLimitOk && qrOk && nfcOk && typingOk && intentOk &&
             adaptiveMathOk && adaptiveMathQuestionCountOk && adaptiveMathStartingLevelOk &&
             focusGoalOk && intentMinLengthOk
     }

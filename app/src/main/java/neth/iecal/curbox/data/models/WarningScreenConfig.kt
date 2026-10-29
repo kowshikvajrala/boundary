@@ -36,6 +36,8 @@ data class AppBlockerWarningScreenConfig(
     val focusGoalRequiredMinutes: Int = 60,
     /** For app groups, grant access only for the current selected-app session. */
     val isOnOpenConfig: Boolean = false,
+    /** After a timed unlock runs out, the group stays fully locked this long, with no wait screen. 0 is off. */
+    val lockAfterUnlockMs: Long = 0L,
 )
 
 class WarningMessagesAdapter : TypeAdapter<List<String>>() {

@@ -68,6 +68,9 @@ GitHub Actions quirks seen here: a tag push sometimes does not start a run (star
 | Unlock time counts only while the group's apps are in front; leftover time is frozen for up to 1 hour | `AppBlocker.syncUnlocksWithForegroundApp`, `pausedUnlocks` |
 | X (Twitter) in the Reels blocker and counter. Its viewer is Compose with no ids or text, so it is matched by tree path and full screen size. It is blocked but not counted (`countsReels = false`): counting by pager scroll position was unreliable, so the owner had it removed in 1.1.1 | `hardcoded/ReelAppConfig.kt`, `ReelAppData.countsReels`, `ReelsCountTracker` |
 | Wait screen messages: one box each ("Add another message"), long messages switch to smaller left aligned text | `WarningConfigFormController.addMessageBox`, `res/layout/item_warning_message.xml`, `WarningActivity.showWarningMessage` |
+| Wait before unlocking in seconds, minutes or hours; countdown shows a clock past one minute; vibration capped at 30 s | `WarningConfigFormController.SecondsField`, `WarningActivity.proceedCountdownText` |
+| Lock after unlock ends: when a timed unlock runs out, the group is fully locked for a set time (pill, no wait screen). Apps, keyword groups and the Reels blocker. Lock starts at the unlock's end time and follows the current config | `blockers/UnlockLocks.kt`, `AppBlocker.endUnlock`, `KeywordBlocker.evaluateAndBlock`, `ReelBlocker.isCooldownActive`, `lockAfterUnlockMs` |
+| Home lock: weakening a group that uses a lock (turn off, shorten, pause, delete, temporarily disable) is refused unless "Check I am away" passed in the last 10 minutes. Home can only move while no lock is used, or with that pass. Location is read once, in the foreground; mock locations refused. When confirmed away, a confirm dialog offers "Turn off all": every app group, keyword group and the Reels blocker are switched off at once, skipping the change delay (`DataStoreManager.turnOffAllBlockingAwayFromHome`, the owner asked for this) | `utils/HomeLock.kt` (checked in `DataStoreManager.updateGated` and the temporary disable functions), `utils/HomeLocationChecker.kt`, `advanced/HomeLockFragment.kt`, `Settings.homeLocation` |
 | Eye breaks (20 20 20 rule) with a live countdown on the Reducers card | `anti_stimulants/EyeBreakReminder.kt` (in the service, broadcasts its schedule), `ReducersFragment.setupEyeBreakCard` |
 
 Behavior notes:
@@ -110,5 +113,6 @@ Behavior notes:
 | 1.1.0 | 12 | X (Twitter) full screen videos in the Reels blocker and counter |
 | 1.1.1 | 13 | X removed from the reel counter (count was unreliable); still blocked |
 | 1.2.0 | 14 | Wait screen fits long messages; one box per message instead of comma splitting |
+| 1.3.0 | 15 | Wait in seconds/minutes/hours, Lock after unlock ends, Home lock with turn off all when away |
 
 Versions up to 1.0.10 only bumped the patch number, even for features. From 1.1.0 on, releases follow semantic versioning (see Releasing).

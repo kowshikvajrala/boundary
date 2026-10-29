@@ -81,6 +81,7 @@ class KeywordBlocker : BaseBlocker() {
     private var isTurnedOn = false
     private var isUnsupportedBrowserBlockingOn = false
     private var cooldownGroupsList = ConcurrentHashMap<String, Long>()
+    private lateinit var unlockLocks: UnlockLocks
     private lateinit var notificationManager: TimerNotification
     private var notifiedCooldownGroupId: String? = null
     private var observationJob: Job? = null
@@ -234,13 +235,20 @@ class KeywordBlocker : BaseBlocker() {
             val cooldownEnd = cooldownGroupsList[group.id]
             if (cooldownEnd != null) {
                 if (cooldownEnd > now) return@filter false
-                else removeCooldownFrom(group.id)
+                removeCooldownFrom(group.id)
+                unlockLocks.unlockEnded(group.id, cooldownEnd)
             }
             true
         }
 
         for (group in eligible) {
             val window = group.config?.schedule?.activeWindow(now) ?: continue
+            val lockEndsAt = unlockLocks.lockEndsAt(group.id, group.warningScreenConfig.lockAfterUnlockMs, now)
+            if (lockEndsAt > 0L) {
+                if (!claimBlock(packageName, urlIdentifier, group.id)) return
+                handleBlocking(group, packageName, lockEndsAt)
+                return
+            }
             if (isUsageLimitExceeded(group, window)) {
                 if (!claimBlock(packageName, urlIdentifier, group.id)) return
                 handleBlocking(group, packageName)
@@ -280,7 +288,7 @@ class KeywordBlocker : BaseBlocker() {
     private fun blockTarget(packageName: String, urlIdentifier: String, groupId: String): String =
         "$groupId\u0000$packageName\u0000$urlIdentifier"
 
-    private fun handleBlocking(group: KeywordGroup, packageName: String) {
+    private fun handleBlocking(group: KeywordGroup, packageName: String, lockEndsAt: Long = 0L) {
         Thread.sleep(250)
         if (destroyed) return
         // Back + Home can leave the tab on the blocked page, so leave it from the URL bar.
@@ -290,6 +298,10 @@ class KeywordBlocker : BaseBlocker() {
         }
         Thread.sleep(1000)
 
+        if (lockEndsAt > 0L) {
+            service.blockedPill.show(packageName, UnlockLocks.pillText(service, lockEndsAt))
+            return
+        }
         if (group.warningScreenConfig.isWarningDialogHidden) return
         if (group.warningScreenConfig.isProceedDisabled) {
             service.blockedPill.show(packageName, group.warningScreenConfig.message.filter { it.isNotBlank() }.randomOrNull() ?: service.getString(R.string.blocked_pill_fallback))
@@ -408,6 +420,7 @@ class KeywordBlocker : BaseBlocker() {
         this.service = service
         this.browserBlocker = BrowserBlocker(service)
         this.prefs = service.getSharedPreferences("keyword_blocker_prefs", Context.MODE_PRIVATE)
+        this.unlockLocks = UnlockLocks(service, "keyword_blocker_unlock_locks")
         if (!::notificationManager.isInitialized) {
             notificationManager = TimerNotification(service, COOLDOWN_NOTIFICATION_ID)
         }
@@ -512,6 +525,8 @@ class KeywordBlocker : BaseBlocker() {
         val groupId = intent.getStringExtra("result_id") ?: return
         val duration = intent.getLongExtra("selected_time", 120000L)
         if (duration <= 0L) return
+        val lockAfterMs = activeGroups.find { it.id == groupId }?.warningScreenConfig?.lockAfterUnlockMs ?: 0L
+        if (unlockLocks.lockEndsAt(groupId, lockAfterMs) > 0L) return
 
         val cooldownEnd = System.currentTimeMillis() + duration
         cooldownGroupsList[groupId] = cooldownEnd
@@ -552,6 +567,7 @@ class KeywordBlocker : BaseBlocker() {
         val remaining = cooldownEnd - System.currentTimeMillis()
         if (remaining <= 0L) {
             removeCooldownFrom(groupId)
+            unlockLocks.unlockEnded(groupId, cooldownEnd)
             return
         }
 
@@ -562,6 +578,7 @@ class KeywordBlocker : BaseBlocker() {
             title = service.getString(R.string.notification_remaining_usage_lockdown),
             onFinishCallback = {
                 if (cooldownGroupsList[groupId] == cooldownEnd) {
+                    unlockLocks.unlockEnded(groupId, cooldownEnd)
                     cooldownGroupsList.remove(groupId)
                     prefs.edit {
                         remove("cooldown_$groupId")

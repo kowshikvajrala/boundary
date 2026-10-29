@@ -38,6 +38,7 @@ import neth.iecal.curbox.databinding.DialogWarningOverlayBinding
 import neth.iecal.curbox.utils.DataStoreManager
 import neth.iecal.curbox.utils.FocusGoalProgress
 import java.util.Calendar
+import java.util.Locale
 import kotlin.random.Random
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -144,7 +145,9 @@ class WarningActivity : AppCompatActivity() {
             layoutParams.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
             window.attributes = layoutParams
 
-            triggerRandomizedVibration(maxOf(3000L, (warningScreenConfig.proceedDelayInSecs / 2) * 1000L))
+            triggerRandomizedVibration(
+                ((warningScreenConfig.proceedDelayInSecs / 2) * 1000L).coerceIn(3000L, MAX_VIBRATION_MS)
+            )
         }
 
         binding = DialogWarningOverlayBinding.inflate(layoutInflater)
@@ -180,8 +183,7 @@ class WarningActivity : AppCompatActivity() {
             proceedTimer =
                 object : CountDownTimer(warningScreenConfig.proceedDelayInSecs * 1000L, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
-                        binding.proceedSeconds.text =
-                            getString(R.string.proceed_in, millisUntilFinished / 1000)
+                        binding.proceedSeconds.text = proceedCountdownText(millisUntilFinished / 1000)
                     }
 
                     override fun onFinish() {
@@ -638,6 +640,20 @@ class WarningActivity : AppCompatActivity() {
         }
     }
 
+    /** Seconds alone up to a minute, then a clock such as 4:59 or 1:04:59. */
+    private fun proceedCountdownText(secondsLeft: Long): String {
+        if (secondsLeft < 60) return getString(R.string.proceed_in, secondsLeft)
+        val hours = secondsLeft / 3600
+        val minutes = secondsLeft % 3600 / 60
+        val seconds = secondsLeft % 60
+        val clock = if (hours > 0) {
+            String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            String.format(Locale.getDefault(), "%d:%02d", minutes, seconds)
+        }
+        return getString(R.string.proceed_in_time, clock)
+    }
+
     /** Short messages stay a big headline. Long ones switch to smaller text that is easy to read. */
     private fun showWarningMessage(message: String) {
         binding.warningMsg.text = message
@@ -819,6 +835,7 @@ class WarningActivity : AppCompatActivity() {
     private companion object {
         const val KEY_MATH_RETRY_ENDS_AT_MS = "math_retry_ends_at_ms"
         const val LONG_MESSAGE_CHARS = 60
+        const val MAX_VIBRATION_MS = 30_000L
         const val MATH_RETRY_DELAY_MS = 15_000L
         const val MIN_ADAPTIVE_MATH_QUESTIONS = 1
         const val MAX_ADAPTIVE_MATH_QUESTIONS = 10

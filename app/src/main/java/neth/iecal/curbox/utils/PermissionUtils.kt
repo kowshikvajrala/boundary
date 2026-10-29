@@ -30,6 +30,11 @@ object PermissionUtils {
         }
     }
 
+    /** Fine or coarse is enough to tell home from away. */
+    fun hasLocationPermission(context: Context): Boolean =
+        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
     fun hasOverlayPermission(context: Context): Boolean {
         return Settings.canDrawOverlays(context)
     }

@@ -56,6 +56,7 @@ class ReelBlocker : BaseBlocker() {
     private var countJob: Job? = null
     
     private val cooldownViewIdsList = mutableMapOf<String, Long>()
+    private var unlockLocks: UnlockLocks? = null
     private var lastEventTimeStamp = 0L
 
     private lateinit var notificationManager: TimerNotification
@@ -105,6 +106,14 @@ class ReelBlocker : BaseBlocker() {
             if (isCooldownActive(viewId)) {
                 return
             }
+            val lockEndsAt = lockEndsAt(viewId)
+            if (lockEndsAt > 0L) {
+                if (service.isDelayOver(3000)) {
+                    service.pressBack()
+                    service.blockedPill.show(viewId, UnlockLocks.pillText(service, lockEndsAt))
+                }
+                return
+            }
 
             val endAllowedMillis = getEndTimeInMillis()
             if (endAllowedMillis == null) {
@@ -140,6 +149,7 @@ class ReelBlocker : BaseBlocker() {
 
     fun setupBlocker(service: BaseBlockingService) {
         this.service = service
+        if (unlockLocks == null) unlockLocks = UnlockLocks(service, "reel_blocker_unlock_locks")
 
         if (!this::notificationManager.isInitialized) {
             notificationManager = TimerNotification(service, TIMER_NOTIFICATION_ID)
@@ -211,6 +221,7 @@ class ReelBlocker : BaseBlocker() {
                 INTENT_ACTION_REFRESH_REEL_BLOCKER -> setupBlocker(service)
 
                 INTENT_ACTION_REFRESH_REEL_BLOCKER_COOLDOWN -> {
+                    if (lockEndsAt(intent.getStringExtra("result_id") ?: "") > 0L) return
                     val interval = intent.getLongExtra(
                         "selected_time",
                         reelBlockerConfig.warningScreenConfig.timeInterval
@@ -233,12 +244,18 @@ class ReelBlocker : BaseBlocker() {
 
     private fun isCooldownActive(viewId: String): Boolean {
         val cooldownEnd = cooldownViewIdsList[viewId] ?: return false
-        if (SystemClock.uptimeMillis() > cooldownEnd) {
+        val uptimeNow = SystemClock.uptimeMillis()
+        if (uptimeNow > cooldownEnd) {
             cooldownViewIdsList.remove(viewId)
+            // Cooldowns run on uptime; the lock is kept in wall clock time so it survives restarts.
+            unlockLocks?.unlockEnded(viewId, System.currentTimeMillis() - (uptimeNow - cooldownEnd))
             return false
         }
         return true
     }
+
+    private fun lockEndsAt(viewId: String): Long =
+        unlockLocks?.lockEndsAt(viewId, reelBlockerConfig.warningScreenConfig.lockAfterUnlockMs) ?: 0L
 
     private fun getDailyReelCountLimit(): Int? {
         val config = countBasedConfig ?: return null

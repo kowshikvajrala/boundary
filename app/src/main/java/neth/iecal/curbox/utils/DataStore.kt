@@ -19,6 +19,7 @@ import kotlinx.coroutines.withContext
 import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.AppGroup
 import neth.iecal.curbox.data.models.GatedSettingsField
+import neth.iecal.curbox.data.models.HomeLocation
 import neth.iecal.curbox.data.models.KeywordBlocker
 import neth.iecal.curbox.data.models.ManualFocusGroup
 import neth.iecal.curbox.data.models.PendingSettingsChange
@@ -434,12 +435,15 @@ class DataStoreManager(private val context: Context) {
     suspend fun temporarilyDisableAppGroup(groupId: String, durationMinutes: Long): Boolean {
         val untilMs = temporaryDisableDeadline(durationMinutes)
         var changed = false
+        var refusedAtHome = false
         var nextDeadline: Long? = null
         settingsDataStore.updateData { current ->
             if (current.settingsChangeDelayConfig2.isEnabled ||
                 current.settingsChangeDelayConfig2.requireTamperProtectionOff) return@updateData current
             val groups = current.blockedAppGroups.map { group ->
-                if (group.id == groupId && group.isActive) {
+                val lockedAtHome = HomeLock.usesLock(group.warningScreenConfig) && !HomeLock.isAwayPassActive()
+                if (group.id == groupId && group.isActive && lockedAtHome) refusedAtHome = true
+                if (group.id == groupId && group.isActive && !lockedAtHome) {
                     changed = true
                     group.copy(isActive = false, temporarilyDisabledUntilMs = untilMs)
                 } else {
@@ -453,19 +457,23 @@ class DataStoreManager(private val context: Context) {
         if (changed) {
             neth.iecal.curbox.services.TemporaryGroupDisableJob.schedule(context, nextDeadline)
         }
+        if (refusedAtHome) notifyRefusedAtHome()
         return changed
     }
 
     suspend fun temporarilyDisableKeywordGroup(groupId: String, durationMinutes: Long): Boolean {
         val untilMs = temporaryDisableDeadline(durationMinutes)
         var changed = false
+        var refusedAtHome = false
         var nextDeadline: Long? = null
         settingsDataStore.updateData { current ->
             if (current.settingsChangeDelayConfig2.isEnabled ||
                 current.settingsChangeDelayConfig2.requireTamperProtectionOff) return@updateData current
             val config = current.keywordBlockerConfig
             val groups = config.keywordGroups.map { group ->
-                if (group.id == groupId && group.isActive) {
+                val lockedAtHome = HomeLock.usesLock(group.warningScreenConfig) && !HomeLock.isAwayPassActive()
+                if (group.id == groupId && group.isActive && lockedAtHome) refusedAtHome = true
+                if (group.id == groupId && group.isActive && !lockedAtHome) {
                     changed = true
                     group.copy(isActive = false, temporarilyDisabledUntilMs = untilMs)
                 } else group
@@ -475,18 +483,24 @@ class DataStoreManager(private val context: Context) {
             updated
         }
         if (changed) TemporaryGroupDisableJob.schedule(context, nextDeadline)
+        if (refusedAtHome) notifyRefusedAtHome()
         return changed
     }
 
     suspend fun temporarilyDisableReelBlocker(durationMinutes: Long): Boolean {
         val untilMs = temporaryDisableDeadline(durationMinutes)
         var changed = false
+        var refusedAtHome = false
         var nextDeadline: Long? = null
         settingsDataStore.updateData { current ->
             if (current.settingsChangeDelayConfig2.isEnabled ||
                 current.settingsChangeDelayConfig2.requireTamperProtectionOff ||
                 !current.reelBlockerConfig.isActive
             ) return@updateData current
+            if (HomeLock.usesLock(current.reelBlockerConfig.warningScreenConfig) && !HomeLock.isAwayPassActive()) {
+                refusedAtHome = true
+                return@updateData current
+            }
             changed = true
             val updated = current.copy(
                 reelBlockerConfig = current.reelBlockerConfig.copy(
@@ -498,6 +512,7 @@ class DataStoreManager(private val context: Context) {
             updated
         }
         if (changed) TemporaryGroupDisableJob.schedule(context, nextDeadline)
+        if (refusedAtHome) notifyRefusedAtHome()
         return changed
     }
 
@@ -587,13 +602,19 @@ class DataStoreManager(private val context: Context) {
         var hadPendingForField = false
         var tamperGated = false
         var unchangedPending = false
+        var refusedAtHome = false
         settingsDataStore.updateData { current ->
             deferredUntilMs = 0L
             hadPendingForField = false
             tamperGated = false
             unchangedPending = false
+            refusedAtHome = false
             val newValueJson = gson.toJson(computeNewValue(overlayPendingChanges(current)))
             val proposed = withFieldValue(current, field, newValueJson) ?: return@updateData current
+            if (HomeLock.weakensLock(field, current, proposed)) {
+                refusedAtHome = true
+                return@updateData current
+            }
             val delayConfig = current.settingsChangeDelayConfig2
             val existingPending = delayConfig.pendingChanges.find { it.field == field.name }
             hadPendingForField = existingPending != null
@@ -627,6 +648,10 @@ class DataStoreManager(private val context: Context) {
                     pendingChanges = delayConfig.pendingChanges.filterNot { it.field == field.name } + pending
                 ))
             }
+        }
+        if (refusedAtHome) {
+            notifyRefusedAtHome()
+            return@withContext
         }
         schedulePendingChanges()
         if (unchangedPending) {
@@ -771,6 +796,64 @@ class DataStoreManager(private val context: Context) {
                     Toast.makeText(appContext, message, Toast.LENGTH_LONG).show()
                 } catch (_: Exception) {
                 }
+            }
+        }
+    }
+
+    /**
+     * Saves a new home. Moving home is refused while a lock after unlock is in use, unless the
+     * user just proved they are away, because moving it would let them pretend to be away.
+     */
+    suspend fun updateHomeLocation(home: HomeLocation): Boolean {
+        var saved = false
+        settingsDataStore.updateData { current ->
+            saved = !current.homeLocation.isSet || !HomeLock.hasAnyLock(current) || HomeLock.isAwayPassActive()
+            if (saved) current.copy(homeLocation = home) else current
+        }
+        return saved
+    }
+
+    /**
+     * Away from home only: switches off every app group, website group and the short video
+     * blocker at once, skipping the settings change delay. Pending changes for those parts are
+     * dropped, so an older queued value cannot switch something back on later.
+     */
+    suspend fun turnOffAllBlockingAwayFromHome(): Boolean {
+        if (!HomeLock.isAwayPassActive()) return false
+        val clearedFields = setOf(
+            GatedSettingsField.APP_GROUPS.name,
+            GatedSettingsField.KEYWORD_BLOCKER.name,
+            GatedSettingsField.REEL_BLOCKER.name
+        )
+        settingsDataStore.updateData { current ->
+            val delayConfig = current.settingsChangeDelayConfig2
+            val keywordBlocker = current.keywordBlockerConfig
+            current.copy(
+                blockedAppGroups = current.blockedAppGroups.map {
+                    it.copy(isActive = false, temporarilyDisabledUntilMs = 0L)
+                },
+                keywordBlockerConfig = keywordBlocker.copy(
+                    isActive = false,
+                    keywordGroups = keywordBlocker.keywordGroups.map {
+                        it.copy(isActive = false, temporarilyDisabledUntilMs = 0L)
+                    }
+                ),
+                reelBlockerConfig = current.reelBlockerConfig.copy(isActive = false, temporarilyDisabledUntilMs = 0L),
+                settingsChangeDelayConfig2 = delayConfig.copy(
+                    pendingChanges = delayConfig.pendingChanges.filterNot { it.field in clearedFields }
+                )
+            )
+        }
+        schedulePendingChanges()
+        return true
+    }
+
+    private fun notifyRefusedAtHome() {
+        val appContext = context.applicationContext
+        Handler(Looper.getMainLooper()).post {
+            try {
+                Toast.makeText(appContext, R.string.home_lock_refused_toast, Toast.LENGTH_LONG).show()
+            } catch (_: Exception) {
             }
         }
     }
