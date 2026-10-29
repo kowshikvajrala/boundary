@@ -1,0 +1,4 @@
+• New Summary tab: your last 7 or 30 days at a glance, compared with the days before. Screen time, daily average, app opens, unlocks and locks, busiest hours, top apps, short videos and top websites.
+• Backups now also keep your blocklist links and download them again after a restore.
+• The Usage page no longer shows other apps or links to the original project.
+• Cleaned up leftovers from removed features. Your usage history is untouched.

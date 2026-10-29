@@ -6,7 +6,6 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.AppTimeConfig
-import neth.iecal.curbox.data.models.PomodoroState
 import neth.iecal.curbox.data.models.Settings
 import neth.iecal.curbox.data.models.SettingsChangeDelayConfig
 import neth.iecal.curbox.data.models.UiHiderConfig
@@ -23,19 +22,26 @@ object SettingsBackupCodec {
     private const val VERSION = 1
     private val gson = Gson()
 
-    fun encode(settings: Settings): ByteArray {
+    /** What a backup holds: the settings, plus the blocklist sources (links) groups may use. */
+    data class Restored(val settings: Settings, val blocklists: List<BlocklistStore.Source>)
+
+    fun encode(settings: Settings, blocklists: List<BlocklistStore.Source> = emptyList()): ByteArray {
         val portable = portableSettings(settings)
         val root = JsonObject().apply {
             addProperty("format", FORMAT)
             addProperty("version", VERSION)
             add("settings", gson.toJsonTree(portable))
+            // Only the links; the downloaded lists are fetched again after a restore.
+            add("blocklists", gson.toJsonTree(blocklists.map { BlocklistStore.Source(id = it.id, name = it.name, url = it.url) }))
         }
         return gson.toJson(root).toByteArray(Charsets.UTF_8).also {
             require(it.size <= MAX_BYTES) { "Backup is too large" }
         }
     }
 
-    fun decode(input: InputStream): Settings {
+    fun decode(input: InputStream): Settings = decodeFull(input).settings
+
+    fun decodeFull(input: InputStream): Restored {
         val bytes = ByteArrayOutputStream()
         val buffer = ByteArray(8192)
         while (true) {
@@ -53,14 +59,17 @@ object SettingsBackupCodec {
         validateJson(payload)
         val settings = gson.fromJson(payload, Settings::class.java)
         validateSettings(settings)
-        return portableSettings(settings).also(::validateSettings)
+        val blocklists = root.getAsJsonArray("blocklists")?.mapNotNull { element ->
+            runCatching { gson.fromJson(element, BlocklistStore.Source::class.java) }.getOrNull()
+                ?.takeIf { it.id.isNotBlank() && it.url.startsWith("https://") }
+        }.orEmpty()
+        return Restored(portableSettings(settings).also(::validateSettings), blocklists)
     }
 
-    fun forDevice(settings: Settings, supportsUiHider: Boolean, supportsGrayscale: Boolean): Settings {
+    fun forDevice(settings: Settings, supportsUiHider: Boolean): Settings {
         val portable = portableSettings(settings)
         return portable.copy(
-            uiHiderConfig = if (supportsUiHider) portable.uiHiderConfig else UiHiderConfig(),
-            grayscaleGroups = if (supportsGrayscale) portable.grayscaleGroups else emptyList()
+            uiHiderConfig = if (supportsUiHider) portable.uiHiderConfig else UiHiderConfig()
         )
     }
 
@@ -76,12 +85,13 @@ object SettingsBackupCodec {
         reelBlockerConfig = settings.reelBlockerConfig.upgradeLegacyConfig().let {
             it.copy(isActive = it.isActive || it.temporarilyDisabledUntilMs > 0L, temporarilyDisabledUntilMs = 0L)
         },
-        activeManualFocusGroupId = Pair(null, 0L),
-        activePomodoroState = PomodoroState(),
         nextWebsiteRecheckTime = 0L,
         serviceProtectionConfig = settings.serviceProtectionConfig.copy(appBlockerLastAliveMs = 0L),
         // Device admin must be granted on this installation before protection can be enabled.
         antiUninstallConfig2 = settings.antiUninstallConfig2.copy(isEnabled = false, unlockRequestedAtMs = 0L),
+        // Away mode is a state of this phone, not a setting. Emergency off timing is kept on
+        // purpose, so a reinstall and restore cannot reset its wait.
+        isAwayModeActive = false,
         settingsChangeDelayConfig2 = settings.settingsChangeDelayConfig2.copy(pendingChanges = emptyList())
     )
 
@@ -161,9 +171,6 @@ object SettingsBackupCodec {
                 require(config.reelCount.dailyLimits.size == 7 && config.reelCount.dailyLimits.all { count -> count >= 0 })
             }
         }
-        settings.manualFocusGroups.forEach { requireNotNull(it.blockMode) }
-        settings.autoDndGroups.forEach { schedule(it.timeConfig) }
-        settings.grayscaleGroups.forEach { schedule(it.timeConfig) }
         requireNotNull(settings.antiUninstallConfig2.mode)
         require(settings.settingsChangeDelayConfig2.delayMinutes in 0..SettingsChangeDelayConfig.MAX_DELAY_MINUTES)
         require(settings.mindfulMessageConfig.textSize.isFinite() && settings.mindfulMessageConfig.textSize > 0f)

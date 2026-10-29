@@ -37,14 +37,4 @@ class SetupShortcutViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    fun toggleGrayscaleGroup(groupId: String, isActive: Boolean) {
-        viewModelScope.launch {
-            val currentSettings = _settings.value ?: return@launch
-            val updatedGroups = currentSettings.grayscaleGroups.map {
-                if (it.groupId == groupId) it.copy(isActive = isActive) else it
-            }
-            dataStoreManager.updateGrayscaleGroups(updatedGroups)
-            getApplication<Application>().sendBroadcast(Intent("app.boundary.blocker.ACTION_REFRESH_GRAYSCALE"))
-        }
-    }
 }

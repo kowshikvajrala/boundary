@@ -12,7 +12,8 @@ class BackupManager(context: Context) {
     private val dataStore = DataStoreManager(app)
 
     suspend fun export(uri: Uri) = withContext(Dispatchers.IO) {
-        val bytes = SettingsBackupCodec.encode(dataStore.settings.first())
+        BlocklistStore.init(app)
+        val bytes = SettingsBackupCodec.encode(dataStore.settings.first(), BlocklistStore.sources())
         val output = app.contentResolver.openOutputStream(uri, "wt")
             ?: throw IOException("Unable to open backup file")
         output.use { it.write(bytes) }
@@ -22,8 +23,17 @@ class BackupManager(context: Context) {
         check(OnboardingState.canRestore(app)) { "Restore is only available during onboarding" }
         val input = app.contentResolver.openInputStream(uri)
             ?: throw IOException("Unable to open backup file")
-        val settings = input.use(SettingsBackupCodec::decode)
+        val restored = input.use(SettingsBackupCodec::decodeFull)
+        val settings = restored.settings
         dataStore.restoreSettingsDuringOnboarding(settings)
+        // Bring back the blocklist links and download them again, so groups that use them work.
+        BlocklistStore.init(app)
+        restored.blocklists.forEach { source ->
+            runCatching {
+                BlocklistStore.ensureSource(source)
+                BlocklistStore.download(source.id)
+            }
+        }
         if (settings.serviceProtectionConfig.isEnabled) {
             neth.iecal.curbox.services.ServiceWatchdogJob.schedule(app)
         }

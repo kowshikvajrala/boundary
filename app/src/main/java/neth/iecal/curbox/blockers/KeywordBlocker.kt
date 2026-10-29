@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import neth.iecal.curbox.Constants
 import neth.iecal.curbox.R
+import neth.iecal.curbox.utils.DailyCounters
 import android.os.SystemClock
 import androidx.core.os.CancellationSignal
 import neth.iecal.curbox.utils.HomeLocationChecker
@@ -38,7 +39,6 @@ import neth.iecal.curbox.data.models.HomeLocation
 import neth.iecal.curbox.data.db.AppDatabase
 import neth.iecal.curbox.data.db.WebsiteStatsEntity
 import neth.iecal.curbox.data.models.AppUsageConfig
-import neth.iecal.curbox.data.models.FocusBlockMode
 import neth.iecal.curbox.data.models.KeywordGroup
 import neth.iecal.curbox.data.models.upgradeLegacyKeywordGroupConfigs
 import neth.iecal.curbox.hardcoded.URL_BAR_ID_LIST
@@ -119,28 +119,6 @@ class KeywordBlocker : BaseBlocker() {
     private fun matchesGroup(group: KeywordGroup, urlIdentifier: String): Boolean {
         val patterns = groupPatternMap[group.id] ?: return false
         return matchesPatterns(patterns, urlIdentifier)
-    }
-
-    // TODO: instead of this approach, add a datastore obj that automatically setups up focus mode blocker in the regular observer
-    fun isFocusWebsiteBlocked(
-        packageName: String,
-        compiledKeywords: Pair<List<Regex>, List<String>>,
-        blockMode: FocusBlockMode
-    ): Boolean {
-        val date = TimeTools.getCurrentDate()
-        val latest = runBlocking(Dispatchers.IO) {
-            AppDatabase.getInstance(service).websiteStatsDao()
-                .getStatsForPackage(date, packageName)
-                .maxByOrNull { it.lastVisited }
-        } ?: return false
-
-        if (latest.lastVisited < System.currentTimeMillis() - 5000) return false
-        val urlIdentifier = latest.urlIdentifier.ifEmpty { return false }
-
-        if (blockMode == FocusBlockMode.BLOCK_ALL_EXCEPT_SELECTED && isInternalBrowserPage(urlIdentifier)) return false
-
-        val matched = matchesPatterns(compiledKeywords, urlIdentifier)
-        return if (blockMode == FocusBlockMode.BLOCK_SELECTED) matched else !matched
     }
 
     private fun isInternalBrowserPage(url: String): Boolean {
@@ -251,7 +229,7 @@ class KeywordBlocker : BaseBlocker() {
             if (cooldownEnd != null) {
                 if (cooldownEnd > now) return@filter false
                 removeCooldownFrom(group.id)
-                unlockLocks.unlockEnded(group.id, cooldownEnd)
+                unlockLocks.unlockEnded(group.id, cooldownEnd, group.warningScreenConfig.lockAfterUnlockMs)
                 publishTimersToWidgets()
             }
             true
@@ -546,8 +524,8 @@ class KeywordBlocker : BaseBlocker() {
         val groupId = intent.getStringExtra("result_id") ?: return
         val duration = intent.getLongExtra("selected_time", 120000L)
         if (duration <= 0L) return
-        val lockAfterMs = activeGroups.find { it.id == groupId }?.warningScreenConfig?.lockAfterUnlockMs ?: 0L
-        if (unlockLocks.lockEndsAt(groupId, lockAfterMs) > 0L) return
+        if (unlockLocks.lockEndsAt(groupId, lockAfterFor(groupId)) > 0L) return
+        DailyCounters.increment(service, DailyCounters.Kind.UNLOCKS)
 
         val cooldownEnd = System.currentTimeMillis() + duration
         cooldownGroupsList[groupId] = cooldownEnd
@@ -563,6 +541,9 @@ class KeywordBlocker : BaseBlocker() {
             }
         }
     }
+
+    private fun lockAfterFor(groupId: String): Long =
+        activeGroups.find { it.id == groupId }?.warningScreenConfig?.lockAfterUnlockMs ?: 0L
 
     /** Sends this blocker's unlocks and locks to the home screen widgets. */
     private fun publishTimersToWidgets() {
@@ -604,7 +585,7 @@ class KeywordBlocker : BaseBlocker() {
         val remaining = cooldownEnd - System.currentTimeMillis()
         if (remaining <= 0L) {
             removeCooldownFrom(groupId)
-            unlockLocks.unlockEnded(groupId, cooldownEnd)
+            unlockLocks.unlockEnded(groupId, cooldownEnd, lockAfterFor(groupId))
             publishTimersToWidgets()
             return
         }
@@ -616,7 +597,7 @@ class KeywordBlocker : BaseBlocker() {
             title = service.getString(R.string.notification_remaining_usage_lockdown),
             onFinishCallback = {
                 if (cooldownGroupsList[groupId] == cooldownEnd) {
-                    unlockLocks.unlockEnded(groupId, cooldownEnd)
+                    unlockLocks.unlockEnded(groupId, cooldownEnd, lockAfterFor(groupId))
                     publishTimersToWidgets()
                     cooldownGroupsList.remove(groupId)
                     prefs.edit {

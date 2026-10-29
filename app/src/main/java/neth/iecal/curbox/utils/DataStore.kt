@@ -21,9 +21,7 @@ import neth.iecal.curbox.data.models.AppGroup
 import neth.iecal.curbox.data.models.GatedSettingsField
 import neth.iecal.curbox.data.models.HomeLocation
 import neth.iecal.curbox.data.models.KeywordBlocker
-import neth.iecal.curbox.data.models.ManualFocusGroup
 import neth.iecal.curbox.data.models.PendingSettingsChange
-import neth.iecal.curbox.data.models.PomodoroState
 import neth.iecal.curbox.data.models.Settings
 import neth.iecal.curbox.data.models.SettingsChangeDelayConfig
 import neth.iecal.curbox.data.models.SettingsChangeDelayPrefs
@@ -67,12 +65,13 @@ private class ScheduledUsageConfigMigration(
         if (currentData.blockedAppGroups.any { it.config == null }) return true
         if (currentData.keywordBlockerConfig.keywordGroups.any { it.config == null }) return true
         return currentData.settingsChangeDelayConfig2.pendingChanges.any {
-            pendingChangeNeedsMigration(it)
+            pendingChangeNeedsMigration(it) || !isKnownField(it.field)
         }
     }
 
     override suspend fun migrate(currentData: Settings): Settings {
-        val upgradedPending = currentData.settingsChangeDelayConfig2.pendingChanges.map { change ->
+        // Changes queued for removed features (Auto DND, grayscale) can never apply, so drop them.
+        val upgradedPending = currentData.settingsChangeDelayConfig2.pendingChanges.filter { isKnownField(it.field) }.map { change ->
             when (change.field) {
                 GatedSettingsField.APP_GROUPS.name -> {
                     val groups = parseAppGroups(change.newValueJson) ?: return@map change
@@ -101,6 +100,8 @@ private class ScheduledUsageConfigMigration(
     }
 
     override suspend fun cleanUp() = Unit
+
+    private fun isKnownField(name: String): Boolean = GatedSettingsField.values().any { it.name == name }
 
     private fun pendingChangeNeedsMigration(change: PendingSettingsChange): Boolean =
         when (change.field) {
@@ -166,8 +167,7 @@ class DataStoreManager(private val context: Context) {
         OnboardingState.restore(context) {
             val restored = SettingsBackupCodec.forDevice(
                 backup,
-                supportsUiHider = neth.iecal.curbox.BuildConfig.SUPPORTS_UI_HIDER,
-                supportsGrayscale = neth.iecal.curbox.BuildConfig.SUPPORTS_WRITE_SECURE_SETTINGS
+                supportsUiHider = neth.iecal.curbox.BuildConfig.SUPPORTS_UI_HIDER
             )
             settingsDataStore.updateData { restored }
         }
@@ -177,10 +177,6 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun updateAppGroups(newGroups: List<AppGroup>) {
         updateGated(GatedSettingsField.APP_GROUPS) { newGroups }
-    }
-
-    suspend fun updateManualFocusGroups(newGroup: List<ManualFocusGroup>){
-        settingsDataStore.updateData { it.copy(manualFocusGroups = newGroup) }
     }
 
     /**
@@ -232,14 +228,9 @@ class DataStoreManager(private val context: Context) {
             // restored to its local value and considered independently below.
             var updated = remoteWithLocalRuntime.copy(
                 blockedAppGroups = current.blockedAppGroups,
-                manualFocusGroups = current.manualFocusGroups,
-                autoDndGroups = current.autoDndGroups,
-                activeManualFocusGroupId = current.activeManualFocusGroupId,
-                activePomodoroState = current.activePomodoroState,
                 reelBlockerConfig = current.reelBlockerConfig,
                 keywordBlockerConfig = current.keywordBlockerConfig,
                 isReelCounterOn = current.isReelCounterOn,
-                grayscaleGroups = current.grayscaleGroups,
                 isAppUsageTrackingEnabled = current.isAppUsageTrackingEnabled,
                 isWebsiteUsageTrackingEnabled = current.isWebsiteUsageTrackingEnabled,
                 mindfulMessageConfig = current.mindfulMessageConfig,
@@ -290,65 +281,7 @@ class DataStoreManager(private val context: Context) {
         schedulePendingChanges()
     }
 
-    suspend fun updateAutoDndGroups(newGroups: List<neth.iecal.curbox.data.models.AutoDndGroup>) {
-        updateGated(GatedSettingsField.AUTO_DND_GROUPS) { newGroups }
-    }
     
-    suspend fun setManualFocusStateToActive(
-        focusGroupId: String,
-        durationInMs: Long,
-        pomodoroState: PomodoroState = PomodoroState(),
-        endTimeInMillis: Long = System.currentTimeMillis() + durationInMs
-    ) {
-        settingsDataStore.updateData {
-            it.copy(
-                activeManualFocusGroupId = Pair(focusGroupId, endTimeInMillis),
-                activePomodoroState = pomodoroState.normalized()
-            )
-        }
-    }
-
-    suspend fun advancePomodoroState(expectedEndTimeInMillis: Long): Settings? {
-        var advanced = false
-        val updated = settingsDataStore.updateData { current ->
-            val groupId = current.activeManualFocusGroupId.first
-            val pomodoro = current.activePomodoroState
-            if (!pomodoro.isActive ||
-                groupId == null ||
-                current.activeManualFocusGroupId.second != expectedEndTimeInMillis
-            ) {
-                return@updateData current
-            }
-
-            advanced = true
-            val next = pomodoro.nextPhase()
-            if (!next.isActive) {
-                current.copy(
-                    activeManualFocusGroupId = Pair(null, 0L),
-                    activePomodoroState = PomodoroState()
-                )
-            } else {
-                current.copy(
-                    activeManualFocusGroupId = Pair(
-                        groupId,
-                        System.currentTimeMillis() + next.currentPhaseDurationMs()
-                    ),
-                    activePomodoroState = next
-                )
-            }
-        }
-        return updated.takeIf { advanced }
-    }
-
-    suspend fun setManualFocusStateToInactive() {
-        settingsDataStore.updateData {
-            it.copy(
-                activeManualFocusGroupId = Pair(null, 0L),
-                activePomodoroState = PomodoroState()
-            )
-        }
-    }
-
     suspend fun updateReelBlockerConfig(config: neth.iecal.curbox.data.models.ReelBlocker) {
         updateGated(GatedSettingsField.REEL_BLOCKER) { config.upgradeLegacyConfig(gson) }
     }
@@ -367,10 +300,6 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun updateReelCounterState(isActive: Boolean) {
         updateGated(GatedSettingsField.REEL_COUNTER) { isActive }
-    }
-
-    suspend fun updateGrayscaleGroups(newGroups: List<neth.iecal.curbox.data.models.GrayscaleGroup>) {
-        updateGated(GatedSettingsField.GRAYSCALE_GROUPS) { newGroups }
     }
 
     suspend fun updateUsageBackgroundArt(artName: String) {
@@ -697,9 +626,6 @@ class DataStoreManager(private val context: Context) {
                         object : TypeToken<List<AppGroup>>() {}.type
                     ).upgradeLegacyAppGroupConfigs(gson)
                 )
-                GatedSettingsField.AUTO_DND_GROUPS -> settings.copy(
-                    autoDndGroups = gson.fromJson(valueJson, object : TypeToken<List<neth.iecal.curbox.data.models.AutoDndGroup>>() {}.type)
-                )
                 GatedSettingsField.REEL_BLOCKER -> settings.copy(
                     reelBlockerConfig = gson.fromJson(valueJson, neth.iecal.curbox.data.models.ReelBlocker::class.java)
                         .upgradeLegacyConfig(gson)
@@ -712,9 +638,6 @@ class DataStoreManager(private val context: Context) {
                 )
                 GatedSettingsField.REEL_COUNTER -> settings.copy(
                     isReelCounterOn = gson.fromJson(valueJson, Boolean::class.java)
-                )
-                GatedSettingsField.GRAYSCALE_GROUPS -> settings.copy(
-                    grayscaleGroups = gson.fromJson(valueJson, object : TypeToken<List<neth.iecal.curbox.data.models.GrayscaleGroup>>() {}.type)
                 )
                 GatedSettingsField.MINDFUL_MESSAGES -> settings.copy(
                     mindfulMessageConfig = gson.fromJson(valueJson, neth.iecal.curbox.data.models.MindfulMessageConfig::class.java)
@@ -748,11 +671,9 @@ class DataStoreManager(private val context: Context) {
         runCatching {
             val value: Any = when (field) {
                 GatedSettingsField.APP_GROUPS -> settings.blockedAppGroups
-                GatedSettingsField.AUTO_DND_GROUPS -> settings.autoDndGroups
                 GatedSettingsField.REEL_BLOCKER -> settings.reelBlockerConfig
                 GatedSettingsField.KEYWORD_BLOCKER -> settings.keywordBlockerConfig
                 GatedSettingsField.REEL_COUNTER -> settings.isReelCounterOn
-                GatedSettingsField.GRAYSCALE_GROUPS -> settings.grayscaleGroups
                 GatedSettingsField.MINDFUL_MESSAGES -> settings.mindfulMessageConfig
                 GatedSettingsField.UI_HIDER -> settings.uiHiderConfig
                 GatedSettingsField.APP_USAGE_TRACKING -> settings.isAppUsageTrackingEnabled

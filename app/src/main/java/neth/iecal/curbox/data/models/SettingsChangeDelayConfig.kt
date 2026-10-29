@@ -7,11 +7,9 @@ package neth.iecal.curbox.data.models
  */
 enum class GatedSettingsField {
     APP_GROUPS,
-    AUTO_DND_GROUPS,
     REEL_BLOCKER,
     KEYWORD_BLOCKER,
     REEL_COUNTER,
-    GRAYSCALE_GROUPS,
     MINDFUL_MESSAGES,
     UI_HIDER,
     APP_USAGE_TRACKING,

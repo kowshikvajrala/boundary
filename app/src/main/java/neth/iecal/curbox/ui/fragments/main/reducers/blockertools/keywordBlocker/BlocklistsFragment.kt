@@ -151,8 +151,7 @@ class BlocklistsFragment : Fragment() {
     private suspend fun isListInUse(id: String): Boolean {
         val settings = DataStoreManager(requireContext()).settings.first()
         val usesList = { keyword: String -> BlocklistStore.idFromKeyword(keyword) == id }
-        return settings.keywordBlockerConfig.keywordGroups.any { group -> group.selectedKeywords.any(usesList) } ||
-            settings.manualFocusGroups.any { group -> group.keywords.any(usesList) }
+        return settings.keywordBlockerConfig.keywordGroups.any { group -> group.selectedKeywords.any(usesList) }
     }
 
     inner class BlocklistAdapter : RecyclerView.Adapter<BlocklistAdapter.ViewHolder>() {

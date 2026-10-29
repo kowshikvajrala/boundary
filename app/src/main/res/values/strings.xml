@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="focus_mode">Focus Mode</string>
     <string name="add">Add</string>
     <string name="save">Save</string>
     <string name="write_down_a_keyword">Write down a keyword</string>
-    <string name="warning_message">Warning message</string>
-    <string name="minutes">minutes</string>
     <string name="app_icon">app_icon</string>
     <string name="accessibility_permission_app_blocker">
         This feature needs the Display over other apps permission to work. Please turn that on first, then turn this on. If something stops working, restart the app.\n\n
@@ -18,40 +15,10 @@
     <string name="close">Close</string>
     <string name="proceed">Proceed</string>
     <string name="cancel">Cancel</string>
-    <string name="configure_warning_screen">Warning Screen</string>
     <string name="proceed_in">Please wait %1$d seconds before pressing proceed</string>
     <string name="proceed_in_time">Please wait %1$s before pressing proceed</string>
     <string name="select_all">Select all</string>
     <string name="clear_all"> Clear all</string>
-    <string name="focus_ready">Ready to focus?</string>
-    <string name="focus_subtitle_minimal">Select duration, then start.</string>
-    <string name="focus_start">Curb Me</string>
-    <string name="focus_create_group">Create Focus Group</string>
-    <string name="focus_active">Focus mode is active</string>
-    <string name="focus_end_session">End Session</string>
-    <string name="focus_end_pomodoro">End Pomodoro</string>
-    <string name="focus_group">Focus Group</string>
-    <string name="focus_new_group">Create New Group</string>
-    <string name="focus_stats">Focus Stats</string>
-    <string name="focus_sessions_label">Sessions</string>
-    <string name="focus_total_time_label">Total Time</string>
-    <string name="focus_streak_label">Streak</string>
-    <string name="focus_avg_duration">Avg Session</string>
-    <string name="focus_completion_rate">Completed</string>
-    <string name="focus_top_tags">Top Tags</string>
-    <string name="focus_duration_minutes_short">%1$d min</string>
-    <string name="focus_duration_hours_short">%1$d hr</string>
-    <string name="focus_duration_hours_minutes_short">%1$d hr %2$d min</string>
-    <string name="focus_pomodoro">Pomodoro timer</string>
-    <string name="focus_pomodoro_summary">Repeat the selected focus time with a short break between each round.</string>
-    <string name="focus_pomodoro_break_minutes">Break minutes</string>
-    <string name="focus_pomodoro_intervals">Focus rounds</string>
-    <string name="focus_pomodoro_focus_progress">%1$s • Focus %2$d of %3$d</string>
-    <string name="focus_pomodoro_break_progress">%1$s • Break after focus %2$d of %3$d</string>
-    <plurals name="focus_top_tag_sessions">
-        <item quantity="one">• %1$s (%2$d session)</item>
-        <item quantity="other">• %1$s (%2$d sessions)</item>
-    </plurals>
     <string name="quick_setup_guide">Quick Setup Guide</string>
     <string name="curbox_needs_accessibility_permissions_to_help">Boundary needs Accessibility permissions to help you track your screen time. The setup process varies based on how you installed the app.</string>
     <string name="fdroid_installation">F-Droid Installation</string>
@@ -65,9 +32,7 @@
     <string name="label_empty_dash">-</string>
     <string name="value_zero">0</string>
     <string name="label_add_plus">+</string>
-    <string name="screen_time">Screen time</string>
     <string name="value_zero_time">0h 0m</string>
-    <string name="sample_usage_1h">1h App</string>
     <string name="reels_today">Reels Today</string>
     <string name="sample_reels_count">1.3k</string>
     <string name="sample_percentage_increase">+100%</string>
@@ -76,9 +41,6 @@
     <string name="restrict_access_to_distracting_apps">Temporarily mute apps</string>
     <string name="reels_blocker">Short-Form Video</string>
     <string name="disable_shortform_video_feeds">Hide short-form videos to help maintain your attention span.</string>
-    <string name="auto_dnd">Auto DND</string>
-    <string name="autodnd_help_popup">Automatically silence notifications during your focus sessions.</string>
-    <string name="turn_on_focus_mode_between_set">Automatically turn on Do Not Disturb in your daily schedule.</string>
     <string name="blocked_keywords">Keywords And Websites</string>
     <string name="filter_specific_words_across_apps">Keep your digital space peaceful by filtering out specific topics.</string>
     <string name="stimulation_reducers">Mindful Nudges</string>
@@ -86,29 +48,6 @@
     <string name="put_in_messages_and_counters_floating">Subtle on-screen cues to help you stay anchored in the present.</string>
     <string name="reel_counter">Short-Form Video Counter</string>
     <string name="track_the_number_of_reels_consumed">Track and analyze the number of short-form content consumed</string>
-    <string name="grayscale_filter">Grayscale Filter</string>
-    <string name="reduce_visual_stimulation">Reduce visual stimulation</string>
-    <string name="fuel_the_developer">About the Developer ☕</string>
-    <string name="hello_this_is_nethical_the_creator">Hey, I\'m Nethical, the person behind Curbox. I\'m 18, fresh out of high school, and a little obsessed with tech, art, and building cool things from scratch. A while back I went looking for a free app blocker that actually did what I wanted. Nothing came close, so I built my own. Curbox is that app, and I\'ve been pouring into it almost every day for over two years now. So happy you\'re here. I hope it helps you take your time back.</string>
-    <string name="support_the_project">Support the Project ↗</string>
-    <string name="join_the_focus_pack">Join the Focus Pack</string>
-    <string name="dont_fix_your_screen_time_alone">Don\'t fix your screen time alone. Join our Discord of like-minded people holding each other accountable and sharing focus strategies to improve themselves.</string>
-    <string name="join_the_discord">Join the Discord</string>
-    <string name="curboxapp">\@curb.me</string>
-    <string name="follow_curbox">Follow Boundary</string>
-    <string name="label_instagram">Instagram</string>
-    <string name="label_github">GitHub</string>
-    <string name="curbox_github_repo">curbox-android</string>
-    <string name="curbox_also_on">Boundary Also On</string>
-    <string name="label_browser_extension">Browser Extension</string>
-    <string name="curbox_extension_repo">curbox-extension</string>
-    <string name="about_the_developer">About the Developer</string>
-    <string name="view_on_github">View on GitHub ↗</string>
-    <string name="donate_title">Donate</string>
-    <string name="donate_pitch">I\'ve put 1500+ hours into Curbox, building it alongside school, exams and study, to save millions of minutes worldwide. Donate to help me keep it free and growing for everyone.</string>
-    <string name="btn_donate">Donate ❤</string>
-    <string name="cannot_donate_share">Cannot donate? Sharing the project is helpful too!</string>
-    <string name="share_curbox_message">I\'ve been using Curbox to take back control of my screen time. It\'s free, give it a try: https://curbox.app</string>
     <string name="system_diagnostics">System Diagnostics</string>
     <string name="view_and_share_application_crash_logs">View and share application crash logs to help improve Boundary.</string>
     <string name="view_crash_logs">View Crash Logs</string>
@@ -116,7 +55,6 @@
     <string name="group_name_required">Please enter a group name</string>
     <string name="desc_10_apps_usage_based">10 Apps • Usage Based</string>
     <string name="no_app_groups_yet_create_one">No App Groups yet. Create one!</string>
-    <string name="create_group">Create Group</string>
     <string name="apps_to_block">APPS TO BLOCK</string>
     <string name="select_apps_0">Select Apps (0)</string>
     <string name="blocking_configuration">BLOCKING CONFIGURATION</string>
@@ -145,73 +83,24 @@
     <string name="warning_section_title">WHEN BLOCK TRIGGERED</string>
     <string name="select_start_time">Select Start Time</string>
     <string name="select_end_time">Select End Time</string>
-    <string name="usage_based">Usage Based</string>
-    <string name="time_based">Time Based</string>
-    <string name="configure_settings">Configure Allowed Schedule</string>
     <string name="configure_warning_screen_1">Configure Warning Screen</string>
-    <string name="link_time_group">Limit to a time group</string>
-    <string name="no_time_group">No time group (all day)</string>
-    <string name="linked_time_group">Time group: %1$s</string>
-    <string name="linked_warning_managed">Warning screen is managed by the linked usage group</string>
     <string name="done">Done</string>
-    <string name="set_limits_for_each_day">Set limits for each day</string>
     <string name="hours">Hours</string>
     <string name="minutes_1">Minutes</string>
-    <string name="its_a_temporary_block_that_appears">It’s a temporary block that appears when your time is up. Instead of just locking you out, it gives you a choice: close the app immediately or &amp;quot;borrow&amp;quot; a few more minutes before the reminder shows up again.</string>
-    <string name="skip_this_screen_and_go_back">Skip this screen and go back immediately</string>
-    <string name="let_me_decide_how_many_extra">Let me decide how many extra minutes I need right then</string>
-    <string name="use_a_predefined_limit_like_5">Use a pre-defined limit, like 5 minutes, every time</string>
-    <string name="show_me_the_warning_screen_but">Show me the warning screen but don\'t let me proceed</string>
-    <string name="how_long_to_unlock_for_after">How long to unlock for after proceeding?</string>
-    <string name="how_long_to_wait_before_being">How long to wait before being able to press the proceed button. Prevents from instantly pressing the button without reading the message.</string>
-    <string name="duration_3_seconds">3 sec</string>
-    <string name="duration_9_seconds">9 sec</string>
-    <string name="duration_15_seconds">15 sec</string>
-    <string name="duration_30_seconds">30 sec</string>
-    <string name="allowed_time_ranges">Allowed Time Ranges</string>
     <string name="apply_to_every_day">Apply to every day</string>
     <string name="add_time_range">Add Time Range</string>
-    <string name="save_time_ranges">Save Time Ranges</string>
     <string name="monday">Monday</string>
     <string name="sample_start_time">09:00 AM</string>
     <string name="to">to</string>
     <string name="sample_end_time">05:00 PM</string>
-    <string name="all_groups">All Groups</string>
-    <string name="value_zero_minutes">0m</string>
-    <string name="value_zero_percent">0%</string>
-    <string name="a_few_final_steps">A few final steps</string>
-    <string name="select_what_apps_youd_like_to">Select what apps you\'d like to get blocked</string>
-    <string name="create_a_new_group">Create a new group</string>
-    <string name="use_a_focus_group_to_instantly">Use a Focus Group to instantly launch a focus session with your chosen apps and websites.</string>
-    <string name="enter_group_name">Enter Group Name</string>
     <string name="select_apps">Select Apps</string>
-    <string name="selected_0">Selected: 0</string>
-    <string name="what_action_would_you_like_to">Select what happens when you open an app or a website</string>
-    <string name="block_selected">Block Selected</string>
-    <string name="block_all_except_selected">Block All Except Selected</string>
-    <string name="let_me_quit_midsessions">Let me quit mid-sessions</string>
-    <string name="save_group">Save Group</string>
-    <string name="reel_blocker">Reel Blocker</string>
-    <string name="enable_reel_blocker">Enable Reel Blocker</string>
-    <string name="warning_screen">Warning Screen</string>
-    <string name="blocking_basis">Blocking Basis</string>
-    <string name="reel_count_based">Reel Count Based</string>
-    <string name="configure_limits">Configure Limits</string>
     <string name="reel_limits">Reel Limits</string>
     <string name="apply_same_limit_to_every_day">Apply same limit to every day</string>
     <string name="maximum_reels_allowed">Maximum Reels Allowed</string>
     <string name="save_limits">Save Limits</string>
-    <string name="keyword_blocker">Keyword Blocker</string>
-    <string name="enable_keyword_blocker">Enable Keyword Blocker</string>
     <string name="enter_a_keyword">Enter a keyword or website</string>
-    <string name="redirection">Redirection</string>
-    <string name="redirection_url">Redirection URL</string>
-    <string name="configuration">Configuration</string>
-    <string name="search_recursively_for_blocked_keywords_on">Search recursively for blocked keywords on every text field on screen</string>
     <string name="block_all_browsers_except_supported_ones">Block unsupported browser</string>
     <string name="select_ignored_apps">Select Ignored Apps</string>
-    <string name="activity_powered_by">POWERED BY CURBOX</string>
-    <string name="your_digital_wellbeing">Your Digital Well-being</string>
     <string name="total_today">TOTAL TODAY</string>
     <string name="total_this_week">TOTAL THIS WEEK</string>
     <string name="total_for_period">TOTAL · %1$s</string>
@@ -219,35 +108,13 @@
     <string name="usage_weekly_usage">Weekly usage</string>
     <string name="usage_daily_chart_description">Daily app usage chart</string>
     <string name="usage_weekly_chart_description">Weekly app usage chart</string>
-    <string name="most_used">MOST USED</string>
     <string name="crunching_numbers">Crunching numbers...</string>
     <string name="usage_welcome_title">Hello dear user</string>
     <string name="usage_welcome_message">Your app stats will show up right here. I started keeping track the moment you installed me. Please read the docs so you can use Boundary to its fullest.</string>
-    <string name="usage_welcome_read_docs">Read documentation</string>
-    <string name="usage_welcome_star_repo">Star our repository</string>
     <string name="whats_new_title">What\'s new</string>
     <string name="whats_new_dismiss">Got it</string>
-    <string name="no_auto_dnd_groups_yet_create">No Auto DND Groups yet. Create one!</string>
-    <string name="desc_10_apps_included">10 Apps • Included</string>
-    <string name="create_autodnd_group">Create Auto DND Group</string>
-    <string name="apps_to_blockallow">APPS TO BLOCK/ALLOW</string>
-    <string name="blocking_mode">BLOCKING MODE</string>
     <string name="configure_schedule">Configure Schedule</string>
-    <string name="exitable">Exitable</string>
-    <string name="allow_focus_mode_to_be_exited">Allow focus mode to be exited manually</string>
-    <string name="save_schedule">Save Schedule</string>
     <string name="track_the_number_of_short_videos">Track the number of short videos you scroll</string>
-    <string name="grayscale_filter_setup">Grayscale Filter Setup</string>
-    <string name="no_grayscale_groups_yet_create_one">No Grayscale Groups yet. Create one!</string>
-    <string name="desc_10_apps">10 Apps</string>
-    <string name="create_grayscale_group">Create Grayscale Group</string>
-    <string name="apps_to_greyscale">APPS TO GREYSCALE</string>
-    <string name="duration_25_minutes">25</string>
-    <string name="duration_15_minutes">15</string>
-    <string name="duration_30_minutes">30</string>
-    <string name="duration_60_minutes">60</string>
-    <string name="duration_120_minutes">120</string>
-    <string name="time_zero">00:00</string>
     <string name="your_phone_is_designed_to_be">Your
         phone
         is
@@ -256,23 +123,13 @@
         addictive</string>
     <string name="you_arent_lazy_and_your_willpower">You aren’t lazy, and your willpower isn\'t broken. You\'re just fighting algorithms built by thousands of psychologists to keep you scrolling.</string>
     <string name="lets_level_the_playing_field">Reduce the load on my willpower.</string>
-    <string name="lets_look_at_the_numbers">Let\'s look at the numbers.</string>
     <string name="how_many_hours_a_day_do">How much do you scroll a day?</string>
     <string name="sample_usage_4_hours">4 hrs</string>
     <string name="over_a_year_that_is_60">That is 1 full week of your life staring at a screen per year.</string>
     <string name="i_want_my_time_back">I want my time back.</string>
     <string name="what_are_you_making_room_for">What are you making room for?</string>
-    <string name="mindless_scrolling_leaves_us_with_brain">Mindless scrolling leaves us with brain fog instead of actual rest. What would you rather be doing with those recovered hours?</string>
-    <string name="focusing_on_deep_workstudying">Focusing on deep work/studying</string>
-    <string name="learning_a_new_skill_like_guitar">Learning a new skill (like guitar or coding)</string>
-    <string name="being_present_with_friends_and_family">Being present with friends and family</string>
-    <string name="getting_actual_restful_sleep">Getting actual, restful sleep</string>
     <string name="commit_to_these_goals">Commit to these goals.</string>
-    <string name="willpower_isnt_enough_we_use_friction">Willpower isn\'t enough. We use friction.</string>
-    <string name="we_dont_just_block_your_apps">We don\'t just block your apps. We interrupt your muscle memory. When you mindlessly tap Instagram or YouTube, we’ll make you pause, take a breath, and actively choose if it\'s worth it.</string>
-    <string name="make_me_pause">Make me pause.</string>
     <string name="choose_your_first_target">Choose your first target.</string>
-    <string name="dont_try_to_change_everything_at">Don\'t try to change everything at once. Pick one app that drains your energy the most.</string>
     <string name="instagram">Instagram</string>
     <string name="tiktok">TikTok</string>
     <string name="youtube">YouTube</string>
@@ -288,17 +145,14 @@
     <string name="give_us_the_keys">Give us the keys.</string>
     <string name="to_create_friction_and_give_you">To create friction and give you your time back, we need deep system access.</string>
     <string name="display_over_other_apps">Display over other apps</string>
-    <string name="usage_access">Usage Access</string>
     <string name="send_notifications">Send Notifications</string>
     <string name="app_blocker_accessibility">App Blocker (Accessibility)</string>
-    <string name="do_you_want_to_restore_a">Do you want to restore a previously saved backup? You won\'t be allowed to restore later.</string>
     <string name="restore_backup">Restore Backup</string>
     <string name="enable_permissions">Enable Permissions</string>
     <string name="add_widget_to_homescreen">Add Widget to Homescreen</string>
     <string name="refresh_usage_stats">Refresh</string>
     <string name="export_data_as_csv">Export Data as CSV</string>
     <string name="usage">Usage</string>
-    <string name="focus">Focus</string>
     <string name="reducers">Reducers</string>
     <string name="info">Info</string>
     <string name="app_version">Version %1$s</string>
@@ -311,8 +165,6 @@
     <string name="sync_is_on">Sync is on</string>
     <string name="sync_is_on_pitch">Your settings and time stats stay in step on every device. Tap to manage sync or sign out.</string>
     <string name="manage_sync">Manage sync</string>
-    <string name="this_app_is_currently_under_focus">This app is currently under focus mode</string>
-    <string name="blocked_keyword_word_was_found">Blocked keyword -word was found.</string>
     <string name="please_provide_draw_over_other_apps">Please provide \'Draw over other apps\' permission to make this service work properly. </string>
     <string name="added_successfully">Added Successfully</string>
     <string name="package_already_exists">Package already exists</string>
@@ -328,7 +180,6 @@
     <string name="group_saved_successfully">Group saved successfully</string>
     <string name="settings_save_failed">Could not save your changes. Please try again.</string>
     <string name="settings_saving">Saving</string>
-    <string name="warning_link_blocker_may_not_work">WARNING: Link blocker may not work everywhere.</string>
     <string name="active_reducers">Active Reducers</string>
     <string name="add_a_reducer">Add a Reducer</string>
     <string name="mindful_messages">Mindful Messages</string>
@@ -336,22 +187,8 @@
     <string name="target_apps">TARGET APPS</string>
     <string name="messages_label">MESSAGES</string>
     <string name="messages_hint">Variables: {app_name}, {app_usage_today}, {app_usage_yesterday}, {app_opens_today}, {screentime_today}, {screentime_yesterday}, {mindful_apps_usage_today}, {live_session_duration}, {reel_count}. For a blocker group named Social, use {group_usage_today:Social} or {group_usage_yesterday:Social}.</string>
-    <string name="overlay_position">OVERLAY POSITION</string>
-    <string name="position_top">Top</string>
-    <string name="position_center">Center</string>
-    <string name="position_bottom">Bottom</string>
 
-    <string name="default_rules">Default Rules</string>
-    <string name="custom_rules">Custom Rules</string>
-    <string name="custom_rule_hint">Custom Rule Hint</string>
-    <string name="pick_element">Pick Element</string>
 
-    <string name="picker_channel_name">Element Picker</string>
-    <string name="picker_channel_description">Notifications for the Element Picker</string>
-    <string name="picker_notification_title">Element Picker Ready</string>
-    <string name="picker_notification_text">Tap to start picking an element</string>
-    <string name="picker_active_title">Element Picker Active</string>
-    <string name="picker_active_text">Tap elements on screen to select them</string>
 
     <string name="appearance">Appearance</string>
     <string name="reel_counter_appearance">Counter display</string>
@@ -394,21 +231,11 @@
     <string name="blocking_service_channel_description">Running in the background to protect you</string>
     <string name="blocking_service_notification_title">Boundary %1$s is active</string>
     <string name="blocking_service_notification_text">Protecting your digital wellbeing</string>
-    <string name="picker_no_element_found">No element found at that point</string>
-    <string name="picker_no_element_selected">No element selected</string>
-    <string name="picker_default_text">Text</string>
     <string name="dialog_title_select_date_range">Select Date Range</string>
     <string name="dialog_title_select_export_range">Select Export Range</string>
     <string name="toast_unsupported_browser">Unsupported Browser</string>
     <string name="notification_title_remaining_usage">Remaining usage before lockdown</string>
-    <string name="notification_title_focus_mode_on">Focus Mode is on</string>
-    <string name="notification_title_pomodoro_break">Pomodoro break</string>
 
-    <string name="nfc_focus_started">Focus started: %1$s (%2$d min)</string>
-    <string name="nfc_focus_stopped">Focus stopped</string>
-    <string name="nfc_focus_no_group">No focus group found to start</string>
-    <string name="nfc_focus_not_exitable">This focus session can\'t be ended early</string>
-    <string name="nfc_tag_unrecognized">Unrecognized Boundary NFC tag</string>
 
     <string name="onboarding_non_session_title">Non-session based installation detected</string>
     <string name="onboarding_restricted_settings_desc">Android 13+ restricts Accessibility services for apps installed outside of app stores (like F-Droid or Play Store). To enable permissions, you\'ll need to manually allow \'Restricted settings\' for Boundary. Alternatively, install via the F-Droid app(not website) to avoid this.</string>
@@ -444,9 +271,6 @@
     <string name="picker_dialog_advanced">⚙ Advanced</string>
     <string name="picker_dialog_advanced_desc">Fine-tune matching behavior.</string>
     <string name="picker_dialog_label_optional">💬 Label (optional)</string>
-    <string name="dialog_add_websites">Add Websites</string>
-    <string name="dialog_selected_count">Selected: %1$d</string>
-    <string name="dialog_turn_on_dnd">Turn on do not disturb</string>
     <string name="reel_blocker_title">Block Short Form Content</string>
     <string name="reel_blocker_allowed_apps_zero">Allowed apps (0)</string>
     <string name="reel_blocker_allowed_apps_count">Allowed apps (%1$d)</string>
@@ -456,10 +280,6 @@
     <string name="btn_clear_filters">Clear Filters</string>
     <string name="empty_intents_title">No intents found.</string>
     <string name="empty_intents_desc">Try adjusting your filters or unlocking an app.</string>
-    <string name="grayscale_shizuku_title">Shizuku Permission Required</string>
-    <string name="grayscale_shizuku_desc">This feature needs Shizuku permission to apply the grayscale filter correctly.</string>
-    <string name="grayscale_secure_settings_desc">Boundary needs a one time permission to change your screen colors. Grant it once with Shizuku. After that grayscale works on its own, even after you restart your phone.</string>
-    <string name="btn_grant_permission">Grant Permission</string>
     <string name="picker_control_tap_to_select">Tap an element to select it</string>
     <string name="btn_deeper">Deeper</string>
     <string name="btn_parent">Parent</string>
@@ -468,21 +288,14 @@
     <string name="btn_move">Move</string>
     <string name="label_group_name">Group Name</string>
     <string name="label_app_blocker">App Blocker</string>
-    <string name="default_focus_duration_value">25</string>
-    <string name="label_mins">mins</string>
     <string name="create_keyword_group_title">Create Keyword Group</string>
     <string name="label_keywords_to_block">Keywords to block</string>
-    <string name="label_unlock_behavior">Unlock Behavior</string>
-    <string name="label_url_redirection">URL Redirection</string>
-    <string name="label_show_warning_screen">Show Warning Screen</string>
     <string name="label_keyword_blocker_title">Keyword Blocker</string>
     <string name="label_no_keyword_groups">No keyword groups yet. Create one!</string>
     <string name="btn_undo">UNDO</string>
     <string name="label_loading">Loading </string>
     <string name="warning_config_title">Warning Screen Configuration</string>
     <string name="warning_config_desc">Set what happens when your limit is met.</string>
-    <string name="label_fixed_unlock_duration">Fixed Unlock Duration: 5 mins</string>
-    <string name="label_wait_before_unlocking">Wait before unlocking: 15s</string>
     <string name="label_wait_desc">Forces you to think before bypassing the block.</string>
     <string name="label_qr_auth">QR/Barcode Authentication</string>
     <string name="btn_generate_new">Generate New</string>
@@ -494,20 +307,13 @@
     <string name="label_typing_desc">Enter the sentence the user must type exactly to bypass the block:</string>
     <string name="label_intent_auth">Intent unlock length</string>
     <string name="label_intent_min_desc">I choose how many characters someone must write before they can continue.</string>
-    <plurals name="warning_intent_min_length">
-        <item quantity="one">Minimum character: %1$d</item>
-        <item quantity="other">Minimum characters: %1$d</item>
-    </plurals>
     <plurals name="warning_intent_chars_needed">
         <item quantity="one">Write at least %1$d character (%2$d more to go)</item>
         <item quantity="other">Write at least %1$d characters (%2$d more to go)</item>
     </plurals>
     <string name="label_limit_unlock_frequency">Limit unlock frequency</string>
-    <string name="label_allowed_proceeds">Allowed proceeds: 3</string>
-    <string name="label_time_window">Time window: 60 mins</string>
     <string name="label_vibrate_brightness">Vibrate \u0026 max brightness on warning</string>
     <string name="label_reducer_analytics">Reducer Analytics</string>
-    <string name="label_logged_intents">Logged Intents</string>
     <string name="label_logged_intents_desc">Review your past unlock reasons.</string>
     <string name="label_app_pause">App Pause</string>
     <string name="label_rather_spend_time">I would rather spend this time ...</string>
@@ -517,10 +323,7 @@
     <string name="btn_clear">Clear</string>
     <string name="btn_restart">Restart</string>
     <string name="btn_share">Share</string>
-    <string name="focus_add_websites_desc">Enter specific websites (e.g., facebook.com/*) or use keywords to block or allow during this focus session.</string>
     <string name="create_app_group_title">Create App Group</string>
-    <string name="label_on_each_open">On each open</string>
-    <string name="label_configure_allowed_schedule">Configure Allowed Schedule</string>
 
     <string name="hint_picker_query">pkg:com.app id:btn</string>
     <string name="hint_picker_label">e.g. Hide Reels, Block Ads...</string>
@@ -546,6 +349,34 @@
     <string name="locked_notifications_listener_label">Boundary locked app notifications</string>
     <string name="locked_after_unlock_pill">Locked. Opens again in %1$s</string>
     <string name="payment_pause_title">Payment pause</string>
+    <string name="summary_title">Summary</string>
+    <string name="summary_last_7_days">Last 7 days</string>
+    <string name="summary_last_30_days">Last 30 days</string>
+    <string name="summary_screen_time">Screen time</string>
+    <string name="summary_daily_average">Daily average</string>
+    <string name="summary_app_opens">App opens</string>
+    <string name="summary_unlocks">Unlocks</string>
+    <string name="summary_per_day">About %1$d a day</string>
+    <string name="summary_less_than_before">%1$d%% less than the %2$d days before</string>
+    <string name="summary_more_than_before">%1$d%% more than the %2$d days before</string>
+    <string name="summary_no_earlier_data">No earlier data to compare</string>
+    <string name="summary_busiest_day">Busiest day: %1$s</string>
+    <string name="summary_screen_time_per_day">Screen time per day</string>
+    <string name="summary_busiest_hours">When you use your phone</string>
+    <string name="summary_busiest_hour">Busiest hour: %1$s to %2$s (average minutes per day)</string>
+    <string name="summary_top_apps">Top apps</string>
+    <string name="summary_short_videos">Short videos</string>
+    <string name="summary_reels_total">%1$d short videos watched</string>
+    <string name="summary_reels_app_value">%1$s, %2$d videos</string>
+    <string name="summary_top_websites">Top websites</string>
+    <string name="summary_nothing_yet">Nothing recorded yet</string>
+    <string name="summary_under_a_minute">Under a minute</string>
+    <string name="summary_minutes">%1$d min</string>
+    <string name="summary_hours_minutes">%1$d h %2$d min</string>
+    <plurals name="summary_locks_note">
+        <item quantity="one">%1$d lock after unlock</item>
+        <item quantity="other">%1$d locks after unlock</item>
+    </plurals>
     <string name="permissions_title">Permissions</string>
     <string name="permissions_card_subtitle">See what is on and fix what is missing</string>
     <string name="permissions_desc">Everything Boundary uses, and whether it is on. Tap Fix to open the right place. Come back here after a system update to check nothing was turned off.</string>
@@ -646,7 +477,6 @@
     <string name="home_lock_turn_off_all_cancel">Not now</string>
     <string name="home_lock_all_off">Away mode is on.</string>
     <string name="home_lock_check_away">Turn on Away mode</string>
-    <string name="home_lock_away_ok">You are away from home. Locks can be loosened for the next %1$s.</string>
     <string name="home_lock_at_home">You are at home, so locks cannot be loosened.</string>
     <string name="home_lock_needs_home">Set your home first.</string>
     <string name="home_lock_no_permission">Boundary needs location access to check this.</string>
@@ -654,109 +484,16 @@
     <string name="home_lock_not_found">Could not find your location. Try again.</string>
     <string name="home_lock_fake">Fake locations are not allowed.</string>
     <string name="home_lock_refused_toast">This group has a lock after unlock, so it cannot be loosened. Use Emergency off if you really need to.</string>
-    <string name="hint_add_website">Add website or keyword</string>
     <string name="desc_previous_week">Previous week</string>
     <string name="desc_next_week">Next week</string>
     <string name="desc_earlier_weeks">Earlier weeks</string>
     <string name="desc_later_weeks">Later weeks</string>
-    <string name="desc_edit_group">Edit group</string>
-    <string name="desc_delete_group">Delete group</string>
     <string name="desc_refresh_stats">Refresh stats</string>
     <string name="desc_delete">Delete</string>
     <string name="desc_add_group">Add Group</string>
     <string name="desc_remove">Remove</string>
     <string name="desc_remove_interval">Remove interval</string>
 
-    <string name="ascii_coolstars" translatable="false">"\n
-⠀⠀⠀⠀⠀⠳⣄⣀⠜⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢄⣸⢀⡴⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡸⠢⣽⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠙⢄⡠⠖⢋⡏⠀⠀⠀⠀⠀⠀⢀⡠⠋⠀⠀⠀⠀⠀⠀⠀⠀⠦⠞⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣤⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠤⡿⣿⡄⠈⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠸⠁⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠃⠀⢠⠀⠀⡜⠀⠀⠀⠀⠀⠀⠀⠨⠀⠁⠁⠈⠀⠁⠒⣄⠀⠀⠀⠀⠀⠀⠀⠀
-⢀⡤⡄⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠀⢸⡈⠓⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⡄⠀⠀⠀⠀⠀⠀⢠⣖⣉⣀⣀⡀⠀⠀⠀⠘⢦⠀⠀⠀⠀⠀⣰⠓⡄⠀⠀⠀⠀⠀⢠⡏⢧⠀⠀⠀⠀⠀⠀⠀
-⠘⠤⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡖⢳⡤⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⢈⠳⣄⠀⠀⠀⠀⠓⠢⣵⣎⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⢰⠋⠓⠲⠤⠷⠀⠀⠀⠠⠈⠋⠁⠀⠀⠀⠀⠀⢸⠀⠈⢧⡠⠤⠖⢒⠟⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣏⡉⠉⠀⠀⠼⢥⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢢⣀⣀⡀⠘⠉⢹⠑⠠⠀⠀⠀⠀⠀⠀⠀⠀⢸⡧⠃⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠰⢶⣂⠈⠉⠉⠀⣀⠀⠀⣠⠚⠁⠀⠀
-⠀⠀⠀⠀⣆⠀⠀⠰⠆⠀⠀⠀⠀⠀⠀⢰⠋⠀⠀⢀⣀⣠⠇⠀⠀⠀⠀⠀⠀⢦⠀⡴⠀⠀⠀⡤⠖⠚⢉⠉⡏⠉⠉⠙⠓⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⠀⠈⠙⠒⡄⠀⠈⠀⠈⢧⡀⠀⠀⠀
-⠀⠀⠀⠀⡟⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠒⠛⣆⢸⠀⠀⠀⠀⠀⠀⠀⠘⢂⡈⣾⠀⡀⠀⠀⠀⠀⣀⠀⢀⠃⠀⠀⠀⠀⠀⠙⣀⡖⢲⡀⠀⠀⠂⠀⠐⠁⠈⠐⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⢸⠁⢀⠚⠑⣆⠀⢳⡀⠀⠀
-⠀⠀⠀⠀⡇⠸⡄⣀⡠⢤⡶⠀⠀⠀⠀⠀⠀⠀⠈⠉⠀⢀⡀⠀⠀⠀⠀⠠⠔⠋⡟⠫⡀⠀⠀⡀⠀⠀⢀⡞⠀⠀⠀⠀⠀⠀⠀⡏⠲⠄⢹⠀⠀⠈⠀⢀⠤⠴⣄⠈⠀⠀⠀⠀⠀⠀⠘⢿⠃⠀⠀⠀⠀⠀⠀⡼⡠⠋⠀⠀⠀⠉⠒⠳⠀⠀
-⣤⠖⠒⠚⡗⠛⣻⡋⡠⠋⠀⠀⠀⠀⢀⣀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠘⠀⠀⠀⠀⠀⠀⢀⡴⠋⠀⠀⠀⠀⣠⣄⠀⠀⠈⠒⠖⠋⠠⠀⠀⠀⡏⠀⠶⠈⡇⠁⠀⠀⠀⠀⠀⠀⠐⣠⠀⠀⠀⠀⠀⠀⠛⠁⠀⣠⡀⠀⠀⠀⠀⠀⠀
-⠀⠉⠑⢺⡧⢎⣠⠛⣄⠀⠀⠀⠀⠀⠸⠼⠇⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⠖⠋⠀⠀⠀⠀⠀⠀⠣⠼⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠦⠤⠚⠀⠄⠀⠀⠀⠀⠀⠀⢠⢫⡷⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⢀⡀⠀⠀
-⠀⠀⠀⢸⠀⡴⠃⠉⠛⠧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⠤⠇⠀⠀⠀⣀⣠⠤⠖⠚⠉⠀⠀⠀⢀⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⠤⣤⣶⣞⣶⣽⣄⣠⣤⢤⣄⠀⠀⠀⠀⠀⠀⢀⣸⢳⣀⣤
-⠀⠀⠀⢸⡞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠒⠀⠀⠀⠀⠀⣠⠴⠚⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠣⣤⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀⠁⠀⠀⠀⠈⠳⣜⡹⣺⡯⡟⢉⣩⠕⠋⠀⣀⠀⠀⠀⠀⠯⣍⡀⠀⢠⠋
-⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠊⠌⠀⠀⠀⣠⠔⠋⠁⠀⠀⠀⠀⠀⠀⠳⢦⡀⢀⠤⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⢻⣘⣀⠀⠀⠀⠙⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⢿⢉⣙⠿⣿⡀⠀⠀⠀⠉⠀⠀⠀⠀⠀⢠⣇⠞⠢⠧
-⠀⠀⠀⠀⢀⣀⠀⠀⠀⠀⠀⠀⠄⢠⢁⠀⠀⠀⣠⠞⠁⠀⠀⠀⢀⡀⠀⠀⠀⢀⡥⠀⠈⠁⣸⠁⠀⠀⠀⠀⠀⠀⣀⣠⣀⣀⣼⢙⡁⣧⣁⣀⣀⡀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⢠⣫⠽⠋⠈⠳⣌⢧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀
-⠀⠀⠀⠀⢯⣹⠇⠀⠀⠀⠀⠐⠀⡀⠀⠀⠀⣰⠃⠀⠀⠀⠀⠀⣏⣹⠀⠀⠸⠥⣄⠀⠀⠀⠙⢆⠀⠀⠀⠀⠀⠀⠙⢿⣿⡭⣟⣟⣛⣭⢂⠖⣨⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠁⠀⡀⡀⠀⠈⠻⡆⠀⠀⠀⣖⢳⠄⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠃⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣇⡰⠋⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⣙⡯⣮⣿⡿⠹⡴⠊⠀⠐⠆⠀⠐⠀⠀⡤⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⡠⣀⣀⡀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠃⠀⠀⠀⣇⢴⡛⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢃⡞⢟⡭⠒⢼⣱⣹⡄⠀⠀⠀⠀⠄⠀⠀⠙⠚⠁⠀⠀⠀⠀⠅⠀⠀⠐⠰⣄⠀⠀⠀⠀⠀⠀⢠⠞⠻⠁⠉⣠⣜⡀
-⣤⡀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠀⠀⠀⠈⠻⠗⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠤⠀⠘⠛⠁⠀⠀⠀⠉⠳⠇⠀⠀⠀⠈⠀⠀⡀⢀⡀⠀⠀⠀⠀⠂⠀⢴⡆⠀⠂⠀⡙⢆⠀⠀⠀⠀⠈⣳⠄⠀⠀⠀⢤⡜
-⡛⠈⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⢀⣀⣀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠛⠃⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⡀⠀⠀⠂⠘⠀⠀⢀⣀⣀⣀⣀⣀⠁⠀⠀⠀⠀⠀⣤⠀⠀⠌⢣⡀⠀⠀⠀⠧⠠⣆⠀⣦⠤⠇
-⠘⡞⠉⠁⠀⢀⠀⠀⠀⠀⠀⡼⠁⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀⡠⠚⠉⠀⠀⠉⢢⠀⠀⠈⠋⠀⠀⠀⠒⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠐⠂⠁⣀⡠⠴⠚⠋⠉⠉⠀⢀⠄⠀⠈⠉⠙⠒⢤⣀⠀⠀⠀⠀⠈⡀⢳⠀⠀⠀⠀⠀⠈⠛⠁⠀⠀
-⠀⠁⠀⠀⠀⠘⠦⣄⡀⠀⢠⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⡄⣰⠃⠀⢠⠔⠒⢦⠈⡆⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀⠂⠁⢀⡤⠖⠋⠁⠀⠀⠀⠉⠀⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢦⡀⠀⠀⠀⢁⠘⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣁⡷⠤⠀⣄⣀⠀⠀⠀⠀⠠⠀⡇⠀⠀⢹⠘⠤⠜⢀⠆⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠁⠀⣀⠴⠊⠁⠀⠀⠀⠰⠿⠀⠀⠀⠀⠀⠀⠀⢀⡤⢒⡒⣄⠀⠀⠀⠙⢆⠀⠀⠀⠀⢹⠀⠀⠀⠀⠀⠀⠀⡤⢤
-⢀⡀⠀⠀⠀⠀⠀⢀⡔⠋⠹⡅⠀⠀⠀⠀⠀⠀⠀⠀⠐⠂⣧⠀⠀⠀⠓⠶⠒⠋⠀⠀⠀⠀⠀⢞⣹⠆⠀⠀⠀⠀⠀⣠⠴⠋⠀⠀⠄⠀⠀⠀⠀⠀⠀⢰⠄⠀⠀⠀⠀⢠⠏⠀⢧⣃⠜⠀⠀⠀⠀⠈⢳⠀⠀⠁⢸⠀⠀⠀⠀⠀⠀⠀⠑⠚
-⡁⢈⠆⠀⠀⠀⠔⠁⠀⠀⠀⢷⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠘⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠔⠋⠁⠀⠀⠀⠁⡔⠁⢀⠤⠤⢄⠀⠀⠀⠀⠈⠀⠀⡏⠀⠀⠀⠀⠀⠀⠀⠘⠁⠀⡼⢩⡧⠀⣸⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠀⠀⠀⠀⠀⠀⢀⡫⡍⣳⠀⠈⠓⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠐⠀⡇⠀⢯⣀⡄⠈⡆⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠤⠄⠴⠃⠀⠀⠀⠀⠀⣠⠤⢄⡀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⡀⠀⠀⠀⠀⠉⣡⠃⠀⠀⠀⠀⠈⠙⠒⠒⠒⠒⠒⠚⠉⠁⠀⠀⠀⠀⠀⠀⣠⣄⠀⠀⠀⠡⠘⠦⣀⣀⣀⠜⢁⠀⠀⠀⠀⠆⠀⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⢡⡶⡄⡁
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠏⠉⠑⠤⠤⠤⠊⠁⠀⠀⠀⠀⠀⠄⠀⠀⠀⠸⠆⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠣⡼⠃⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠘⠀⢹⡀⠀⠀⠀⣞⢙⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠓⠒⢁⠇
-⠀⠀⠀⠀⢀⠁⢠⣦⠀⢀⠀⠀⠀⠣⣤⠝⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠂⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢡⠀⢣⡀⢀⠀⠀⠁⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠎⠀
-⠞⢉⡉⢦⠀⡄⠀⡀⢀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⡜⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⢰⠀⡔⠀⠀⠀⠀⠀⠀⣀⡤⣄⡀⠀⠀⠀⢀⡤⡄⠀⠀⠀⠄⠀⠱⣄⠀⠂⡀⠀⠀⠀⡏⢠⡍⠆⠀⠀⠀⠀⠀⠀⣀⠔⠁⠀⠀
-⣆⠓⢀⡼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⠁⠈⢧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢤⡀⠀⠀⠀⢙⣾⣿⡔⠒⠀⠀⠀⠀⠀⡇⠀⢀⡇⠀⠀⠀⠹⠤⠃⠀⠀⠀⠀⠀⠀⠈⠓⢄⡀⠀⠀⠀⠓⠤⠔⠃⠀⠀⠀⢀⡤⠚⠁⠀⠀⠀⠀
-⠀⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡤⠶⠶⠦⠼⠀⠀⠘⠒⠒⠓⢘⡆⠀⠀⠀⠀⠀⠙⠒⠁⠀⠀⠀⠀⡞⠹⡈⠁⠀⠀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠑⠒⠦⠤⠤⠤⠤⠔⠒⠉⠁⠀⠀⠀⢠⠤⡄⠀
-⠀⠀⠀⠀⠀⠀⠀⢀⣠⣄⠀⠀⠀⠀⠙⠲⣄⡀⠀⠀⠀⠀⠀⣀⠴⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠤⠒⠒⠶⠤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣄⠜⠀
-⡔⢄⠀⠀⠀⠀⠀⡏⠠⠀⣷⠀⠀⠀⠀⠀⠀⡟⠀⠀⠀⠀⠀⢳⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⠃⠔⢢⠀⠀⠀⠀⠀⠉⠢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠛⠃⠀⠀⠀⠀⠀⠻⠤⠤⠃⠀⠀⠀⠀⠀⢸⠃⠀⣠⠻⢇⡀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⣧⠀⠀⠀⠀⠀⠀⠘⠧⣠⠜⠀⠀⠀⠀⠘⠀⠀⠻⡄⠀⠀⣼⠻⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠀⠀⠀⢻⡤⠞⠀⠀⠀⠙⠲⠒⠀⠀⠀⠀⠀⠀⠤⣤⠏⢳⠞⠀⠀⠀⠀⠀⢀⣀⣀⠀⠀⡜⠀⢸⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡀⠂⠈⡛⠁⠀⠀⠀⠀⡶⡄⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡷⠛⠷⠀⠀⠀⠀⠀⠘⢧⡉⠉⠉⠀⠀⠀⠧⠤⠤⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⠴⠀⠁⠀⠀⠀⠀⠀⡇⢱⡀⠀⠀⢀⠀⠀⠀
-⠀⢀⠔⢢⡀⠀⢀⡤⠒⠉⠉⠉⠉⠲⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⡦⠀⠀⠀⠀⢀⣠⠴⠊⠁⠀⠀⠀⠀⠀⠀⠀⢠⠀⡠⡄⠀⠀⠀⠀⠀⠀⠀⢀⣀⠤⠤⠖⠃⠀⠉⣉⡭⠟⠋⠀⠀
-⠀⢸⡘⠚⣠⠞⠁⠀⠀⠀⠀⢀⢤⡄⠈⢳⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡼⠁⠀⣀⡀⠀⢻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡤⠤⢷⠁⢹⣀⣄⡀⠀⠀⠀⠀⠙⠒⠒⠒⡆⠀⣤⡀⠱⡄⠀⠀⠀⠀
-⠀⠀⠉⠉⠁⠀⠀⠀⠀⠀⠀⣇⠘⠊⢀⡞⠀⠀⠀⠀⠀⠀⠹⣗⡦⠎⣼⣀⡀⠀⠀⠀⠀⣀⢄⡀⠀⠀⠀⠀⠀⠀⠼⠤⠒⠉⠀⠙⣄⠘⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⢢⡄⠀⠀⣤⠒⠁⠀⠀⠀⠀⠀⠀⠀⢀⡇⢰⠃⠙⢦⡘⢆⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠑⠚⠉⠀⠀⠀⠀⠀⠀⠀⢀⣴⣻⡖⡗⠒⠛⠁⠀⠀⠀⠳⠤⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠁⠀⠀⢠⠴⢤⠀⠀⠀⠀⠀⣸⡠⠞⠢⣜⡆⠀⠀⠀⠀⣀⡀⠀⠀⢸⣇⠏⠀⠀⠀⠈⠺⠆⠀⠀
-        "</string>
-    <string name="ascii_coolflower" translatable="false">"\n
-⠀⠀⠀⠀⠀⠀⠀⠀⠘⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡱⡌⠳⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣷⡝⣦⠀⠹⢷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣾⣷⡀⠈⢻⣆⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣄⢂⠘⡄⠀⠀⢀⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠈⡧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⣧⡇⠀⣰⡞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠐⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠿⣿⣿⡅⢠⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⡂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠹⣽⢸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⢷⣄⠀⠙⣿⢠⠎⠉⠓⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠚⠉⠉⠉⠉⠉⠙⠻⣿⣷⡀⢸⠃⠀⠀⠐⣿⣷⠀⢿⣤⣴⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠠⠐⠒⠒⠂⠀⠀⠀⠀⠀⠹⣷⡞⠀⠀⠐⠈⣿⠃⣴⣾⣿⣏⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠂⢤⡀⠀⠀⠨⠉⠐⡀⠀⠸⣇⣠⢐⡤⢠⢏⣾⡷⠟⠿⠛⠀⠀⢉⡉⠒⠤⡀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣷⡤⠀⠒⠠⢤⡀⠀⣯⣇⣿⢃⣾⣿⢟⣔⠁⠆⠀⣂⡀⠀⠀⠀⣀⡀⢢⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⢀⡠⠖⠲⠀⢠⠋⠀⠀⠀⠀⠀⡙⣆⢹⣿⡇⣸⣫⡿⣿⣿⣿⠊⠍⠒⠂⠀⢀⠉⠀⠛⠹⣆⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⡠⠂⠀⢣⠀⠀⢀⠔⠁⣠⡆⢰⠁⡆⠀⠀⠐⠀⠁⠀⠀⣽⠼⣿⣷⣿⡿⡿⢧⠿⠥⠶⠤⢥⣀⠀⠀⠀⢀⣀⢤⣝⣄
-⠀⠀⠀⠀⠀⠀⠀⠀⡠⠁⠀⠀⠀⡬⡄⣠⠂⠀⠰⡜⠀⡏⠀⡇⢠⠀⡀⠘⠃⠀⠈⠋⡂⢿⣿⠋⡉⠒⢮⣑⡊⢄⠀⠀⠀⠙⢏⠁⠀⠀⠀⡻⠋
-⠀⠀⠀⠀⠀⠀⠀⢠⠁⠀⠀⡄⠀⣱⣿⠁⠀⢠⠁⠀⢰⠀⠀⢃⠀⠀⠀⠀⠀⠀⠠⠆⠐⢀⢈⢦⠁⠀⠀⠈⠺⠦⢍⢆⠀⠀⠀⢡⡀⠀⠀⠁⠀
-⠀⠀⠀⠀⢠⠦⢶⣼⠀⣶⣄⣰⣚⣳⠇⢀⠀⠌⠀⠀⣼⣀⣤⣤⣭⣉⠉⠉⢲⣦⣥⣄⣀⣠⣤⣾⣷⣌⠀⠄⠀⠀⠀⠑⠕⠀⠀⠀⠃⠀⠀⠀⠀
-⠀⠀⢀⡠⠂⢀⣌⠻⣧⡙⢟⢣⢛⣾⠀⡉⣾⠃⠀⢠⠁⠀⠀⠈⠙⠻⣧⠀⢸⢸⣿⣿⣿⠿⠿⠿⠛⠛⠳⢄⡀⠀⠀⠀⠈⠔⡄⠀⢰⠀⠀⠀⠀
-⠀⠀⢧⠀⠀⠘⣿⡶⢿⣿⣮⠞⡇⣿⢰⣿⡟⠀⠀⣾⠷⠞⠀⣒⡠⠀⠈⢳⠘⢾⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠉⠐⠒⠲⡀⠈⢰⠀⣸⠀⠀⠀⠀
-⠀⠀⠀⠑⢄⣨⣺⣿⣮⣷⣮⣻⣷⣽⣼⣿⡁⢀⣼⡿⢀⡠⠤⠔⠴⣤⣄⢈⡇⣸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⡀⠰⠁⠀⠀⠀⠀
-⠀⠀⣠⠖⠋⠉⢉⣛⠿⢽⣷⣿⣿⣿⣿⣿⣶⡿⢟⠋⠀⠀⠀⠀⠀⠙⣿⣿⣷⡏⠀⢀⠄⠒⠒⢠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢀⡞⠁⡀⠔⡊⠵⠲⠽⠋⠋⢁⣠⣿⣿⣿⡇⠀⠈⢢⠴⡾⠉⠱⡀⠀⠘⣿⣿⡠⠊⠀⠀⢀⠄⠀⢈⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠸⡀⠈⠀⠈⠀⠀⠀⢀⣤⣶⣿⡏⠻⠍⠘⠗⡄⠀⠀⢧⢱⠀⠀⠈⢦⠀⣼⠟⠀⠀⠀⢄⠈⠀⢠⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⡇⣀⣠⡤⠤⢲⢿⠟⠍⣷⣿⣿⡄⠀⠀⠀⠃⠀⠀⠘⡌⠚⡄⠀⠀⠣⠏⠀⠀⠀⢎⠃⠀⠀⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢀⣷⣿⣿⣧⡀⢸⠈⠐⢖⣟⢿⡿⡳⡄⠀⠀⠀⠀⠀⠀⣷⠰⡡⢀⣤⡄⢦⡀⠀⠀⡜⠀⠀⠰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠈⠙⠛⠉⠁⠀⡀⠀⠀⡎⢀⢟⡜⠀⠀⠀⠀⠀⠀⢂⢀⣿⡆⢠⣿⡟⠁⠀⢣⠀⢂⠀⠀⢠⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢡⠀⠀⠀⠀⡌⠀⠀⠀⠀⠈⢐⠤⣰⣿⣿⣿⣦⡀⣷⣴⡄⠘⣇⡎⠀⢀⢃⡠⠤⠒⠒⠒⠤⠤⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠈⠢⠀⠀⠰⠁⠀⠀⠀⠀⠒⠀⣗⡻⣿⣿⣿⣿⣿⣿⣿⠇⢀⡿⠁⢀⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠉⠂⢤⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⢿⠋⠀⠀⠀⠀⠀⠀⠘⣿⡄⠀⠙⢿⣿⣷⡿⢰⣸⢃⣴⠟⠀⢀⣤⠖⠁⠀⠀⠀⠈⠁⠀⠀⡀⢀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠲⠤⠭⠥⠤⠭⠗⠢⢤⣘⠻⣿⣿⣿⣿⣿⣛⣴⡶⠏⠉⠀⠀⠀⠀⣀⠀⠤⠤⠤⣈⠨⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠄⠁⠀⠀⠀⠀⠀⠀⠁⠈⠈⠑⠠⢙⣺⣿⣿⡿⠛⠛⠻⢝⠀⢀⣀⡤⠐⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠤⠄⠤⠠⠤⠄⣀⣀⣀⣀⣤⣤⠼⠾⣿⣿⢛⣿⣗⠀⠀⠀⠀⠻⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⡔⡩⠀⠁⣴⡿⠟⡟⠀⠜⢻⣂⠀⡀⡀⠀⠰⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⡏⠀⠄⠀⠜⠉⠀⢰⡇⢀⠄⠀⠊⠃⠠⠀⠀⠀⢡⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⣰⡿⢇⠀⠀⠂⠀⠐⡀⠀⠀⠀⠀⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⠋⠁⢀⠃⠀⠀⠀⠀⠀⡰⣿⡷⠛⡄⠀⠈⠁⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡿⠁⠀⠀⠸⠀⠀⡆⠀⠀⡰⣹⡿⠁⠀⠈⠢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠁⠀⠀⠐⣄⠅⠠⢁⡀⢠⣱⣿⣵⣾⣿⣷⣤⡈⠢⡀⠀⠀⠀⠀⠀⠰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣧⠀⡀⢠⢃⣿⣿⣿⣿⣿⣯⣉⠛⠦⡉⠦⡀⠀⠀⠀⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣿⣿⣧⡧⠃⣾⠛⠛⠛⢿⣿⣿⣿⣿⣦⡄⠂⠈⠓⠤⠌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢘⣿⣿⡇⢹⣿⠀⣼⠏⠀⠀⠀⠀⠉⠻⢷⣝⢿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⡇⠀⠟⣼⠃⠀⠀⠀⠀⠀⠀⠀⠀⠹⣟⢿⣵⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⡇⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⣯⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⡇⢀⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠇⠘⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        "</string>
     <string name="ascii_brain" translatable="false">"\n
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠤⠤⠤⠤⣄⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣶⡊⠉⠉⣉⣱⡷⠶⢢⣠⢴⣶⡝⠒⠉⢉⣭⡽⠟⢉⣀⡀⠹⢭⠒⢤⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -813,147 +550,6 @@
 ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠛⠛⠛⠛⠛⠋⠉⠉⠀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠐⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        "</string>
-    <string name="ascii_sharks" translatable="false">"\n
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⠄⠀⠀⠀⣠⡶⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⣠⢤⠀⢤⠹⡌⠃⠀⠂⠀⠀⠀⠀⠀⠀⣠⠃⠘⣇⠀⠀⠁⠈⠚⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠳⠼⠃⠢⠦⠙⠙⠀⠀⠀⠀⠀⢀⣤⠖⡧⠐⠚⠙⠳⠤⢀⢀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⢠⣄⣄⡀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⢠⣾⠫⠇⠀⠀⠰⠒⠂⠀⠀⠈⠒⣭⣿⡧⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣼⡅⠐⠐⠻⠶⠶⠖⠋⣉⡿⠃⠀⠀⠀⠀⠹⢿⣇⣆⣀⣠⡀⠔⢾⣿⠋⠈⠙⢝⣾⠿⢹⣟⢶⡂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠙⢧⡀⠀⠄⢠⣆⣌⢸⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⢆⠀⢱⠀⠀⠀⠀⠈⠀⠀⠉⢺⠿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠙⣇⢀⠀⠉⠳⠷⣿⣦⣤⣴⣶⡄⠀⣀⠀⠀⡀⣠⣄⣀⣀⡙⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠉⠘⠓⣀⠤⣤⡀⠀⠀⢀⠀⣀
-⠀⠀⠀⡏⠘⣻⣷⠶⠶⣲⣬⣬⣥⣤⠄⣀⣤⠼⠟⠋⠉⠁⠀⠉⠉⠟⠛⠻⢶⣤⡀⠀⠀⠀⡀⢤⣄⠀⠀⠉⠚⠛⠓⠒⠟⠋⠀
-⠀⠀⠀⣿⣷⠋⠀⠀⠀⠀⠀⠙⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠛⠢⡀⠀⠙⠙⠊⠠⠲⣢⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠈⣁⡀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠑⠀⠀⠀⠀⠤⠳⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠑⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        "</string>
-    <string name="ascii_lotus" translatable="false">"\n
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠤⠤⣄⠀⢀⠔⠱⢦⡀⢠⡞⠤⠽⢦⠀⢀⣤⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡸⠒⣄⡈⣷⠞⠀⠀⠀⣹⠏⠀⠐⠈⣼⠗⢩⣤⣾⢹⡄⣠⣖⠇⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣇⡯⠂⢙⢿⠀⠀⠀⡰⡍⠀⠀⠠⣡⡎⡌⣭⠃⡇⣷⠟⠁⣟⡇⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢰⡩⠐⣤⡀⡾⣡⢃⢧⠀⡰⣴⡀⢀⣶⣹⠟⣶⢆⣴⣷⢠⣼⢿⡖⢱⠃⢠⠔⣟⡇⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⢀⠤⡤⣗⡃⣴⣯⣿⡕⣺⡞⣾⡧⠛⠫⣯⡿⠛⢙⢿⠿⣼⡿⠋⢹⡚⡠⢸⣄⠚⠴⣼⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠈⡞⠄⠉⡣⣿⣾⢿⡂⠉⢷⢪⣰⠆⠀⠉⠑⡴⠉⠀⠀⢈⢣⡀⡾⣎⠀⢨⡏⠠⢁⠃⠀⣀⣠⢤⣦⡄⠤⠤⣤
-⡖⠖⠼⢦⣀⠀⠫⡱⢬⣻⣆⠙⢣⣊⣴⡈⢀⢸⠔⠠⠀⠀⠀⠘⣹⠏⠄⣤⣔⡷⣡⠞⣺⠽⢒⣪⣟⡟⠀⢀⣷⠋
-⠘⢅⡢⠈⢗⠀⠘⢻⣶⡨⡰⢦⣄⠠⠶⠈⠠⠘⠀⠀⠀⠀⢐⢺⠁⠀⠈⡆⡛⡵⠟⣊⠔⡪⢞⣥⡾⡀⣴⠟⠁⠀
-⠀⠀⠙⠷⣄⡓⢄⠘⣿⣿⣦⡠⢀⠑⢤⣰⠔⠊⠉⠑⠤⢀⢈⢇⠀⠀⠀⣨⠮⠒⣉⠔⠛⣢⣞⣡⠴⠊⠀⠀⠀⠀
-⠀⠀⠀⣀⣀⡙⠳⢿⣞⣿⣿⣿⣮⣵⣂⢗⠀⢄⠀⠀⠀⠀⠹⠀⢀⠄⠪⠐⡒⢈⣠⠴⠾⠚⠋⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠻⣿⣿⣿⣿⣿⡉⢍⠉⠉⢟⠫⢭⡿⡶⠄⢀⣀⠀⣠⠾⢒⠁⠵⣆⠷⢿⡟⡛⠛⠱⠲⠶⢠⣤⣄⣀⣀⠀⠀
-⠀⠀⠀⠀⠉⠛⠛⢛⣻⣾⣦⣦⣤⣁⣂⣑⣿⣿⣿⣿⣷⣾⣶⣿⣿⠟⠁⠀⠀⠀⠉⠒⠫⠄⡀⠀⠀⠉⣉⡿⠛⠀
-⠀⠀⢀⣠⡤⠶⣿⣿⣿⣿⣿⡿⣿⡿⠿⣟⣝⠾⠿⢿⣿⠿⢿⢻⣿⠳⣶⣤⣀⡀⠀⠀⠀⠀⠀⠙⠛⠥⡀⠀⠀⠀
-⠀⠸⠯⠄⣀⠀⠠⠤⠔⠒⠛⠉⠁⠀⠐⡟⠈⠁⠀⠀⠀⠀⠎⣺⠏⠀⠀⠉⠙⠛⠳⠶⠶⢄⣤⣠⡤⠞⠃⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣄⠀⠀⠀⢀⡠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠒⠚⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        "</string>
-    <string name="ascii_jellyfish" translatable="false">"\n
-⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⢀⠀⡂⣂⣤⣤⣦⣶⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠈⠅⠁⢀⠂⣅⣤⡾⠏⢋⡍⡬⠾⠽⢽⢷⡿⣯⣻⢶⣄⡀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢴⡕⣥⣟⢁⠀⡞⡏⠁⠠⠀⠀⣸⣎⢷⣗⣏⡻⡝⣿⣄⠀⠀
-⠀⠀⠀⠀⠀⠀⣮⣾⣿⠕⢜⠀⢑⠻⠿⠷⠛⠋⠋⠁⡻⡃⠹⣧⡂⣧⣻⡆⠀
-⠀⠀⠀⠄⣒⡱⢗⣻⣃⡔⢁⡦⢖⠀⠀⢀⠀⠀⠀⠀⣚⡧⡀⣽⣧⠀⢯⣿⡄
-⠀⠂⡡⠂⡐⠀⣠⡿⢯⣿⣾⣅⠃⠀⠴⠠⠔⠀⠀⠀⠘⢯⣷⣿⡟⠄⠈⣿⠋
-⠀⠉⠀⡌⣀⡶⡛⡀⠰⢙⣿⣯⣿⡶⣷⣦⣃⣀⡔⠀⡂⣤⠋⡩⠁⣀⢠⣿⠀
-⠀⠀⠀⠁⣶⢁⡂⠀⣂⣼⣷⡃⡹⡳⣽⣾⡏⣙⡟⣫⢷⢷⢤⡦⠤⡦⣿⡷⠌
-⠀⠀⠀⣞⣭⣤⣷⠶⠋⣽⠋⢰⠇⣽⣳⠁⣻⠗⣻⡟⠦⣷⡽⡻⡧⣿⢗⠝⠀
-⠀⢀⣴⣿⡯⠃⢪⣰⠞⠑⣴⣯⣿⠃⣏⡀⢹⠀⡻⡇⠀⢸⡆⠀⣃⣯⠅⠀⠀
-⢀⣽⢻⣒⣡⡴⣟⢁⣠⡞⢻⡿⠁⢲⡇⠀⢹⣄⡅⢷⠀⠸⣇⠤⠃⠄⡅⠀⠀
-⢸⢇⣴⡿⠋⠄⣼⣿⠁⠀⣾⠅⢐⠸⡇⠀⠂⢿⡌⠙⣆⠉⠹⣦⠀⣱⠀⠀⠀
-⢰⣾⠏⡧⠈⢠⣿⠌⠀⠀⣿⡍⠀⠂⢿⠀⠅⠈⣷⡄⠹⣧⠀⠙⢷⣍⠀⠀⠀
-⢸⣟⠠⢷⡀⢹⣿⡂⠀⠀⢹⣧⠀⠀⠸⣷⠀⠀⠸⣷⡀⠹⣦⢀⡒⠻⣧⠀⠀
-⢸⡇⠑⢠⣙⣶⣿⡦⠀⠀⠒⣿⣧⠀⠀⢻⡆⠀⠀⠹⣧⠀⣹⣇⠀⠀⢻⣧⠀
-⢸⣇⠀⠀⠀⠈⠘⣿⣶⠀⡀⠈⠹⣧⠀⠘⣿⠀⠀⠀⣿⡗⠁⢿⣄⠀⠀⣿⡇
-⢘⣿⡄⡂⣀⢀⠠⠜⣿⣇⠀⠐⠀⡈⠧⡀⢿⡆⠀⠀⣿⠃⠀⠘⣿⡀⠀⢸⡇
-⠀⠘⣃⡠⡐⠌⠂⠁⠈⢿⣧⢀⠀⠀⠐⡅⣸⣷⣀⡼⠃⠀⠀⠀⣿⡇⠀⢸⡇
-⠀⠀⠈⠀⠆⠀⠀⠀⠀⠀⠙⣯⣪⢐⠪⡂⢸⣿⠈⠀⠀⠀⠀⠀⣿⡇⠀⡾⠀
-⠀⠀⠀⠀⠀⠉⠁⠂⢀⠀⠀⡈⢻⣅⠌⠀⣸⡏⠀⠀⠀⠀⠀⣸⡟⠀⠀⠁⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠔⠁⠀⣸⠂⠀⢀⡿⠀⠀⠀⠀⢀⣴⠟⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⡋⠀⢀⡾⠃⠀⠀⢄⣠⠞⢁⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⡐⠊⠋⠀⠀⡞⠁⠀⠀⠂⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        "</string>
-    <string name="ascii_god" translatable="false">"\n
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⢾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠇⠀⠀⠀⠀⠀⠀⠀⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠒⠤⠄⠀⡀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⠀⠀⠈⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠠⠤⠅⠡⡴⡁⣥⠀⠀⢈⠀⠀⠀⠀⠀⠀⠀⠈⠢⠀⠀⠀⡄⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠊⠀⠂⠀⠀⣼⣿⣿⣿⣿⡓⠰⠄⠠⠄⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⣶⠾⣭⣥⣿⣿⣷⠀⠀⠁⢄⢀⠀⠀⠀⠀⠀⠀⢱⠀⠀⢣⠀⠀⣒⠁⠀⢀⠀⠀⠀⡰⠁⠀⠀⢀⠠⠁⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⣰⢛⣿⣿⣿⣿⣿⣔⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⣠⣶⢮⢴⣾⣿⣿⣿⣿⣿⠢⠀⠀⠈⠢⠀⠀⠀⢤⠀⠘⠠⢇⠀⠀⠀⠀⠂⠀⠀⠠⠀⠆⣖⡁⠀⢀⠔⠉⠀⠀⠀⠀⠂⠁⠀⠀⠀⠀⠀⠀⠀⢀⢣⠾⢫⠹⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣨⣾⡿⡡⢴⣿⣿⣿⣿⡿⣿⣿⡷⠀⠀⠀⠈⢇⠀⠠⠀⠁⠀⠘⠁⠀⠀⠠⠀⢀⠀⠀⠀⠀⠀⠀⠃⠔⠁⠀⠀⢀⠤⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢂⣆⢖⣥⡶⡜⣿⣿⣿⣿⡄⠁⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠄⣺⣿⣯⠚⣤⡟⢙⣿⣿⣰⣼⣿⣿⡇⠀⠀⠀⠀⠀⠀⠿⣰⠀⡀⠁⠀⡀⡨⢠⣄⠀⡰⠒⠂⠀⠀⠀⠀⠀⠀⣢⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⣴⡿⣧⢏⢺⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⢈⣺⣿⣿⣷⣵⠏⣀⢪⣿⣿⢸⢼⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠁⠀⠐⣀⡈⡨⢘⣛⣤⡤⠃⠲⡥⠆⠀⠀⠀⠠⠞⠓⠀⠀⠀⠀⣀⠀⠄⠀⠀⠀⠀⠀⠀⠈⣼⣿⡽⣫⢯⣿⣿⣿⡿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⢔⠄⠈⣠⣿⣿⣿⣿⣽⠋⣨⠦⣿⣿⣿⡁⣼⠈⢿⣷⠄⠤⣦⣤⢄⡤⠀⠀⠈⠀⠈⣛⢛⣉⣖⣠⠂⢫⣥⣦⣄⢡⡍⠁⠀⠀⠀⠀⠐⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⢈⡄⣿⣽⣫⣿⣿⣿⣿⣇⡝⢿⣿⢤⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⠊⡰⠣⣪⣾⣿⠿⢿⣷⢋⡝⢁⣵⣿⡿⣽⡟⢑⣣⢰⣿⣿⡄⠀⠀⠀⠀⠃⠀⠀⠀⠀⡻⣧⠻⣿⣿⣿⣷⣄⠶⠬⣍⠀⠞⢀⠀⠀⠀⢠⠠⡄⠀⠀⢀⣀⠀⠀⠀⠀⠀⠀⣾⣀⣿⢡⡏⣿⣿⣿⣿⡇⢸⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢟⢽⣵⣿⣿⡟⢸⡿⠃⢚⣴⡞⣿⠏⡇⡿⢃⢀⢲⣾⣿⡿⢃⠀⠀⠀⠀⠀⠀⢈⠁⠘⡙⠰⠾⠛⣉⠁⠭⠉⠉⠹⠀⡶⡀⠘⢀⠀⠀⠈⠂⠀⠁⠀⠀⠀⠀⠀⠒⠀⢠⣾⡏⣼⣿⡸⠀⣿⣿⣿⣿⣿⠸⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣰⣷⣽⣿⣿⣿⠟⢡⣌⣵⣿⣿⣿⣇⡏⡄⣷⠃⠾⢙⡤⡿⣿⡓⠀⠀⠀⠁⠀⠃⠀⠀⢠⠘⠀⢰⣶⣾⣿⠐⣿⣿⣂⠂⢩⣿⠌⠄⠺⠥⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⡞⣿⣿⣷⣦⡛⢛⣿⣿⣿⢦⢻⣿⣿⣧⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠀⢀⣶⣿⣿⣿⡿⠛⣿⠿⢢⣿⣿⣿⡿⠿⣿⣻⢱⣧⢟⡀⢁⡬⢁⣃⡜⠁⠪⠖⠑⣀⠀⠀⠀⠀⠎⠃⡄⠈⣿⣿⣏⣈⣼⣷⣿⣆⢈⠿⡸⠌⢠⡉⠀⠀⠋⢦⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⢿⣿⣿⣿⣿⡏⢻⣿⣿⢸⡞⣿⣿⣿⡆⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠘⠀⣰⣿⣿⣿⠟⢁⣤⡾⢃⣴⣶⠋⣿⡟⡀⣸⢁⣣⢾⡏⣲⢨⣼⡿⠟⠉⡊⠁⢢⠦⠀⠀⢀⠀⠀⠀⠐⣀⣶⡀⠘⢟⡥⣤⣝⣿⣿⠃⠀⣿⡖⠇⠁⢠⠁⠀⠀⠀⠀⠀⠀⢀⠀⠀⢢⢺⣿⣫⣿⢸⠃⣿⠃⣿⡇⣼⠏⣿⡸⣿⢸⣿⣿⣷⡀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠔⠁⢠⣾⣿⣿⡿⡣⣨⡾⡋⡡⢫⢎⡏⢶⣿⡽⡱⣣⣿⡟⣱⠀⣿⢸⡇⡇⣬⡖⡅⠐⠋⠀⠂⠆⠠⠁⠀⠀⠂⠡⠋⢧⠀⠈⠛⠛⠉⠉⠁⠀⠤⡇⣻⡜⢁⠹⡉⠀⠠⠀⠀⠀⠀⠀⡀⢡⣶⡟⡡⢹⠇⠞⠈⡿⠀⠛⠁⠘⠠⢻⡇⣿⡏⣿⣿⢩⣷⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⠋⢠⣾⢟⠅⣞⣱⡇⣼⠇⡾⢈⣭⠶⣿⣿⢸⡏⡖⣿⠟⣥⡇⡿⣱⠓⠃⢉⠀⠐⠚⢄⡀⠀⠀⠀⠀⢁⡀⠀⠀⠀⢴⢀⣤⠀⢐⣔⡝⠘⠅⠂⠄⣡⣥⡄⠐⢆⠀⠠⢊⠀⠋⡜⣱⡫⠛⣂⣰⣦⡥⠠⣾⡩⢰⠀⣸⣧⢻⡗⣿⣿⡎⣿⣇⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠀⢤⣾⣿⣿⠟⢁⣵⣿⠃⣪⣾⠛⡿⢠⡿⡸⣑⣿⠃⣣⡿⣣⣿⠘⣾⠟⣾⣿⢸⠱⢁⡕⢃⠂⡑⠃⠀⠈⠈⠓⢀⠠⠞⢈⡘⠠⠀⠀⣚⡎⣿⡳⣸⡜⣎⣠⢃⠂⢠⠑⣹⣿⢈⢀⡥⢞⠁⢋⠚⠛⡌⣱⡞⣿⣿⣿⠇⣀⣷⣇⡇⠀⢨⡄⢼⡇⣿⣿⣇⢿⣿⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠋⣴⣿⣿⠟⢅⣴⣿⡟⣡⣾⡿⠃⡪⡐⣼⠰⣶⡷⣶⢨⢹⡿⣸⣿⣾⢇⡇⣿⡟⡀⢞⢈⣶⣃⡾⢡⡄⠀⠂⠀⠀⡤⠺⠾⣿⣷⠾⣯⣵⣾⡿⠜⠷⢎⢫⡏⠎⠀⣺⣆⠲⠄⠂⣉⡀⠰⠿⢗⡳⠶⠔⠾⠿⣧⣿⣿⠏⢰⣸⣼⢙⠀⠐⣾⠂⣼⢳⣿⣿⣿⣻⣿⡇⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢃⣾⣿⡟⠋⣠⡾⣉⡍⣼⣿⣯⢠⢆⡱⣱⡿⣱⡱⣸⢃⣿⠬⢡⣿⣿⡿⢘⣼⡿⢐⡌⢔⡟⣼⣏⣴⡟⠀⡀⠈⢀⠠⠹⣸⣧⡿⢿⡇⢠⣙⠻⣿⣷⢸⡀⠾⠷⠘⢃⢠⣍⠭⣡⡬⠉⣁⠀⠀⠀⠨⡘⢸⣷⣯⣸⠻⣿⢀⡟⢏⣇⡇⠈⣠⣿⠀⣿⣿⣿⣿⣿⣿⢋⢱⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⣰⣿⣿⠿⠀⣾⢏⣾⢏⣾⣿⣿⡏⢸⡄⣱⣿⢳⡵⣱⢏⣾⢡⠂⣽⣿⡿⢡⢸⡟⣠⠟⢨⣾⢣⡎⣿⠛⡐⡼⠁⢠⣾⡟⢣⣟⢙⣷⢠⡃⡌⢻⣧⣿⣿⡞⠡⠼⠃⢃⣼⣯⣦⠜⢈⠔⠼⠃⡀⠸⣕⣀⠈⠸⣿⡇⠛⡄⠁⢹⡇⣼⣸⠇⠄⣿⡇⠁⣿⣾⣿⣿⣧⢻⢸⢸⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣎⣽⠿⣿⡏⣼⡿⣱⠿⣳⣿⣿⡿⠟⢵⣬⢰⣿⡇⠟⣴⢣⠻⢏⣴⣧⡛⣩⣶⣫⡜⠘⡱⢨⣿⢏⡦⣇⡾⣀⡜⢠⠀⠸⣿⠿⡚⠃⢾⣿⡆⣧⢻⣎⠙⢻⣽⣿⣿⣿⠈⣰⣞⢏⡡⢞⣳⡛⠀⠀⣴⣶⣿⡿⡄⠀⢻⡧⠃⣁⡄⣿⡇⡛⣿⠠⢸⣿⠀⠠⣽⢺⣿⣿⡇⣿⠸⢸⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢡⣾⡟⢸⡿⣸⢟⡼⠃⣼⣿⣿⡿⠁⣿⣷⣭⡬⢭⣶⣿⣶⣿⣿⡿⢋⢿⣿⣿⡟⡤⠀⣾⢃⣚⡡⣿⣷⠉⡚⠀⠀⡄⡄⢐⡉⠑⠀⠹⢹⣿⡿⣨⡀⢻⣦⡁⢝⠻⠿⠁⣸⠹⠃⠈⠁⠦⠭⡄⠀⢰⣿⣿⣿⠂⢰⣆⠘⢁⢀⠈⢁⢹⠃⣸⡿⠀⣿⣿⠘⢸⣿⢹⣿⣿⣯⣿⠁⣾⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠁⢼⣿⠀⡟⣱⠫⡾⠁⣼⣿⣿⡟⠀⣼⣿⣿⡏⠖⣾⣿⡟⢡⣸⡟⣱⢸⣹⢻⣿⢃⠀⢰⢃⣾⡟⢹⡿⡇⣴⠱⠀⡘⡥⣾⢯⣻⠚⠆⠲⢸⣿⣷⠰⣧⣠⡹⣝⠢⣶⠖⢋⡁⢆⠆⢾⡇⠋⡉⠬⢠⡿⠋⢀⡄⡀⢀⣿⡄⠏⠀⠀⠠⣿⣾⡟⠇⢱⣿⠃⢸⠨⢱⣿⣿⣿⣧⣿⠠⢹⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠟⣠⠸⢃⣦⣾⠁⠀⢅⣾⣿⣿⡟⣼⡂⢿⣿⡿⢡⡇⣿⣿⠁⣣⢏⣴⡟⣰⡆⣸⠁⠀⠀⢈⡞⢛⡀⠌⠁⢅⡧⡇⠢⡘⣷⣎⠓⢽⣷⠑⠜⠘⣿⣿⡄⠹⠇⠁⣴⣶⣎⢬⠣⣍⠼⢰⡀⢥⣶⡄⠓⠃⢀⣴⢻⠐⡔⠃⢀⠃⠄⠀⠀⡀⠽⡟⢐⠠⢸⡿⠐⡚⢰⣾⣿⣿⣿⢻⣿⡄⢸⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡏⣰⣿⣶⣿⣿⢁⠿⢏⣾⣿⣿⠟⢸⣿⣧⢌⣩⣴⢸⣿⣌⡓⢀⣵⣿⠏⠄⠛⠁⠋⡄⢠⡾⠿⠁⢋⠃⣆⠂⣼⢙⠐⠟⠛⣿⣿⣷⣦⠙⣦⢸⡆⣿⣿⣷⣠⣄⠠⡀⠈⠉⠦⠇⢈⡉⠋⠣⠀⠏⢈⣷⣿⣾⡶⢖⡌⠀⡴⠈⡐⣰⡖⠀⠃⢀⢁⡛⡀⢘⠇⣿⡇⣿⣿⣿⣿⣿⣹⣿⣇⠸⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⡀⡟⢰⣿⣿⣿⣿⠃⣼⠃⣼⢏⢸⣿⢃⣿⣿⢋⣾⣿⣿⠇⣭⡭⢶⣷⣭⣵⡣⠄⢠⡾⡇⢧⡄⠁⠀⠀⠋⠀⠛⠐⣨⡀⠠⣰⣔⠙⢿⢿⡟⠠⣋⢸⡧⠙⠒⣨⡝⢩⣦⠇⠁⣤⠘⢤⡌⠀⢰⠠⠐⡄⠉⠙⠫⡁⠠⠤⠂⢤⠀⣠⢃⢻⠁⠀⠀⢀⡿⡄⠀⣸⢰⣿⠃⣿⣿⣿⣿⣿⣽⣿⣿⠀⡇⠀
-⠀⠀⠀⠀⠀⠀⠀⡆⠈⠀⣿⣿⣿⣿⡏⠀⢇⡿⡇⣸⢸⡇⣸⣿⠇⢸⣿⣿⡇⣾⣿⣇⣾⣿⢿⣿⠇⢀⡎⠀⠁⣾⡇⢀⠀⠀⠈⠀⠀⣀⣾⡇⣸⣿⣿⣿⣿⡆⠀⣷⢱⠉⣿⠆⠀⠀⢹⣇⡆⢁⣾⠸⡀⠀⠉⠇⠁⡇⡆⣶⡿⡇⢀⣷⡶⠿⣆⠹⡆⠁⢸⡀⠀⠁⡇⢹⣷⠇⣶⡿⣸⣿⠀⣿⣿⣿⣿⣿⣾⣿⠀⡆⠇⠀
-⠀⠀⠀⠀⠀⠀⠰⠀⠀⣸⣿⣿⣿⠋⠀⡸⡸⠝⢰⡇⠟⢠⣿⡟⡰⣿⣿⢈⣴⢫⡻⣿⢟⣵⣷⠉⠀⠈⠀⠀⢠⡟⠒⠋⠀⠀⠀⠀⣰⠿⣀⣀⡀⠹⣿⣿⠟⠠⡀⠻⠰⠺⡏⠜⡢⡙⠖⠆⣶⡮⠈⠃⠩⣒⡟⡴⠀⢇⢏⠯⣓⡃⠼⠃⣐⢣⡠⠴⠂⡀⠀⠷⡀⢲⠁⣼⡾⢠⡟⡀⢃⣿⡄⣿⣿⣿⣿⣿⣿⣻⠀⡡⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⡱⣿⣿⡿⠃⣾⣀⠣⣼⣿⡜⢟⡰⣜⠿⢃⣅⣛⣵⡿⢱⡎⡏⣏⡾⠛⢋⠀⠀⠀⠀⠁⡎⠀⠀⠐⠐⡉⠄⠐⢉⢺⣟⡛⢿⣦⣹⡏⢀⠴⡄⢡⠐⠀⢿⣤⠿⠘⠠⢜⠷⠉⠺⠖⠀⠉⠙⣄⣀⠾⣅⡍⠒⠠⠤⠌⠹⣷⣦⠃⠡⠁⠀⠀⢒⡘⠀⢹⠧⣾⣿⠀⣸⣏⢸⣿⣿⣿⣿⣿⣽⣿⠀⢧⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣼⢳⣿⡿⣡⡺⡋⡋⡆⣾⡿⠙⣿⢏⣶⡊⢹⡿⣁⣭⣶⢸⣳⡇⠋⠀⠀⢈⢰⠃⠀⠀⠘⠁⠀⠀⠀⠀⠀⠀⢄⣤⣟⣿⣏⠀⠘⢓⡵⢃⡆⠇⢿⡄⢮⠤⠃⠔⠋⣠⡄⠄⠀⠀⢠⣁⣀⣉⡀⣤⠆⠐⠘⠋⠱⣶⡉⠓⠈⣿⡄⠀⠀⠀⡈⠠⡇⠀⢀⠀⠻⢠⠚⢻⣽⢺⣿⣿⣿⣿⣿⣿⡇⠆⠸⠀⡄
-⠀⠀⠀⠀⠀⠠⢰⡏⣿⣿⣇⣿⡟⡼⣸⠅⣿⠇⢲⢏⣾⣿⡟⣬⡎⡇⣿⡟⣾⢇⠾⠿⠀⠀⠀⠏⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣿⡗⡀⢙⣦⠈⡄⠀⠸⣿⣦⣠⢶⠮⡁⢠⣴⣦⠰⣇⠀⠀⠚⠉⢛⣠⡌⢉⣉⡉⢒⣉⣽⡀⠀⢸⠂⠀⠀⠰⠁⡄⠀⠀⠀⠆⡆⢀⠷⢵⢸⣹⣿⣿⣿⣿⣿⣿⠸⠁⠂⠀⡇
-⠀⠀⠀⠀⠀⠄⣿⣸⣿⡿⠩⡛⣼⢣⣿⣇⠻⢠⣾⣿⠏⣾⢣⣿⢸⢵⡿⡸⢣⠂⠀⠀⠁⠀⠀⠀⠃⠀⠀⠀⠀⠀⠀⠀⣀⣼⣿⣿⣿⣿⠟⢩⡴⠒⠀⣿⡆⢱⠀⣿⣿⣿⠋⣪⡞⣵⣿⣿⡟⣃⠁⠀⠥⣔⢒⣪⠙⣇⠺⡲⠸⢤⠏⠚⡇⠀⢨⠀⠀⠀⠙⠐⠃⠀⠠⠀⠸⠐⡼⡀⡿⣼⣹⣽⣿⣿⣿⣿⡿⠀⠄⡁⠀⡁
-⠀⠀⠀⠀⠐⠀⢁⡏⡿⣱⢧⣰⡿⣼⣿⣿⣷⡘⡿⠁⣰⡏⢟⣅⡟⢬⠔⠀⣋⠚⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⠟⣉⠀⠈⠀⠀⢰⣚⢤⡯⢆⣿⡿⠃⠀⣀⢾⣿⣿⣿⣿⠋⣰⠋⡴⣇⡌⠉⠁⠘⢆⢝⣃⠈⠓⢹⣧⠀⠀⠀⠀⠀⠀⠀⠂⠁⠐⠆⠀⣱⢱⡇⠄⣿⢼⣿⣿⣿⣿⠟⡧⢈⠐⡀⠀⡄
-⠀⠀⠀⠀⠀⠰⣼⣈⣵⣿⢸⣿⢣⣿⣿⣿⣿⣿⠗⠀⣴⢹⣻⢉⣾⡇⠀⣾⡇⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⡿⠫⠈⠀⢋⣄⠀⠀⠀⡯⢧⢲⠀⣴⣾⠏⣰⠏⣼⠟⡿⢟⠕⢀⣜⡒⠒⠉⡍⠐⠒⢦⠈⢒⠍⠠⠀⠃⢈⡁⠀⠀⠀⠀⠀⠀⠀⠀⣼⠁⠁⡀⣾⠙⣠⠈⢸⣿⣿⣿⣿⣾⡗⢀⠂⠄⠀⡇
-⠀⠀⠀⠀⠀⠀⣿⣿⣿⡿⠀⣿⣼⣿⣿⣿⡿⢡⡆⢸⣿⢸⠁⢰⣿⠀⠁⡿⠆⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣿⣿⡿⠋⠀⠀⠀⠰⢸⣿⡀⠀⠀⠐⡋⣡⣾⣿⣜⢓⢋⢚⡋⡖⠵⠃⢀⣿⣿⡇⠀⠉⠆⠢⢤⠎⢀⡼⢺⡟⠤⣈⣿⣿⠀⠀⡐⠀⠀⠀⠀⢀⡏⠀⢀⢀⢁⠄⠨⠀⣼⣿⣿⣿⡏⣿⡇⡀⠈⠂⠀⡇
-⠀⠀⠀⠀⠀⢸⣿⣿⣿⡇⢾⡇⣿⠟⠉⣿⠇⠘⠠⢼⡟⢎⡀⡸⠇⠀⡐⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⢻⡇⠀⠀⠀⣴⣿⣿⢻⣿⠸⢸⠨⠆⡠⣢⠮⠘⠋⣿⡗⣀⠈⠌⠙⠒⠒⠀⠀⡨⣀⠀⠀⢻⡇⠀⡆⡅⠀⠀⠀⠀⠜⡡⠀⠀⠱⣸⠀⠀⣾⣿⣿⣿⣿⡇⣿⠃⣀⠠⠁⠀⡅
-⠀⠀⠀⠀⠰⢺⣿⣿⣿⢰⢼⢹⡏⠀⠀⠟⠀⠀⡎⠘⡇⣬⢰⠁⠀⠐⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣿⣹⠋⠀⠀⠀⠀⠀⠀⠀⠀⠈⠡⠇⠀⠸⠿⠛⠛⢋⣿⣦⣽⣾⣜⠅⠙⡱⣫⠆⣿⡧⠟⠀⠀⢈⠀⣐⣀⠰⣀⠴⠿⢃⠘⠇⠀⠇⡆⠀⠀⠀⠀⠋⠁⠀⡃⠅⠃⢀⠘⠋⠙⡜⣿⣿⢧⡟⠀⠀⠀⠀⠀⡆
-⠀⠀⠀⠀⡞⢸⣿⣿⣿⠈⡎⣿⠃⡀⠀⣠⣴⡆⠀⠈⢡⡏⡋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣿⣿⢨⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠡⡀⢰⠈⢁⣵⣿⣿⣿⣿⠿⢋⣥⣬⣾⡧⣤⣿⡗⠀⠀⢰⠇⠠⣟⢈⠆⠘⠆⣉⢀⢲⡇⠨⠁⠀⡅⠀⠀⠀⠀⠀⠰⢀⠀⣸⣹⠇⡇⢐⠇⣸⣿⢸⢃⠀⡄⠀⠀⠀⠁
-⠀⠀⠀⢰⡧⣾⣿⣿⡏⡀⠛⢉⡾⠈⣸⡏⠛⠃⠀⠀⣼⢠⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⡿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⣼⣿⣿⡿⠟⡉⢀⣴⣿⠟⠉⡀⣀⢀⣶⣷⠀⡀⡈⠆⣉⣤⣤⠂⣘⠶⣿⣿⠰⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⢆⠏⣰⡇⡰⣠⣿⡿⡹⠆⠸⠀⠀⠀⠀⠀
-⠀⠀⠀⠘⢰⢻⣿⣿⡏⢸⣿⠀⠆⠀⠛⣿⠆⢠⠀⠀⠈⠂⡞⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⡿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⡿⠋⠁⠠⣀⣴⠿⠋⣡⠎⠀⣄⠿⢸⣿⣿⡇⢠⠣⡀⠉⠄⢢⠅⠀⠀⣂⣽⡧⢹⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠁⢁⣰⢀⢻⣇⢑⣿⣿⢇⣇⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠘⣸⣿⣿⢇⢸⣿⡄⠀⡇⠀⠙⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣿⣿⠟⠀⠑⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡛⢉⣤⣶⠿⠋⠁⠀⢠⣏⡀⡞⠈⠈⠁⢻⣿⡇⠈⠃⠀⣙⡁⠎⠡⠀⠀⣿⢸⠃⠀⢀⠀⠀⠐⠀⠀⢀⠀⠀⠌⠀⠄⢫⠏⡁⢎⣽⣿⣿⢸⣿⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⣬⢼⣿⣿⢸⢸⣿⣿⠀⠁⡇⠀⡀⢸⠀⠠⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⠁⠀⢀⣀⢻⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠵⠟⢉⠠⢒⣤⡞⢁⣬⣾⠗⠀⣤⡷⠶⢸⣿⡃⢸⡄⠀⡜⢧⠰⢲⢸⠀⡟⠡⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠒⢢⣴⢃⣼⣿⣿⣇⣿⠊⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢠⡻⣼⣿⣿⠈⣾⠻⠏⡠⠰⠃⠹⢣⡌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀⣴⠋⣘⡈⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣤⣵⣾⣿⣫⡾⢟⠛⣡⣴⠿⠫⠄⠸⡌⢿⣿⠈⣷⡇⠃⠘⠀⠘⠀⠀⠡⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⢔⡿⡃⣾⣿⣿⡿⣸⠃⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢸⠇⣿⣿⣟⡰⣷⠘⠀⠁⠀⠀⠊⠂⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀⣩⠈⠈⢃⠀⡤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⠟⡋⠡⣰⠟⡋⢁⢰⠆⠀⡆⠱⢨⣿⡅⣟⠇⢈⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢐⢠⡿⡱⣹⣿⣿⢋⣵⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢸⠇⣿⣿⡏⢧⠿⠅⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡇⠹⣄⠀⣸⠂⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠿⠟⣋⢠⣢⠖⡊⢔⣠⢾⡏⠏⠀⣀⣀⠄⠀⢿⣷⠨⠃⠈⠀⠀⢃⠀⡈⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⢀⠘⠄⢰⣿⣿⢣⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⣼⡞⣿⣿⡇⠸⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢁⣀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⠐⢪⡴⠋⠔⢉⣴⣿⠃⠈⡀⣠⡞⠹⣿⡀⠀⢺⡇⠀⢀⠀⠀⢰⠈⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠁⠀⡆⠈⢀⣼⣿⢏⣾⡿⠀⠀⠰⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠂⠀⣿⢿⣿⣿⡇⢀⠀⠀⠘⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣶⣿⣽⣰⣾⣿⡿⠋⠀⢁⠂⡟⠀⢸⡽⠅⠃⠨⣷⠈⢸⠀⠀⣼⠄⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⣼⠃⢠⣾⣿⣏⣼⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⣿⣸⣿⡣⠇⡘⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠛⠿⢿⣿⠿⠁⡁⢸⣷⡿⢠⡗⠂⡇⢢⢠⢰⠄⢺⣦⠀⢌⢃⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠃⡴⣼⣿⡟⣼⠋⠀⠀⠀⢀⠂⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⣿⣿⣽⠃⠄⡏⢀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⢠⢰⣔⠈⠀⡁⢾⢟⣵⢺⡇⠁⣇⢸⡏⠠⡄⠈⣶⡆⣄⣾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⡐⣴⣿⣯⠚⠁⠌⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢱⣿⣸⠀⠁⡇⠘⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠈⠿⡘⠃⢁⣴⣿⣿⡌⣿⡆⢹⠀⣗⡂⣇⡁⣄⢨⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⠏⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢸⣿⢸⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠂⠠⢀⠱⣴⠛⠿⣿⣿⣿⣧⣄⣾⠃⡻⣧⢿⡿⠀⡒⡄⡄⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠂⠐⠀⡀⣼⣿⡏⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⡄⠸⡏⡇⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠘⠌⢿⣠⣾⣿⣿⣿⣿⣿⣿⣿⣆⢿⡸⣧⠀⠇⢃⠀⠘⡀⡂⠀⠀⠀⠀⠀⠀⠀⠀⠁⢤⡎⠼⣾⣿⡿⢁⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⢱⠀⡇⢰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡄⠀⠈⢻⣿⡿⣿⣿⣿⡇⣿⣿⣿⣼⡇⣿⣇⠚⡈⡜⣦⠡⡅⠀⠀⠀⠀⠀⠀⠀⡠⢠⡆⢠⠞⣛⠿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⡃⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠸⣟⣽⣿⣿⣿⡇⢿⣿⣿⡏⣧⢿⢷⠠⢙⢧⢿⠰⣡⠀⠀⠀⠀⠀⠀⠀⣠⢇⡘⢋⣴⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣸⠿⣹⣿⣿⠃⢻⣿⣿⣷⣿⡞⠾⢎⠼⣌⡜⡜⠦⢃⠀⠀⠀⠠⠁⠖⢩⡎⡵⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        "</string>
-    <string name="ascii_phone" translatable="false">"\n
-⠀⠀⠀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⡀⣀⣀⣀⣀⣀⣀⢀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⠿⡿⠿⢿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢻⣿⣿⠀⠀⠹⣿⣿⣿⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣸⣿⡟⠀⠀⢀⣽⣿⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣹⣿⣏⠠⣶⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣹⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀⠀⠀⢺⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢹⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⢺⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀
-⢿⣿⣿⠈⠻⣿⣿⣿⣿⣿⣿⣿⡿⠉⡀⠀⠀⢀⣠⣄⣀⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀
-⣿⣿⣿⠀⠀⠈⠻⣿⣿⣿⡿⠟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀
-⢹⣿⣧⠀⠀⣠⣤⣿⣿⣷⣦⣤⣀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄⠀
-⢸⣿⣯⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀
-⣺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄
-⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢺⣿⣼⣿⢢⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡷
-⣸⣿⣿⠀⠙⢿⣿⣿⣿⣿⣿⣿⠟⠁⠀⣿⡏⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇
-⣹⣿⡿⠀⠀⠀⢻⣿⣿⣿⡟⠊⠀⠀⠀⠙⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⢾⣿⡇⠀⢀⣴⣿⣿⣿⣿⣿⣶⡄⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣸⣿⣷⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧
-⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠻⣿⣿⣿⣿⣿⣿⣿⣿⠟
-⠀⠀⠀⠁⠉⠀⠉⠉⠁⠉⠁⠀⠀⠁⠀⠁⠉⠈⠁⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠁⠀
         "</string>
 
 <string name="angel_fallen" translatable="false">\n"
@@ -1063,148 +659,6 @@
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠀⢀⠊⣀⡂⡀⠈⠢⢄⡀⠈⠉⠀⣀⣾⠃
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢆⣃⡼⠀⠀⠈⠀⠉⠛⠲⠟⠋⠁⠀⠀⠀⠀⠀⠀
     "</string>
-    <string name="ascii_space" translatable="false">\n"
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠰⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠈⡄⠀⠀⠀⡔⠂⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠂⠀⠀⠐⠈⠀⠀⠄⠀⠀⠠⠴⠤⣴⣆⠴⣶⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠐⠀⠀⠀⠀⠀⠀⢑⠖⢀⡀⠀⠀⠀⠀⠀⠉⠑⠋⠁⠲⢶⣶⠂⠰⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠦⣀⢀⣁⣀⣤⡴⡿⣋⡴⣄⡠⠰⠖⡤⣄⣠⢀⡀⠀⡀⣠⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⡤⠄⠀⠀⠀⢀⠀⡀⠀⠀⠀⠈⠁⠀⠀⣀⣘⢀⣶⣶⢿⣛⠛⠋⠋⣉⠒⣂⠔⣭⢥⡙⠒⠀⡝⡷⢊⢋⠀⠌⡰⠓⣺⣻⡅⠀⡘⠉⠀⠄⠀⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀⠀⠀⠦⠌⠃⠀⠀⣄⠀⠀⠘⣟⠀⡂⠀⠈⣠⡤⡶⠛⢫⠜⢋⠀⠂⠦⠑⢀⢠⢨⠖⣠⣩⠦⡹⢴⢚⣂⡄⢉⠩⠐⠀⠐⠠⢁⠀⠀⠀⠀⠠⠜⠀⠀⣀⣰⠤⣐⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⢀⡀⠁⣰⡀⠉⢿⠆⢀⣀⡠⣿⠝⣲⢛⠴⡲⣿⣷⣽⣼⡴⢦⣦⣤⣶⡴⣭⢏⡭⣐⢬⠰⢣⠬⣍⢣⠽⣙⣈⠀⠀⠄⠀⠀⢠⠀⠤⠁⠀⠀⡀⠀⠈⠘⠠⠀⢀⡀⠠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠐⠦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⢀⣂⡨⠅⡤⡘⠄⠋⢐⠈⡐⣿⣿⣆⢠⠣⠌⣹⠶⢧⣻⢿⣿⠿⠬⡽⣿⣟⢿⣿⣯⣞⣶⣜⣀⡑⡫⢶⠌⠣⠎⠱⡌⢆⢃⠆⠁⠠⢃⡈⠠⢀⠈⠒⠠⠄⠒⠀⠀⠀⠀⠀⠀⠉⠒⠉⠐⢍⠤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠠⠀⠀⠈⠁⠀⠀⢘⡘⠖⢾⣤⣼⡳⠈⠁⠀⢘⠻⢿⣷⠋⡐⠃⠀⣨⣅⢌⡓⣦⣩⢍⣶⣬⣽⣴⣿⣿⠿⢯⢷⢂⣁⡉⠐⠢⣒⣄⠘⠔⠪⢌⡘⠐⢢⠀⠄⢃⠢⠘⡀⠂⠄⠂⠄⠀⠀⠠⠀⠀⠀⠀⠀⠈⠀⠂⠁⠐⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣄⡀⠀⠀⠀⡄⢐⡐⢆⣔⡻⢿⣫⣌⠈⡁⠡⣹⣷⢨⡀⣶⣄⠀⣿⠿⡐⣷⣷⣿⣿⣿⡿⢛⣩⣶⣶⣿⣿⣿⣷⣶⣾⣽⣓⡢⠌⠁⠈⡀⢄⠈⢁⠂⠅⡊⠄⡁⠆⢡⢉⠠⠡⠌⡀⠒⡀⡀⠀⢀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠑⠂⠄⠀⢀⣐⠾⠇⣙⣦⠹⣿⣿⠇⡀⣴⣿⢻⠁⢥⠀⢛⣚⠀⣧⡙⣽⣿⣿⣟⡟⣼⣿⣿⣿⡿⣹⣿⣿⣿⣽⣿⣻⣿⣿⣶⣆⡠⠀⠉⠓⣤⡔⠄⡀⠐⠀⠀⠂⠤⢁⠂⡐⢀⠂⠄⠀⠀⠀⠈⠈⠛⠰⠤⠀⠀⠀⠐⠀⠀⣡⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀⠘⠌⢨⢴⣮⡛⣧⣍⠖⣽⣾⣿⣷⢉⡣⢈⡈⢘⠻⣠⠁⣧⢻⣿⣿⣻⣃⣿⣿⣿⣰⣿⡿⢟⣛⣛⣻⠻⣿⣿⣿⣽⣿⣿⣟⣦⣐⠶⢴⣻⡴⠆⡀⠧⢉⠆⠠⠁⠄⢂⠐⠈⠠⠀⠀⠂⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠁⡀⠣⠱⣙⣌⢿⡆⣙⠾⣶⡽⣷⡹⡆⡨⣌⠳⣽⣟⢬⡂⢻⣿⣿⣘⣿⣿⣧⣾⣿⣰⣿⣿⣿⣿⣿⣷⣶⣮⡻⣿⣿⣿⣿⣿⣶⣦⣬⢶⡌⣅⣐⠃⢂⠤⢁⠌⠠⠈⠀⠐⠀⡁⠄⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠐⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⡄⡀⠀⠀⠀⢠⡀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠣⠩⣭⣎⡻⣿⣾⣄⢽⣿⣷⣁⠀⡨⣝⠞⣿⡟⢻⣿⣿⣿⣿⡘⣿⣿⣿⢱⣿⣿⣿⣿⣭⣽⣻⢿⣿⣿⣶⣉⢻⣿⣛⢿⣿⣿⣷⣦⣬⡉⢙⠲⡀⠁⠠⠀⠀⠀⠀⠀⠄⠀⠂⢀⠠⠀⠀⠀⠁⠀⠠⠄⡀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠁⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠈⠳⠤⢽⣻⣮⢿⣻⢦⡑⢾⣿⣦⠙⠲⣶⣽⣿⣏⣿⣿⣾⣿⣿⡘⣿⣿⣜⣿⣿⠛⠛⠛⠛⠿⣷⣟⢻⣿⣿⣿⣾⣝⣻⣿⣻⣿⣿⣿⣟⢦⣉⠘⠝⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡄⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠂⡈⠀⠀⠓⠒⠒⢿⣯⠭⡳⠍⠀⠘⢻⣗⡂⠛⢿⣿⣿⡿⣿⣿⠾⣿⣿⣶⡙⣿⣿⡟⠀⠀⠀⠀⠀⠀⠈⠹⣿⣿⣿⣿⣿⣿⣷⣶⡹⢿⣿⣿⣷⣜⠷⣀⠙⢷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠰⠀⢉⠈⡾⣀⣈⠹⢷⣆⠈⠀⢿⣿⣿⡀⠀⡉⢏⣿⣎⢿⣿⣶⣛⣿⣿⣶⣬⣝⡢⠀⠀⠀⠀⠀⠀⠀⠸⣿⣷⣦⣙⢿⣿⣟⣿⣿⣽⢻⣿⣿⣷⠉⣷⡀⠆⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠒⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀⠂⠨⠙⠶⡩⣕⠦⢄⠰⣎⠀⠀⡉⠛⢿⣷⡄⢴⣌⣻⣷⣝⠿⣿⣶⣽⢻⣿⣿⣿⣷⣦⣄⣀⠀⠀⠀⣸⣿⣿⣿⣿⡜⢿⣿⣿⣿⣿⡹⣿⣿⣿⣷⡄⠐⣄⠙⠆⣢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠴⠀⠀⠀⠀⠀⠂⠁⠀⠂⢀⠀⠄⠘⠲⢷⣇⠓⠠⢂⠻⡔⠦⠀⠙⢿⣷⣠⣙⠿⣿⣿⣿⣛⢿⢿⣿⣿⣾⣿⣾⣿⣿⣿⠿⣿⣿⣿⣿⣿⣿⣷⢹⣿⣿⣿⣿⣖⣿⣿⣻⣿⣧⠛⠤⠡⡈⠻⣿⣷⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⡀⠀⠂⠀⡀⠀⠀⠀⠀⠀⠀⠂⠄⠠⠀⠹⡟⢞⢮⡀⢁⡀⢛⡰⢌⠋⠽⣿⣷⣝⣿⣿⣿⣿⣷⣶⣭⣙⣛⣛⣛⣫⣶⣾⣿⣿⣿⡇⣿⣿⣽⣷⢹⣿⡿⣿⡟⢻⣿⣿⣿⣿⠟⣨⠇⠁⠀⠈⢹⣷⣀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⢨⣁⠀⡀⠀⠁⠀⠀⠀⠀⠁⡀⠘⠂⠄⠽⠢⣒⣣⢉⢎⡂⠑⣀⡐⢿⠳⣾⣭⣛⣿⠿⣿⣿⣿⣿⣿⣿⣿⡿⢛⣛⣭⣾⣿⣿⣻⣿⢺⣿⡧⣿⣿⡾⣿⣾⣿⣿⣧⡹⡅⢓⠀⡀⠈⠿⢿⣆⡀⠀⠀⠤⢠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠤⠀⡉⠂⣀⠀⠠⠀⠠⠀⠀⠀⠀⠀⠈⠠⡁⠔⢚⠩⠂⢀⠆⡁⠦⡙⠆⢢⣙⠷⣿⣿⣿⣶⣝⡻⢿⣷⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⡿⣸⣿⡧⣿⣿⣧⣿⣿⣼⣿⣝⣅⡈⠦⠁⠀⠐⠩⣌⣿⣷⠀⠀⠄⠁⡈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠃⠠⡄⢀⠀⠀⠀⠀⠀⠡⡐⠂⠈⠐⡈⠄⠂⡉⢖⡩⢓⡢⡑⢦⠈⠹⣿⣿⣛⣿⣷⣴⣬⣭⣭⣙⣛⣛⣛⣛⣹⣭⣴⣾⣿⢏⣾⣿⣿⣽⣿⣿⣿⡆⢍⢧⠳⣈⠐⠀⠀⠘⣿⡻⢵⡐⡤⠒⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⠙⠈⠀⠄⠀⠀⡀⠐⠀⠄⠀⠁⠀⠐⠂⠬⢐⡓⣂⣃⠐⢢⠄⣢⢉⠒⠾⠿⢽⣭⣭⣿⣿⣿⣿⣿⣿⢿⣿⣟⣻⢟⣛⣼⣿⣿⣿⢿⣿⣿⡋⠝⡘⡇⠀⠹⠀⣐⢂⠀⠸⣯⠐⡟⢔⢦⡀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⣐⢢⡒⠀⠀⡀⠉⢐⡂⠀⡄⠈⠀⠀⠀⠀⠀⡁⡈⢀⠡⠀⠦⠍⢦⢚⡴⢏⢶⡲⠦⣉⡉⠩⠯⣝⣭⡮⠕⠻⡿⠿⠿⣿⣿⣿⣿⡻⢛⣵⡿⠍⢊⡼⠓⠁⠡⠀⠐⢠⠀⠈⠀⢴⣟⡳⠈⠀⠘⢺⣃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠈⠀⠀⠈⢚⠰⠄⠀⢀⠀⠀⠀⠀⠀⠐⠀⡈⠀⠈⡉⢊⡉⢏⡝⣂⡥⡍⡝⡺⡊⢈⣣⠾⣫⡘⢳⣌⣁⣬⡌⡩⠤⠐⣈⠬⢕⡾⠁⠀⠀⠃⠀⠈⠍⠐⡒⠀⠀⢹⣶⡅⢿⢢⠢⠠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠐⢶⠖⡂⡉⠤⣴⡏⠀⠀⡀⠀⠀⠀⡀⠀⠀⠈⡉⣓⡻⣷⢿⣬⣡⡶⡴⣒⣘⠒⢶⣾⣿⠌⠛⣩⣅⢁⡐⡛⠉⠞⠁⠀⢀⡀⡴⠄⠀⠈⠀⠒⢄⡙⢽⣿⣿⡣⣤⡔⢆⡀⠀⡠⠀⠀⠀⡈⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠩⠉⠐⢫⡐⠿⣶⢓⣨⣄⢀⠡⡄⣂⠠⠠⡠⢹⠦⣒⢆⡶⣢⠍⡻⠓⡊⡠⠀⡡⠹⣄⠀⡀⢀⡄⠀⠂⠀⠂⠠⢀⡠⠐⠃⡠⢒⠀⠪⣜⣻⡟⠿⣿⡇⠑⡎⠐⠈⢁⠀⠀⠀⠀⠀⢐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠈⠐⠙⣩⢏⣭⣶⢿⣦⡳⣔⣾⢏⣀⢚⡋⢀⠴⠖⣂⣅⢄⠎⣀⡠⣌⢉⠠⡤⣤⢀⢂⣄⢧⠐⢊⡁⡠⣤⣄⠂⠉⣀⣶⡇⢐⠬⡙⠂⠀⡐⡁⠀⠂⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠃⠉⠠⠁⠻⠣⢙⡃⢾⢿⣿⣿⣿⣿⡿⠟⠋⠩⠄⢤⠂⠩⠘⠓⠈⠐⠁⠘⢏⠁⠀⠀⢠⠐⠦⣩⠴⠁⢾⠏⠌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠈⠙⠀⠄⠀⠀⠀⠀⠄⠒⠫⠙⠃⠤⠠⠄⠁⠠⠁⠀⠀⠜⠈⠀⠈⠈⠻⠉⠀⠀⠘⠀⠠⠀⠀⠠⠈⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠆⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠲⠀⠂⠀⠁⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-   "</string>
-    <string name="ascii_miku" translatable="false">\n"
-    ⠀⠠⢄⢠⢲⣒⠧⡐⢄⢢⠰⢠⠄⡀⠰⢢⠔⡢⠔⡢⢄⠀⠆⡴⡰⢠⠤⡀⠐⠹⢶⣒⢖⢢⢖⡰⢂⠦⡤⡀⠠⡀⠀⠲⢒⡔⣢⠔⡰⢠⠄⢢⡐⢠⢂⡔⢠⠄⡄⠂⡄⠠⢀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢈⠱⡌⢢⢯⡝⢢⡉⢦⡑⢎⡡⢎⡐⠈⣇⢮⢱⡹⣰⣉⠦⠘⢰⢻⣦⠳⣱⠀⢀⠈⢻⣿⣔⡧⣽⢩⣎⡵⣩⡤⠐⢆⠀⠈⠑⠃⠞⢱⠣⡝⡴⣈⠇⢦⡘⢆⠎⡔⡡⢂⠅⠢⢌⠠⢁⠈⠄⠂⠁⠠⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢠⠣⡜⢣⡛⡌⠧⣜⡡⢚⠥⣚⠤⣊⠄⢺⣬⠳⡼⣱⢎⡼⡀⠀⠑⣾⣧⡳⣍⠀⠣⢄⠘⢿⣾⣵⣻⣜⣷⣣⢿⡵⡈⢧⡀⠃⠜⣠⢂⢄⡉⠐⠹⣌⠧⣘⡍⡜⢢⡱⠌⣌⠑⡠⠒⡈⠄⢂⠡⠈⠄⡐⠀⡈⠀⠁⠀⠀⠀⠀⠀⠀⠀
-⢄⡳⡜⢧⡽⣖⡳⣬⢳⡝⣮⣜⡱⢆⠢⢹⣎⡿⡵⢯⣞⡵⡃⢈⣆⠐⢿⣽⡚⣥⠘⣦⡁⠈⢻⣯⣿⢾⣭⣟⣯⢿⣵⡈⢷⡄⢡⠂⡄⠈⠘⠕⣆⣀⠘⠐⠌⡐⠃⠤⠑⡠⠊⠄⡑⠠⠈⠄⠂⢁⠠⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀
-⣌⡳⣝⢧⣿⣻⣷⣭⢗⣻⢶⣭⢳⣍⢎⠰⣿⣻⡟⣿⢯⣷⡁⢠⢿⣧⡈⢳⣿⡳⠆⢹⣿⣅⡂⢹⣿⢿⣾⣟⣾⡿⣾⣷⠘⣿⡄⠳⣌⢆⠀⠀⠀⠈⠳⣦⡀⠀⠈⠀⠀⠀⠐⠀⠀⠀⠁⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢢⣟⣼⢻⣷⣿⣷⡿⣿⣽⣳⣯⢷⣎⡎⡄⣿⣷⣿⢿⣻⢾⠁⣸⠘⣿⣷⡄⠻⣧⡟⠀⣿⣿⣦⡀⠙⣿⣿⡾⣿⣽⣿⣽⣆⢸⣿⡄⠹⣞⡕⡀⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣹⢾⡽⣻⣿⣾⡿⣿⣷⣻⣷⢯⣿⢶⡹⠄⣿⣿⢾⣿⢿⣻⠀⣷⡂⣿⣿⣿⠄⠹⣿⣃⠈⣉⣉⣉⣀⠙⣷⣿⢿⣽⣾⣟⣿⡀⢿⣷⡀⠛⣿⣮⣆⠀⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢫⣿⣽⣻⣷⡿⣿⣿⡿⣽⡿⣿⣾⢯⡟⡆⣹⣿⡿⣯⣿⡏⢘⡮⠓⠉⣁⣤⣴⣆⠹⣷⠈⣿⣿⣿⣿⡄⠙⣿⣿⢯⣿⣾⢿⣇⢸⣿⣷⠀⠱⢾⣻⣧⡀⠀⠀⠀⠀⠀⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢸⣷⡿⣽⣾⢿⣿⣷⣿⢿⣻⣿⢾⡿⣝⠦⢹⣿⣟⣿⣷⠁⢁⣤⣶⣿⣿⣿⣿⣿⣧⠸⡆⢻⣿⣿⣿⣯⣃⠸⣿⡿⣯⣿⡿⣿⠀⣿⣿⡆⠀⠈⠳⣟⣷⡄⠀⠀⠀⠀⠀⠈⢣⡀⠀⠀⠀⢀⠀⠀⠀⠀⡈⠐⠀⠂⠀⠀⠀⠀⠀⠀⠀
-⡇⢿⣟⣿⣽⡿⣷⣿⣯⣿⣿⣽⣿⣻⡽⢎⢸⣿⣿⣽⡞⢰⣟⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠘⣿⠻⣿⡟⢁⣆⠹⣿⣟⣷⣿⢿⡇⣿⢿⣿⠀⠀⠀⠙⢯⣿⣆⠀⠀⠂⠀⠀⠀⠱⡀⠀⠀⠀⠀⠀⠀⠀⠄⡀⢀⠀⠀⠀⠀⠀⠀⠀⠀
-⣿⡸⣿⣏⣿⣹⣿⣷⣿⢿⣾⡿⣾⣿⣹⠇⣸⣿⣷⣿⠁⣾⣿⣿⣿⣿⣿⡿⣁⣿⣿⡿⠇⠀⠀⠀⠀⠀⠉⠏⠀⢹⣿⣏⣿⣿⡇⢹⣿⣿⡇⠀⠀⠀⠀⢿⣹⣇⠀⠀⠀⠆⠀⠀⢱⠀⠀⠀⠀⢀⠀⠰⠆⡀⠀⠀⠀⠀⠰⠀⠀⠀⠀
-⢿⣧⢻⣿⣽⣿⣳⣿⣯⣿⣯⣿⣟⣷⣯⠃⣿⣿⣽⡏⣰⣿⣿⣿⣿⡿⢋⣴⡿⠛⠁⣠⣤⠤⠶⠾⠶⣶⣦⣄⠈⠈⣿⣯⣿⣾⡇⢸⣿⣟⣧⠘⣁⠀⠀⠀⠙⣿⣆⠀⠄⠀⠀⠄⠀⢡⠀⠀⠴⠀⠠⠘⡐⡆⠘⠄⡀⠀⠄⠐⠀⠀⠀
-⡞⣿⡎⢿⣾⣻⣽⣷⡿⣽⣾⣯⣿⣻⡼⠃⣿⣟⡾⢠⣿⣿⣿⣿⠟⣱⡿⠋⠀⣠⡾⠋⠀⠀⢀⠀⠀⠀⠉⠻⣷⣄⠸⣿⡷⣿⣇⢸⣿⡿⣿⡄⢯⢄⣀⠀⠀⠈⢻⣦⠀⠀⠁⠀⠀⠀⢂⠀⠂⠀⠀⠄⡑⡀⠀⠁⠒⠀⠊⢐⠀⠀⠀
-⣷⡘⣿⡜⣿⣻⣽⣾⢿⣟⣷⣿⣳⡿⣍⢣⣿⡿⢀⣿⣿⣿⣿⣿⣾⡟⠱⠀⣴⡽⠁⠀⠀⠆⣐⣬⣐⠀⠀⠀⠙⣿⡆⢻⣟⣿⡇⢸⣿⣿⢿⡇⠈⠀⣿⣿⡄⠀⠀⠙⣷⡀⠈⠀⠀⠀⠈⢀⣀⠀⠀⢠⠐⠃⠚⠀⠀⠀⠔⢈⠀⠀⠒
-⠿⠇⠘⣿⡘⢿⣯⡿⣟⣯⣿⢾⡿⣽⢣⢸⣿⢁⣾⣿⣿⣿⣿⣿⣿⣧⠆⠀⣿⣿⣾⣷⣆⢈⡿⣞⣟⣷⡄⠀⠀⠘⣷⠸⣿⣯⡇⢸⣿⣯⣿⡇⢸⠀⢹⣿⣿⡀⠀⠀⠈⢻⣄⠀⠂⠈⠀⠘⢽⠀⠀⠠⢉⢦⠰⠀⡀⠄⣀⠨⠀⠀⠀
-⠀⣴⣧⠘⣿⡌⢿⣟⣿⢯⣿⣟⡿⣝⠆⡿⠃⣼⣿⣿⣿⣿⣿⣿⣿⣿⣸⠈⣿⣿⣿⣿⡿⠀⠹⣯⣛⣯⡆⢸⣯⣄⠙⠀⣿⣟⡇⣾⣿⣽⡿⡇⠘⠁⠀⠻⣿⡇⠀⠀⠄⠀⠹⣆⠀⠀⠀⠀⠈⠜⠁⠀⠨⠠⢉⠔⡁⠊⠄⡘⠀⠀⠈
-⠀⢻⣿⣧⡘⣧⠆⢻⣯⣿⣻⣾⢿⡱⢲⢃⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⣿⣿⣷⡀⠀⠀⣶⣌⡙⠓⢂⣼⣿⠟⣀⡅⢻⣿⠀⣿⣽⣾⣿⠃⠀⣀⣀⣰⣿⡇⢰⠀⠀⠀⡀⠈⢧⡀⠀⠀⠀⠀⠀⠀⠀⠁⢂⠐⠠⢁⠂⠄⠐⠀⠀
-⡩⠀⢿⣿⣷⡈⢟⡄⢹⡿⣽⣛⣮⠃⢡⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣄⠸⣿⣿⣿⣿⣿⡿⢋⣼⣿⡇⢸⡇⢰⣿⣯⣷⣿⠀⠀⢿⣿⣿⣿⠆⠈⢱⠀⠀⢀⠀⠈⠳⡀⠀⠀⠃⠀⠐⠱⠚⠲⠞⠳⠦⠈⠀⠀⠀⠤
-⡱⢁⠘⣿⣿⣿⡄⠙⠄⡉⢻⡿⣅⠀⢺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⠻⢿⣷⣌⠻⠿⠟⣫⣴⣿⣿⣿⡇⢸⠃⠈⣿⣽⣷⡇⠀⠀⢸⣿⡾⠟⠀⠀⠈⢆⠀⠀⠀⠄⠀⠱⡄⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣱⠩⡀⠸⣿⡍⠀⣀⠀⠀⠈⢻⠖⠀⠀⠘⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⠇⡛⡰⢈⣿⣻⣾⠁⠀⠀⠉⠁⠀⠀⠀⠀⠀⠈⠆⠀⠀⠀⠀⠀⠘⢆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣇⠣⠜⡀⢠⡅⠀⣿⣷⡄⢀⢀⢇⣦⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠂⢁⡏⢸⣟⡞⡟⠀⠀⠀⠀⠀⠀⢀⣀⣤⣶⣾⣿⣿⣿⣶⣤⡀⠀⠈⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠸⣹⡐⠡⠀⢠⠀⣿⣿⠿⠆⠀⢞⡦⢯⠐⣦⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣸⡇⣸⢯⡿⠁⠀⠀⠀⢀⣠⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⠀⠀⢣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠑⢌⣃⠂⠀⠣⣹⣿⣦⠀⠀⣦⡈⠃⠀⡁⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⣰⣿⠃⣼⢯⠓⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠡⠀⠀⠀⠠⡄⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢍⡀⠀⠙⢟⣿⣷⣄⠻⣿⡿⠃⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⣯⡜⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠄⠀⠀⠡⣤⣬⣥⣤⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠠⢘⠶⠁⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⡠⠁⠬⠁⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀⠁⢂⠐⡀⠄
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠁⡴⠋⠀⠁⠀⠀⠀⠀⢰⡇⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠆
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡁⠉⢙⣿⣿⣿⣿⣿⣿⣿⣿⠟⠠⠮⠁⠀⠀⠀⠀⠀⠀⠀⣾⣷⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⢂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣯⣿⣿⣿⣿⣿⣿⠟⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⡇⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⣠⣾⠀⢂⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⢂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠛⠿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⣰⣿⣿⠄⠡⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠲⠖⠢⠀⢌⡉⠙⠛⠛⠛⠛⠛⣁⠤⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣿⣿⣿⣿⣇⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⡿⠁⢸⡿⣿⣿⠀⠈⠡⠀⠀⠰⢄⠢⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⢸⡏⢹⣷⠀⢀⠀⠀⢎⣱⢹⡸⢈⡹⡎⣀⠀⠀⢀⠀⠀⠀⠀⢀⣿⡿⣿⣏⣿⣹⣏⣿⠀⠀⠀⢿⣷⣿⣹⣿⣹⡿⠁⣶⠈⢸⢷⡏⢀⠀⠁⠀⠀⢾⣆⢉⡆⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠸⣤⡑⢨⢇⠲⡩⢆⡣⢄⡀⢂⡀⣠⣼⢿⡷⡿⣯⣟⣷⣻⢯⡿⡇⠀⠀⠸⣧⢿⣽⣾⠏⢁⣾⣻⠀⢈⠻⠀⣞⣧⢦⡄⢸⠢⠁⠀⠈⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⢀⠡⢈⠡⠒⠀⠀⠐⢻⠳⢮⡶⣜⢦⣣⡤⣤⣤⠟⣗⣏⡾⣵⣻⣞⣞⣳⢯⣟⢳⣇⠀⠄⠀⢷⣋⣷⣋⢤⡟⣾⢝⠂⠠⠀⢘⡳⣬⠞⣅⠘⠂⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠁⠂⠄⢃⠢⢑⢂⡀⠀⠈⣟⡱⣚⢬⠗⣣⠝⣦⢫⠞⡭⣞⡱⢧⡳⣍⢾⡱⣞⢎⣧⢳⠀⠀⠀⢈⠵⣣⢟⢮⢽⡸⠋⠀⢰⣙⠀⢹⣊⠽⣜⠲⡄⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⢁⠘⡨⠄⡊⠔⡂⡔⠀⠀⢎⠱⣘⠪⡹⢡⠛⠴⠋⡞⣱⢣⡝⢬⡓⡭⢎⡵⣌⢏⠶⣩⠇⢈⢠⠈⡞⡵⢎⡳⢎⡑⠁⠀⡸⣜⠀⢠⠓⠞⡬⡱⡈⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⢂⠡⢂⠥⡉⢔⡈⠆⢀⠀⠈⠄⠣⢡⢃⠹⡈⠣⠜⢂⢣⠚⡥⡱⡙⡜⢦⡙⢎⡱⢃⠆⠈⠀⠀⡜⡱⢎⡕⠊⢀⠌⠀⠰⡘⡄⠀⢐⠎⢥⠓⡡⠂⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠰⢁⠂⠀⠀⠀⠀⠠⢀⠀⠁⠂⠜⢠⢃⡌⠀⢂⠄⠀⠀⠀⠊⠐⠨⠁⡜⠈⠢⢁⠢⠡⢱⠘⠤⣉⠦⠱⣉⠆⠀⠀⠀⡸⢑⢎⠈⠠⠌⠀⠀⢒⠱⡘⠄⠈⡜⢢⠉⠔⠁⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⠀⠐⠀⡀⢂⠐⠠⡀⠄⡀⠈⠂⠈⠘⡄⢣⢁⡀⠠⠐⠂⠀⠀⠁⠂⠀⠃⠂⠁⠂⠐⠄⠃⠐⠂⠀⠀⠀⠡⠋⠀⠌⠂⠀⠀⡈⠆⢂⠱⠀⡈⠔⢂⠉⡄⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀⠈⠄⠐⠈⠄⡁⢂⠐⢀⠈⠐⠤⢈⠱⠀⡔⠠⡀⠄⡀⣀⠂⠡⠌⢂⠡⠒⠰⡀⠄⡀⢀⠠⢀⢂⠉⠀⠀⢀⠂⡘⠠⡁⠀⡐⠈⠔⡈⠰⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠂⠁⠠⠈⠐⠠⠀⠄⡀⠂⡀⠄⡀⢀⠀⠁⠐⠁⠐⠈⠐⡀⠌⠡⠘⠠⢁⠊⠡⠐⡡⠈⠄⢂⠁⠂⠀⠀⠀⠂⠐⠁⠂⠀⠐⢀⠁⠂⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⡈⢀⠡⠀⠀⢁⠀⠂⠐⠀⠂⠁⢀⠂⠐⢤⠄⡀⠈⠠⠁⠂⠄⡈⠄⠁⡀⠁⠀⠂⠀⠀⠀⠀⠀⠄⠀⠀⡀⠐⠈⠀⠠⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-
-    "</string>
-    <string name="ascii_flower" translatable="false">"\n
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢳⠀⠀⠀⠀⢢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢘⡄⠀⠀⠀⠀⢃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠃⠀⠀⠀⠀⢨⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡸⠀⠀⠀⠀⠀⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⢁⠂⠀⠀⠀⠀⠀⢠⣆⠀⠀⠀⠀⠀⢀⠔⠉⠠⠉⠰⡘⢠⠍⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⣰⠎⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠎⠀⠀⠀⠁⠀⢯⢄⠴⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠺⠆⠈⠃⣮⡁⠀⠀⠀⢀⡞⢀⠀⠀⠀⠀⠀⠯⠇⠀⡀⠀⠀⠀⠸⡧⢛⠩⠑⡀⢠⣸⠀⡠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠟⠀⣸⡷⠀⠀⠀⡼⠀⠀⢡⠀⠀⣤⣤⠀⠀⠨⣿⠆⠀⠀⠀⠑⠤⠤⠜⠁⢰⠃⠐⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠘⣗⠀⠀⠠⡇⠀⠀⢸⠀⣠⠌⠉⠀⠀⠀⠀⠀⠀⠾⠀⠀⠀⠀⠀⡂⡞⠄⡸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠋⠀⠶⡀⠀⠀⠀⠀⢻⡄⠀⠀⢗⡀⠀⣸⠀⠰⡲⠀⠿⠀⠀⠀⣴⡵⠀⠀⠀⠀⠀⢐⡜⡀⣁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠆⠠⣶⠀⠠⠶⠠⣦⠈⢳⣠⠀⠈⣆⠀⡯⠀⠀⣦⠀⡈⢀⣤⡄⠀⠀⠀⠀⠀⠀⢠⠞⠊⠀⠀⠈⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡆⠀⠀⢀⣤⡀⢖⡄⠀⠀⠀⠀⠹⣆⡀⠙⡂⢰⡀⠀⠀⣠⣷⣆⠉⠐⠀⠻⠗⠀⠀⡰⠋⢀⡔⠀⢲⡀⠀⣏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⢷⣀⠀⠈⠋⠀⣀⠀⠀⠀⠀⣁⡐⢈⡳⡂⠹⡄⢧⢂⣸⠹⢋⢠⢣⢳⣠⠀⠀⣡⠎⠀⠀⠘⣧⢒⠘⢀⡠⠋⢀⡀⣀⡄⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⢦⡀⠀⠀⠘⠁⠀⠠⢸⣿⡍⠻⠒⢿⣦⠹⡄⢻⡟⠀⠘⡀⠘⣠⡣⣠⠞⠁⠀⠀⠀⠀⢈⠈⢉⠁⠀⠀⠈⢁⠙⠁⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠶⡼⣕⠲⠦⢤⣀⣀⠘⢿⡵⡂⠀⠀⠉⠑⢎⣿⠁⠀⠀⠀⡆⣿⢾⡫⠠⣀⣤⡴⠿⢛⠿⡿⣿⠆⠀⣀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢶⣬⡳⣲⠢⣍⢳⡀⣷⠁⠀⡀⠀⠀⠄⢿⡀⠀⠀⠠⠁⣿⢽⣴⠿⠛⠁⠀⠈⠀⣰⡷⢁⠔⡪⠂⠐⢀⣨⠖⠂⠉⠉⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠍⠉⢛⠳⢔⣧⠘⣧⠀⢄⠀⡀⠀⠚⡷⠁⠀⠀⣰⣿⠏⠑⠠⠀⠀⠀⠠⣪⢟⣴⣗⣁⠦⠴⠛⣉⢀⡀⢤⡀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⢴⡲⣞⢲⣒⡲⢤⡤⢬⢆⡙⠷⡌⠳⣄⠂⠀⠀⠂⠶⡄⢠⣆⡿⠁⠀⠀⠀⢠⠔⠈⡡⢃⠊⠔⠀⠁⠐⠊⠽⣂⠉⠈⠑⠨⡺⡄⡀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢠⠜⣃⣨⡧⡽⠞⠙⠓⠚⠑⠘⠚⠓⠤⡵⢠⣛⡲⣦⡀⢤⡔⣷⡜⣿⣡⡀⠐⠀⢀⢨⣠⣖⣑⠚⠶⢶⡶⢖⡤⠤⣄⠉⠐⠂⠐⠂⠓⠳⣅⠀
-⠀⠀⠀⠀⠀⠀⠀⣠⣿⠲⠋⠁⠀⢀⡤⣲⠲⠆⢶⠻⠖⢚⡴⠞⠉⠈⠀⠍⠻⣛⢯⣽⣻⡣⠯⠴⣶⠍⠉⠉⠀⠊⠉⠉⢟⣶⣌⡳⣬⡛⣦⠝⡄⠀⠀⠀⠀⠀⠀⠑
-⠀⠀⠀⢀⣀⠤⠞⠋⠁⠀⠀⢀⠔⠃⡡⠴⣱⠖⠉⠠⣰⣏⡤⠊⡀⠚⢁⠀⠐⣴⢯⣭⣾⢮⢮⡹⢶⠆⠀⠐⢀⠀⠈⠀⢢⣘⡹⣿⣿⡝⢶⣽⢻⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠋⣤⣪⡴⠋⠁⠀⠠⣺⣿⠝⣀⢀⡠⢉⣀⣠⣦⣴⠿⢻⠃⠡⠁⢌⠢⡂⠴⢄⠠⠤⠄⠴⠦⣔⣺⣿⣯⡙⠆⢻⣾⠀⠀⠀⢠⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣀⣴⣿⡿⠞⠋⠁⠀⠀⠐⠑⠀⣿⣯⣴⢾⢿⣿⢿⣿⣿⢿⠏⠠⠁⡐⠀⡀⠰⠌⢷⣦⣶⡧⣤⡶⠚⢛⢛⠋⢩⢲⠀⠀⢸⡇⠀⠀⣀⡀⠃⠀⠀
-⠀⠀⠀⠀⠈⠉⠋⠉⠉⠀⠀⠀⠀⠀⠀⠀⢨⡴⢇⣧⡁⠒⠛⠹⣹⡿⢋⢿⣾⡇⣘⡀⠄⠀⠄⠁⡚⠼⢟⠮⣿⡹⢺⣧⣛⢊⢁⣀⠁⠸⠛⠜⣀⠀⢀⡉⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⠀⠀⠀⠀⠀⡏⠘⢇⢸⠏⠀⣬⡾⣿⣹⢛⣦⣾⢿⣌⢇⡘⠄⠘⡀⣷⣿⣃⠀⠈⠳⣏⣀⠙⡲⣌⠋⠉⣎⠆⠀⣉⡴⠊⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠃⠀⠞⠂⠀⠀⢻⣆⣀⣀⡠⣾⡟⠀⡀⠿⢦⡙⢫⢼⢟⣾⣶⢣⣰⢿⣾⠟⠈⠹⢦⡀⠙⣮⢥⠀⠨⡳⣜⠁⡖⢆⠲⠃⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣾⡇⠀⠀⠀⠀⠈⠉⠉⣸⡟⢀⢙⠋⠀⢈⣁⡘⠛⠐⠹⣻⣿⢿⣿⠏⠀⠀⠀⠠⢿⡀⢈⢧⠓⠀⠘⠝⣷⣌⠁⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⡀⣿⠁⡀⠀⠀⠀⠈⠋⠂⠀⠀⠀⠁⠙⠹⠘⠀⠀⠀⠀⠀⠙⡇⠀⢹⣧⠀⠀⠈⢌⣿⡆⢃⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣌⡁⣷⠉⠤⠤⢠⡴⠶⣶⣤⠀⠀⠀⠀⠀⠀⠀⠀⢲⠆⣤⡟⠀⡇⠀⢈⢻⡄⠀⠀⠀⢻⣷⡜⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣷⢻⡀⠀⠢⢺⣩⡇⠀⢹⡆⠀⠀⠀⠀⠀⠀⠀⠐⢆⡉⠡⠞⠀⠀⠘⣸⡇⠀⠀⠀⠀⣿⣱⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⡼⠳⣤⣀⠄⣂⣀⡤⠚⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⢰⣿⡇⠆⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠁⢏⠨⣯⠉⠹⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠁⠀⠀⠀⢸⣿⠄⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣾⠋⠀⠀⠀⠀⣾⡿⠌⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⠇⠀⠀⠀⠀⠀⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠖⠉⠀⠀⠀⠀⠀⢀⣾⣿⠂⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⢤⣾⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢤⣤⣶⡿⠞⠟⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-    "</string>
     <string name="ascii_meditate" translatable="false">"\n
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⣀⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⢿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -1223,37 +677,6 @@
 ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀
         "</string>
 
-    <string name="ascii_star1" translatable="false">"\n
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⠶⢞⣟⣯⠶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢖⡛⠥⠒⠋⠉⠀⠈⢻⡫⣧⠀⠀⠀⠀⠀⠀⠀⢄⠀⠀⠀⢠⢄⠀⠀⠀⠇⠀⢀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣥⠋⠀⢠⢾⠿⠿⢿⢳⡀⢳⡽⣇⠀⠀⠀⠀⠀⢀⠈⠢⡄⠀⠼⠏⢧⡀⡼⢀⡔⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡧⠇⠀⣏⡧⡴⢳⡄⣾⡇⠀⢣⡺⡆⠀⠀⠀⠀⠀⠈⠲⢌⠃⡟⠀⠪⠳⠥⡥⣤⣤⡦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣼⡀⠈⠙⠓⣋⡰⢙⡇⠀⠀⡧⢻⡄⠀⠀⢠⡶⣦⠶⠒⠘⣡⣦⣴⠢⡌⠁⡡⠔⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢯⣜⣶⣯⠵⠖⠒⠋⠀⣠⠔⣩⡞⠃⠀⠀⠀⠉⠓⠦⣄⠐⢧⡘⠬⠟⣹⠆⡇⢀⠀⠐⠒⠂⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⢛⣸⠼⠃⠀⠀⠀⠀⠤⠤⠤⢘⡘⡇⠀⠻⣤⠿⠃⠀⠘⢇⠛⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠒⠁⡰⢀⣀⡤⠚⡖⠦⣤⣠⢊⡧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡯⠟⠉⠀⢡⠘⡀⠀⠉⠉⠛⠝⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡐⠳⡠⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠑⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡇⠀⠄⠊⡱⢄⠀⠀⠀⢠⠀⢠⠁⠀⠀⠀⠀⠀⢀⡀⢤⠀⡄⡀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⡀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠣⠀⠀⠀⠀⠊⠱⣄⠀⡼⠀⡈⠀⢀⣀⣴⠲⢉⠉⠀⠐⠀⡈⡇⠀⠀⠀⠀⢀⡠⢶⣚⠭⠚⠋⣁⡠⡶⢤⣄⣀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⢰⣶⣄⠀⠀⣟⢷⡇⣠⣦⠚⠍⠂⠀⣤⣴⣶⢿⡄⠀⣈⠅⠀⠀⠀⠀⢹⡅⡏⠀⠀⡴⡫⠑⣩⣬⣑⡚⠼⡛⢶
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣄⠀⣿⣿⣽⣷⣄⡟⠙⠁⠛⠁⠀⣠⣴⣿⢿⠻⣧⡿⠀⠨⡝⠀⠀⠀⠀⠀⢸⠆⡇⠀⢼⢏⠀⢞⡕⢒⠺⡏⡧⠘⢸
-⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⡄⠀⠀⢻⡯⠖⣏⠻⠷⣄⣀⣠⣴⠿⣟⠩⢦⠪⣞⡿⠁⠀⢰⠁⠀⠀⠀⠀⠀⢸⡇⡇⠀⠘⡊⡌⠶⣍⠽⠁⡇⡇⠈⣸
-⠀⠀⠀⠀⠄⡀⠈⠀⠠⣀⠁⣷⣆⡀⢸⣿⣿⢷⣄⠜⠆⣉⠁⣴⣷⣿⠎⡄⣂⣿⠃⠀⠈⡞⠀⠀⠀⠀⠀⠀⠨⡇⢁⠀⠀⠱⡝⠠⠤⣤⣰⣼⠁⠧⡇
-⠀⠀⠀⠀⠀⠀⠈⠐⠠⣀⡝⠧⣤⠁⢺⣿⣹⡾⠋⠷⣼⢤⠟⠒⢛⡾⡡⣵⣿⢃⣀⣤⣼⠤⠐⠀⠂⠀⠀⠀⠀⠸⣬⣓⠤⡄⣨⣛⣛⣉⢁⣀⠜⣸⠁
-⠀⠀⠀⠀⢀⣠⢴⡲⠉⠀⠉⠳⢈⣠⣿⠓⠈⣇⠀⠀⠀⠀⠀⠀⣰⡇⡼⣽⠃⣋⣉⣭⡇⠠⠠⠄⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠲⠷⠾⠭⠶⠚⠁⠀
-⠀⢀⣤⡶⠓⠉⠀⣀⣤⣶⣶⢿⡟⡯⣀⣣⣶⠏⠀⠀⠀⠀⠀⠀⢾⣅⠶⣿⣦⣭⣭⠼⠷⡄⠤⠤⠤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⡜⡛⡂⡀⠀⠀⠘⢿⣿⡷⣟⣯⣋⢖⡿⠽⠏⠶⡆⠀⠀⣠⣤⣀⣀⣚⣳⣜⢋⡿⣦⣀⠀⠊⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠉⠛⠶⠴⣠⣀⠀⠀⠀⠉⠉⢛⠻⠿⢶⣛⡎⡩⢿⣐⣾⠓⣡⢀⣬⡩⣩⣙⠄⢊⡽⣻⢶⡀⠁⠳⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠉⠂⠊⢧⣦⡞⢋⣤⠄⠀⢿⣮⠵⡘⢿⡟⣵⣺⣿⠟⠓⣿⠾⣟⣾⣾⣽⣳⣟⣦⠈⡚⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⢠⠛⡇⢰⡄⠈⣷⣯⢱⠘⣮⣯⡟⠁⢸⣧⢹⣶⠀⠀⠉⠛⢻⣯⣽⣿⠈⠊⢣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠔⠁⠀⢸⡟⠁⠀⠹⣿⣹⣲⣿⡿⠁⠹⣦⠿⡍⠙⠗⠒⠦⣤⢀⡀⢉⠉⠀⠀⡓⢧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠜⠁⢡⠂⠀⠀⣿⣷⣿⡯⠀⠠⣠⡟⡄⠙⡀⠈⠂⠀⠀⠈⠉⠒⠢⠬⠴⠤⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠔⠁⠀⠀⠀⢳⡀⠀⠘⢿⡟⠁⠀⣸⠏⠀⠀⡀⠑⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣏⠀⠀⠀⠀⢀⣰⠏⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡄⠀⠀⠀⢢⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠳⣆⡆⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-    "</string>
     <string name="ascii_star2" translatable="false">"\n
         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -1282,229 +705,8 @@
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"</string>
 
-    <string name="ascii_blackhole" translatable="false">"\n
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠖⠃⠀⠀⠀⡁⠀⠀⠀⠀⠀⠐⠆⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⢔⡤⠊⠁⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠁⠀⠀⠘⠁⢀⠀⠀⠀⠀⢈⠓⠂⠠⡄⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣶⠿⠞⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠒⠁⠀⠠⡚⠁⢀⣙⣀⣈⡩⠬⢁⠀⢑⠶⠤⡆⠤⡀⠀⠀⠀⠀⠀⠀⢀⠴⢲⣋⣽⣷⠟⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⢠⠀⠀⣶⠃⠗⣡⣶⣮⣿⡿⠿⠿⢿⣿⣷⣶⣤⣤⠤⠴⠦⠬⣤⣤⠄⣉⠉⠝⢲⣿⡷⠻⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠁⡀⡸⠁⣰⣿⡿⠛⠋⣁⡀⠤⠤⢄⡀⠈⠛⢯⣿⣟⣾⣶⣶⣮⣭⣵⣾⣿⣟⠿⠉⢨⠖⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⢠⠳⡧⣻⡿⠋⢀⠒⠉⠀⠀⠀⠀⠀⠀⠉⠢⠀⠀⠙⠛⣻⣿⣿⣿⢿⣿⣿⠟⡱⠖⠊⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⢠⣧⠓⣾⣿⠁⠀⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⢦⣠⣾⣿⠿⣿⣿⣿⡿⣫⠏⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠂⢃⣸⣿⠇⢠⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣿⠟⢿⠁⠸⡿⣿⣯⡶⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⢘⡄⠘⣿⣿⠀⠸⡀⠀⠀⠀⠀⠀⢀⣀⣴⣾⣿⡿⡟⡋⠐⡇⠀⢸⣿⣿⠃⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢡⠘⢰⣿⡿⡆⠀⣇⠀⣀⣠⣤⣶⣿⢷⢟⠻⠀⠈⠀⠀⠀⡇⠀⣼⣿⣿⠂⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠔⢀⡴⢯⣾⠟⡏⢀⣠⣿⣿⣿⣟⢟⡋⠅⠘⠉⠀⠀⠀⠀⢀⠀⠁⢠⣿⣟⠃⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠞⣻⣷⡿⢙⣩⣶⡿⠿⠛⠉⠑⢡⡁⠀⠀⠀⠀⠀⠀⢀⠔⠁⠀⣰⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣡⣾⣥⣾⢫⡦⠾⠛⠙⠉⠀⠀⢀⣀⠀⠈⠙⠓⠦⠤⠤⠀⠘⠁⢀⡤⣾⡿⠏⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠔⣴⣾⣿⣿⢟⢝⠢⠃⢀⣤⢴⣾⣮⣷⣶⢿⣶⡤⣐⡀⠀⣠⣤⢶⣪⣿⣿⡿⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⡀⣦⣾⡿⡛⠵⠺⢈⡠⠶⠿⠥⠥⡭⠉⠉⢱⡛⠻⠿⣿⣿⣿⣿⣿⠿⠿⠿⠟⠭⠛⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢀⢴⠕⣋⠝⠕⠐⠀⠔⠉⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠁⠉⠁⠁⠁⠁⠈⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢀⣠⠁⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-    "</string>
-    <string name="ascii_praying_angel" translatable="false">"\n
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣟⣿⣻⣟⣿⣻⡽⣏⡿⣹⢯⡽⣭⢏⡽⢎⣳⣙⢮⡱⢫⡜⣥⠫⣜⢱⢪⠱⣉⢎⡱⢊⠖⡱⢊⡜⢦⡙⢦⡙⢦⡹⣌⠧⡝⣎⡳⢭⢳⢭⣫⠽⣭⢻⡝⣯⢟
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣽⣿⣾⢷⣿⣻⡾⣽⣳⣟⡾⣵⡻⡵⣏⢷⣫⢞⡵⢎⣳⣙⢦⡙⢦⡙⢧⢜⢢⡓⢬⠚⡴⣉⠖⣌⠲⡩⢎⡱⢣⠜⣢⠙⢦⡙⢦⡑⣎⡱⣙⠦⣝⢣⡏⢶⢣⡟⣼⢣⡟⣞⣯
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣷⣿⣿⣻⣷⣿⣻⢷⣻⡽⣷⣻⠾⣝⡾⣵⢻⡝⣮⢳⢞⡼⣙⢦⡙⢦⡛⢦⡙⢎⡜⢢⡙⠦⡙⠴⣈⠎⡄⢣⡑⢎⡰⢃⡚⢤⢋⠦⡙⢦⡑⢦⠣⣍⠺⣌⢣⠜⢣⠓⡼⢌⡷⣹⡝⡾
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣾⠿⠷⢻⣟⣛⡛⠛⠳⠿⢿⣽⣺⢵⣫⢞⡵⣫⠞⣜⠳⡎⡝⢦⡙⢦⡙⢦⡘⠥⢊⠥⣉⠒⠤⢃⠌⢡⠘⠤⡘⠤⡑⢊⡌⣒⠩⢒⡌⢣⡙⢤⢋⡔⠣⠘⣰⠟⣦⠃⡞⣥⢻⣝
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡽⠛⣫⣵⣿⣿⣶⣿⢿⡿⣟⡿⣶⢶⣤⣄⡉⠛⢮⣧⢓⢧⡛⣬⠳⣩⠜⡥⢚⠤⢓⠢⠜⡡⢃⠜⠠⢉⠐⠡⠈⠠⠘⠠⠑⢂⠅⢣⠐⢢⢙⡰⢌⠣⠜⣂⠣⠌⠠⣱⠋⠀⣿⠠⡙⢦⡻⣼
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢉⣴⣿⣿⡿⣯⣟⣷⣯⢿⡽⣯⢟⣭⢟⡶⣭⢛⠷⣦⡈⠻⣦⣑⣦⡙⢤⢋⠴⡩⡘⢬⠡⠓⡄⢃⠈⡐⠀⠈⠀⠀⠀⠀⠡⠈⠄⡈⠂⢍⢂⠒⡔⢊⠥⠓⡄⢃⠈⣰⠃⠀⠀⡇⠰⣉⠶⣹⢧
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣾⣿⣿⢯⣿⢿⣽⢾⡽⣯⢟⣭⢟⢮⡛⡼⢲⠍⣞⣤⠛⣦⡘⢏⢸⡅⢎⡘⠦⡑⠱⢂⠥⠃⠌⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⡉⠄⠊⡔⠨⠌⢂⠅⠐⠀⡼⠁⠀⠀⢰⠇⠢⢥⣋⢷⣫
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢾⣿⣟⣿⣟⣯⣟⡾⢯⡝⢮⡛⡜⡎⣿⠛⢧⣇⣺⠟⠙⣿⡟⠁⠀⢠⡟⢠⠘⡰⢉⠱⣈⠂⠅⡈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⡈⠰⢀⠃⠌⠀⠀⣠⠚⢀⠤⠀⠀⡎⢠⡙⢦⡹⣎⢷
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⢹⣿⣯⣟⡾⢧⣻⡼⠗⠛⠋⠉⠉⠉⠙⢣⠀⠘⠫⠠⡄⣜⠀⠀⠀⢀⢷⣤⣈⠔⡡⠒⡄⠌⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠂⠀⠀⣠⠞⢁⠴⠉⢀⠀⡼⠁⢆⡜⣣⢳⡝⣾
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣿⣄⠻⣷⣻⠞⠋⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣉⣓⣶⣨⣤⠚⢇⠀⢀⠀⠈⢡⡟⠀⢆⠱⢀⠊⠄⠡⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⡠⠞⠁⠠⠊⠀⢀⠂⡴⠃⣘⠢⢞⣥⢻⣜⣳
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣿⣻⣷⡜⠁⠀⠀⠀⠀⠀⢀⣠⢐⠄⠨⢋⡥⢛⠉⠉⠉⠉⠁⠂⠠⢁⢀⡰⢋⠠⣉⠰⢈⠂⠌⡐⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠔⠋⢀⠀⠀⠀⡀⠚⢀⡜⠁⡒⣌⠳⣍⠶⣋⡾⣱
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⢿⡽⣷⠋⠀⠀⠀⣠⠤⢀⣶⠞⣡⠋⣠⡞⠁⠀⠀⠀⠀⠀⠀⠄⠰⡀⠀⠘⢦⠀⠒⡠⢁⠎⡐⠈⠄⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⠖⠉⢀⠠⠊⠁⠀⢀⠀⠀⣴⣻⡀⠠⠱⣌⠳⣎⡽⢣⡟⣵
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⣟⣿⠁⣀⡠⢬⣉⣈⣡⠿⣡⢎⢁⡾⠛⠁⠀⣠⠎⠁⠀⢀⠀⣶⠀⡇⠀⠀⠈⢧⠀⡁⢂⠐⠀⠁⠀⠀⠀⠀⠀⢀⣀⡠⠤⠔⠚⠉⠀⠀⠀⠀⠀⠀⢀⠀⠠⠁⣠⠞⠋⢀⠇⢈⡱⢌⡳⡱⡞⣽⢺⡵
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣻⣾⠇⠀⣁⣠⣀⣈⣭⡝⠛⣯⠼⠋⢀⠂⣤⡞⠁⠀⣀⢠⠿⣳⡿⢰⡇⠀⠀⠀⠘⡆⠐⡀⠈⠀⢀⡠⠔⠒⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡡⠈⠁⡠⠚⠁⠀⠀⡼⠀⠢⠜⣬⠱⣝⡽⡜⣧⢻
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣿⢷⡿⠀⢊⣡⣶⠦⣬⠭⣭⣉⣉⣩⣤⠶⣛⠑⢀⣤⠞⡵⢋⢖⡿⢡⣿⠄⢀⢦⠀⠀⢹⠀⢀⡠⠒⠉⠀⠤⠔⠉⠉⠉⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⢀⡠⠔⢁⠀⠀⠀⠀⣠⠃⠄⢣⢹⢰⣋⠾⣴⢻⡜⣯
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣿⣟⣾⠇⣠⡞⣛⡙⢦⣝⢦⣉⢛⡛⣋⠹⢂⣉⡤⠞⣫⣴⣇⡚⢚⠥⠊⡹⢀⣜⡌⠀⠀⢸⡠⠊⠁⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⡀⠄⠊⠁⠀⠈⠂⠀⠀⢠⠏⠀⡔⢪⠜⣮⢹⠶⣩⡞⣵⢯
-⣿⣿⡟⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣻⣿⣯⣿⡏⡰⣋⠔⣈⢻⣮⡟⡛⠶⠭⣭⣍⣩⡭⢶⣶⣾⣿⣯⣿⣿⠿⠀⠀⢀⣈⣈⠈⠀⠀⠈⠀⡴⢀⠀⠀⠀⠀⠀⠀⠐⠈⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⢠⠏⠀⡒⢌⢣⠞⣬⣓⢯⡳⣝⢾⣹
-⣿⣿⣧⡀⢈⡙⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣻⣿⣝⣯⣷⣯⣷⣛⢾⡳⡿⣽⢿⣟⣯⣷⡟⡼⢱⠃⠐⣨⡿⣷⢃⠙⠌⣹⡼⡻⢉⡴⢋⠸⣿⣹⣿⣿⣿⠀⣴⣥⣾⣿⣿⠀⠀⠀⡠⠖⠀⠀⠀⠀⠀⡠⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⠋⠀⢆⡩⢎⢎⡝⢦⡝⣶⡹⣎⣯⢷
-⣿⣿⣿⣧⡙⢟⢻⣦⣌⡉⠛⠛⠿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠯⠷⠟⠛⠋⣙⢋⣉⣁⠁⣉⠉⠉⠙⠓⠿⢮⣟⡼⣛⣾⢱⠇⡏⠀⢌⣿⡽⣣⢃⡾⣛⡵⣪⠖⡉⡐⠌⠢⢈⠘⠙⠉⠁⠀⡏⢿⣎⡿⠉⠀⠀⠘⠗⠀⠀⠀⠀⠀⡰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⠞⠀⢠⢉⠦⣑⠎⡞⣜⣣⢞⣥⢻⡼⣎⡿
-⣿⣿⣿⣿⣿⣯⠚⣟⢿⣿⣯⣶⠷⣶⢶⣧⡈⠠⠅⣩⣤⣠⣤⡀⢢⡒⠀⠓⢲⣦⣼⣿⣏⣹⣖⢿⠙⠶⡻⢶⣦⣠⡈⠙⠻⣇⡞⠰⣡⠃⣾⡿⣑⡶⣫⡾⣩⢞⡟⣤⠀⠄⠈⠐⠀⠀⠀⠀⠀⣤⡵⠀⢠⠃⠀⠀⢠⡏⠀⠀⠀⠀⠀⡸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠄⠒⠉⢀⣀⡀⢆⢊⠖⣡⢛⡼⡱⢎⡽⣪⢷⡹⣞⡽
-⣿⣿⣿⣿⣿⣿⣿⣦⡐⠻⢭⠁⡈⢛⣷⡟⢩⣿⣶⣦⣭⣍⣙⠛⠿⠽⠾⡿⠿⣶⣿⣉⣳⣿⣯⣾⠀⣻⣷⣄⡟⢿⣿⣠⡀⠨⢁⡴⠁⣸⡿⣵⣿⡼⡣⢾⡅⢸⡇⠙⢦⡀⠀⠀⠀⠀⠠⢤⣶⣯⠀⣠⠃⠀⠀⠀⢸⠃⠀⠀⠀⠀⢠⠁⠀⠀⠀⠀⢀⠀⠀⠀⠐⠒⠒⠒⠊⠋⠉⠉⠉⠉⠉⠁⡸⠁⢂⠎⡼⢡⢏⠶⣹⣙⢾⡱⣏⢷⣏⡿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣤⣁⣉⠒⠉⠛⠋⠜⠛⠿⣧⠧⣟⢹⠃⠖⠓⠒⠂⢐⣀⣤⣭⣙⠛⢾⣺⡍⣯⡷⢺⣏⡿⠃⢠⠎⢀⣾⡿⠟⣿⡵⣿⠁⠘⣧⠀⣗⠠⠀⠙⡶⠤⣤⠀⠀⣸⠛⢀⠔⠁⠀⠀⢀⠄⡨⠀⠀⠀⠀⢠⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡜⠁⠐⡌⡚⡔⣋⢮⡹⣱⢎⡷⣹⢎⡿⡼⣽
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣏⠙⢟⣿⠛⢛⡛⠒⢲⣚⣙⠲⣤⢤⣀⢐⣿⣶⣜⠙⣯⠀⠿⣏⣱⣦⠙⣿⣿⣅⡤⠋⢀⡴⢃⣴⠟⣁⡴⠞⡁⢷⢻⣧⠀⠘⠇⢹⡀⠁⠀⠘⠀⠇⠀⠀⠳⠂⠁⠀⠀⠀⢠⠊⢀⠇⠀⠀⠀⠀⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡰⠋⠀⢠⠑⣢⠱⣙⡜⡲⣍⡳⣎⢷⡹⣞⡽⣽⣳
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣈⠻⢴⣠⣅⡄⠀⠁⣨⣷⡶⠶⠞⠛⣉⠉⢩⡄⣤⠾⢾⣀⣿⣧⡑⠘⡿⠋⡡⣠⣾⣡⣾⡯⠞⡩⠐⡜⠀⠘⢫⣿⣦⠀⠈⠘⣇⠀⠀⠀⠸⡄⢠⡖⡄⠀⠀⠀⠀⢰⢁⠂⡈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡴⠋⠀⢠⠘⠤⡙⢤⠛⡴⣩⢓⡮⣵⢫⡞⣽⢺⡽⣶⣻
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣉⠛⠿⠤⢀⠘⣧⣶⣫⠉⣿⡍⢯⣀⣃⣠⣀⣤⡏⠹⣽⣿⠚⠁⡜⣹⠟⣋⡿⢋⠡⠌⣡⡴⠶⠢⠶⢼⣷⣿⢷⡀⡄⠹⡄⠀⠀⠀⢈⡟⣁⡉⠒⠤⣀⠀⠸⠈⠀⡁⠀⠀⠄⠀⠀⢀⠑⠂⠀⠀⠀⠀⠀⠀⠈⠁⠀⠐⠂⠀⣀⠽⠁⠀⢄⡘⠤⡙⢢⡙⣌⠻⡔⢣⢏⢶⣣⢟⡼⣳⢏⡷⣯⢷
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣾⣤⣭⣿⣽⡿⢿⠖⢫⡇⢀⡿⠙⣡⡴⢺⡟⠡⠁⣼⣿⣫⠞⢹⡃⠌⢒⡞⢡⡄⡠⣠⠀⣸⣯⠏⢸⡇⢰⡀⠱⡀⠀⠀⢸⡇⢹⢷⣦⠀⠀⠈⠑⠣⠀⠣⠀⠀⠀⠀⠀⠀⠁⠠⠀⠠⣀⡀⡈⠁⠀⣀⣀⠤⠴⠊⠁⢀⠠⡘⠤⡘⠴⢡⠣⠜⣌⢳⡙⢮⢞⣣⢞⡽⣺⠵⣯⣟⣳⢿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⢋⠙⠀⠀⡌⠾⣁⣠⣲⡀⠘⠋⢴⠿⡁⠄⣼⢋⡽⠁⣾⢸⣷⢈⡾⢠⣟⣧⠀⢷⣚⠵⠋⠀⣼⠁⡾⣧⠀⣃⠀⠀⢸⣇⡎⢸⠉⡿⢪⣕⡀⠀⠐⠤⠑⣄⠀⠀⠀⠀⠠⡀⠀⠒⠀⠙⠤⡉⠉⠉⠀⠀⡀⠠⢈⠄⢢⠑⡢⢍⠪⣅⢣⢀⡘⢦⡝⣣⢞⡵⣫⢞⣵⣻⢳⡾⣽⣻
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣤⣉⠚⢲⣤⣾⣋⣹⣍⠉⡤⢿⡶⢃⢼⠁⢰⣏⡼⢂⡀⣙⣦⣈⣽⡇⢸⠟⣌⡳⢮⣉⣤⡵⠞⣁⣾⣷⢃⡆⠸⠤⣀⠀⠙⣄⠀⠀⢸⠸⡆⠱⡄⠀⢰⠑⡈⠣⡀⠠⠈⠀⢈⠀⠀⠀⠀⠀⠈⠓⢄⡀⠀⠀⢁⠂⡘⢄⠋⡔⢪⠱⡌⢦⢣⡝⢦⡝⣜⣣⢏⡷⣫⠶⣏⡿⣽⣳⢿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣷⣦⣤⣽⣁⣏⣃⣥⣾⣷⢷⣏⠠⣿⡏⡧⠼⠚⣩⠭⡓⢀⣧⢸⡎⠹⣽⡲⣖⣠⣤⠼⣉⣡⣯⣾⢧⠀⠀⠀⢈⠐⠸⣆⠀⠘⡇⠱⡀⠉⠦⡀⢂⡇⠀⠑⠄⠀⠀⡀⠀⠠⡀⠀⠀⠀⠂⠀⠈⠑⠦⡄⠠⠑⡌⡱⢌⣃⠳⡘⢆⡳⣜⢣⡞⣥⢻⣘⡳⣝⡯⣟⣽⣳⢯⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣻⣟⢻⣯⣾⡏⠐⢫⣅⢹⡴⢶⡏⠀⡙⠆⢸⠀⣷⠐⠠⡙⠲⠭⣍⡒⡁⢀⠈⢁⠈⠹⢄⡀⠈⠦⡄⢸⠂⠀⣹⡀⠈⠱⡀⠱⡀⠁⣧⠀⠈⢂⠢⣌⠐⠀⢄⣀⣀⡁⠆⠓⢀⡠⠔⠋⠀⡅⢢⢑⢪⠰⣩⢙⡬⢳⣌⢳⢺⡱⣏⢾⣱⠿⣼⣻⢾⡽⣯⢿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣟⣼⠿⠚⠁⢴⣿⢻⢛⣄⠱⣴⣶⠚⢀⣼⠉⡇⢻⡆⠁⢼⡀⠀⠘⣇⠚⠉⠦⠐⢠⠠⠀⠁⠀⢀⣵⡋⢀⡴⢁⠜⢢⡀⢇⠀⠹⡄⠀⠂⠀⠈⠀⢣⠉⠲⠤⠤⠤⠴⠖⠚⠉⠀⡀⠰⢡⠘⡄⣋⠤⡓⣬⠣⢞⡱⢎⣭⠳⣝⢮⣳⡭⣟⣳⡽⣯⢿⣽⣻
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣏⣀⠀⠮⢴⠋⣶⣿⣳⠿⡤⠀⠁⠀⣾⢇⣰⢳⠈⣷⠈⢸⣇⠀⠀⢿⡃⣄⠀⠀⠌⠆⣄⠀⣠⠾⠧⣏⡋⠠⠙⢤⠀⠀⢺⢠⠠⢹⡆⠘⡀⠀⠀⠀⣧⠀⠀⢀⠠⢀⡀⠠⢀⠡⡐⠡⢆⠸⢄⡱⢊⡕⢢⡛⣬⠳⣭⣚⡽⣎⢷⣣⢿⣹⣞⡽⣯⣟⣾⢿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣾⡿⠲⠤⠬⢤⡥⣥⢶⡟⢨⣩⢲⠇⢰⡟⣦⡀⢿⡄⠸⠌⠀⠀⠸⣦⡜⣦⢀⣦⠚⣠⠞⠁⠀⣰⠋⡈⠛⠂⠀⠀⠀⠀⠇⠀⠀⠻⡄⠀⠄⠀⠀⢸⡀⠀⢂⠰⠀⡔⡡⠂⢌⠡⠓⡌⠲⣄⠨⣅⢊⠁⡵⣊⠷⣱⢎⡷⣹⣎⠷⣏⡷⣾⣽⣳⣯⢿⣻
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⢋⡜⢁⣔⠂⠀⠢⠄⡐⣾⣠⠋⣈⣿⠄⣿⣡⣼⢂⠸⣇⠨⢰⠀⠀⠀⢷⣶⣨⠞⣡⠞⠁⠀⢀⡴⢁⠞⠀⠀⠀⠐⠀⢀⠀⡇⠀⠀⠀⠹⡄⠈⠄⠠⠀⣧⠀⠈⢄⠃⡔⠡⡉⢆⡩⠜⡀⣱⢎⡱⠜⣬⢋⠶⣩⢏⣧⢻⣜⡳⣞⣻⣭⣟⣾⣳⣟⣾⢿⣻
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢟⣿⠶⢫⢋⠆⣼⢏⠀⢀⡇⠘⢠⡇⢸⣶⣧⠉⣽⢿⣼⢃⠜⠄⣿⠄⡈⠖⢀⡠⠚⣩⡴⠏⢁⠀⠈⣴⠏⡠⠋⠀⠀⠀⠀⠀⠀⡌⠸⠀⠀⠀⠀⠀⠹⡄⠘⡄⠀⡇⠀⠌⢢⠘⡄⢣⠘⡔⣠⠃⢲⡥⢪⢔⡫⣔⢫⢳⠭⣞⡼⢳⢮⣝⣳⡽⣶⣻⣞⣷⣻⡾⣿⢿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⡯⠞⠋⢀⡀⠃⡏⣰⡯⠋⢠⠏⠂⠀⠛⡇⢸⣿⡏⢴⣿⠞⣭⠎⠀⠰⢸⡇⠐⣰⣋⡴⠛⡁⠄⡀⠂⢀⡴⢁⡴⢁⠀⠀⠀⠀⠀⠀⢰⠁⠀⣧⠀⠀⠀⠀⠀⠻⠀⢧⣀⡇⠘⢠⠁⠎⡘⠤⢉⠤⡡⠞⢬⠱⡍⢆⡓⢨⢇⣛⠾⣱⢞⣯⢳⡞⣧⣟⣷⣻⣞⡷⣿⣽⡿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠉⣡⣤⣶⣿⣿⠀⣸⢘⠗⡁⣠⠏⠀⠂⠀⠀⢻⠙⡟⢠⡿⠛⡠⠃⠀⠀⠀⠀⣿⣈⠡⠐⠠⠁⠄⠀⢀⡴⠋⣠⠎⡀⠀⠀⠀⠀⠀⠀⠀⡜⢠⠀⡟⢆⠀⠀⠀⠀⠘⠀⢸⠈⡄⠨⢄⠹⡠⢃⡜⢢⠘⣅⠚⡤⢓⡜⣣⢚⡭⢎⡽⡺⣵⢫⡞⣧⡟⣷⣻⣞⡷⣯⢿⣽⣾⢿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢋⣴⣿⣿⣿⣿⣿⡇⣸⠓⢁⡞⡵⠏⠀⠂⠀⠀⠀⠘⡆⠑⣎⠔⠊⠀⠀⠀⠀⠀⠀⠘⣧⠘⠠⠁⠂⠀⠴⠊⣠⣾⡏⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⡞⠙⢁⠈⠳⣄⡀⠀⠀⢂⣿⠼⣀⠓⡌⢢⠅⡃⠜⢀⠣⢌⠣⣜⡡⢞⡤⢸⡜⣹⠶⣹⢎⡷⣏⡷⣛⣷⣻⢾⣽⣻⣯⢿⣾⡿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⣼⣿⣿⣿⡿⠛⠁⠀⠀⡰⣫⠞⠁⡀⠀⠀⠀⠀⠀⠀⠘⠊⠀⠀⠀⠀⠀⠀⠀⠀⡴⢠⠙⣧⡀⠄⠂⣠⣴⣮⡿⢿⠁⠠⡀⠠⠀⠀⠀⠀⠀⠀⢰⠃⠐⡠⢉⠴⢠⡙⠓⡒⢋⢡⠒⡄⢣⠜⡰⠘⢂⠀⠀⠐⣈⠣⠴⣙⠮⣜⢣⡞⣵⢫⡗⣯⢞⣳⣽⣛⡾⣽⣻⣞⣷⢿⣻⣯⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⠀⣿⡿⠟⠁⠀⠀⠀⣀⡼⣱⠃⠀⣰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠊⣴⣾⡗⣾⣥⣴⣾⣿⡿⣿⣤⣿⠂⢤⡆⠀⠀⠀⠠⠀⠀⠀⣟⠀⡡⠢⢅⢊⠲⡇⢣⢱⣌⡢⢱⠨⣅⠚⡤⡙⠤⣶⣺⡇⡌⣇⠻⣌⠳⣎⡳⣝⢮⡳⣝⡮⣟⢧⣿⣹⣟⡷⣯⢿⣾⢿⣟⣿⣽⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣀⢹⠤⠀⠀⣀⣤⣾⡟⢰⠇⡞⢀⡏⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⢊⡰⣶⣿⣤⣀⡮⢟⣾⣿⣿⣷⣲⣀⠀⠀⠊⠈⠀⠀⠀⠀⠀⠀⢸⠁⠤⣁⠣⢌⠒⡄⢣⠒⠼⣌⣽⢂⢳⢨⡑⠦⡙⣼⣿⡿⣑⠞⣌⠳⣜⣣⠷⣙⢮⡳⣝⡮⣗⣯⢟⣶⣻⢾⣽⣻⣯⣿⢿⣻⣿⣟⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⡻⡍⠀⢀⣶⣿⣿⠏⠀⡏⢰⡇⢰⠇⡃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠊⡴⠾⢿⣟⣷⣏⣹⣳⣜⣫⢧⣴⣻⡿⡷⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⢾⠀⠂⡄⢣⠎⡘⡌⠅⣘⠡⣍⡴⠬⣶⢡⢊⠵⡙⣷⢿⡕⡎⢞⡬⣛⠴⣣⢻⡹⣎⠷⣝⡾⣝⣾⢻⡾⣽⣻⣾⢯⣷⣿⣿⢿⣯⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣹⠀⣬⣿⣿⣿⠏⢠⠰⡇⠸⡇⢸⡇⠄⢃⠀⠀⠀⠀⠀⢠⣴⡶⠛⣠⣾⣿⠇⢾⣧⣽⣿⣿⡟⣿⣿⣧⣿⣿⡻⠇⢰⠉⢣⠀⠀⠀⠀⠀⠀⠀⢸⠀⡅⡘⢰⠸⣟⡎⢼⢠⠓⡤⢛⡴⢏⠦⣩⣮⡝⣳⠼⣷⡙⣎⠶⣩⢳⡭⣳⡝⣾⡹⣏⡾⡽⣞⣯⣟⣷⢯⣟⣿⣻⣾⡿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⡿⣿⣿⡟⠀⣼⠀⣿⡄⢳⠀⢳⡀⠘⡄⠀⠀⠀⠀⠀⠛⢡⠾⣯⣷⣿⣦⣾⣿⣷⣾⢿⣿⢾⣴⣿⣿⡖⢁⡀⠀⣀⡀⠉⠀⠀⠀⠀⠀⠀⢸⡆⠐⣈⠦⢱⡈⠗⣘⠂⢹⣐⢣⢋⠜⡲⣏⣹⢆⣹⢒⢏⡜⢬⠳⣍⢶⡹⢧⣛⢶⡻⣭⢷⣻⡽⣾⡽⣾⣟⣯⣿⢿⣽⣿⣿⣟⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠈⠙⠇⠲⠿⠇⢌⢳⡘⡆⠈⢧⡠⡘⢆⠀⢀⡄⢠⡶⡏⢻⣿⡿⣿⣿⣧⡾⣿⣿⣿⣧⣾⣿⣿⠟⢻⣏⡀⠴⢠⠁⠀⠀⠀⠒⠀⠀⠀⠀⡇⠀⠌⣦⠑⠬⡓⠬⠑⢎⡐⡣⣎⣼⣵⠎⡥⠄⡾⣍⠞⣬⢓⡻⡜⣧⣛⢧⢯⣳⢟⣭⣟⣷⣻⢷⣻⣟⣾⣿⣽⣿⣿⣯⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠢⡀⠀⠀⠤⠆⢸⠈⣧⠳⢆⡘⣧⠑⢌⠢⡞⢁⡞⠇⡁⠘⣿⣷⣿⣿⣿⡧⡝⢿⡿⣯⡿⣿⣽⣄⠺⢭⣇⠰⠚⠂⠀⠀⠀⠀⠀⠀⢠⠀⢳⠀⠀⣿⡰⢢⢱⣄⡆⣌⢣⢃⣯⣉⣿⢰⢣⠖⣥⢛⡴⣋⡞⢧⡳⣭⢻⡼⣞⢯⡾⣝⡿⣽⣻⢾⣻⣟⣯⣿⢿⣽⣿⣻⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡹⣤⡀⠈⠀⠀⢠⠇⣘⡜⣾⠀⠀⠱⡘⢧⠸⢁⠼⣯⣳⡾⣳⡈⣿⡿⣿⠛⣻⣶⠧⢴⣿⣿⢷⡾⠾⣛⣷⣜⢼⢠⠁⢰⠀⠀⠀⠀⠀⠀⠀⢄⠘⡆⠐⡌⠔⡣⢹⡬⡗⡜⢪⠕⣺⣏⢻⡇⣏⠞⣬⣓⢮⡵⢫⡳⣝⢮⣳⢻⣼⣛⡾⣽⣻⢷⣻⡿⣽⣟⣯⣿⣿⡿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣎⣛⡷⣢⣤⡌⠀⣄⢙⡏⠀⠀⠀⡸⠋⡰⠉⣽⣿⣿⣥⣷⣿⣿⣿⣿⣞⡻⣿⣤⣴⣿⢿⣾⣽⣿⣧⡼⢾⣈⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⢹⡀⠘⠘⠛⣧⡲⢹⡙⢣⠚⣥⠪⡝⡼⣌⠻⡴⢭⢶⡹⢧⡻⣜⡧⢿⣹⢶⢯⣟⡷⣯⣟⣯⡿⣿⣽⡿⣯⣷⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⣿⠏⠁⠒⢀⡜⠀⢀⡠⠎⣡⡾⣇⣰⣷⣿⣷⣾⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⡏⢙⣿⢥⣼⣾⢟⣫⠰⠀⡄⠀⠀⠀⠀⠀⠀⠀⠀⠈⠄⠀⣧⠀⡀⢠⣜⣷⠣⢞⣳⣁⣸⡱⣙⡒⣭⢳⡝⣳⢮⣝⡳⣝⡧⣟⢯⣟⣾⣻⢾⣽⣳⡿⣽⣟⣿⣽⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣿⣿⣿⣿⣿⣿⠟⠉⠀⠀⢀⡠⠤⠒⠁⠀⣰⣿⣶⣏⣹⣿⣯⡟⣿⣿⣿⣿⡟⠉⢿⣷⣿⣿⣿⣿⣯⣿⡿⣌⣿⡟⠡⠠⠀⠀⠀⠀⠃⠀⠀⠀⠀⠀⠀⠈⠂⠘⣆⠨⡱⢌⢧⡙⢦⢣⣭⢣⢳⡉⢾⡜⣣⢞⡵⣳⢮⣝⠾⣵⢯⣻⢞⡷⣯⣟⣾⡽⣟⣯⣿⣯⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⡿⠿⠿⠛⠋⠉⠀⣀⣠⠤⠒⠉⣀⠐⡤⠁⣴⢛⣷⣹⣧⣿⣿⣿⡟⢿⣿⣿⣿⣿⣟⣯⣟⣿⣿⢻⣿⠋⢻⣷⡿⠟⢀⡃⠒⠄⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⢹⡀⢱⢊⡖⡹⢎⡳⢬⡓⣧⢹⢎⡽⡱⣏⢾⡱⣏⡾⣻⢽⡾⣽⢯⣟⡷⣯⡿⣽⣿⣻⣷⣿⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠉⠀⠤⣠⠀⠀⠀⣀⣀⠤⠊⠁⢄⡴⠒⠊⠁⡔⢀⣾⠃⢴⣿⠿⠟⣿⣿⣿⣿⣦⣹⣿⣿⣧⣼⣿⣿⣿⣿⣿⣿⣶⣶⢞⣹⣇⠠⣴⡀⠄⠤⠉⠀⠀⠀⠀⠀⠈⠑⠀⠀⠠⠄⠈⣇⠂⠎⡴⣩⠳⣍⢧⣝⣲⢫⢞⡶⣱⢏⡾⣝⠾⣵⢯⣷⣻⣽⣻⣞⣿⡽⣟⣯⣷⣿⢿⣾⣿⣿⣽⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⣠⡤⠖⠚⠙⠉⠠⡼⠿⠉⠀⡀⠠⠜⡉⠁⠀⣀⠞⢠⡿⠉⢳⣿⣻⠷⣶⣿⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⢿⣿⣿⡇⢼⣿⣮⣇⡈⢧⠰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠸⡌⢢⡑⢎⡳⡭⢞⢦⡳⣫⢞⡵⣫⠾⣵⣫⢿⡽⣞⣧⣟⣾⣳⢿⣞⣿⣟⣯⣿⢿⣿⡿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⢀⣾⣿⣧⣄⣈⢉⡹⠋⠀⠀⠀⠀⠀⠰⣆⣿⣶⣿⡗⣀⠈⣷⣷⣾⣿⣿⣶⣿⡿⣿⣿⣟⢋⣸⣿⣿⣿⣿⣿⣧⣿⣷⣤⣿⣿⣿⠾⠛⣍⢳⠛⢑⠄⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠃⠀⣇⠠⣙⢬⢳⣙⢮⡳⣝⢧⡻⣼⢳⣛⣧⡟⣧⢿⡽⣾⡽⣾⡽⣟⣿⣾⣟⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⡿⠛⠀⠤⡀⡠⠄⠸⣷⣿⣿⣿⣿⡏⠀⢥⣪⢣⣼⣿⠿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣯⣸⣿⣿⣎⢁⣬⣛⣻⣾⣶⣟⠋⠈⣸⠖⠛⠂⠀⠈⠦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⢹⡠⢉⠦⢳⠤⣠⣟⢮⡳⣽⢺⣭⢟⣶⣻⡽⣯⣟⣷⣻⣽⣟⣿⣽⣾⡿⣟⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣧⢻⣿⣿⠛⠀⢀⣤⡖⢀⢏⢱⣾⣿⡿⣿⣿⠇⠀⠦⠘⣤⣮⣿⣏⠀⣸⣿⡿⢿⣿⠿⣿⣿⣼⣿⣿⣯⣿⣿⣿⠿⣿⡋⠉⠹⢿⡊⠙⠶⠁⠀⠀⠀⠀⠀⠀⠈⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⡄⠘⡇⠤⡐⣏⢾⡱⢮⣏⢷⡝⣯⣞⣟⣮⢷⣻⢷⣻⣞⣯⣷⡿⣯⣿⣷⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠿⠁⠀⡤⠾⢉⠕⠙⣲⣿⣿⣿⣿⣿⠋⠠⠔⢰⣯⡇⢈⣿⣿⣾⣿⢿⣿⣾⣷⣤⣿⣿⣿⠿⣿⣿⡿⢿⣿⣶⡿⣿⣖⢤⡼⠙⠣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢡⠀⢿⠐⣍⠞⡼⣹⢳⡞⣯⣞⡷⣽⢾⣹⣯⣟⣯⣷⢿⣯⣷⣿⢿⣿⣾⡿⣟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⣀⡔⠀⠀⠠⡶⢤⠀⢸⣿⣿⡽⠟⠁⠔⠁⢰⣬⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣟⡟⣿⣿⣿⢯⣻⣽⣿⣿⡿⡷⢧⣿⡾⢻⡠⢄⡀⠀⠐⢢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠣⣌⣛⠶⣭⢷⡻⣵⢾⣽⣻⣞⣷⣻⢾⣽⡾⣟⣿⣾⢿⣿⣯⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⣿⠃⢠⣤⢿⡶⣆⡿⢍⠄⣅⠠⡀⡀⠀⠄⠊⣠⣄⡜⣻⣯⣤⡿⠋⣻⠿⡿⣿⣿⡹⣿⣿⣿⣿⢿⢿⣏⣀⡀⣾⣟⠁⠀⠙⣥⡄⠈⠓⣀⠁⢀⡀⠐⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⡜⢮⣛⣧⠿⣝⡿⣞⣷⣻⣞⡷⣿⢯⣿⣽⡿⣿⣽⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⣿⣿⣿⣿⣿⣿⣿⡏⠐⡒⣦⣺⠟⠉⣿⠟⢦⡄⣡⠈⠀⣀⣀⣠⠖⣳⣜⣯⢿⡿⡂⢀⣿⢿⣹⣯⣿⣿⡿⣿⢻⠿⣿⠛⣯⠿⢤⣏⢾⠷⠶⠟⠉⠛⢎⠀⠈⠐⠀⠈⠀⠐⠄⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⢓⡼⢫⣗⣯⢿⣽⣻⡽⣞⣷⣻⢿⣽⡿⣯⣿⢿⣟⣿⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    "</string>
-    <string name="ascii_kitty" translatable="false">"\n
 
-        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡞⠋⠉⠳⡄⠀⠀⠀⠀⢠⠴⠒⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⢀⡶⢶⡀⠀⠀⠀⠀⠀⠀⠀⢠⠏⠀⠀⠀⠀⢹⡄⠀⠀⣰⠋⠀⠀⠀⠸⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⣀⡼⠀⠀⠛⠒⠒⡦⠀⠀⠀⠀⡟⠀⠀⠀⠀⠀⠀⣷⠀⢰⡏⠀⠀⠀⠀⠀⣹⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣏⠁⠀⠀⠀⠀⠀⣼⠁⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⣹⠀⢸⠀⠀⠀⠀⠀⠀⢸⠁⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠉⡶⠀⠀⠀⠀⠈⡆⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⢽⠀⢸⠀⠀⠀⠀⠀⠀⣽⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⢷⡤⠞⠉⠉⠉⠁⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⢸⡆⢸⠀⠀⠀⠀⠀⢀⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣆⠀⠀⠀⠀⠀⠈⠛⠋⠀⠀⢀⠄⡀⣸⠃⡀⠠⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠴⠀⠀⠠⠀⠀⠀⠀⠘⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡞⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠲⢀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠁⠀⠜⡄⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠠⠳⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⣠⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠒⠀⠀⠀⠀⠀⣰⠀⠐⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣀⣤⣾⠁⠈⣧⠀⠰⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣄⠀⠀⠀⠀⡿⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠐⡇⠀⠘⠁⠀⠘⠲⢤⡀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠈⠉⠀⠀⠀⢠⠇⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠙⢦⣄⠀⣠⠤⠤⠄⠙⡇⠀⠀⢨⠷⢶⡋⠀⠀⠀⠀⠀⢀⣴⠋⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⠀⢷⣀⡴⠂⢠⣇⡀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⠤⣤⣤⡴⠋⠀⠹⣽⣛⣛⣿⠋⠉⠉⢁⡴⢋⣳⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠳⣄⡀⠀⠀⠉⠁⠀⠀⠀⣠⡞⠓⠚⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⡍⠓⠦⢤⠤⠴⠶⣺⠟⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⡰⢲⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠓⠒⠛⠲⠶⠚⠁⠀⠀⠀⠀⠀⠀⠀⠀⠘⣏⠉⠁⠈⠲⣤
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡆⣀⡀⠀⡞⠁
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠈⠙⠁⠀
-        "</string>
-    <string name="ascii_star3" translatable="false">"\n
 
-        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⢤⣶⣾⣿⣤⣴⠤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢠⡀⠀⠀⠀⠀⠀⠀⠀⣱⣿⣟⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢸⣧⡀⠀⠀⠀⠀⠀⠀⠟⠃⠀⠻⡄⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⣆⠀⠀⠀⠀⠀⠀⣀⣀⡄⠀⠀⠐⢶⣦⣤⣤⣤⣴⡿⢻⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⢻⣷⣄⣤⣶⣾⣿⣿⠋⠀⠀⠀⠀⠀⠙⢿⣏⡉⠉⠁⠘⠛⠿⣿⣿⣷⣶⠶⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢀⣀⣤⣿⣷⠀⠙⠛⠋⢈⣽⡿⠋⠀⠀⠀⠀⠀⠀⠀⢨⣿⠟⠀⠀⠀⣾⡿⠟⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⣀⣴⣶⣿⣿⣟⣛⠉⠁⠀⠀⠀⠠⣻⣿⡁⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣾⠿⣿⣆⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠉⠉⠛⠛⠻⢿⣿⡀⠀⣠⣄⣈⢻⣷⣦⠀⠀⠀⠀⠀⡼⠟⠋⡉⠀⠀⠈⠻⣿⡧⠀⣴⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⡇⣼⣿⠛⠿⠿⣟⣿⣷⣄⠀⠀⠀⠀⠀⢠⣿⡄⠀⠀⠀⠈⢳⣾⣿⡅⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠐⣿⣿⡿⠃⠀⠀⠀⠀⠈⠉⠛⠓⠀⠀⠙⠻⣿⣿⣿⠿⠛⠁⣠⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠟⠁⠀⠀⠀⠀⠀⢦⣤⣀⡀⠀⠀⠀⣰⠿⠓⢿⡇⢀⣼⣿⡿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠀⠀⠀⠀⠀⠀⠀⠈⠿⣿⣷⣶⣦⣤⣭⣀⣀⠈⢃⣼⣿⡿⠃⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⡿⠿⣿⣿⣿⣿⣿⠏⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣦⠀⠀⠈⠻⣿⣿⣆⠀⠀⠉⠙⠃⠀⠀⠀⣿⣿⣿⣶⣤⣤⣄⣀⡀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣤⣤⣾⣿⣤⣤⡤⠀⠘⢿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠉⠙⠛⠻⢿⣿⣿⣿⣿⣶⣦⣤⡄
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣹⣿⣿⣯⠁⠀⠀⠀⣰⣿⣿⠏⠀⠀⠀⠀⠀⠀⢀⣀⣤⣴⣶⣿⣿⣿⠿⠟⠋⠉⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠁⠈⠙⠇⠀⢀⣼⣿⡿⠃⠀⠀⣀⣀⠀⠀⠀⣿⣿⡿⠟⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣟⣠⣤⣶⣿⣿⣿⣧⡀⠀⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⠿⠟⠛⠉⠉⠻⣿⣿⣆⢽⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠙⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        "</string>
-
-    <string name="ascii_star4" translatable="false">"\n
-
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠎⠉⢂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠎⠀⡄⠈⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⡎⠉⠀⠀⠀⠀⡰⢳⡀⠈⠉⠀⠀⠒⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠢⠀⠈⠫⡅⠀⠀⢈⠽⠋⠀⡠⠊⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠃⢀⣇⠤⠤⣺⠀⠰⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⠁⠀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠈⠀⣠⢄⠈⠁⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠊⢀⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠣⠤⠒⠉⠀⠀⠁⠢⠀⠜⠀⠀⠀⡖⠐⠂⠠⠄⣀⠀⠀⠀⠀⠀⠀⡠⠊⠀⡠⠊⡇⠀⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⡀⠀⢤⢀⣀⠀⠁⠐⠂⠠⠎⠀⡠⠊⠀⠀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⡄⠈⢆⠀⠉⠑⠒⠠⠤⡠⠞⠀⠀⠀⠀⠀⠀⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠄⠈⢢⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⠘⠢⢄⡀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢄⠀⢣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠒⠤⣀⠀⠁⠂⠄⡀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠔⠂⠢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡨⠂⢀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠒⢤⡀⠀⠉⠂⡄
-⠀⠀⠀⠀⠀⠀⢀⠀⢀⠈⠢⠀⠀⠀⠀⠀⠀⠀⡀⠤⠀⢄⠀⠀⠀⠀⠀⡔⠁⢠⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠠⠔⠒⠉⠁⣀⠤⠄⠒⠁
-⠀⠀⠀⠀⠀⠀⢸⠀⢸⠳⢄⠀⠑⠄⠤⠐⠈⠁⢀⠀⢀⠎⠀⠀⠀⢀⠎⠀⡰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡎⠉⢀⡀⠤⠐⠂⠉⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢸⠀⢸⠀⠀⠑⢄⣀⡠⠤⠒⢩⠃⠀⡌⠀⠀⠀⡠⠃⢀⣞⣀⠤⠤⠔⠒⠒⠉⠲⡀⠀⠀⠀⢠⠇⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⡀⠜⠀⢀⠀⠀⠀⠀⠀⠀⠀⢀⠆⠀⡜⠀⠀⠀⠔⠀⠀⠀⢀⣀⡀⠤⠄⠐⠒⠢⡀⠈⢆⠀⠀⢸⠀⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⢀⠠⠒⠉⢀⡠⠔⠉⠀⠀⠀⠀⠀⠀⠀⣎⠀⠸⡁⠀⠀⠀⠈⠀⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠈⢄⠀⠱⡄⠘⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⡎⠀⠀⠐⠪⠥⣀⣐⠀⠀⠀⠀⠀⠀⠀⠀⠈⠢⡀⠈⢂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⡀⠈⠇⠀⡎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠈⠀⠒⠀⠤⢀⣀⠀⠉⢱⠀⠀⠀⢀⠤⠤⠀⣀⣘⣄⠀⠑⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢂⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠘⡄⠀⡆⠀⡠⠃⢀⡀⢀⣀⡀⠀⠀⠀⠈⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⠊⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢃⠀⢡⡐⠁⢠⠎⠀⠀⠀⠀⠀⠀⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠸⠀⠈⠀⡠⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢇⠀⡔⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        "</string>
-
-    <string name="ascii_star5" translatable="false">"\n
-
-⣿⣿⣯⠀⠀⠀⠀⠀⠀⣰⢋⣺⢫⣹⢮⡷⠀⣠⡗⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠊⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠱⢤⣉⣁⡴⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿
-⠻⠿⠿⠀⠀⠀⠀⠀⠀⠸⢿⣍⠙⠓⠋⠀⣠⠿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣟⣿⣿⢿⣿⣻⣿⡿⣿⡇⠀⠀⠀⠀⠀⢀⣾⣶⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢼⣿⠿
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠺⠦⠶⠞⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣤⡤⣤⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⣻⣿⣿⡿⣿⣿⣻⠟⠀⠀⠀⠀⠀⠀⠈⠙⠏⠋⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣠⢤⣤⢴⡀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢴⡿⠋⢀⢀⣀⠙⠹⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣟⣷⡿⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣻⡆⠐⠉⠀⢨⡇⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⠯⠁⢠⡾⡿⣯⢷⠀⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⠿⠁⠀⠀⠀⠈⢻⣦⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢠⣿⣷⣴⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⢯⡙⠒⡋⣰⡟⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣿⣷⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠛⢾⣆⠀⣦⡗⠛⠃⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠸⠿⣿⡿⣯⣇⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠉⠉⠀⠀⠀⠀⠀⢀⣀⣀⢄⡶⠖⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠷⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠨⠻⠋⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠻⠋⠉⠉⠀⠀⠀⠀⣀⡤⢴⠋⠉⢙⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠿⡵⡈⠉⠈⠀⢿⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠉⠳⠒⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡿⠃⠀⠀⠀⡀⣘⣇⠀⠀⠀⠀⠀⠀⠀⠀⡯⣅⡀⠀⠰⡯⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣟⣾⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⣠⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠑⠶⢤⣀⣠⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠿⠤⠤⣦⢀⢠⡟⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡤⠞⠓⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣄⣴⣾⣷⠀⠀⠀⠀⠀⠀⠀⠉⠹⠞⠉⠀⠀⠀⠀⠀⠀⠀⢸⣾⣧⠀⠀⠀
-⠀⠀⠙⠋⠀⠀⠀⠀⠀⠀⠀⠀⣠⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠚⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣿⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣦⣄⠀⠀⠈⠙⠃⠀⠀⠀
-⠁⠀⠀⠀⠀⣴⣷⡦⠀⠀⠐⢿⣿⣻⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠉⢷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣟⣿⣿⠿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠹⠏⠛⠀⠀⠀⠈⠉⠋⠀⠀⠀⠀⠀⠀⠀⠀⣴⠚⣩⣙⢲⡀⠀⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠛⠙⢿⣿⡇⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡇⠸⣕⣜⡼⠃⠠⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠳⣜⡺⣤⢤⣤⣀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⢦⣀⡁⣀⣠⠿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⡞⣭⢓⢧⡛⡴⣋⢖⡟⠀⠀⠀⠀⣄⡾⠋⠉⠻⣦⠶⠦⣔⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠞⠢⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣠⣤⣀⣴⣾⣿⣿⣿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠷⣙⢦⢫⠖⣭⠳⡭⣎⠀⠀⠀⠀⠀⢿⡌⠀⠀⠀⠀⠀⠀⠈⣏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⠀⠀⠘⠛⠋⠉⣳⠂⠀⠀⠀⠀⠀⠀⠀⢠
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣄⠀⠀⠀⠀⠀⠀⠀⢸⣏⠮⣝⣲⣙⠶⣹⠆⠀⠀⠀⠀⠈⠳⣦⡀⠀⠀⠀⢀⡶⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⠖⠋⠁⠀⠀⠀⠀⠀⢰⠟⠀⠀⠀⠀⠀⠀⠠⣼⣿
-⣿⣿⣿⣯⣿⣿⣷⣿⢿⡏⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣴⣆⡄⠀⠀⠙⠏⠁⠀⠀⠀⠀⠀⠀⠀⠫⠾⠊⠁⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠉⢷⡤⠶⠚⠉⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠋⠳⣄⣀⠀⠀⠀⠀⠀⠈⣆⠀⠀⠀⠀⠀⠀⠸⣿⣿
-⣿⣿⣿⣽⣿⣷⣿⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⠟⠿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣴⣿⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⣷⠂⠀⣀⣦⣀⣀⡽⠀⠀⠀⠀⠀⠀⠀⠹⣿
-⠉⠛⠿⢿⣟⣿⡽⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠿⠿⠏⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠦⠶⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣞⠻⠳⠴⡖⢲⡆⠀⠀⠀⠀⠀⠀⠀⢰⣦⡴⣆⠀⠀⠀⢰⣿⣻⡽⣿⢶⡶⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠖⠒⠲⢤⣄⠀⠀⠀⠀⠀⠀⠀⠴⣿⣶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡿⠁⠀⠀⠀⣿⠁⠀⠀⠀⠀⠀⠀⠀⠚⠷⣹⠛⠀⠀⠀⠸⣟⣷⣻⡽⣯⣟⣷⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠏⢀⣤⣶⡤⡀⢹⡀⠀⠀⠀⠀⠀⠀⠀⠉⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⢷⣀⡀⠀⠀⡀⠘⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⣾⣳⣟⡷⣯⡷⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⢸⡇⠯⡧⠇⣸⠅⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⢰⣞⢻⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷⣀⡴⠏⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠓⠉⠉⠀⠀⠀⠀⠀⠀⠀⢰⣿⣶⣤⣴⣶⡄⠀⠀⠀⠀⠿⣄⠀⠈⠓⠒⠚⠁⠀⠀⠀⠀⠀⠀⠀⠸⠿⠆⠀⠀⠀⠀⠀⢀⣀⡀⣠⣴⣶⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠘⠛⠿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠈⠻⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣻⣿⣟⣿⣿⢷⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠴⠚⠓⠦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⢿⣿⣿⡿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣳⣯⣟⣾⣳⢯⣯⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀
-⣷⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠃⢀⣶⡖⣦⢘⡆⠀⠀⠀⠀⠀⠀⠀⠀⢀⣰⣷⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⡿⠋⠉⠁⠀⠀⠀⠀⠀⠀⠠⣾⣤⠀⠀⠀⠀⠀⡀⠀⢀⣠⣶⠀⠀⠀⠀⠀⠀⠀⠀⠉⠓⠿⣮⣟⡯⠃⠀⠀⠀⠀⠀⠀⣶⣆⠀⠀⠐⣾
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠸⢎⣓⣋⡴⠇⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠁⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠋⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢠⣞⢻⠺⣍⡞⣹⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠩⣧⣄⠀⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⢟⠛⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣶⡄⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣿⣷⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠙⢮⣓⢏⠶⣩⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠖⠲⠶⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠿⠋⠀⠀⠀⠀⠀⠀⠀⠻⠿⠿⣿⣿⣿⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠈⠉⠓⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠴⠒⠦⣆⣀⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣀⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠃⠀⠀⠀⠉⠋⠀⠀⠈⢳⠀⠀⠀⠀⠀⠀⠀⣶⣿⣷⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡾⠃⠀⠘⠻⠚⠲⢶⣄⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⡄⠀⠀⠀⠀⠀⠀⠀⠀⣼⡓⠀⠀⠀⠀⠀⠀⠘⠛⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣷⠀⠀⠀⠀⠀⠀⠈⣹⡆⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣶⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⡄⠀⠀⠀⠀⣠⡼⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣦⣅⠀⠀⠀⣀⡴⠃⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣺⣿⣿⣿⣿⣿⣿⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠶⠟⠳⠾⠉⠛⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢦⣠⠴⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣞⢗⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⠖⠚⠉⠁⠀⠀⠀⠀⠀⠀
-⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠼⣅⠀⠀⠀⠀⣀⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣼⢚⡼⣜⢳⡒⡶⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣿⡿⠿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠳⣤⣠⠴⠛⠀⠀⠀⠀⠀⠀⠀⣤⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣯⠳⣬⢣⡽⣌⢧⡹⣜⠏⠀⠀⠀⠀⠠⣾⣦⠀⠀⠀⠀⢠⣾⣶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
-⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠃⠁⠀⠀⠀⠀⠀⠀⠀⠘⢿⡿⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⠻⡴⢳⡜⣜⡲⣕⣳⡀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠛⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⢿
-⠘⠿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣟⢧⣚⡬⠷⣌⡿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⡴⠶⢦⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠀⠀⠀⠀⠀⠀⠀⢻⠷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠚⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀
-⠂⠀⠀⠀⠀⠀⠀⠀⠀⢠⣤⣤⣾⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⡈⠙⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⢶⠿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⣶⡻⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣤⣴⣶⡀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢨⡿⣟⣿⣿⡦⠀⠀⠀⠀⠀⠀⠀⠀⢠⡟⣯⣽⣷⠢⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠛⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣟⠛⠋⠈⠛⢺⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢽⠆⠁⢭⣿⠄⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⠀⠀⠀⣠⠤⢤⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⢿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⡄⠳⠯⠞⢀⡾⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣽⢃⢀⠀⢰⠚⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢳⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢲⠛⠙⠓⠚⠁⠀⠈⡄
-⠦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠳⠦⠶⠻⠁⠀⠀⠀⠀⠀⡰⣄⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠚⠙⠶⠾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⣦⠀⠀⠀⠀⠀⠀⠑
-⣀⠅⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡼⠇⠈⠉⣹⠇⠀⠀⠀⠀⠀⠀⠀⢀⣠⡴⠤⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠟⠀⠀⠀⠀⠀⠀⠀
-⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢗⡆⢀⣀⣹⡄⠀⠀⠀⠀⠀⠀⢠⡾⢉⣼⡟⣦⢳⡌⠀⢠⡀⠀⠀⠀⠀⠀⠀⠀⢀⠀⡀⢀⣤⣶⣤⡀⠀⠀⠀⠀⠀⠉⠿⠉⠁⠀⠀⠀⠀⠀⠀⢀⠀⡀⠀⠀⠀⠀⠀⠧⣄⣀⣤⡀⠀⠀⡘⠉
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣰⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠯⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣧⠘⠳⣟⡭⠞⠀⢀⣾⠇⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣿⡷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠦⣤⠇⠀
-⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠘⢻⣿⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠯⣆⣅⣀⣄⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠶⣻⢯⡶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠛⠿⠿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠛⠙⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠿⠅⠀⠀⠀⠀⠀⠀⠀⠀⣀⡠⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠴⠚⠛⠓⠲⢤⡀⠀⠀⠀⠀⠀⠀⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⡹⣌⠻⣝⢳⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠋⠀⣠⠤⠦⣄⠀⢿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿
-⣿⣿⣿⡷⠀⠀⠀⠀⠀⢀⣠⠶⣛⡓⢶⡄⠀⠠⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢷⣸⡹⢬⣣⠟⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⣿⣶⣄⣠⣴⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡏⢞⡩⣸⠆⢸⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        "</string>
 <string name="ascii_hello" translatable="false">"\n
     ⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⠀⠀⠀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⢠⠿⠷⣭⣶⣯⣥⣶⣾⣿⠀⠀⠀⠀⢠⠖⣒⡒⢢⣄⡴⠒⢢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -1612,18 +814,6 @@
     <string name="privacy_url" translatable="false">https://curbox.app/privacy.html</string>
 
     <!-- Boundary API -->
-    <string name="label_automation">AUTOMATION</string>
-    <string name="api_screen_title">Boundary API</string>
-    <string name="api_card_subtitle">Let other apps control Boundary</string>
-    <string name="api_screen_subtitle">Other apps can ask to start focus mode, flip blockers, and read your stats. You decide who gets in.</string>
-    <string name="api_enable_title">Allow other apps</string>
-    <string name="api_enable_subtitle">When this is off, no app can control Boundary, even ones you allowed before.</string>
-    <string name="api_connected_title">Connected apps</string>
-    <string name="api_no_apps">No apps are connected. Boundary will ask for your approval when an app requests access, then list approved apps here.</string>
-    <string name="api_revoke">Remove</string>
-    <string name="api_how_title">How it works</string>
-    <string name="api_how_body">When another app requests access, Boundary shows its name and asks for your approval. An approved app can run commands until you remove it. Removing an app ends its access immediately.</string>
-    <string name="api_help_popup">Other apps can ask to control Boundary. You allow or deny each one, and you can remove access any time.</string>
 
     <!-- Service protection (keep alive) -->
     <string name="service_protection_title">Keep Boundary running</string>
@@ -1646,14 +836,12 @@
     <string name="service_protection_fix">Fix</string>
     <string name="service_protection_open">Open</string>
     <string name="service_protection_setup">Set up</string>
-    <string name="service_protection_shizuku_not_installed">Shizuku is not running. Opening its website.</string>
     <string name="service_protection_repair_now">Repair now</string>
     <string name="service_protection_repair_started">Trying to restart Boundary blockers</string>
     <string name="service_protection_no_screen">This settings screen is not available on this phone</string>
     <string name="service_protection_autostart_manual">Please open your phone settings and allow Boundary to auto start.</string>
     <string name="service_protection_advanced_header">Advanced</string>
     <string name="service_protection_device_owner">Make Boundary a device owner</string>
-    <string name="service_protection_device_owner_warning">This is the strongest option. It stays on even after a force stop and blocks uninstall fully. It only works on a phone with no accounts added, and it is hard to undo later. Only do this if you are sure.</string>
     <string name="service_protection_remove_device_admin">Turn off device admin</string>
     <string name="service_protection_remove_device_admin_warning">Boundary will no longer be a device owner or device admin. Your phone may be able to stop or remove Boundary more easily.</string>
     <string name="service_protection_remove">Turn off</string>
@@ -1661,7 +849,6 @@
     <string name="service_protection_admin_removal_started">Turning off device admin</string>
     <string name="service_protection_admin_removal_failed">Could not turn off device admin. Please try again.</string>
     <string name="service_protection_cancel">Cancel</string>
-    <string name="service_protection_continue">Continue</string>
     <string name="service_protection_help_popup">Phones often stop background apps to save battery. This screen helps Boundary stay active with battery access, auto start, regular checks, and optional recovery through Shizuku. These options make Boundary harder to stop, but cannot guarantee that it will always run.</string>
     <string name="service_protection_channel_name">Service protection</string>
     <string name="service_protection_down_title">Boundary blockers stopped</string>
@@ -1699,9 +886,7 @@
     <string name="anti_uninstall_mode_cooldown_title">One day wait</string>
     <string name="anti_uninstall_mode_away_title">Away from home</string>
     <string name="anti_uninstall_mode_away_desc">Turn off protection at once, but only when you are away from home. Uses your home from Home lock.</string>
-    <string name="anti_uninstall_summary_away">Protection can only be turned off away from home. Go out, tap Check I am away in Home lock, then turn it off here.</string>
     <string name="anti_uninstall_away_needs_home">Set your home in Home lock first.</string>
-    <string name="anti_uninstall_away_not_verified">You can turn this off only when you are away from home. Go out, open Home lock and tap Check I am away. Then come back here within 10 minutes.</string>
     <string name="anti_uninstall_mode_cooldown_desc">Request to turn off protection, then wait one day. The request can be cancelled at any time.</string>
     <string name="anti_uninstall_days_hint">Days to wait</string>
     <string name="anti_uninstall_days_error">Enter at least one day.</string>
@@ -1757,11 +942,9 @@
     <string name="change_delay_pending_note">If you make a stricter change to the same tool while a change is waiting, the waiting change is removed.</string>
     <string name="change_delay_help_popup">When enabled, changes that weaken a rule wait before they apply. This gives you time to reconsider them.</string>
     <string name="change_delay_field_app_groups">App blocker</string>
-    <string name="change_delay_field_auto_dnd">Auto DND</string>
     <string name="change_delay_field_reel_blocker">Reel blocker</string>
     <string name="change_delay_field_keyword_blocker">Keyword blocker</string>
     <string name="change_delay_field_reel_counter">Reel counter</string>
-    <string name="change_delay_field_grayscale">Grayscale</string>
     <string name="change_delay_field_mindful_messages">Mindful messages</string>
     <string name="change_delay_field_ui_hider">UI hider</string>
     <string name="change_delay_field_change_delay">Settings change delay</string>
@@ -1786,25 +969,15 @@
     <string name="temporary_disable_until_manually_enabled">Disabled until you turn it back on</string>
 
     <!-- Boundary API permission screen -->
-    <string name="api_permission_title">Allow access?</string>
-    <string name="api_permission_message">%1$s wants to control Boundary. It can start focus sessions, turn blockers on or off, and read your screen time. You can remove this any time.</string>
-    <string name="api_permission_allow">Allow</string>
-    <string name="api_permission_deny">Deny</string>
 
     <!-- Common / shared -->
     <string name="common_back">Back</string>
-    <string name="common_mins">mins</string>
     <string name="common_continue">Continue</string>
     <string name="okay">Okay</string>
     <string name="share">Share</string>
     <string name="clear">Clear</string>
-    <string name="percent_value">%1$d%%</string>
-    <string name="selected_count">Selected: %1$d</string>
     <string name="select_apps_count">Select Apps (%1$d)</string>
-    <string name="group_type_time_based">Time Based</string>
-    <string name="group_type_usage_based">Usage Based</string>
     <string name="group_details_apps">%1$d Apps • %2$s</string>
-    <string name="group_details_keywords">%1$d Keywords • %2$s</string>
     <string name="group_details_keywords_only">%1$d Keywords</string>
     <string name="group_details_apps_only">%1$d Apps</string>
     <string name="group_no_usage_left">No time left in this schedule</string>
@@ -1861,7 +1034,6 @@
     <string name="account_title_reset_password">Reset password</string>
     <string name="account_title_choose_new_password">Choose a new password</string>
     <string name="account_title_create_account">Create your account</string>
-    <string name="account_title_welcome_back">Welcome back</string>
     <string name="account_title_sign_in">Turn on sync</string>
     <string name="account_sub_sync_on">Your settings and time stats stay in step on every device.</string>
     <string name="account_sub_unlock">Type the secret phrase you made on your first device. Or if that device is nearby, tap Scan a code below to bring this one in without typing anything.</string>
@@ -1875,8 +1047,6 @@
     <string name="account_msg_new_code_sent">I sent a new code to %1$s</string>
     <string name="account_msg_reset_code_sent">I sent a reset code to %1$s</string>
     <string name="account_msg_phrase_too_short">Please pick a secret phrase with at least 8 letters.</string>
-    <string name="account_msg_phrase_too_long">That secret phrase is too long.</string>
-    <string name="account_err_sync_data_invalid">Some synced data could not be read.</string>
     <string name="account_msg_syncing">Syncing your latest data now</string>
     <string name="account_err_generic">Something went wrong. Please try again.</string>
     <string name="account_err_invalid_login">That email or password did not match. Please try again.</string>
@@ -1893,7 +1063,6 @@
     <string name="language">Language</string>
 
     <!-- Info screen -->
-    <string name="info_official_documentation">Official Documentation</string>
     <string name="crash_logs_title">Crash Logs</string>
     <string name="crash_logs_none_available">No crash logs available.</string>
     <string name="crash_logs_read_error">Could not read crash logs.</string>
@@ -1911,32 +1080,15 @@
     <string name="onboarding_perm_accessibility_opensource">🛡️ Transparency for Deep Access: This is a powerful permission, which is why being open source matters so much. You do not have to take Boundary at its word. The global community has reviewed its public code and confirmed it only blocks apps and tracks usage.</string>
     <string name="onboarding_read_documentation">Read Documentation</string>
     <string name="onboarding_privacy_note">"\n\n🔒 Boundary does not collect, send, or store any of your data on a server without your permission. Everything stays on your phone.\n\n"</string>
-    <string name="onboarding_granting_permissions">Granting Permissions…</string>
-    <string name="onboarding_permissions_granted">Permissions Granted!</string>
-    <string name="onboarding_error_tap_retry">Error, Tap to Retry</string>
     <string name="onboarding_curb_me">Curb me!</string>
     <string name="onboarding_need_more_permissions">I still need more permissions</string>
     <string name="screen_time_hours">%1$d hrs</string>
     <string name="screen_time_reality">That is %1$d full weeks of your life staring at a screen per year.</string>
 
     <!-- Focus setup -->
-    <string name="focus_unknown_group">Unknown Group</string>
-    <string name="focus_delete_group_title">Delete Focus Group</string>
-    <string name="focus_delete_group_message">Are you sure you want to delete this group? All associated focus statistics will also be deleted.</string>
-    <string name="focus_no_browser_title">No Browser Selected</string>
-    <string name="focus_no_browser_allow_message">You have set some websites to be allowed, but no supported browser is in your \'Allowed Apps\' list. \n\nTo access these websites, please add a browser (like Chrome or Firefox) to the selected apps.</string>
-    <string name="focus_add_browser">Add Browser</string>
-    <string name="focus_save_anyway">Save Anyway</string>
-    <string name="focus_block_notice_title">Website Blocking Notice</string>
-    <string name="focus_block_notice_message">You have set some websites to be blocked, but no browser is in your \'Blocked Apps\' list. \n\nNote that website blocking only works on supported browsers (like Chrome or Firefox). Any other browser will still be able to access these websites. Consider blocking unsupported browsers if needed.</string>
-    <string name="focus_add_websites_title">Add Websites/Keywords</string>
 
     <!-- Warning screen config -->
-    <string name="warning_fixed_unlock_duration">Fixed Unlock Duration: %1$d mins</string>
     <string name="warning_fixed_unlock_duration_lower">Fixed unlock duration: %1$d mins</string>
-    <string name="warning_wait_before_unlock">Wait before unlocking: %1$ds</string>
-    <string name="warning_allowed_proceeds">Allowed proceeds: %1$d</string>
-    <string name="warning_time_window">Time window: %1$d %2$s</string>
     <string name="warning_fixed_unlock_duration_input">Fixed unlock duration</string>
     <string name="warning_wait_before_unlock_input">Wait before unlocking</string>
     <string name="warning_intent_min_length_input">Minimum characters</string>
@@ -1968,7 +1120,6 @@
     <string name="scanner_flashlight_on">Turn on flashlight</string>
     <string name="scanner_flashlight_off">Turn off flashlight</string>
     <string name="warning_scan_nfc_tag">Scan NFC Tag</string>
-    <string name="warning_math_problem">Solve %1$s</string>
     <string name="warning_math_progress">%1$d of %2$d solved</string>
     <string name="warning_math_answer_hint">Answer</string>
     <string name="warning_math_check_answer">Check answer</string>
@@ -1996,20 +1147,11 @@
     <string name="warning_option_adaptive_math_desc">Solve questions with adaptive difficulty.</string>
     <string name="label_adaptive_math">Adaptive math</string>
     <string name="label_adaptive_math_desc">Choose how many correct answers are required.</string>
-    <string name="warning_math_starting_level">Starting level: %1$d</string>
     <string name="label_adaptive_math_level_desc">Level 1 uses simple arithmetic. Level 10 combines decimals, fractions, roots, powers, and order of operations.</string>
-    <plurals name="warning_math_question_count">
-        <item quantity="one">Question required: %1$d</item>
-        <item quantity="other">Questions required: %1$d</item>
-    </plurals>
     <string name="label_focus_goal_unlock">Daily focus requirement</string>
     <string name="label_focus_goal_unlock_desc">Unlocking is allowed after the selected focus time is completed today.</string>
     <string name="hint_focus_group">Focus group</string>
     <string name="warning_focus_goal_group_required">Select a focus group</string>
-    <plurals name="warning_focus_goal_minutes">
-        <item quantity="one">Required focus time: %1$d minute</item>
-        <item quantity="other">Required focus time: %1$d minutes</item>
-    </plurals>
     <string name="warning_focus_goal_checking">Checking focus progress</string>
     <string name="warning_focus_goal_complete">Focus goal complete for %1$s.</string>
     <string name="warning_focus_goal_not_met">Focus goal not met. %1$d minutes remaining for %2$s.</string>
@@ -2027,27 +1169,10 @@
     <string name="nfc_write_failed">Could not write to tag. Use a writable NFC tag.</string>
     <string name="nfc_write_success">Tag written and registered</string>
     <string name="nfc_already_registered">That tag is already registered</string>
-    <string name="focus_nfc_write_title">Write Focus NFC Tag</string>
-    <string name="focus_nfc_write_button">Write Tag</string>
-    <string name="focus_nfc_no_groups">Create a focus group first</string>
-    <string name="focus_nfc_pick_group">Focus group</string>
-    <string name="focus_nfc_pick_action">When tapped</string>
-    <string name="focus_nfc_unnamed_group">Unnamed group</string>
-    <string name="focus_nfc_action_toggle">Toggle focus</string>
-    <string name="focus_nfc_action_start">Start focus</string>
-    <string name="focus_nfc_action_stop">Stop focus</string>
-    <string name="focus_nfc_duration_input_hint">Duration</string>
-    <string name="focus_nfc_load_button">Load from tag</string>
-    <string name="focus_nfc_load_title">Tap a tag to load</string>
-    <string name="focus_nfc_loaded">Loaded values from tag</string>
-    <string name="focus_nfc_load_invalid">That tag is not a Boundary focus tag</string>
 
     <!-- Group edit titles -->
     <string name="app_group_edit_title">Edit App Group</string>
-    <string name="grayscale_group_edit_title">Edit Grayscale Group</string>
-    <string name="autodnd_group_edit_title">Edit Auto DND Group</string>
     <string name="keyword_group_edit_title">Edit Keyword Group</string>
-    <string name="autodnd_scheduled">Scheduled</string>
 
     <!-- Keyword import/export -->
     <string name="keyword_imported_count">Imported %1$d keywords</string>
@@ -2080,8 +1205,6 @@
     <string name="usage_ignore_title">Add to ignored packages?</string>
     <string name="usage_ignore_message">This action will cause the tracker to not display any stats from this app.</string>
     <string name="rule_type_app_blocker">App Blocker</string>
-    <string name="rule_type_grayscale">Grayscale</string>
-    <string name="create_new_rule_title">Create New Rule</string>
     <string name="synced_browsing">Synced browsing</string>
     <string name="synced_other_devices">OTHER DEVICES</string>
 
@@ -2115,9 +1238,6 @@
     <string name="unit_minutes">Minutes</string>
     <string name="unit_hours">Hours</string>
     <string name="unit_days">Days</string>
-    <string name="more_from_nethical">More from Nethical</string>
-    <string name="langowage_name">Langowage</string>
-    <string name="langowage_description">Learn Japanese in 60 second matches against other players</string>
     <string name="backup_settings_title">Back up settings</string>
     <string name="backup_settings_description">Save your settings and rules to a file. Usage history is not included. You can restore a backup only during setup.</string>
     <string name="backup_save">Save backup</string>

@@ -6,9 +6,7 @@ import neth.iecal.curbox.data.models.AppBlockingType
 import neth.iecal.curbox.data.models.AppGroup
 import neth.iecal.curbox.data.models.AppTimeConfig
 import neth.iecal.curbox.data.models.AppUsageConfig
-import neth.iecal.curbox.data.models.AutoDndGroup
 import neth.iecal.curbox.data.models.GatedSettingsField
-import neth.iecal.curbox.data.models.GrayscaleGroup
 import neth.iecal.curbox.data.models.KeywordBlocker
 import neth.iecal.curbox.data.models.KeywordGroup
 import neth.iecal.curbox.data.models.MindfulMessageConfig
@@ -39,16 +37,12 @@ object RestrictionComparator {
             when (field) {
                 GatedSettingsField.APP_GROUPS ->
                     appGroups(current.blockedAppGroups, proposed.blockedAppGroups)
-                GatedSettingsField.AUTO_DND_GROUPS ->
-                    autoDndGroups(current.autoDndGroups, proposed.autoDndGroups)
                 GatedSettingsField.REEL_BLOCKER ->
                     reelBlocker(current.reelBlockerConfig, proposed.reelBlockerConfig)
                 GatedSettingsField.KEYWORD_BLOCKER ->
                     keywordBlocker(current.keywordBlockerConfig, proposed.keywordBlockerConfig)
                 GatedSettingsField.REEL_COUNTER ->
                     !current.isReelCounterOn || proposed.isReelCounterOn
-                GatedSettingsField.GRAYSCALE_GROUPS ->
-                    grayscaleGroups(current.grayscaleGroups, proposed.grayscaleGroups)
                 GatedSettingsField.MINDFUL_MESSAGES ->
                     mindfulMessages(current.mindfulMessageConfig, proposed.mindfulMessageConfig)
                 GatedSettingsField.UI_HIDER ->
@@ -145,43 +139,6 @@ object RestrictionComparator {
     // Zero disables reel limits rather than blocking every reel.
     private fun optionalLimitSameOrLower(old: Long, new: Long): Boolean =
         old >= 0L && new >= 0L && (old == 0L || new in 1..old)
-
-    fun grayscaleGroups(old: List<GrayscaleGroup>, new: List<GrayscaleGroup>): Boolean {
-        return old.filter { it.isActive }.all { o ->
-            val n = new.find { it.groupId == o.groupId } ?: return@all false
-            n.isActive &&
-                n.packages.containsAll(o.packages) &&
-                grayscaleTimeCoverageSameOrWider(o.timeConfig, n.timeConfig)
-        }
-    }
-
-    private fun grayscaleTimeCoverageSameOrWider(old: AppTimeConfig, new: AppTimeConfig): Boolean {
-        fun intervalsFor(config: AppTimeConfig, day: Int): List<TimeInterval> {
-            val intervals = if (config.isEveryday) config.everydayIntervals
-                else config.dailyIntervals[day].orEmpty()
-            if (intervals.isEmpty()) return listOf(TimeInterval(0, 0, 24, 0))
-            // Grayscale evaluates both halves of overnight intervals on the selected day.
-            return intervals.flatMap { interval ->
-                val (start, end) = interval.toMinuteRange()
-                if (start > end) listOf(
-                    interval.copy(endHour = 24, endMinute = 0),
-                    interval.copy(startHour = 0, startMinute = 0)
-                ) else listOf(interval)
-            }
-        }
-        return timeCoverageSameOrWider(
-            oldFor = { intervalsFor(old, it) },
-            newFor = { intervalsFor(new, it) }
-        )
-    }
-
-    fun autoDndGroups(old: List<AutoDndGroup>, new: List<AutoDndGroup>): Boolean {
-        return old.filter { it.autoTurnOnDnd }.all { o ->
-            val n = new.find { it.groupId == o.groupId } ?: return@all false
-            (!o.autoTurnOnDnd || n.autoTurnOnDnd) &&
-                appTimeCoverageSameOrWider(o.timeConfig, n.timeConfig)
-        }
-    }
 
     fun mindfulMessages(old: MindfulMessageConfig, new: MindfulMessageConfig): Boolean {
         if (!old.isActive) return true

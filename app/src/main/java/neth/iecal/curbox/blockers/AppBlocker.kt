@@ -1,6 +1,7 @@
 package neth.iecal.curbox.blockers
 
 import android.app.ActivityManager
+import neth.iecal.curbox.utils.DailyCounters
 import neth.iecal.curbox.ui.activity.PaymentPauseStartActivity
 import neth.iecal.curbox.utils.PermissionUtils
 import android.os.SystemClock
@@ -414,6 +415,7 @@ class AppBlocker : BaseBlocker() {
         }
 
         pausedUnlocks.remove(groupId)
+        DailyCounters.increment(service, DailyCounters.Kind.UNLOCKS)
         putCooldownTo(groupId, realTimeEndMillis)
         showNextCooldownNotification()
         setUpForcedRefreshChecker("cooldown:$groupId", realTimeEndMillis, groupId)
@@ -541,7 +543,9 @@ class AppBlocker : BaseBlocker() {
     private fun endUnlock(groupId: String) {
         val endedAt = cooldownGroupsList[groupId]
         removeCooldownFrom(groupId)
-        if (endedAt != null && groupId !in onEachOpenGroupIds) unlockLocks.unlockEnded(groupId, endedAt)
+        if (endedAt != null && groupId !in onEachOpenGroupIds) {
+            unlockLocks.unlockEnded(groupId, endedAt, lockAfterMsById[groupId] ?: 0L)
+        }
         refreshLockedPackages()
         if (lockEndsAt(groupId) > 0L) {
             // Give the forced re check a moment to send the user home, then close the apps.

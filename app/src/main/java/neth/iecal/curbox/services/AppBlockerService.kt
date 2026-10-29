@@ -66,9 +66,8 @@ class AppBlockerService : BaseBlockingService() {
     private lateinit var crashLogger: CrashLogger
 
     /**
-     * Focus mode, Auto DND and grayscale were removed. Undo anything they may have left on: Do Not Disturb
-     * is only turned off when Boundary turned it on, and grayscale only when a grayscale group
-     * was in use, so the user's own settings are left alone.
+     * Focus mode and Auto DND were removed. Undo a Do Not Disturb they may have left on; it is
+     * only turned off when Boundary turned it on, so the user's own setting is left alone.
      */
     private fun releaseRemovedFeatures() {
         serviceScope.launch {
@@ -76,11 +75,6 @@ class AppBlockerService : BaseBlockingService() {
                 delay(5_000)
                 // Focus mode and Auto DND are gone, so nothing needs Do Not Disturb any more.
                 neth.iecal.curbox.utils.DndHelper.applyDndState(this@AppBlockerService, false)
-                val usedGrayscale = dataStoreManager.settings.first().grayscaleGroups.any { it.isActive }
-                val grayscale = neth.iecal.curbox.utils.GrayscaleControl()
-                if (usedGrayscale && grayscale.isGrayscaleEnabled(this@AppBlockerService)) {
-                    grayscale.disableGrayscale(this@AppBlockerService)
-                }
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
                 Log.e("AppBlockerService", "Could not undo removed features", e)

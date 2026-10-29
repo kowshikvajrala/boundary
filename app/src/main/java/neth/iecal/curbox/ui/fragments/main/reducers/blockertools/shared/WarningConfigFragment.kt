@@ -87,7 +87,7 @@ class WarningConfigFragment : Fragment() {
         formController.bind(config, isNew, supportsOnEachOpen)
         viewLifecycleOwner.lifecycleScope.launch {
             val settings = DataStoreManager(requireContext()).settings.first()
-            formController.bindFocusGroups(settings.manualFocusGroups)
+            formController.bindFocusGroups()
             formController.bindHomeLocation(settings.homeLocation.isSet)
         }
         qrController.bind(config.qrKeys)

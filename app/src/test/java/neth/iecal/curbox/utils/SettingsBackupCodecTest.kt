@@ -21,32 +21,30 @@ class SettingsBackupCodecTest {
             uiHiderConfig = UiHiderConfig(isActive = true, enabledPresetIds = listOf("ig_feed"), scripts = listOf(
                 UiHiderScript(id = "custom", packageName = "example.app", source = "log(\"hello\")")
             )),
-            manualFocusGroups = listOf(ManualFocusGroup(groupId = "focus", packages = hashSetOf("example.app"))),
-            grayscaleGroups = listOf(GrayscaleGroup(groupId = "gray")),
+            homeLocation = HomeLocation(latitude = 12.9, longitude = 77.6, isSet = true),
+            paymentPauseApps = listOf("example.pay"),
+            emergencyOffWaitDays = 45,
             isAppUsageTrackingEnabled = false
         )
         val restored = roundTrip(settings)
         assertEquals(settings.blockedAppGroups, restored.blockedAppGroups)
         assertEquals(settings.keywordBlockerConfig, restored.keywordBlockerConfig)
         assertEquals(settings.uiHiderConfig, restored.uiHiderConfig)
-        assertEquals(settings.manualFocusGroups, restored.manualFocusGroups)
-        assertEquals(settings.grayscaleGroups, restored.grayscaleGroups)
+        assertEquals(settings.homeLocation, restored.homeLocation)
+        assertEquals(settings.paymentPauseApps, restored.paymentPauseApps)
+        assertEquals(45, restored.emergencyOffWaitDays)
         assertFalse(restored.isAppUsageTrackingEnabled)
     }
 
     @Test
     fun runtimeSessionsAndDeviceGrantsAreNotRestored() {
         val restored = roundTrip(Settings(
-            activeManualFocusGroupId = "focus" to 123456L,
-            activePomodoroState = PomodoroState(isActive = true),
             nextWebsiteRecheckTime = 123456L,
             serviceProtectionConfig = ServiceProtectionConfig(isEnabled = true, appBlockerLastAliveMs = 123L),
             antiUninstallConfig2 = AntiUninstallConfig(isEnabled = true, passwordHash = "hash", unlockRequestedAtMs = 123L),
             settingsChangeDelayConfig2 = SettingsChangeDelayConfig(isEnabled = true, delayMinutes = 60,
                 pendingChanges = listOf(PendingSettingsChange(field = "APP_GROUPS", newValueJson = "[]")))
         ))
-        assertEquals(null to 0L, restored.activeManualFocusGroupId)
-        assertFalse(restored.activePomodoroState.isActive)
         assertEquals(0L, restored.nextWebsiteRecheckTime)
         assertEquals(0L, restored.serviceProtectionConfig.appBlockerLastAliveMs)
         assertTrue(restored.serviceProtectionConfig.isEnabled)
@@ -70,12 +68,10 @@ class SettingsBackupCodecTest {
 
     @Test
     fun unsupportedFeaturesAreRemovedForTheTargetFlavor() {
-        val settings = Settings(uiHiderConfig = UiHiderConfig(isActive = true),
-            grayscaleGroups = listOf(GrayscaleGroup()))
-        val restored = SettingsBackupCodec.forDevice(settings, supportsUiHider = false, supportsGrayscale = false)
+        val settings = Settings(uiHiderConfig = UiHiderConfig(isActive = true))
+        val restored = SettingsBackupCodec.forDevice(settings, supportsUiHider = false)
         assertFalse(restored.uiHiderConfig.isActive)
-        assertTrue(restored.grayscaleGroups.isEmpty())
-        assertTrue(SettingsBackupCodec.forDevice(settings, true, true).uiHiderConfig.isActive)
+        assertTrue(SettingsBackupCodec.forDevice(settings, true).uiHiderConfig.isActive)
     }
 
     @Test
@@ -92,10 +88,10 @@ class SettingsBackupCodecTest {
             """{"format":"curbox-settings-backup","version":2,"settings":{}}""",
             document(""""blockedAppGroups":null"""),
             document(""""blockedAppGroups":[null]"""),
-            document(""""manualFocusGroups":[{"blockMode":"UNKNOWN"}]"""),
+            document(""""antiUninstallConfig2":{"mode":"UNKNOWN"}"""),
             document(""""reelBlockerConfig":{"config":{"usage":{"dailyLimits":[1]}}}"""),
             document(""""blockedAppGroups":[{"warningScreenConfig":{"message":[]}}]"""),
-            document(""""grayscaleGroups":[{"timeConfig":{"everydayIntervals":[{"startHour":99}]}}]""")
+            document(""""blockedAppGroups":[{"config":{"schedule":{"everydayIntervals":[{"startHour":99}]}}}]""")
         )
         invalid.forEach { json ->
             try {
@@ -132,13 +128,23 @@ class SettingsBackupCodecTest {
     }
 
     @Test
-    fun backupContainsOnlyTheVersionedSettingsPayload() {
+    fun backupContainsOnlyTheVersionedSettingsPayloadAndBlocklistLinks() {
         val root = JsonParser.parseString(String(SettingsBackupCodec.encode(Settings()), Charsets.UTF_8)).asJsonObject
-        assertEquals(setOf("format", "version", "settings"), root.keySet())
+        assertEquals(setOf("format", "version", "settings", "blocklists"), root.keySet())
     }
 
     private fun document(fields: String) =
         """{"format":"curbox-settings-backup","version":1,"settings":{$fields}}"""
     private fun decode(json: String) = SettingsBackupCodec.decode(json.byteInputStream())
     private fun roundTrip(settings: Settings) = SettingsBackupCodec.decode(SettingsBackupCodec.encode(settings).inputStream())
+
+    @Test
+    fun blocklistLinksSurviveAndAwayModeIsNotRestored() {
+        val source = BlocklistStore.Source(id = "gambling", name = "Gambling", url = "https://example.com/list.txt", domainCount = 50)
+        val bytes = SettingsBackupCodec.encode(Settings(isAwayModeActive = true, emergencyOffLastUsedAtMs = 123L), listOf(source))
+        val restored = SettingsBackupCodec.decodeFull(bytes.inputStream())
+        org.junit.Assert.assertEquals(listOf(source.copy(domainCount = 0)), restored.blocklists)
+        org.junit.Assert.assertFalse(restored.settings.isAwayModeActive)
+        org.junit.Assert.assertEquals(123L, restored.settings.emergencyOffLastUsedAtMs)
+    }
 }

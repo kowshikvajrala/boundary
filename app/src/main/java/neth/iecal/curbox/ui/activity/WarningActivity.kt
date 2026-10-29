@@ -586,20 +586,8 @@ class WarningActivity : AppCompatActivity() {
                     add(Calendar.DAY_OF_MONTH, 1)
                 }.timeInMillis
 
-                val (groupName, sessions) = withContext(Dispatchers.IO) {
-                    val settings = DataStoreManager(applicationContext).settings.first()
-                    val group = settings.manualFocusGroups.firstOrNull {
-                        it.groupId == config.focusGoalGroupId
-                    }
-                    val matchingSessions = if (group == null) {
-                        emptyList()
-                    } else {
-                        AppDatabase.getInstance(applicationContext)
-                            .focusStatsDao()
-                            .getSessionsOverlappingDay(group.groupId, dayStart, dayEnd)
-                    }
-                    group?.groupName to matchingSessions
-                }
+                // Focus mode was removed, so there is no focus group to meet the goal with.
+                val (groupName, sessions) = null as String? to emptyList<neth.iecal.curbox.data.db.FocusStatsEntity>()
 
                 if (groupName == null) {
                     restrictFocusGoal(getString(R.string.warning_focus_goal_unavailable))

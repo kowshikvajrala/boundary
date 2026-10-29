@@ -17,7 +17,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
-import neth.iecal.curbox.data.models.ManualFocusGroup
 import neth.iecal.curbox.databinding.FragmentWarningConfigBinding
 import neth.iecal.curbox.databinding.ItemWarningMessageBinding
 
@@ -406,8 +405,9 @@ internal class WarningConfigFormController(
         return supportsOnEachOpen && binding.switchOnEachOpen.isChecked
     }
 
-    fun bindFocusGroups(groups: List<ManualFocusGroup>) {
-        focusGroupOptions = groups.map { FocusGroupUnlockOption(it.groupId, it.groupName) }
+    fun bindFocusGroups() {
+        // Focus mode was removed, so there are no focus groups to pick.
+        focusGroupOptions = emptyList()
         binding.focusGoalGroupDropdown.setAdapter(
             android.widget.ArrayAdapter(
                 fragment.requireContext(),

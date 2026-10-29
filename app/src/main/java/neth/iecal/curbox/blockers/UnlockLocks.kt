@@ -3,6 +3,7 @@ package neth.iecal.curbox.blockers
 import android.content.Context
 import androidx.core.content.edit
 import neth.iecal.curbox.R
+import neth.iecal.curbox.utils.DailyCounters
 import neth.iecal.curbox.utils.SettingsChangeDelayUtils
 import java.util.concurrent.ConcurrentHashMap
 
@@ -12,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap
  * lock off or shorter takes effect at once. Saved to disk so a service restart keeps the lock.
  */
 class UnlockLocks(context: Context, prefsName: String) {
+    private val appContext = context.applicationContext
     private val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
     private val unlockEndedAt = ConcurrentHashMap<String, Long>()
 
@@ -19,9 +21,12 @@ class UnlockLocks(context: Context, prefsName: String) {
         prefs.all.forEach { (id, value) -> (value as? Long)?.let { unlockEndedAt[id] = it } }
     }
 
-    fun unlockEnded(id: String, endedAtMs: Long) {
+    /** Pass [lockAfterMs] so a lock that starts now is counted for the Summary page. */
+    fun unlockEnded(id: String, endedAtMs: Long, lockAfterMs: Long = 0L) {
+        val isNewEnd = unlockEndedAt[id] != endedAtMs
         unlockEndedAt[id] = endedAtMs
         prefs.edit { putLong(id, endedAtMs) }
+        if (isNewEnd && lockEndsAt(id, lockAfterMs) > 0L) DailyCounters.increment(appContext, DailyCounters.Kind.LOCKS)
     }
 
     /** When the lock ends, or 0 when [id] is not locked right now. */
