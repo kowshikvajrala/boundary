@@ -66,9 +66,13 @@ object PaymentPause {
 
     fun isActive(context: Context): Boolean = endsAt(context) > 0L
 
-    /** Starts a pause and opens [packageName]. Returns false when the pause could not start. */
-    fun start(context: Context, packageName: String): Boolean {
+    /**
+     * Starts a pause and opens [packageName]. Returns false when the pause could not start,
+     * including when [packageName] is itself blocked, so a blocked app can never be opened this way.
+     */
+    fun start(context: Context, packageName: String, settings: BoundarySettings): Boolean {
         if (!canPause(context)) return false
+        if (packageName in watchedPackages(context, settings)) return false
         val endsAt = System.currentTimeMillis() + PAUSE_MS
         prefs(context).edit(commit = true) { putLong(KEY_ENDS_AT, endsAt) }
         // Schedule the way back before switching anything off.
@@ -140,7 +144,8 @@ object PaymentPause {
      * Reels blocker covers, and every browser when website blocking is on (usage access cannot
      * tell which site is open). Settings and the app installer are always on it, so the pause
      * cannot be used to remove the device admin, force stop Boundary or uninstall it.
-     * The chosen payment apps are never on this list.
+     * A blocked app stays on this list even if it was also picked as a payment app, so the
+     * payment list cannot be used to open blocked apps.
      */
     fun watchedPackages(context: Context, settings: BoundarySettings): Set<String> {
         val packages = mutableSetOf<String>()
@@ -151,7 +156,6 @@ object PaymentPause {
             packages += ReelAppConfig.reelData.keys - settings.reelBlockerConfig.excludedPackages.toSet()
         }
         if (settings.keywordBlockerConfig.isActive) packages += browsers(context)
-        packages -= settings.paymentPauseApps.toSet()
         packages += SETTINGS_PACKAGES
         packages -= context.packageName
         return packages

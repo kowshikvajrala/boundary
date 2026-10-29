@@ -554,6 +554,7 @@
     <string name="payment_pause_no_apps">No payment apps chosen yet.</string>
     <string name="payment_pause_choose_apps">Choose payment apps</string>
     <string name="payment_pause_open">Pause and open</string>
+    <string name="payment_pause_app_blocked">%1$s is blocked, so it cannot be used for a pause</string>
     <string name="payment_pause_active">Blocking is paused. It comes back in %1$s.</string>
     <string name="payment_pause_end_now">Turn blocking back on now</string>
     <string name="payment_pause_failed">Could not start the pause.</string>

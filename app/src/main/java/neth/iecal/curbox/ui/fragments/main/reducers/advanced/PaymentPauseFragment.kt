@@ -22,6 +22,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 import neth.iecal.curbox.R
+import neth.iecal.curbox.data.models.Settings as BoundarySettings
 import neth.iecal.curbox.databinding.FragmentPaymentPauseBinding
 import neth.iecal.curbox.ui.activity.SelectAppsActivity
 import neth.iecal.curbox.utils.DataStoreManager
@@ -35,6 +36,9 @@ class PaymentPauseFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var dataStore: DataStoreManager
     private var apps: List<String> = emptyList()
+    private var settings: BoundarySettings? = null
+    // Apps Boundary blocks. They can never be payment apps, or a pause would open them unblocked.
+    private var blockedApps: Set<String> = emptySet()
 
     private val ticker = Handler(Looper.getMainLooper())
     private val tick = object : Runnable {
@@ -80,14 +84,17 @@ class PaymentPauseFragment : Fragment() {
         binding.btnChooseApps.setOnClickListener {
             selectAppsLauncher.launch(
                 Intent(requireContext(), SelectAppsActivity::class.java)
-                    .putStringArrayListExtra("PRE_SELECTED_APPS", ArrayList(apps))
+                    .putStringArrayListExtra("PRE_SELECTED_APPS", ArrayList(apps - blockedApps))
+                    .putStringArrayListExtra("IGNORED_APPS", ArrayList(blockedApps))
             )
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                dataStore.settings.collect { settings ->
-                    apps = settings.paymentPauseApps
+                dataStore.settings.collect { latest ->
+                    settings = latest
+                    blockedApps = PaymentPause.watchedPackages(requireContext(), latest)
+                    apps = latest.paymentPauseApps
                     renderApps()
                 }
             }
@@ -125,11 +132,17 @@ class PaymentPauseFragment : Fragment() {
                     context.packageManager.getApplicationInfo(packageName, 0)
                 ).toString()
             }.getOrDefault(packageName)
+            val isBlocked = packageName in blockedApps
             val button = MaterialButton(context).apply {
-                text = getString(R.string.payment_pause_open) + ": " + label
-                isEnabled = canPause
+                text = if (isBlocked) {
+                    getString(R.string.payment_pause_app_blocked, label)
+                } else {
+                    getString(R.string.payment_pause_open) + ": " + label
+                }
+                isEnabled = canPause && !isBlocked
                 setOnClickListener {
-                    if (!PaymentPause.start(context, packageName)) {
+                    val latest = settings ?: return@setOnClickListener
+                    if (!PaymentPause.start(context, packageName, latest)) {
                         Toast.makeText(context, R.string.payment_pause_failed, Toast.LENGTH_LONG).show()
                     }
                     renderPause()

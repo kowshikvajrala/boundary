@@ -1,0 +1,1 @@
+• Fixed: a blocked app added to the payment pause list could be opened without its block. Blocked apps can no longer be chosen as payment apps, and opening one during a pause ends the pause at once.
