@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import neth.iecal.curbox.services.ServiceWatchdogJob
+import neth.iecal.curbox.utils.PaymentPause
 import neth.iecal.curbox.utils.ServiceProtectionManager
 
 /**
@@ -15,6 +16,7 @@ import neth.iecal.curbox.utils.ServiceProtectionManager
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         try {
+            PaymentPause.endIfDue(context)
             ServiceWatchdogJob.schedule(context)
             ServiceProtectionManager.healNow(context)
         } catch (e: Exception) {

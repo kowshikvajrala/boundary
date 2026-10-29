@@ -22,6 +22,7 @@ import neth.iecal.curbox.R
 import neth.iecal.curbox.ui.activity.FragmentActivity
 import neth.iecal.curbox.ui.fragments.main.reducers.advanced.ServiceProtectionFragment
 import neth.iecal.curbox.utils.DataStoreManager
+import neth.iecal.curbox.utils.PaymentPause
 import neth.iecal.curbox.utils.ServiceProtectionManager
 import java.util.concurrent.TimeUnit
 
@@ -39,8 +40,10 @@ class ServiceWatchdogJob : JobService() {
     override fun onStartJob(params: JobParameters?): Boolean {
         scope.launch {
             try {
+                PaymentPause.endIfDue(applicationContext)
                 val config = DataStoreManager(applicationContext).settings.first().serviceProtectionConfig
-                if (config.isEnabled) {
+                // During a payment pause the blocker is off on purpose.
+                if (config.isEnabled && !PaymentPause.isActive(applicationContext)) {
                     if (config.selfHealWithShizuku && ServiceProtectionManager.canSelfHeal()) {
                         ServiceProtectionManager.healNow(applicationContext)
                     } else if (!ServiceProtectionManager.isAppBlockerEnabled(applicationContext)) {

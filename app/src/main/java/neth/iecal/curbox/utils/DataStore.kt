@@ -848,6 +848,10 @@ class DataStoreManager(private val context: Context) {
         return true
     }
 
+    suspend fun updatePaymentPauseApps(apps: List<String>) {
+        settingsDataStore.updateData { it.copy(paymentPauseApps = apps) }
+    }
+
     private fun notifyRefusedAtHome() {
         val appContext = context.applicationContext
         Handler(Looper.getMainLooper()).post {

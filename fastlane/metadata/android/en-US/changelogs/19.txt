@@ -1,0 +1,3 @@
+• New: Payment pause. Turns Boundary off for 5 minutes and opens your payment app, for apps that do not work while an accessibility service is on. Boundary turns itself back on after 5 minutes.
+• The pause ends at once if you open a blocked app, a short video app, a browser or the Settings app.
+• One time setup from a computer is needed. The Payment pause screen shows the commands.

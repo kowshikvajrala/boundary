@@ -21,6 +21,10 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- Lets a payment pause see which app is in front while the accessibility service is off. -->
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
     <!-- Granted once through Shizuku (pm grant) so grayscale can write secure
          settings directly. -->
     <uses-permission
@@ -130,6 +134,20 @@
             android:name=".services.TemporaryGroupDisableJob"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".services.PaymentPauseJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".services.PaymentPauseWatchService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Ends a short payment pause as soon as a blocked app opens" />
+        </service>
 
         <receiver
             android:name=".receivers.BootReceiver"

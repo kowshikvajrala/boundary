@@ -40,6 +40,8 @@ import neth.iecal.curbox.utils.BlurFadeAnimator
 class FragmentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Safety net in case the job that ends a payment pause never ran.
+        neth.iecal.curbox.utils.PaymentPause.endIfDue(this)
         val sharedPreferences = getSharedPreferences("AppPreferences", android.content.Context.MODE_PRIVATE)
         val isFirstLaunchComplete = sharedPreferences.getBoolean("isFirstLaunchComplete", false)
         val selectedFragment = intent.getStringExtra("fragment") ?: if (!isFirstLaunchComplete) OnboardingFragment.FRAGMENT_ID else AllAppsUsageFragment.FRAGMENT_ID
@@ -108,6 +110,7 @@ class FragmentActivity : AppCompatActivity() {
             ServiceProtectionFragment.FRAGMENT_ID,
             SettingsChangeDelayFragment.FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.advanced.HomeLockFragment.FRAGMENT_ID,
+            neth.iecal.curbox.utils.PaymentPause.PAGE_FRAGMENT_ID,
             CreateKeywordGroupFragment.FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.blockertools.keywordBlocker.BlocklistsFragment.FRAGMENT_ID -> {
                 // Hide bottom nav for these standalone fragments
@@ -136,6 +139,7 @@ class FragmentActivity : AppCompatActivity() {
                     ServiceProtectionFragment.FRAGMENT_ID -> ServiceProtectionFragment()
                     SettingsChangeDelayFragment.FRAGMENT_ID -> SettingsChangeDelayFragment()
                     neth.iecal.curbox.ui.fragments.main.reducers.advanced.HomeLockFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.advanced.HomeLockFragment()
+                    neth.iecal.curbox.utils.PaymentPause.PAGE_FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.advanced.PaymentPauseFragment()
                     else -> AccessibilityGuide()
                 }
                 fragment.arguments = intent.extras

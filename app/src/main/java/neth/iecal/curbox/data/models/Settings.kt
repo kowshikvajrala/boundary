@@ -28,5 +28,7 @@ data class Settings(
     val antiUninstallConfig2: AntiUninstallConfig = AntiUninstallConfig(),
     val eyeBreakConfig: EyeBreakConfig = EyeBreakConfig(),
     val settingsChangeDelayConfig2: SettingsChangeDelayConfig = SettingsChangeDelayConfig(),
-    val homeLocation: HomeLocation = HomeLocation()
+    val homeLocation: HomeLocation = HomeLocation(),
+    /** Apps that a payment pause can open, such as banking or UPI apps. */
+    val paymentPauseApps: List<String> = listOf()
 )
