@@ -1,0 +1,2 @@
+• Keyword groups have a new Block unsupported browsers switch. While the group is on, browsers Boundary cannot check are closed. Turning it off counts as loosening the group.
+• Removed: Auto DND, grayscale, the Focus tab and the Boundary API. If Boundary had turned on Do Not Disturb or grayscale, it turns them off once after the update.

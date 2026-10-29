@@ -121,14 +121,6 @@ class ReducersFragment : Fragment() {
             startActivity(intent)
         }
 
-        val apiCard = view.findViewById<MaterialCardView>(R.id.card_api)
-        apiCard.setOnClickListener {
-            val intent = Intent(requireContext(), FragmentActivity::class.java).apply {
-                putExtra("fragment", neth.iecal.curbox.ui.fragments.main.reducers.api.ApiFragment.FRAGMENT_ID)
-            }
-            startActivity(intent)
-        }
-
         val antiUninstallCard = view.findViewById<MaterialCardView>(R.id.card_anti_uninstall)
         antiUninstallCard.isVisible = BuildConfig.SUPPORTS_ANTI_UNINSTALL
         antiUninstallCard.setOnClickListener {

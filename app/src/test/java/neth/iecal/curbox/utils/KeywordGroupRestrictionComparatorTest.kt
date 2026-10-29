@@ -14,6 +14,15 @@ class KeywordGroupRestrictionComparatorTest {
     private val oldBlocker = blocker(startHour = 9, usageMinutes = 60)
 
     @Test
+    fun turningOffUnsupportedBrowserBlockingIsWeaker() {
+        val group = oldBlocker.keywordGroups.single()
+        val on = oldBlocker.copy(keywordGroups = listOf(group.copy(blockUnsupportedBrowsers = true)))
+        val off = oldBlocker.copy(keywordGroups = listOf(group.copy(blockUnsupportedBrowsers = false)))
+        assertFalse(RestrictionComparator.keywordBlocker(on, off))
+        assertTrue(RestrictionComparator.keywordBlocker(off, on))
+    }
+
+    @Test
     fun lowerUsageAllowanceIsStricter() {
         assertTrue(
             RestrictionComparator.keywordBlocker(

@@ -117,6 +117,9 @@ internal class WarningConfigFormController(
         updateFocusGoalMinutesInput(focusGoalMinutes.toLong())
         selectedFocusGroupId = config.focusGoalGroupId
         binding.focusGoalRequirementSwitch.isChecked = config.isFocusGoalRequirementEnabled
+        // The Focus tab was removed, so a focus goal can no longer be met. Only show the switch
+        // to groups that already use it, so they can turn it off.
+        binding.focusGoalRequirementSwitch.isVisible = config.isFocusGoalRequirementEnabled
         binding.focusGoalSetupContainer.isVisible = config.isFocusGoalRequirementEnabled
 
         val fixedTimeMinutes = (config.timeInterval / 60_000L).coerceAtLeast(1L)

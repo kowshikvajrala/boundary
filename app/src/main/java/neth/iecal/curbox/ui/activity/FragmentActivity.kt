@@ -8,7 +8,6 @@ import androidx.core.view.WindowInsetsCompat
 import neth.iecal.curbox.R
 import neth.iecal.curbox.ui.fragments.installation.AccessibilityGuide
 import neth.iecal.curbox.ui.fragments.installation.onboarding.OnboardingFragment
-import neth.iecal.curbox.ui.fragments.main.focus.FocusFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.ReducersFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.analytics.IntentsLogFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.grayscale.CreateGrayscaleGroupFragment
@@ -104,7 +103,6 @@ class FragmentActivity : AppCompatActivity() {
                 IntentsLogFragment.FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.mindful_messages.MindfulMessagesFragment.FRAGMENT_ID,
             KeywordBlockerFragment.FRAGMENT_ID,
-            neth.iecal.curbox.ui.fragments.main.reducers.api.ApiFragment.FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.sync.SyncFragment.FRAGMENT_ID,
             AntiUninstallFragment.FRAGMENT_ID,
             ServiceProtectionFragment.FRAGMENT_ID,
@@ -133,7 +131,6 @@ class FragmentActivity : AppCompatActivity() {
                     CreateGrayscaleGroupFragment.FRAGMENT_ID -> CreateGrayscaleGroupFragment()
                     neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.mindful_messages.MindfulMessagesFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.mindful_messages.MindfulMessagesFragment()
                     IntentsLogFragment.FRAGMENT_ID -> IntentsLogFragment()
-                    neth.iecal.curbox.ui.fragments.main.reducers.api.ApiFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.api.ApiFragment()
                     neth.iecal.curbox.ui.fragments.main.reducers.sync.SyncFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.sync.SyncFragment()
                     AntiUninstallFragment.FRAGMENT_ID -> AntiUninstallFragment()
                     ServiceProtectionFragment.FRAGMENT_ID -> ServiceProtectionFragment()
@@ -243,14 +240,12 @@ class FragmentActivity : AppCompatActivity() {
     // used to force a full reload (and its loading flash) on every tab revisit.
     private val tabTags = mapOf(
         R.id.nav_usage to "tab_usage",
-        R.id.nav_focus to "tab_focus",
         R.id.nav_reducers to "tab_reducers",
         R.id.nav_info to "tab_info",
     )
 
     private fun createTabFragment(itemId: Int): Fragment = when (itemId) {
         R.id.nav_usage -> AllAppsUsageFragment()
-        R.id.nav_focus -> FocusFragment()
         R.id.nav_reducers -> ReducersFragment()
         R.id.nav_info -> neth.iecal.curbox.ui.fragments.main.InfoFragment()
         else -> AllAppsUsageFragment()

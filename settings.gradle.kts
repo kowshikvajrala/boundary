@@ -27,5 +27,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Curbox"
 include(":app")
-include(":apitester")
  

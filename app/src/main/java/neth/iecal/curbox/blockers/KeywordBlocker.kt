@@ -150,12 +150,21 @@ class KeywordBlocker : BaseBlocker() {
         val ev = event ?: return
         if (ev.packageName == null) return
         if ((ev.eventType and TARGET_EVENTS_MASK) == 0) return
-        if (isUnsupportedBrowserBlockingOn && ::browserBlocker.isInitialized && browserBlocker.isAppBrowser(ev)) {
+        val blockUnsupported = isUnsupportedBrowserBlockingOn || isGroupBlockingUnsupportedBrowsers()
+        if (blockUnsupported && ::browserBlocker.isInitialized && browserBlocker.isAppBrowser(ev)) {
             if (!service.isDelayOver(1000)) return
             Handler(Looper.getMainLooper()).post {
                 Toast.makeText(service, service.getString(R.string.toast_unsupported_browser), Toast.LENGTH_LONG).show()
             }
             service.pressHome()
+        }
+    }
+
+    /** True while any active group that blocks unsupported browsers is inside its schedule. */
+    private fun isGroupBlockingUnsupportedBrowsers(): Boolean {
+        val now = System.currentTimeMillis()
+        return activeGroups.any { group ->
+            group.blockUnsupportedBrowsers && group.config?.schedule?.activeWindow(now) != null
         }
     }
 

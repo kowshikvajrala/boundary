@@ -218,8 +218,6 @@
             android:multiprocess="false"
             android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
-        <meta-data android:name="android.app.shortcuts"
-            android:resource="@xml/shortcuts" />
 
         <receiver
             android:name=".ui.widgets.LocksWidgetProvider"
@@ -278,27 +276,6 @@
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <!-- Curbox API: bound service other apps talk to, Shizuku style -->
-        <service
-            android:name=".api.CurboxApiService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="app.boundary.blocker.api.BIND" />
-            </intent-filter>
-        </service>
-
-        <!-- Curbox API: the Allow or Deny screen a client opens to ask for access -->
-        <activity
-            android:name=".api.ApiPermissionActivity"
-            android:exported="true"
-            android:excludeFromRecents="true"
-            android:theme="@style/Theme.Curbox.TransparentDialog">
-            <intent-filter>
-                <action android:name="app.boundary.blocker.api.REQUEST_PERMISSION" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

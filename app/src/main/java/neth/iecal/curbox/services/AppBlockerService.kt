@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -17,8 +19,6 @@ import kotlinx.coroutines.launch
 import neth.iecal.curbox.BuildConfig
 import neth.iecal.curbox.CrashLogger
 import neth.iecal.curbox.R
-import neth.iecal.curbox.anti_stimulants.AutoDnd
-import neth.iecal.curbox.anti_stimulants.GrayScaleFilter
 import neth.iecal.curbox.anti_stimulants.MindfulMessage
 import neth.iecal.curbox.blockers.AntiUninstallBlocker
 import neth.iecal.curbox.blockers.AppBlocker
@@ -40,7 +40,6 @@ class AppBlockerService : BaseBlockingService() {
 
     private val appBlocker: AppBlocker = AppBlocker()
     private val focusModeBlocker = FocusModeBlocker()
-    private val autoDnd = AutoDnd()
     private val reelBlocker = ReelBlocker()
     private val reelScriptRunner = ReelScriptRunner()
     private var keywordBlocker = KeywordBlocker()
@@ -48,7 +47,6 @@ class AppBlockerService : BaseBlockingService() {
     private val nodePicker = NodePicker()
     private val antiUninstallBlocker = AntiUninstallBlocker()
 
-    private var grayScaleFilter = GrayScaleFilter()
 
     // Usage tracking, which used to live in its own accessibility service, now
     // runs here so the user only has to grant one service.
@@ -70,9 +68,30 @@ class AppBlockerService : BaseBlockingService() {
     private lateinit var crashLogger: CrashLogger
 
     fun syncDndState() {
-        val autoDndActive = autoDnd.isDndRequested()
-        val manualFocusDndActive = focusModeBlocker.isDndRequested()
-        neth.iecal.curbox.utils.DndHelper.applyDndState(this, autoDndActive || manualFocusDndActive)
+        // Auto DND was removed, so only focus mode asks for Do Not Disturb now.
+        neth.iecal.curbox.utils.DndHelper.applyDndState(this, focusModeBlocker.isDndRequested())
+    }
+
+    /**
+     * Auto DND and grayscale were removed. Undo anything they may have left on: Do Not Disturb
+     * is only turned off when Boundary turned it on, and grayscale only when a grayscale group
+     * was in use, so the user's own settings are left alone.
+     */
+    private fun releaseRemovedFeatures() {
+        serviceScope.launch {
+            try {
+                delay(5_000)
+                syncDndState()
+                val usedGrayscale = dataStoreManager.settings.first().grayscaleGroups.any { it.isActive }
+                val grayscale = neth.iecal.curbox.utils.GrayscaleControl()
+                if (usedGrayscale && grayscale.isGrayscaleEnabled(this@AppBlockerService)) {
+                    grayscale.disableGrayscale(this@AppBlockerService)
+                }
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                Log.e("AppBlockerService", "Could not undo removed features", e)
+            }
+        }
     }
 
     override fun onCreate() {
@@ -94,7 +113,6 @@ class AppBlockerService : BaseBlockingService() {
                 antiUninstallBlocker.doAntiUninstallCheck(event)
             }
             appBlocker.doAppBlockerCheck(event)
-            grayScaleFilter.doGrayscaleCheck(event)
             focusModeBlocker.doFocusModeCheck(event)
         } catch (t: Throwable) {
             Log.e("error", t.message ?: "Unknown error")
@@ -175,11 +193,10 @@ class AppBlockerService : BaseBlockingService() {
         }
         appBlocker.setupAppBlocker(this)
         focusModeBlocker.setupFocusMode(this)
-        autoDnd.setup(this)
         reelBlocker.setupBlocker(this)
         reelScriptRunner.setup(this)
         keywordBlocker.setupBlocker(this)
-        grayScaleFilter.setup(this)
+        releaseRemovedFeatures()
         if (BuildConfig.SUPPORTS_UI_HIDER) {
             uiHider.setupBlocker(this)
             nodePicker.setupBlocker(this)
@@ -199,7 +216,6 @@ class AppBlockerService : BaseBlockingService() {
         appBlocker.setupReceivers()
         reelBlocker.setupReceivers()
         keywordBlocker.setupReceivers()
-        grayScaleFilter.setupReceivers()
         if (BuildConfig.SUPPORTS_UI_HIDER) {
             uiHider.setupReceivers()
             nodePicker.setupReceivers()
@@ -234,11 +250,9 @@ class AppBlockerService : BaseBlockingService() {
 
         cleanupFeature("focus receivers") { focusModeBlocker.removeReceivers() }
         cleanupFeature("focus mode") { focusModeBlocker.onDestroy() }
-        cleanupFeature("auto DND") { autoDnd.stop() }
         cleanupFeature("reel blocker") { reelBlocker.removeReceivers() }
         cleanupFeature("app blocker") { appBlocker.onDestroy() }
         cleanupFeature("keyword blocker") { keywordBlocker.removeReceivers() }
-        cleanupFeature("grayscale") { grayScaleFilter.unregisterReceivers() }
         if (BuildConfig.SUPPORTS_UI_HIDER) {
             cleanupFeature("UI hider") { uiHider.removeReceivers() }
             cleanupFeature("node picker") { nodePicker.removeReceivers() }

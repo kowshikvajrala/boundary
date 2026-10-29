@@ -546,6 +546,8 @@
     <string name="locked_notifications_listener_label">Boundary locked app notifications</string>
     <string name="locked_after_unlock_pill">Locked. Opens again in %1$s</string>
     <string name="payment_pause_title">Payment pause</string>
+    <string name="keyword_group_block_unsupported_browsers">Block unsupported browsers</string>
+    <string name="keyword_group_block_unsupported_browsers_desc">While this group is on, browsers Boundary cannot check are closed, so these words cannot be searched there. Turning this off counts as loosening the group.</string>
     <string name="payment_pause_widget_desc">Tap, pick a payment app, and Boundary pauses for 5 minutes.</string>
     <string name="payment_pause_widget_choose">Pause and open</string>
     <string name="locks_widget_label">Locks</string>

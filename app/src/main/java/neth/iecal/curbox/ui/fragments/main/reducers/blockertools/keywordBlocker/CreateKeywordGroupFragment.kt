@@ -97,6 +97,7 @@ class CreateKeywordGroupFragment : Fragment() {
                     selectedKeywords = keywords
                     keywordAdapter.submitList(keywordItems)
                     syncAdultSwitch()
+                    binding.switchBlockUnsupportedBrowsers.isChecked = group.blockUnsupportedBrowsers
 
                     group.config?.let { scheduledConfig ->
                         viewModel.currentTimeConfig = scheduledConfig.schedule
@@ -382,7 +383,8 @@ class CreateKeywordGroupFragment : Fragment() {
             ),
             isActive = existing?.isActive ?: true,
             temporarilyDisabledUntilMs = existing?.temporarilyDisabledUntilMs ?: 0L,
-            warningScreenConfig = viewModel.warningScrnConfig.copy(isOnOpenConfig = false)
+            warningScreenConfig = viewModel.warningScrnConfig.copy(isOnOpenConfig = false),
+            blockUnsupportedBrowsers = binding.switchBlockUnsupportedBrowsers.isChecked
         )
 
         binding.fabSaveGroup.isEnabled = false
