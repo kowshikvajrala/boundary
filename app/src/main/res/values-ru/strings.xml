@@ -80,12 +80,6 @@
     <string name="donate_pitch">Я вложил более 1500 часов в Curbox, совмещая это со школой, экзаменами и учёбой, чтобы сэкономить миллионы минут людям по всему миру. Пожертвуйте, чтобы помочь мне сохранить приложение бесплатным и растущим для всех.</string>
     <string name="btn_donate">Пожертвовать ❤</string>
     <string name="cannot_donate_share">Не можете пожертвовать? Поделиться проектом тоже очень помогает!</string>
-    <string name="donate_prompt_title">Можно попросить вас об одолжении?</string>
-    <string name="donate_prompt_value">Вы уже какое-то время пользуетесь Curbox, и это много значит для меня.</string>
-    <string name="donate_prompt_footer">Никакого давления. Curbox в любом случае останется для вас бесплатным.</string>
-    <string name="donate_prompt_give">Я внесу свой вклад ❤</string>
-    <string name="donate_prompt_share">Я лучше поделюсь им</string>
-    <string name="donate_prompt_later">Может быть позже</string>
     <string name="share_curbox_message">Я пользуюсь Curbox, чтобы вернуть контроль над своим экранным временем. Это бесплатно, попробуйте: https://curbox.app</string>
     <string name="system_diagnostics">Диагностика системы</string>
     <string name="view_and_share_application_crash_logs">Просматривайте и делитесь журналами сбоев приложения, чтобы помочь улучшить Boundary.</string>

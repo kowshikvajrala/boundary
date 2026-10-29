@@ -2,7 +2,6 @@ package neth.iecal.curbox.ui.fragments.main
 
 import android.content.ClipData
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -158,58 +157,8 @@ class InfoFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        binding.btnDocs.setOnClickListener {
-            openUrl("https://curbox.app/docs/")
-        }
-
-        binding.btnSupport.setOnClickListener {
-            openUrl("https://github.com/nethical6")
-        }
-
-        binding.btnDonate.setOnClickListener {
-            openUrl("https://curbox.app/donate")
-        }
-
-        binding.btnShare.setOnClickListener {
-            shareProject()
-        }
-
-        binding.cardDiscord.setOnClickListener {
-            // Replace with actual Discord invite link
-            openUrl("https://discord.com/invite/Vs9mwUtuCN")
-        }
-
-        binding.cardInstagram.setOnClickListener {
-            openUrl("https://instagram.com/curbox.app")
-        }
-
-        binding.cardGithub.setOnClickListener {
-            openUrl("https://github.com/curbox-app/curbox-android")
-        }
-
-        binding.cardBrowserExtension.setOnClickListener {
-            openUrl("https://github.com/curbox-app/curbox-extension")
-        }
-
         binding.btnActionCrashLogs.setOnClickListener {
             showCrashLogs()
-        }
-    }
-
-    private fun shareProject() {
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, getString(R.string.share_curbox_message))
-        }
-        startActivity(Intent.createChooser(intent, null))
-    }
-
-    private fun openUrl(url: String) {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(intent)
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 

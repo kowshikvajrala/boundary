@@ -108,12 +108,6 @@
     <string name="donate_pitch">I\'ve put 1500+ hours into Curbox, building it alongside school, exams and study, to save millions of minutes worldwide. Donate to help me keep it free and growing for everyone.</string>
     <string name="btn_donate">Donate ❤</string>
     <string name="cannot_donate_share">Cannot donate? Sharing the project is helpful too!</string>
-    <string name="donate_prompt_title">Can I ask you a favor?</string>
-    <string name="donate_prompt_value">You\'ve been with Curbox for a while now, and that means a lot to me.</string>
-    <string name="donate_prompt_footer">No pressure at all. Curbox stays free for you either way.</string>
-    <string name="donate_prompt_give">I\'ll chip in ❤</string>
-    <string name="donate_prompt_share">I\'ll share it instead</string>
-    <string name="donate_prompt_later">Maybe later</string>
     <string name="share_curbox_message">I\'ve been using Curbox to take back control of my screen time. It\'s free, give it a try: https://curbox.app</string>
     <string name="system_diagnostics">System Diagnostics</string>
     <string name="view_and_share_application_crash_logs">View and share application crash logs to help improve Boundary.</string>

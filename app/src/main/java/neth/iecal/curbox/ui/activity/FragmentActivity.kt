@@ -157,8 +157,6 @@ class FragmentActivity : AppCompatActivity() {
                     }
                 }
 
-                neth.iecal.curbox.utils.DonationPrompt.maybeShow(this)
-
                 if (savedInstanceState == null) {
                     bottomNav.selectedItemId = R.id.nav_usage
                     showTab(R.id.nav_usage, commitNow = true)

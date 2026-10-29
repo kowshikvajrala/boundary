@@ -94,12 +94,6 @@
   <string name="donate_pitch">Curbox’a okul, sınavlar ve derslerin yanında 1500 saatten fazla emek verdim; amacım dünya genelinde milyonlarca dakikayı geri kazandırmak. Uygulamayı herkes için ücretsiz tutmama ve geliştirmeye devam etmeme yardım etmek istersen bağış yapabilirsin.</string>
   <string name="btn_donate">Bağış Yap ❤</string>
   <string name="cannot_donate_share">Bağış yapamıyor musun? Projeyi paylaşman da çok yardımcı olur!</string>
-  <string name="donate_prompt_title">Senden bir ricam olabilir mi?</string>
-  <string name="donate_prompt_value">Bir süredir Curbox’u kullanıyorsun; bu benim için gerçekten çok değerli.</string>
-  <string name="donate_prompt_footer">Hiç baskı yok. Curbox her durumda senin için ücretsiz kalacak.</string>
-  <string name="donate_prompt_give">Ben de katkıda bulunacağım ❤</string>
-  <string name="donate_prompt_share">Bunun yerine paylaşacağım</string>
-  <string name="donate_prompt_later">Belki daha sonra</string>
   <string name="share_curbox_message">Ekran sürem üzerindeki kontrolü geri kazanmak için Curbox kullanıyorum. Ücretsiz, sen de dene: https://curbox.app</string>
   <string name="system_diagnostics">Sistem Tanılama</string>
   <string name="view_and_share_application_crash_logs">Boundary’u geliştirmeye yardım etmek için uygulama çökme günlüklerini görüntüle ve paylaş.</string>

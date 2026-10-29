@@ -21,7 +21,7 @@ Boundary is a personal fork of [Curbox](https://github.com/curbox-app/curbox-and
 - `BuildConfig.FDROID_VARIANT = true` hides the account and sync UI. Cloud sync was removed because it talks to Curbox's own servers.
 - Broadcast and API action strings use the `app.boundary.blocker.` prefix, so the app never talks to a real Curbox install.
 - The accessibility service label is `@string/blocker_service_label` ("Boundary App Blocker"), set in both the manifest and `xml/app_blocker_service_config.xml`. `AntiUninstallBlocker` matches on that label, so change both together.
-- User-visible text says Boundary. Keep "Curbox" in Nethical's bio, the donation strings, the share message, links to curbox.app and the Curbox repos, LICENSE and CITATION. Those describe the original author's work.
+- User-visible text says Boundary. Keep "Curbox" in links to curbox.app and the Curbox repos, LICENSE and CITATION (the bio, donation and share cards are gone, see Features). Those describe the original author's work.
 
 ## Signing
 
@@ -73,6 +73,8 @@ GitHub Actions quirks seen here: a tag push sometimes does not start a run (star
 | Home lock: weakening a group that uses a lock (turn off, shorten, pause, delete, temporarily disable) is refused unless "Check I am away" passed in the last 10 minutes. Home can only move while no lock is used, or with that pass. Location is read once, in the foreground; mock locations refused. When confirmed away, a confirm dialog offers "Turn off all": every app group, keyword group and the Reels blocker are switched off at once, skipping the change delay (`DataStoreManager.turnOffAllBlockingAwayFromHome`, the owner asked for this) | `utils/HomeLock.kt` (checked in `DataStoreManager.updateGated` and the temporary disable functions), `utils/HomeLocationChecker.kt`, `advanced/HomeLockFragment.kt`, `Settings.homeLocation` |
 | Eye breaks (20 20 20 rule) with a live countdown on the Reducers card | `anti_stimulants/EyeBreakReminder.kt` (in the service, broadcasts its schedule), `ReducersFragment.setupEyeBreakCard` |
 
+The donation popup (`DonationPrompt`, `dialog_donation`) and the Info tab's About the developer, Donate, Join the focus pack (Discord) and Follow cards were removed at the owner's request in 1.3.2, because the fork has moved far from Curbox. Do not bring them back. The browser extension card and the Curbox docs link were removed too. Credit to Curbox's author stays in LICENSE, CITATION and the Readme, as GPL requires.
+
 Behavior notes:
 - Blocklists follow the group's schedule and usage limit exactly like typed keywords. New keyword groups keep Curbox's 60 minute default allowance; the owner chose not to change it.
 - Blocklist files live in `filesDir/blocklists/`, not in Room or the settings JSON. Deleting a list is refused while any group uses it, so the settings change delay cannot be bypassed.
@@ -116,5 +118,6 @@ Behavior notes:
 | 1.2.0 | 14 | Wait screen fits long messages; one box per message instead of comma splitting |
 | 1.3.0 | 15 | Wait in seconds/minutes/hours, Lock after unlock ends, Home lock with turn off all when away |
 | 1.3.1 | 16 | Own overlays (reel counter, pill) no longer stop the app usage countdown or end usage sessions |
+| 1.3.2 | 17 | Donation popup removed; Info tab keeps only version, tracking, backup, crash logs, language |
 
 Versions up to 1.0.10 only bumped the patch number, even for features. From 1.1.0 on, releases follow semantic versioning (see Releasing).

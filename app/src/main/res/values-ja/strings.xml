@@ -80,12 +80,6 @@
     <string name="donate_pitch">学校や試験、勉強と並行しながら、Curboxに1500時間以上を注ぎ込み、世界中で何百万分もの時間を節約してきました。誰にとっても無料で成長し続けられるよう、寄付で支えてください。</string>
     <string name="btn_donate">寄付する ❤</string>
     <string name="cannot_donate_share">寄付できませんか？プロジェクトをシェアするだけでもとても助かります！</string>
-    <string name="donate_prompt_title">お願いしてもいいですか？</string>
-    <string name="donate_prompt_value">あなたはしばらくCurboxを使ってくれていて、それは私にとって大きな意味があります。</string>
-    <string name="donate_prompt_footer">まったくプレッシャーはありません。どちらにしても、Curboxはあなたにとってずっと無料です。</string>
-    <string name="donate_prompt_give">支援します ❤</string>
-    <string name="donate_prompt_share">代わりにシェアします</string>
-    <string name="donate_prompt_later">また今度</string>
     <string name="share_curbox_message">Curboxを使ってスクリーンタイムのコントロールを取り戻しています。無料なので、ぜひ試してみてください：https://curbox.app</string>
     <string name="system_diagnostics">システム診断</string>
     <string name="view_and_share_application_crash_logs">アプリのクラッシュログを確認・共有して、Boundaryの改善に役立ててください。</string>

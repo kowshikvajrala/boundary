@@ -1,0 +1,2 @@
+• The donation pop up no longer appears.
+• The Info tab is simpler: the developer, donate, community, follow, browser extension and documentation sections are gone.
