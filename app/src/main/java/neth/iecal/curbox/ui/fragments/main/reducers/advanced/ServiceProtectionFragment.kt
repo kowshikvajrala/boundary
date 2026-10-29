@@ -26,6 +26,7 @@ import neth.iecal.curbox.services.AppBlockerService
 import neth.iecal.curbox.services.ServiceWatchdogJob
 import neth.iecal.curbox.utils.AntiUninstallManager
 import neth.iecal.curbox.utils.DataStoreManager
+import neth.iecal.curbox.utils.PaymentPause
 import neth.iecal.curbox.utils.PermissionUtils
 import neth.iecal.curbox.utils.ServiceProtectionManager
 import neth.iecal.curbox.utils.ViewUtils
@@ -109,7 +110,6 @@ class ServiceProtectionFragment : Fragment() {
         btnSetupShizuku.setOnClickListener { setupShizuku() }
         view.findViewById<MaterialButton>(R.id.btn_open_autostart).setOnClickListener { openAutostart() }
         view.findViewById<MaterialButton>(R.id.btn_repair_now).setOnClickListener { repairNow() }
-        btnDeviceOwner.setOnClickListener { confirmDeviceOwner() }
         btnRemoveDeviceAdmin.setOnClickListener { confirmRemoveDeviceAdmin() }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -142,7 +142,6 @@ class ServiceProtectionFragment : Fragment() {
         }
         if (turnOn) {
             ServiceWatchdogJob.schedule(requireContext())
-            ServiceProtectionManager.reinforceBackgroundExecution(requireContext())
             if (!ServiceProtectionManager.isIgnoringBatteryOptimizations(requireContext())) {
                 openBatterySettings()
             }
@@ -176,8 +175,8 @@ class ServiceProtectionFragment : Fragment() {
         // OEM autostart (only shown on makers that need it)
         cardAutostart.isVisible = OemAutostartIntents.isLikelyAggressiveOem()
 
-        // Shizuku self heal
-        val shizukuOk = ServiceProtectionManager.canSelfHeal()
+        // Self heal through the adb granted secure settings permission
+        val shizukuOk = ServiceProtectionManager.canSelfHeal(context)
         setRow(
             iconShizuku, textShizuku, shizukuOk,
             getString(R.string.service_protection_shizuku_on),
@@ -185,13 +184,10 @@ class ServiceProtectionFragment : Fragment() {
         )
         btnSetupShizuku.isVisible = !shizukuOk
 
-        // Device owner needs Shizuku and the device admin receiver, which the
-        // Play Store flavor strips along with anti uninstall
+        // Setting device owner needed Shizuku, which was removed. Removing the admin still works.
         val adminActive = BuildConfig.SUPPORTS_ANTI_UNINSTALL && AntiUninstallManager.isAdminActive(context)
-        val canSetDeviceOwner = isEnabled && shizukuOk && BuildConfig.SUPPORTS_ANTI_UNINSTALL &&
-            !ServiceProtectionManager.isDeviceOwner(context)
-        deviceOwnerHeader.isVisible = canSetDeviceOwner || adminActive
-        btnDeviceOwner.isVisible = canSetDeviceOwner
+        deviceOwnerHeader.isVisible = adminActive
+        btnDeviceOwner.isVisible = false
         btnRemoveDeviceAdmin.isVisible = adminActive
         btnRemoveDeviceAdmin.isEnabled = !tamperProtectionEnabled
         textDeviceAdminLocked.isVisible = adminActive && tamperProtectionEnabled
@@ -216,26 +212,12 @@ class ServiceProtectionFragment : Fragment() {
         }
     }
 
+    /** Self heal needs the secure settings permission; the Payment pause screen shows the adb command. */
     private fun setupShizuku() {
-        if (PermissionUtils.isShizukuAvailable()) {
-            try {
-                rikka.shizuku.Shizuku.requestPermission(1001)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        } else {
-            Toast.makeText(requireContext(), R.string.service_protection_shizuku_not_installed, Toast.LENGTH_LONG).show()
-            try {
-                startActivity(
-                    android.content.Intent(
-                        android.content.Intent.ACTION_VIEW,
-                        android.net.Uri.parse("https://shizuku.rikka.app/")
-                    )
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        startActivity(
+            android.content.Intent(requireContext(), neth.iecal.curbox.ui.activity.FragmentActivity::class.java)
+                .putExtra("fragment", PaymentPause.PAGE_FRAGMENT_ID)
+        )
     }
 
     private fun openAutostart() {
@@ -253,7 +235,7 @@ class ServiceProtectionFragment : Fragment() {
 
     private fun repairNow() {
         val context = requireContext()
-        if (ServiceProtectionManager.canSelfHeal()) {
+        if (ServiceProtectionManager.canSelfHeal(context)) {
             ServiceProtectionManager.healNow(context)
             Toast.makeText(context, R.string.service_protection_repair_started, Toast.LENGTH_SHORT).show()
         } else {
@@ -263,18 +245,6 @@ class ServiceProtectionFragment : Fragment() {
                 Toast.makeText(context, R.string.service_protection_services_on, Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun confirmDeviceOwner() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.service_protection_device_owner)
-            .setMessage(R.string.service_protection_device_owner_warning)
-            .setNegativeButton(R.string.service_protection_cancel, null)
-            .setPositiveButton(R.string.service_protection_continue) { _, _ ->
-                ServiceProtectionManager.setDeviceOwner(requireContext())
-                Toast.makeText(requireContext(), R.string.service_protection_repair_started, Toast.LENGTH_SHORT).show()
-            }
-            .show()
     }
 
     private fun confirmRemoveDeviceAdmin() {

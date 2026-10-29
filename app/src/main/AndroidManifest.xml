@@ -9,6 +9,8 @@
     <!-- Only read in the foreground, when the owner checks whether they are away from home. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Away mode reads one location when a blocked site opens, to notice the owner is home. -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
@@ -88,20 +90,6 @@
             android:noHistory="true"
             android:taskAffinity=""
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <activity
-            android:name=".nfc.NfcTriggerActivity"
-            android:exported="true"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="curbox" android:host="focus" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".ui.activity.CrashLogActivity"
@@ -210,13 +198,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <provider
-            android:name="rikka.shizuku.ShizukuProvider"
-            android:authorities="${applicationId}.shizuku"
-            android:enabled="true"
-            android:exported="true"
-            android:multiprocess="false"
-            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
 
         <receiver
@@ -225,11 +206,24 @@
             android:label="@string/locks_widget_label">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="app.boundary.blocker.widget.LOCKS_CHANGED" />
+                <action android:name="app.boundary.blocker.widget.TIMERS_CHANGED" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_locks_metadata" />
+        </receiver>
+
+        <receiver
+            android:name=".ui.widgets.UnlocksWidgetProvider"
+            android:exported="false"
+            android:label="@string/unlocks_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="app.boundary.blocker.widget.TIMERS_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_unlocks_metadata" />
         </receiver>
 
         <receiver

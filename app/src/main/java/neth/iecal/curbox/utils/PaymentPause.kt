@@ -112,7 +112,8 @@ object PaymentPause {
         }
     }
 
-    private fun setServiceEnabled(context: Context, enabled: Boolean): Boolean = try {
+    /** Switches Boundary's accessibility service on or off. Needs WRITE_SECURE_SETTINGS. */
+    fun setServiceEnabled(context: Context, enabled: Boolean): Boolean = try {
         val resolver = context.contentResolver
         val ours = ComponentName(context, AppBlockerService::class.java).flattenToString()
         val services = linkedSetOf<String>()

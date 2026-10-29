@@ -74,25 +74,14 @@ object PermissionUtils {
                 isAccessibilityServiceEnabled(context, AppBlockerService::class.java)
     }
 
+    /** "Allow all the time" location, so Away mode can check for home while a browser is in front. */
+    fun hasBackgroundLocationPermission(context: Context): Boolean =
+        Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ||
+            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+
     fun hasWriteSecureSettings(context: Context): Boolean {
         return ActivityCompat.checkSelfPermission(
             context, Manifest.permission.WRITE_SECURE_SETTINGS
         ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    fun isShizukuAvailable(): Boolean {
-        return try {
-            rikka.shizuku.Shizuku.pingBinder()
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    fun hasShizukuPermission(): Boolean {
-        return try {
-            rikka.shizuku.Shizuku.checkSelfPermission() == android.content.pm.PackageManager.PERMISSION_GRANTED
-        } catch (e: Exception) {
-            false
-        }
     }
 }

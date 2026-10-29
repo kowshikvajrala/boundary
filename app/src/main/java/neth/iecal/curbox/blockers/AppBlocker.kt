@@ -1,7 +1,6 @@
 package neth.iecal.curbox.blockers
 
 import android.app.ActivityManager
-import neth.iecal.curbox.ui.widgets.LocksWidgetProvider
 import neth.iecal.curbox.ui.activity.PaymentPauseStartActivity
 import neth.iecal.curbox.utils.PermissionUtils
 import android.os.SystemClock
@@ -31,8 +30,6 @@ import neth.iecal.curbox.data.models.AppUsageConfig
 import neth.iecal.curbox.data.models.upgradeLegacyAppGroupConfigs
 import neth.iecal.curbox.services.BaseBlockingService
 import neth.iecal.curbox.ui.activity.WarningActivity
-import neth.iecal.curbox.utils.AppSuspendHelper
-import neth.iecal.curbox.utils.ShizukuRunner
 import neth.iecal.curbox.utils.TimerNotification
 import neth.iecal.curbox.utils.UsageStatsHelper
 import neth.iecal.curbox.utils.activeWindow
@@ -57,7 +54,7 @@ class AppBlocker : BaseBlocker() {
          * result_id : String -> ID of the app group to be put into cooldown
          */
         const val INTENT_ACTION_REFRESH_APP_BLOCKER_COOLDOWN = "app.boundary.blocker.refresh.appblocker.cooldown"
-        const val INTENT_ACTION_REFRESH_LOCKS_WIDGET = "app.boundary.blocker.appblocker.refresh_locks_widget"
+        const val INTENT_ACTION_REFRESH_WIDGETS = "app.boundary.blocker.appblocker.refresh_widgets"
         const val INTENT_ACTION_WARNING_SCREEN_VISIBILITY =
             "app.boundary.blocker.appblocker.warning_screen_visibility"
         const val EXTRA_WARNING_SCREEN_VISIBLE = "warning_screen_visible"
@@ -101,11 +98,11 @@ class AppBlocker : BaseBlocker() {
     private val lockAfterMsById = ConcurrentHashMap<String, Long>()
     private val closeAppsWhileLockedIds = ConcurrentHashMap.newKeySet<String>()
     @Volatile private var paymentPauseApps: Set<String> = emptySet()
+    @Volatile private var isAwayMode = false
     private var lastPaymentPauseStartMs = 0L
     // The app in front before the current one. Null until the first switch after the service
     // starts, so a pause that ends while the payment app is open does not start a new one.
     private var lastWindowPackage: String? = null
-    private var lastLocksWidgetState: Map<String, Long>? = null
     private lateinit var unlockLocks: UnlockLocks
     // Windows that can sit over an app without the user leaving it, such as the keyboard.
     private val passThroughPackages = ConcurrentHashMap.newKeySet<String>()
@@ -169,6 +166,13 @@ class AppBlocker : BaseBlocker() {
             if (previousWindowPackage != null && previousWindowPackage != packageName &&
                 maybeStartPaymentPause(packageName)
             ) return
+        }
+
+        // Away mode: app groups and their locks rest until the owner is home again.
+        if (isAwayMode) {
+            notificationManager.stopTimer()
+            lastPackage = packageName
+            return
         }
 
         val now = System.currentTimeMillis()
@@ -281,7 +285,7 @@ class AppBlocker : BaseBlocker() {
             addAction(INTENT_ACTION_REFRESH_APP_BLOCKER)
             addAction(INTENT_ACTION_REFRESH_APP_BLOCKER_COOLDOWN)
             addAction(INTENT_ACTION_WARNING_SCREEN_VISIBILITY)
-            addAction(INTENT_ACTION_REFRESH_LOCKS_WIDGET)
+            addAction(INTENT_ACTION_REFRESH_WIDGETS)
         }
         ContextCompat.registerReceiver(
             service,
@@ -352,6 +356,7 @@ class AppBlocker : BaseBlocker() {
                 }
 
                 paymentPauseApps = settings.paymentPauseApps.toSet()
+                isAwayMode = settings.isAwayModeActive
 
                 // Atomic-like update of the maps
                 blockedAppsList.clear()
@@ -582,7 +587,7 @@ class AppBlocker : BaseBlocker() {
         val locked = HashMap<String, Long>()
         val lockedGroups = sortedMapOf<String, Long>()
         lockAfterMsById.keys.forEach { groupId ->
-            val endsAt = lockEndsAt(groupId, now)
+            val endsAt = if (isAwayMode) 0L else lockEndsAt(groupId, now)
             if (endsAt <= 0L) return@forEach
             lockedGroups[groupNames[groupId] ?: groupId] = endsAt
             groupPackagesById[groupId].orEmpty().forEach { pkg ->
@@ -591,36 +596,24 @@ class AppBlocker : BaseBlocker() {
         }
         lockedPackagesUntil = locked
         if (locked.isNotEmpty()) LockedAppNotificationListener.instance?.snoozeLockedNow()
-        sendLocksToWidget(lockedGroups)
-        // Redraw the widget the moment the next lock ends, so it never shows a finished lock.
-        lockedGroups.values.minOrNull()?.let { nextEnd ->
-            activeRunnables.remove("lockswidget")?.let(handler::removeCallbacks)
-            val runnable = Runnable {
-                activeRunnables.remove("lockswidget")
-                refreshLockedPackages()
-            }
-            activeRunnables["lockswidget"] = runnable
-            handler.postDelayed(runnable, nextEnd - now + 500L)
-        }
+        WidgetTimers.publish(service, WidgetTimers.Kind.LOCKS, "apps", lockedGroups)
     }
 
-    private fun sendLocksToWidget(lockedGroups: Map<String, Long>) {
-        if (lockedGroups == lastLocksWidgetState) return
-        lastLocksWidgetState = lockedGroups
-        try {
-            service.sendBroadcast(
-                Intent(LocksWidgetProvider.ACTION_LOCKS_CHANGED)
-                    .setClass(service, LocksWidgetProvider::class.java)
-                    .putExtra(LocksWidgetProvider.EXTRA_NAMES, lockedGroups.keys.toTypedArray())
-                    .putExtra(LocksWidgetProvider.EXTRA_ENDS_AT, lockedGroups.values.toLongArray())
-            )
-        } catch (e: Exception) {
-            Log.e("AppBlocker", "Could not update the locks widget", e)
+    /** Running unlocks count down; frozen ones (their app is not in front) are sent as minus the time left. */
+    private fun publishUnlocksToWidget() {
+        val now = System.currentTimeMillis()
+        val timers = HashMap<String, Long>()
+        cooldownGroupsList.forEach { (groupId, endMs) ->
+            if (endMs > now && groupId !in onEachOpenGroupIds) timers[groupNames[groupId] ?: groupId] = endMs
         }
+        pausedUnlocks.forEach { (groupId, paused) ->
+            if (now - paused.pausedAtMs <= MAX_PAUSED_UNLOCK_MS) timers[groupNames[groupId] ?: groupId] = -paused.remainingMs
+        }
+        WidgetTimers.publish(service, WidgetTimers.Kind.UNLOCKS, "apps", timers)
     }
 
     private fun closeLockedApps(groupId: String) {
-        if (groupId !in closeAppsWhileLockedIds) return
+        if (groupId !in closeAppsWhileLockedIds || isAwayMode) return
         val activityManager = service.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         groupPackagesById[groupId].orEmpty()
             .filter { it != service.packageName }
@@ -680,6 +673,7 @@ class AppBlocker : BaseBlocker() {
 
     // Counts down to the soonest unlock ending and, when several groups are unlocked, lists each one.
     private fun showNextCooldownNotification() {
+        publishUnlocksToWidget()
         val now = System.currentTimeMillis()
         val active = cooldownGroupsList.filterValues { it > now }
         val next = active.minByOrNull { it.value }
@@ -748,16 +742,6 @@ class AppBlocker : BaseBlocker() {
             service.pressHome()
             lastPackage = ""
 
-            try {
-                if (packageName != service.packageName && AppSuspendHelper.isShizukuAvailable()) {
-                    ShizukuRunner.executeCommand(
-                        "am force-stop $packageName",
-                        object : ShizukuRunner.CommandResultListener {})
-                }
-            } catch (e: Exception) {
-                Log.e("AppBlocker", "Shizuku force-stop failed", e)
-            }
-
             if (warningConfig.isWarningDialogHidden) return
             if (warningConfig.isProceedDisabled) {
                 service.blockedPill.show(packageName, warningConfig.message.filter { it.isNotBlank() }.randomOrNull() ?: service.getString(R.string.blocked_pill_fallback))
@@ -786,9 +770,10 @@ class AppBlocker : BaseBlocker() {
             if (intent == null) return
             when (intent.action) {
                 INTENT_ACTION_REFRESH_APP_BLOCKER -> setupAppBlocker(service)
-                INTENT_ACTION_REFRESH_LOCKS_WIDGET -> handler.post {
-                    lastLocksWidgetState = null
+                INTENT_ACTION_REFRESH_WIDGETS -> handler.post {
                     refreshLockedPackages()
+                    publishUnlocksToWidget()
+                    WidgetTimers.resendAll(service)
                 }
                 INTENT_ACTION_REFRESH_APP_BLOCKER_COOLDOWN -> handlePutCooldownIntentBroadcast(intent)
                 INTENT_ACTION_WARNING_SCREEN_VISIBILITY -> {

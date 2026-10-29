@@ -34,7 +34,6 @@ import neth.iecal.curbox.ui.activity.FragmentActivity
 import neth.iecal.curbox.utils.ViewUtils
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
-import neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.grayscale.GrayscaleFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.appBlocker.AppBlockerGroupsFragment
 
 class ReducersFragment : Fragment() {
@@ -46,7 +45,6 @@ class ReducersFragment : Fragment() {
         val appBlockerCard = view.findViewById<MaterialCardView>(R.id.card_app_blocker)
         val reelBlockerCard = view.findViewById<MaterialCardView>(R.id.card_reels_blocker)
         val keywordBlockerCard = view.findViewById<MaterialCardView>(R.id.card_keyword_blocker)
-        val autoDndCard = view.findViewById<MaterialCardView>(R.id.card_autodnd)
         
         view.findViewById<MaterialButton>(R.id.btn_help).setOnClickListener {
             ViewUtils.showHelpPopup(it, "Blocker tools and stimulation reducers help you regain focus.", "https://curbox.app/docs/reducers/overview/")
@@ -73,13 +71,6 @@ class ReducersFragment : Fragment() {
             startActivity(intent)
         }
 
-        autoDndCard.setOnClickListener {
-            val intent = Intent(requireContext(), FragmentActivity::class.java).apply {
-                putExtra("fragment", neth.iecal.curbox.ui.fragments.main.reducers.blockertools.autodnd.AutoDndFragment.FRAGMENT_ID)
-            }
-            startActivity(intent)
-        }
-
         val reelCounterCard = view.findViewById<MaterialCardView>(R.id.card_reel_counter)
         reelCounterCard.setOnClickListener {
             val intent = Intent(requireContext(), FragmentActivity::class.java).apply {
@@ -88,13 +79,6 @@ class ReducersFragment : Fragment() {
             startActivity(intent)
         }
         
-        val grayscaleCard = view.findViewById<MaterialCardView>(R.id.card_grayscale)
-        grayscaleCard.setOnClickListener {
-            val intent = Intent(requireContext(), FragmentActivity::class.java).apply {
-                putExtra("fragment", GrayscaleFragment.FRAGMENT_ID)
-            }
-            startActivity(intent)
-        }
         
         val intentsCard = view.findViewById<MaterialCardView>(R.id.card_intents)
         intentsCard.setOnClickListener {
@@ -150,6 +134,14 @@ class ReducersFragment : Fragment() {
         paymentPauseCard.setOnClickListener {
             val intent = Intent(requireContext(), FragmentActivity::class.java).apply {
                 putExtra("fragment", neth.iecal.curbox.utils.PaymentPause.PAGE_FRAGMENT_ID)
+            }
+            startActivity(intent)
+        }
+
+        val permissionsCard = view.findViewById<MaterialCardView>(R.id.card_permissions)
+        permissionsCard.setOnClickListener {
+            val intent = Intent(requireContext(), FragmentActivity::class.java).apply {
+                putExtra("fragment", neth.iecal.curbox.ui.fragments.main.reducers.advanced.PermissionsFragment.FRAGMENT_ID)
             }
             startActivity(intent)
         }

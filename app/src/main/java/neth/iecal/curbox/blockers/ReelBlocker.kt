@@ -57,6 +57,7 @@ class ReelBlocker : BaseBlocker() {
     
     private val cooldownViewIdsList = mutableMapOf<String, Long>()
     private var unlockLocks: UnlockLocks? = null
+    @Volatile private var isAwayMode = false
     private var lastEventTimeStamp = 0L
 
     private lateinit var notificationManager: TimerNotification
@@ -89,7 +90,7 @@ class ReelBlocker : BaseBlocker() {
         }
         if (event == null || (event.eventType and TARGET_EVENTS_MASK) == 0) return
 
-        if (!reelBlockerConfig.isActive ) {
+        if (!reelBlockerConfig.isActive || isAwayMode) {
             return
         }
 
@@ -144,6 +145,7 @@ class ReelBlocker : BaseBlocker() {
         if (endTime <= now) return
         notificationManager.startTimer(totalMillis = endTime - now, timerId = viewId, title = service.getString(R.string.notification_remaining_usage_reels_lockdown))
         cooldownViewIdsList[viewId] = endTime
+        publishTimersToWidgets()
     }
 
 
@@ -161,6 +163,8 @@ class ReelBlocker : BaseBlocker() {
         settingsJob = CoroutineScope(Dispatchers.IO).launch {
             service.dataStoreManager.settings.collectLatest { settings ->
                 reelBlockerConfig = settings.reelBlockerConfig.upgradeLegacyConfig()
+                isAwayMode = settings.isAwayModeActive
+                publishTimersToWidgets()
                 val config = reelBlockerConfig.config
                 timeBAsedConfig = config?.schedule
                 countBasedConfig = config?.reelCount
@@ -249,9 +253,32 @@ class ReelBlocker : BaseBlocker() {
             cooldownViewIdsList.remove(viewId)
             // Cooldowns run on uptime; the lock is kept in wall clock time so it survives restarts.
             unlockLocks?.unlockEnded(viewId, System.currentTimeMillis() - (uptimeNow - cooldownEnd))
+            publishTimersToWidgets()
             return false
         }
         return true
+    }
+
+    /** Sends short video unlocks and locks, one row per app, to the home screen widgets. */
+    private fun publishTimersToWidgets() {
+        if (!::service.isInitialized) return
+        val nowWall = System.currentTimeMillis()
+        val nowUptime = SystemClock.uptimeMillis()
+        val unlocks = cooldownViewIdsList.filterValues { it > nowUptime }
+            .entries.associate { rowName(it.key) to nowWall + (it.value - nowUptime) }
+        val locks = ReelAppConfig.reelData.keys.mapNotNull { pkg ->
+            val endsAt = lockEndsAt(pkg)
+            if (endsAt > 0L) rowName(pkg) to endsAt else null
+        }.toMap()
+        WidgetTimers.publish(service, WidgetTimers.Kind.UNLOCKS, "reels", unlocks)
+        WidgetTimers.publish(service, WidgetTimers.Kind.LOCKS, "reels", locks)
+    }
+
+    private fun rowName(packageName: String): String {
+        val label = runCatching {
+            service.packageManager.getApplicationLabel(service.packageManager.getApplicationInfo(packageName, 0)).toString()
+        }.getOrDefault(packageName)
+        return service.getString(R.string.widget_short_videos_row, label)
     }
 
     private fun lockEndsAt(viewId: String): Long =

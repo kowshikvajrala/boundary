@@ -1,0 +1,5 @@
+• New Away mode: after Check I am away, turn it on to pause app groups, short video blocking and locks. Website and keyword blocking stays on. When a blocked site opens while you are home, everything comes back. Needs location set to Allow all the time.
+• While you are confirmed away (10 minutes), every change applies at once: delete or loosen groups, turn off the settings change delay and turn off tamper protection.
+• New Unlocked widget, and the Locks widget now also shows website and short video locks.
+• New Permissions screen that shows what is on and helps fix what is missing.
+• Removed leftover Focus, Auto DND, grayscale and Shizuku code. Self repair now uses the adb permission.

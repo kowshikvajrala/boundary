@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import neth.iecal.curbox.R
-import neth.iecal.curbox.blockers.FocusModeBlocker
 import neth.iecal.curbox.blockers.KeywordBlocker
 import neth.iecal.curbox.databinding.DialogAddBlocklistBinding
 import neth.iecal.curbox.databinding.FragmentBlocklistsBinding
@@ -37,7 +36,6 @@ class BlocklistsFragment : Fragment() {
         /** Tells the blocking service to reload lists after one changes on disk. */
         fun requestBlockerRefresh(context: Context) {
             context.sendBroadcast(Intent(KeywordBlocker.INTENT_ACTION_REFRESH_CONFIG).setPackage(context.packageName))
-            context.sendBroadcast(Intent(FocusModeBlocker.INTENT_ACTION_REFRESH_FOCUS_MODE).setPackage(context.packageName))
         }
     }
 

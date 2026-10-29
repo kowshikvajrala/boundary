@@ -302,6 +302,11 @@ class AntiUninstallFragment : Fragment() {
     }
 
     private fun onTurnOffClicked() {
+        // The Home lock away pass turns protection off at once, whatever the method.
+        if (HomeLock.isAwayPassActive()) {
+            finishProtection()
+            return
+        }
         when (latestConfig.mode) {
             AntiUninstallMode.PASSWORD -> showVerifyPasswordDialog {
                 if (AntiUninstallManager.hashPassword(it) == latestConfig.passwordHash) {

@@ -27,7 +27,6 @@ import neth.iecal.curbox.R
 import neth.iecal.curbox.databinding.FragmentAppUsageBreakdownBinding
 import neth.iecal.curbox.ui.activity.FragmentActivity
 import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.appBlocker.CreateAppGroupFragment
-import neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.grayscale.CreateGrayscaleGroupFragment
 import neth.iecal.curbox.utils.TimeTools
 
 class AppUsageBreakdown(private val stat: AppUsageStat) : Fragment() {
@@ -80,41 +79,15 @@ class AppUsageBreakdown(private val stat: AppUsageStat) : Fragment() {
                     )
                 }
 
-                val matchedGrayscale = settings.grayscaleGroups.filter { it.packages.contains(stat.packageName) }
-                matchedGrayscale.forEach { group ->
-                    addShortcutCard(
-                        title = group.groupName,
-                        subtitle = getString(R.string.rule_type_grayscale),
-                        isActive = group.isActive,
-                        iconRes = R.drawable.ic_grayscale_aesthetic,
-                        onToggle = { active -> viewModel.toggleGrayscaleGroup(group.groupId, active) },
-                        onClick = {
-                            startActivity(Intent(requireContext(), FragmentActivity::class.java).apply {
-                                putExtra("fragment", CreateGrayscaleGroupFragment.FRAGMENT_ID)
-                                putExtra("group_id", group.groupId)
-                            })
-                        }
-                    )
-                }
             }
         }
 
+        // Grayscale was removed, so an app group is the only rule left to create.
         binding.btnCreateNewRule.setOnClickListener {
-            val options = arrayOf(getString(R.string.rule_type_app_blocker), getString(R.string.rule_type_grayscale))
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.create_new_rule_title)
-                .setItems(options) { _, which ->
-                    val fragmentId = when (which) {
-                        0 -> CreateAppGroupFragment.FRAGMENT_ID
-                        1 -> CreateGrayscaleGroupFragment.FRAGMENT_ID
-                        else -> return@setItems
-                    }
-                    startActivity(Intent(requireContext(), FragmentActivity::class.java).apply {
-                        putExtra("fragment", fragmentId)
-                        putExtra("prefill_package", stat.packageName)
-                    })
-                }
-                .show()
+            startActivity(Intent(requireContext(), FragmentActivity::class.java).apply {
+                putExtra("fragment", CreateAppGroupFragment.FRAGMENT_ID)
+                putExtra("prefill_package", stat.packageName)
+            })
         }
     }
 

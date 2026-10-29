@@ -438,8 +438,8 @@ class DataStoreManager(private val context: Context) {
         var refusedAtHome = false
         var nextDeadline: Long? = null
         settingsDataStore.updateData { current ->
-            if (current.settingsChangeDelayConfig2.isEnabled ||
-                current.settingsChangeDelayConfig2.requireTamperProtectionOff) return@updateData current
+            if (!HomeLock.isAwayPassActive() && (current.settingsChangeDelayConfig2.isEnabled ||
+                current.settingsChangeDelayConfig2.requireTamperProtectionOff)) return@updateData current
             val groups = current.blockedAppGroups.map { group ->
                 val lockedAtHome = HomeLock.usesLock(group.warningScreenConfig) && !HomeLock.isAwayPassActive()
                 if (group.id == groupId && group.isActive && lockedAtHome) refusedAtHome = true
@@ -467,8 +467,8 @@ class DataStoreManager(private val context: Context) {
         var refusedAtHome = false
         var nextDeadline: Long? = null
         settingsDataStore.updateData { current ->
-            if (current.settingsChangeDelayConfig2.isEnabled ||
-                current.settingsChangeDelayConfig2.requireTamperProtectionOff) return@updateData current
+            if (!HomeLock.isAwayPassActive() && (current.settingsChangeDelayConfig2.isEnabled ||
+                current.settingsChangeDelayConfig2.requireTamperProtectionOff)) return@updateData current
             val config = current.keywordBlockerConfig
             val groups = config.keywordGroups.map { group ->
                 val lockedAtHome = HomeLock.usesLock(group.warningScreenConfig) && !HomeLock.isAwayPassActive()
@@ -493,8 +493,8 @@ class DataStoreManager(private val context: Context) {
         var refusedAtHome = false
         var nextDeadline: Long? = null
         settingsDataStore.updateData { current ->
-            if (current.settingsChangeDelayConfig2.isEnabled ||
-                current.settingsChangeDelayConfig2.requireTamperProtectionOff ||
+            if ((!HomeLock.isAwayPassActive() && (current.settingsChangeDelayConfig2.isEnabled ||
+                current.settingsChangeDelayConfig2.requireTamperProtectionOff)) ||
                 !current.reelBlockerConfig.isActive
             ) return@updateData current
             if (HomeLock.usesLock(current.reelBlockerConfig.warningScreenConfig) && !HomeLock.isAwayPassActive()) {
@@ -624,7 +624,10 @@ class DataStoreManager(private val context: Context) {
             }
             val timeGateActive = delayConfig.isEnabled && delayConfig.delayMinutes > 0
             tamperGated = delayConfig.requireTamperProtectionOff && current.antiUninstallConfig2.isEnabled
+            // With the Home lock away pass, every change applies at once, so the owner can clean
+            // up groups, the change delay and its tamper gate in one go.
             if ((!timeGateActive && !tamperGated) ||
+                HomeLock.isAwayPassActive() ||
                 RestrictionComparator.isSameOrStricter(field, current, proposed)
             ) {
                 tamperGated = false
@@ -813,43 +816,20 @@ class DataStoreManager(private val context: Context) {
         return saved
     }
 
-    /**
-     * Away from home only: switches off every app group, website group and the short video
-     * blocker at once, skipping the settings change delay. Pending changes for those parts are
-     * dropped, so an older queued value cannot switch something back on later.
-     */
-    suspend fun turnOffAllBlockingAwayFromHome(): Boolean {
+    suspend fun updatePaymentPauseApps(apps: List<String>) {
+        settingsDataStore.updateData { it.copy(paymentPauseApps = apps) }
+    }
+
+    /** Starts Away mode. Only allowed while the away pass from Home lock is active. */
+    suspend fun startAwayMode(): Boolean {
         if (!HomeLock.isAwayPassActive()) return false
-        val clearedFields = setOf(
-            GatedSettingsField.APP_GROUPS.name,
-            GatedSettingsField.KEYWORD_BLOCKER.name,
-            GatedSettingsField.REEL_BLOCKER.name
-        )
-        settingsDataStore.updateData { current ->
-            val delayConfig = current.settingsChangeDelayConfig2
-            val keywordBlocker = current.keywordBlockerConfig
-            current.copy(
-                blockedAppGroups = current.blockedAppGroups.map {
-                    it.copy(isActive = false, temporarilyDisabledUntilMs = 0L)
-                },
-                keywordBlockerConfig = keywordBlocker.copy(
-                    isActive = false,
-                    keywordGroups = keywordBlocker.keywordGroups.map {
-                        it.copy(isActive = false, temporarilyDisabledUntilMs = 0L)
-                    }
-                ),
-                reelBlockerConfig = current.reelBlockerConfig.copy(isActive = false, temporarilyDisabledUntilMs = 0L),
-                settingsChangeDelayConfig2 = delayConfig.copy(
-                    pendingChanges = delayConfig.pendingChanges.filterNot { it.field in clearedFields }
-                )
-            )
-        }
-        schedulePendingChanges()
+        settingsDataStore.updateData { it.copy(isAwayModeActive = true) }
         return true
     }
 
-    suspend fun updatePaymentPauseApps(apps: List<String>) {
-        settingsDataStore.updateData { it.copy(paymentPauseApps = apps) }
+    /** Ends Away mode and brings every blocker back. Always allowed, because it is stricter. */
+    suspend fun endAwayMode() {
+        settingsDataStore.updateData { it.copy(isAwayModeActive = false) }
     }
 
     private fun notifyRefusedAtHome() {

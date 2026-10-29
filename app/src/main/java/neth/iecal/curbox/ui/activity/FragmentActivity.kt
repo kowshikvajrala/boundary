@@ -10,13 +10,9 @@ import neth.iecal.curbox.ui.fragments.installation.AccessibilityGuide
 import neth.iecal.curbox.ui.fragments.installation.onboarding.OnboardingFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.ReducersFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.analytics.IntentsLogFragment
-import neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.grayscale.CreateGrayscaleGroupFragment
-import neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.grayscale.GrayscaleFragment
 import neth.iecal.curbox.ui.fragments.main.usage.AllAppsUsageFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.appBlocker.AppBlockerGroupsFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.appBlocker.CreateAppGroupFragment
-import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.autodnd.AutoDndFragment
-import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.autodnd.CreateAutoDndGroupFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.reelBlocker.ReelBlockerFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.keywordBlocker.KeywordBlockerFragment
 import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.keywordBlocker.CreateKeywordGroupFragment
@@ -93,11 +89,7 @@ class FragmentActivity : AppCompatActivity() {
             AppBlockerGroupsFragment.FRAGMENT_ID,
             CreateAppGroupFragment.FRAGMENT_ID,
             ReelBlockerFragment.FRAGMENT_ID,
-            AutoDndFragment.FRAGMENT_ID,
-            CreateAutoDndGroupFragment.FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.reel_counter.ReelCounterFragment.FRAGMENT_ID,
-            GrayscaleFragment.FRAGMENT_ID,
-            CreateGrayscaleGroupFragment.FRAGMENT_ID,
                 UiHiderFragment.FRAGMENT_ID,
                 UiHiderEditorFragment.FRAGMENT_ID,
                 IntentsLogFragment.FRAGMENT_ID,
@@ -109,6 +101,7 @@ class FragmentActivity : AppCompatActivity() {
             SettingsChangeDelayFragment.FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.advanced.HomeLockFragment.FRAGMENT_ID,
             neth.iecal.curbox.utils.PaymentPause.PAGE_FRAGMENT_ID,
+            neth.iecal.curbox.ui.fragments.main.reducers.advanced.PermissionsFragment.FRAGMENT_ID,
             CreateKeywordGroupFragment.FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.blockertools.keywordBlocker.BlocklistsFragment.FRAGMENT_ID -> {
                 // Hide bottom nav for these standalone fragments
@@ -124,11 +117,7 @@ class FragmentActivity : AppCompatActivity() {
                     neth.iecal.curbox.ui.fragments.main.reducers.blockertools.keywordBlocker.BlocklistsFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.blockertools.keywordBlocker.BlocklistsFragment()
                     UiHiderFragment.FRAGMENT_ID -> UiHiderFragment()
                     UiHiderEditorFragment.FRAGMENT_ID -> UiHiderEditorFragment()
-                    AutoDndFragment.FRAGMENT_ID -> AutoDndFragment()
-                    CreateAutoDndGroupFragment.FRAGMENT_ID -> CreateAutoDndGroupFragment()
                     neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.reel_counter.ReelCounterFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.reel_counter.ReelCounterFragment()
-                    GrayscaleFragment.FRAGMENT_ID -> GrayscaleFragment()
-                    CreateGrayscaleGroupFragment.FRAGMENT_ID -> CreateGrayscaleGroupFragment()
                     neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.mindful_messages.MindfulMessagesFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.mindful_messages.MindfulMessagesFragment()
                     IntentsLogFragment.FRAGMENT_ID -> IntentsLogFragment()
                     neth.iecal.curbox.ui.fragments.main.reducers.sync.SyncFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.sync.SyncFragment()
@@ -137,6 +126,7 @@ class FragmentActivity : AppCompatActivity() {
                     SettingsChangeDelayFragment.FRAGMENT_ID -> SettingsChangeDelayFragment()
                     neth.iecal.curbox.ui.fragments.main.reducers.advanced.HomeLockFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.advanced.HomeLockFragment()
                     neth.iecal.curbox.utils.PaymentPause.PAGE_FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.advanced.PaymentPauseFragment()
+                    neth.iecal.curbox.ui.fragments.main.reducers.advanced.PermissionsFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.advanced.PermissionsFragment()
                     else -> AccessibilityGuide()
                 }
                 fragment.arguments = intent.extras

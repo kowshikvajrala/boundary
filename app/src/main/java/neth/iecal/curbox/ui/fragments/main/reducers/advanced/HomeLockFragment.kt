@@ -2,6 +2,7 @@ package neth.iecal.curbox.ui.fragments.main.reducers.advanced
 
 import android.Manifest
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +44,20 @@ class HomeLockFragment : Fragment() {
     private var locationRequest: CancellationSignal? = null
     private var actionAfterPermission: (() -> Unit)? = null
 
+    private val backgroundLocationLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (!granted) {
+            runCatching {
+                startActivity(
+                    android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        .setData(android.net.Uri.parse("package:" + requireContext().packageName))
+                )
+            }
+        }
+        lifecycleScope.launch { showAwayMode(dataStore.settings.first().isAwayModeActive) }
+    }
+
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { grants ->
@@ -62,10 +77,17 @@ class HomeLockFragment : Fragment() {
 
         binding.btnSetHome.setOnClickListener { withLocation(::setHomeHere) }
         binding.btnCheckAway.setOnClickListener { withLocation(::checkAway) }
+        binding.btnEndAwayMode.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch { dataStore.endAwayMode() }
+        }
+        binding.btnBackgroundLocation.setOnClickListener { requestBackgroundLocation() }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                dataStore.settings.collect { settings -> showHome(settings.homeLocation) }
+                dataStore.settings.collect { settings ->
+                    showHome(settings.homeLocation)
+                    showAwayMode(settings.isAwayModeActive)
+                }
             }
         }
         HomeLock.awayPassEndsAt().takeIf { it > 0L }?.let(::showAwayPass)
@@ -152,13 +174,38 @@ class HomeLockFragment : Fragment() {
             .setMessage(R.string.home_lock_turn_off_all_message)
             .setPositiveButton(R.string.home_lock_turn_off_all_confirm) { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
-                    if (dataStore.turnOffAllBlockingAwayFromHome()) {
+                    if (dataStore.startAwayMode()) {
                         showAwayStatus(getString(R.string.home_lock_all_off))
+                        if (!PermissionUtils.hasBackgroundLocationPermission(requireContext())) requestBackgroundLocation()
                     }
                 }
             }
             .setNegativeButton(R.string.home_lock_turn_off_all_cancel, null)
             .show()
+    }
+
+    private fun showAwayMode(isOn: Boolean) {
+        val binding = _binding ?: return
+        binding.cardAwayMode.isVisible = isOn
+        val needsBackground = isOn && !PermissionUtils.hasBackgroundLocationPermission(requireContext())
+        binding.awayModeBackgroundNote.isVisible = needsBackground
+        binding.btnBackgroundLocation.isVisible = needsBackground
+    }
+
+    /**
+     * Android only grants "Allow all the time" from its own settings page, after normal location
+     * access. Asking opens that page on Android 11 and newer.
+     */
+    private fun requestBackgroundLocation() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return
+        if (!PermissionUtils.hasLocationPermission(requireContext())) {
+            actionAfterPermission = { requestBackgroundLocation() }
+            permissionLauncher.launch(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+            )
+            return
+        }
+        backgroundLocationLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
     }
 
     private fun showAwayPass(endsAtMs: Long) {

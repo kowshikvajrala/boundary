@@ -15,7 +15,6 @@ import neth.iecal.curbox.data.models.Settings
  */
 object HomeLock {
     const val AWAY_PASS_MS = 10 * 60_000L
-
     @Volatile
     private var awayPassUntilMs = 0L
 

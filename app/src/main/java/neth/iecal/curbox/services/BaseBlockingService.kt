@@ -50,7 +50,6 @@ open class BaseBlockingService : AccessibilityService() {
             val config = dataStoreManager.settings.first().serviceProtectionConfig
             if (config.isEnabled) {
                 ServiceWatchdogJob.schedule(this)
-                ServiceProtectionManager.reinforceBackgroundExecution(this)
             }
         } catch (_: Exception) {
         }

@@ -26,7 +26,6 @@ class BackupManager(context: Context) {
         dataStore.restoreSettingsDuringOnboarding(settings)
         if (settings.serviceProtectionConfig.isEnabled) {
             neth.iecal.curbox.services.ServiceWatchdogJob.schedule(app)
-            ServiceProtectionManager.reinforceBackgroundExecution(app)
         }
     }
 }

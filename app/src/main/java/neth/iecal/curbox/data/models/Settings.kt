@@ -30,5 +30,11 @@ data class Settings(
     val settingsChangeDelayConfig2: SettingsChangeDelayConfig = SettingsChangeDelayConfig(),
     val homeLocation: HomeLocation = HomeLocation(),
     /** Apps that a payment pause can open, such as banking or UPI apps. */
-    val paymentPauseApps: List<String> = listOf()
+    val paymentPauseApps: List<String> = listOf(),
+    /**
+     * Away mode: started from Home lock after an away check. App groups, the Reels blocker and
+     * locks stop; keyword blocking stays on, and the next blocked site checks if the owner is
+     * home again, which ends it.
+     */
+    val isAwayModeActive: Boolean = false
 )

@@ -63,26 +63,9 @@ class OnboardingPermissionsFragment : Fragment() {
             updatePermissionsState()
         }
 
-    private val shizukuPermissionListener = rikka.shizuku.Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
-        if (requestCode == 1001 && grantResult == PackageManager.PERMISSION_GRANTED) {
-            activity?.runOnUiThread {
-                runShizukuGrantAllCommand()
-            }
-        }
-    }
-
     private val restorePicker = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null && OnboardingState.canRestore(requireContext())) {
             backupViewModel.restore(uri)
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (neth.iecal.curbox.utils.PermissionUtils.isShizukuAvailable()) {
-            try {
-                rikka.shizuku.Shizuku.addRequestPermissionResultListener(shizukuPermissionListener)
-            } catch (e: Exception) { e.printStackTrace() }
         }
     }
 
@@ -165,19 +148,6 @@ class OnboardingPermissionsFragment : Fragment() {
             val query = Uri.encode("How to enable restricted setting on $manufacturer android 13")
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query=$query"))
             startActivity(intent)
-        }
-
-
-        binding.btnShizukuGrantAll.setOnClickListener {
-            if (!neth.iecal.curbox.utils.PermissionUtils.hasShizukuPermission()) {
-                try {
-                    rikka.shizuku.Shizuku.requestPermission(1001)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            } else {
-                runShizukuGrantAllCommand()
-            }
         }
 
         setupDescText()
@@ -289,15 +259,6 @@ class OnboardingPermissionsFragment : Fragment() {
         _binding = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (neth.iecal.curbox.utils.PermissionUtils.isShizukuAvailable()) {
-            try {
-                rikka.shizuku.Shizuku.removeRequestPermissionResultListener(shizukuPermissionListener)
-            } catch (e: Exception) { e.printStackTrace() }
-        }
-    }
-
     private fun showExplanationDialog(title: String, rationale: String, openSourceExplanation: String, onProceed: () -> Unit) {
         val privacy = getString(R.string.onboarding_privacy_note)
 
@@ -309,67 +270,10 @@ class OnboardingPermissionsFragment : Fragment() {
             .show()
     }
 
-    private fun runShizukuGrantAllCommand() {
-        binding.btnShizukuGrantAll.isEnabled = false
-        binding.btnShizukuGrantAll.text = getString(R.string.onboarding_granting_permissions)
-
-        val pkg = requireContext().packageName
-        val svc1 = "$pkg/${AppBlockerService::class.java.name}"
-
-        // Full and fdroid also take WRITE_SECURE_SETTINGS here so grayscale keeps
-        // working without Shizuku later on.
-        val secureSettingsGrant = if (neth.iecal.curbox.BuildConfig.SUPPORTS_WRITE_SECURE_SETTINGS) {
-            "pm grant $pkg android.permission.WRITE_SECURE_SETTINGS"
-        } else {
-            ""
-        }
-
-        val command = """
-            appops set $pkg SYSTEM_ALERT_WINDOW allow
-            pm grant $pkg android.permission.POST_NOTIFICATIONS
-            $secureSettingsGrant
-            cmd notification allow_dnd $pkg
-
-            CURRENT_ACC_SVCS=${'$'}(settings get secure enabled_accessibility_services)
-            if [ "${'$'}CURRENT_ACC_SVCS" = "null" ] || [ -z "${'$'}CURRENT_ACC_SVCS" ]; then
-                settings put secure enabled_accessibility_services "$svc1"
-            else
-                NEW_SVCS="${'$'}CURRENT_ACC_SVCS"
-                case "${'$'}CURRENT_ACC_SVCS" in
-                    *"$svc1"*) ;;
-                    *) NEW_SVCS="${'$'}NEW_SVCS:$svc1" ;;
-                esac
-                settings put secure enabled_accessibility_services "${'$'}NEW_SVCS"
-            fi
-            settings put secure accessibility_enabled 1
-        """.trimIndent()
-
-        neth.iecal.curbox.utils.ShizukuRunner.executeCommand(command, object : neth.iecal.curbox.utils.ShizukuRunner.CommandResultListener {
-            override fun onCommandResult(output: String, done: Boolean) {
-                if (done) {
-                    activity?.runOnUiThread {
-                        binding.btnShizukuGrantAll.text = getString(R.string.onboarding_permissions_granted)
-                        binding.btnShizukuGrantAll.isEnabled = true
-                        updatePermissionsState()
-                    }
-                }
-            }
-
-            override fun onCommandError(error: String) {
-                activity?.runOnUiThread {
-                    binding.btnShizukuGrantAll.isEnabled = true
-                    binding.btnShizukuGrantAll.text = getString(R.string.onboarding_error_tap_retry)
-                    updatePermissionsState()
-                }
-            }
-        })
-    }
-
     private fun updatePermissionsState() {
         val hasOverlay = Settings.canDrawOverlays(requireContext())
         val hasNotif = neth.iecal.curbox.utils.PermissionUtils.isNotificationPermissionGiven(requireContext())
         val hasBlocker = neth.iecal.curbox.utils.PermissionUtils.isAccessibilityServiceEnabled(requireContext(), AppBlockerService::class.java)
-        val hasShizuku = neth.iecal.curbox.utils.PermissionUtils.hasShizukuPermission()
 
         val isNonSession = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             try {
@@ -386,11 +290,8 @@ class OnboardingPermissionsFragment : Fragment() {
         val showRestrictedWarning = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !hasBlocker && isNonSession
         binding.restrictedSettingsWarning.visibility = if (showRestrictedWarning) View.VISIBLE else View.GONE
         
-        if (neth.iecal.curbox.utils.PermissionUtils.isShizukuAvailable()) {
-            binding.btnShizukuGrantAll.visibility = View.VISIBLE
-        } else {
-            binding.btnShizukuGrantAll.visibility = View.GONE
-        }
+        // Shizuku support was removed, so permissions are granted one by one.
+        binding.btnShizukuGrantAll.visibility = View.GONE
 
         setPermissionIcon(hasOverlay, binding.overlayPermIcon)
         setPermissionIcon(hasNotif, binding.notifPermIcon)

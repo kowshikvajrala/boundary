@@ -17,9 +17,8 @@ import neth.iecal.curbox.services.AppBlockerService
 
 /**
  * The brain behind the Service Protection screen and the watchdog. It checks how well protected the
- * service is and, when Shizuku is available, repairs the things an OEM battery manager tends to
- * break: it turns the accessibility service back on and re keeps the app out of doze and background
- * limits.
+ * service is and, with the adb granted secure settings permission, turns the accessibility service
+ * back on when an OEM battery manager or a system update switched it off.
  *
  * Nothing here can make the app truly un killable. A force stop still wins. The goal is only to make
  * the service hard to kill and fast to bring back.
@@ -31,9 +30,8 @@ object ServiceProtectionManager {
     fun isAppBlockerEnabled(context: Context): Boolean =
         PermissionUtils.isAccessibilityServiceEnabled(context, AppBlockerService::class.java)
 
-    /** Shizuku is the only thing that lets us silently turn services back on, so it gates self healing. */
-    fun canSelfHeal(): Boolean =
-        PermissionUtils.isShizukuAvailable() && PermissionUtils.hasShizukuPermission()
+    /** The adb granted secure settings permission is what lets Boundary turn its own service back on. */
+    fun canSelfHeal(context: Context): Boolean = PermissionUtils.hasWriteSecureSettings(context)
 
     fun isIgnoringBatteryOptimizations(context: Context): Boolean {
         return try {
@@ -66,70 +64,19 @@ object ServiceProtectionManager {
             PackageManager.PERMISSION_GRANTED
 
     /**
-     * Checks both services and, if either is off and Shizuku can help, turns them back on. Always
-     * re applies the doze and background exemptions so they survive system house keeping.
-     *
-     * Safe to call from anywhere. The actual shell work runs on its own thread inside [ShizukuRunner].
+     * Turns the accessibility service back on if it is off, unless a payment pause switched it
+     * off on purpose. Safe to call from anywhere.
      */
     fun healNow(context: Context) {
         try {
-            if (!canSelfHeal()) return
-            reinforceBackgroundExecution(context)
+            if (!canSelfHeal(context) || PaymentPause.isActive(context)) return
             if (!isAppBlockerEnabled(context)) {
-                reEnableAccessibilityServices(context)
+                PaymentPause.setServiceEnabled(context, true)
+                Log.i(TAG, "Re enabled the accessibility service")
             }
         } catch (e: Exception) {
             Log.e(TAG, "healNow failed", e)
         }
-    }
-
-    /** Adds the Curbox accessibility service back into the secure settings list, via Shizuku. */
-    private fun reEnableAccessibilityServices(context: Context) {
-        val wanted = listOf(
-            ComponentName(context, AppBlockerService::class.java).flattenToString()
-        )
-
-        val current = Settings.Secure.getString(
-            context.contentResolver,
-            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
-        )
-
-        val existing = linkedSetOf<String>()
-        if (!current.isNullOrEmpty()) {
-            val splitter = TextUtils.SimpleStringSplitter(':')
-            splitter.setString(current)
-            while (splitter.hasNext()) existing.add(splitter.next())
-        }
-        existing.addAll(wanted)
-
-        val merged = existing.joinToString(":")
-        runShell(
-            "settings put secure enabled_accessibility_services '$merged'; " +
-                "settings put secure accessibility_enabled 1"
-        )
-        Log.i(TAG, "Re enabled accessibility service via Shizuku")
-    }
-
-    /** Keeps the app out of doze and lets it run freely in the background. Needs Shizuku. */
-    fun reinforceBackgroundExecution(context: Context) {
-        if (!canSelfHeal()) return
-        val pkg = context.packageName
-        runShell(
-            "dumpsys deviceidle whitelist +$pkg; " +
-                "cmd appops set $pkg RUN_ANY_IN_BACKGROUND allow; " +
-                "cmd appops set $pkg RUN_IN_BACKGROUND allow"
-        )
-    }
-
-    /**
-     * The strongest tier. Makes Curbox a device owner, which survives force stop and blocks uninstall
-     * outright. Only works on a device with no added accounts and is hard to undo, so it stays behind
-     * a clear warning in the UI. Needs Shizuku.
-     */
-    fun setDeviceOwner(context: Context) {
-        if (!canSelfHeal()) return
-        val admin = ComponentName(context, AdminReceiver::class.java).flattenToString()
-        runShell("dpm set-device-owner '$admin'")
     }
 
     fun isDeviceOwner(context: Context): Boolean {
@@ -150,13 +97,5 @@ object ServiceProtectionManager {
             AntiUninstallManager.removeProtection(context)
         }
         return true
-    }
-
-    private fun runShell(command: String) {
-        ShizukuRunner.executeCommand(command, object : ShizukuRunner.CommandResultListener {
-            override fun onCommandError(error: String) {
-                Log.e(TAG, "shell error: $error")
-            }
-        })
     }
 }

@@ -65,8 +65,8 @@ android {
         applicationId = appId
         minSdk = 26
         targetSdk = 35
-        versionCode = 24
-        versionName = "1.8.0"
+        versionCode = 25
+        versionName = "1.9.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         resValue("string", "app_name", appName)
         resValue("string", "blocker_service_label", "$appName App Blocker")
@@ -145,8 +145,6 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     
     // Shizuku dependecies
-    implementation (libs.api)
-    implementation (libs.provider)
 
     implementation(libs.gson)
     implementation(libs.kotlinx.coroutines.android)

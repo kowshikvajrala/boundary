@@ -22,7 +22,6 @@ import neth.iecal.curbox.R
 import neth.iecal.curbox.anti_stimulants.MindfulMessage
 import neth.iecal.curbox.blockers.AntiUninstallBlocker
 import neth.iecal.curbox.blockers.AppBlocker
-import neth.iecal.curbox.blockers.FocusModeBlocker
 import neth.iecal.curbox.blockers.KeywordBlocker
 import neth.iecal.curbox.blockers.ReelBlocker
 import neth.iecal.curbox.blockers.ReelScriptRunner
@@ -39,7 +38,6 @@ import neth.iecal.curbox.ui.overlay.ReelsOverlayManager
 class AppBlockerService : BaseBlockingService() {
 
     private val appBlocker: AppBlocker = AppBlocker()
-    private val focusModeBlocker = FocusModeBlocker()
     private val reelBlocker = ReelBlocker()
     private val reelScriptRunner = ReelScriptRunner()
     private var keywordBlocker = KeywordBlocker()
@@ -67,13 +65,8 @@ class AppBlockerService : BaseBlockingService() {
 
     private lateinit var crashLogger: CrashLogger
 
-    fun syncDndState() {
-        // Auto DND was removed, so only focus mode asks for Do Not Disturb now.
-        neth.iecal.curbox.utils.DndHelper.applyDndState(this, focusModeBlocker.isDndRequested())
-    }
-
     /**
-     * Auto DND and grayscale were removed. Undo anything they may have left on: Do Not Disturb
+     * Focus mode, Auto DND and grayscale were removed. Undo anything they may have left on: Do Not Disturb
      * is only turned off when Boundary turned it on, and grayscale only when a grayscale group
      * was in use, so the user's own settings are left alone.
      */
@@ -81,7 +74,8 @@ class AppBlockerService : BaseBlockingService() {
         serviceScope.launch {
             try {
                 delay(5_000)
-                syncDndState()
+                // Focus mode and Auto DND are gone, so nothing needs Do Not Disturb any more.
+                neth.iecal.curbox.utils.DndHelper.applyDndState(this@AppBlockerService, false)
                 val usedGrayscale = dataStoreManager.settings.first().grayscaleGroups.any { it.isActive }
                 val grayscale = neth.iecal.curbox.utils.GrayscaleControl()
                 if (usedGrayscale && grayscale.isGrayscaleEnabled(this@AppBlockerService)) {
@@ -97,11 +91,6 @@ class AppBlockerService : BaseBlockingService() {
     override fun onCreate() {
         super.onCreate()
         crashLogger = CrashLogger(this)
-        try {
-            rikka.shizuku.ShizukuProvider.requestBinderForNonProviderProcess(this)
-        } catch (e: Exception) {
-            Log.e("Shizuku", "Failed to bind Shizuku in non-provider process", e)
-        }
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
@@ -113,7 +102,6 @@ class AppBlockerService : BaseBlockingService() {
                 antiUninstallBlocker.doAntiUninstallCheck(event)
             }
             appBlocker.doAppBlockerCheck(event)
-            focusModeBlocker.doFocusModeCheck(event)
         } catch (t: Throwable) {
             Log.e("error", t.message ?: "Unknown error")
             crashLogger.logNonFatalError(Exception(t))
@@ -192,7 +180,6 @@ class AppBlockerService : BaseBlockingService() {
             antiUninstallBlocker.setupBlocker(this)
         }
         appBlocker.setupAppBlocker(this)
-        focusModeBlocker.setupFocusMode(this)
         reelBlocker.setupBlocker(this)
         reelScriptRunner.setup(this)
         keywordBlocker.setupBlocker(this)
@@ -212,7 +199,6 @@ class AppBlockerService : BaseBlockingService() {
         appUsageTracker.setup(this)
         neth.iecal.curbox.utils.UsageStatsCleaner.watch(this)
 
-        focusModeBlocker.setupReceivers()
         appBlocker.setupReceivers()
         reelBlocker.setupReceivers()
         keywordBlocker.setupReceivers()
@@ -248,8 +234,6 @@ class AppBlockerService : BaseBlockingService() {
         cleanupFeature("event channel") { eventChannel.cancel() }
         cleanupFeature("website observation channel") { websiteObservationChannel.cancel() }
 
-        cleanupFeature("focus receivers") { focusModeBlocker.removeReceivers() }
-        cleanupFeature("focus mode") { focusModeBlocker.onDestroy() }
         cleanupFeature("reel blocker") { reelBlocker.removeReceivers() }
         cleanupFeature("app blocker") { appBlocker.onDestroy() }
         cleanupFeature("keyword blocker") { keywordBlocker.removeReceivers() }

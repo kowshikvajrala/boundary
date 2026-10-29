@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * The backstop watchdog. It wakes up on a schedule even when the accessibility service is dead,
- * checks whether it is still on, and either heals it silently through Shizuku or, if it can't,
+ * checks whether it is still on, and either heals it silently with the secure settings permission or, if it can't,
  * nudges the user with a notification. It is scheduled with setPersisted so it survives a reboot.
  *
  * It cannot beat a force stop, which also cancels this job until the app is opened again.
@@ -44,7 +44,7 @@ class ServiceWatchdogJob : JobService() {
                 val config = DataStoreManager(applicationContext).settings.first().serviceProtectionConfig
                 // During a payment pause the blocker is off on purpose.
                 if (config.isEnabled && !PaymentPause.isActive(applicationContext)) {
-                    if (config.selfHealWithShizuku && ServiceProtectionManager.canSelfHeal()) {
+                    if (config.selfHealWithShizuku && ServiceProtectionManager.canSelfHeal(applicationContext)) {
                         ServiceProtectionManager.healNow(applicationContext)
                     } else if (!ServiceProtectionManager.isAppBlockerEnabled(applicationContext)) {
                         postServicesDownNotification(applicationContext)

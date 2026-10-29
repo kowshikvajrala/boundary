@@ -10,7 +10,8 @@ data class ServiceProtectionConfig(
     val isEnabled: Boolean = false,
 
     /**
-     * When Shizuku is available, let the watchdog silently turn the accessibility service back on
+     * With the adb granted secure settings permission, let the watchdog silently turn the accessibility service back on.
+     * Named for Shizuku, which it used to need; kept so stored settings still load.
      * if the system or an OEM battery manager switched it off.
      */
     val selfHealWithShizuku: Boolean = true,
