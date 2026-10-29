@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,7 @@ import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.AppGroup
 import neth.iecal.curbox.data.models.AppGroupConfig
 import neth.iecal.curbox.databinding.FragmentCreateAppGroupBinding
+import neth.iecal.curbox.hardcoded.AppWebsites
 import neth.iecal.curbox.ui.activity.SelectAppsActivity
 import neth.iecal.curbox.utils.scheduleConflictsWith
 import java.util.UUID
@@ -36,6 +39,7 @@ class CreateAppGroupFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var selectedApps: ArrayList<String> = arrayListOf()
+    private var selectedWebsites = linkedSetOf<String>()
     private var isPrefilled = false
     private val viewModel: AppBlockerSettingViewModel by activityViewModels()
 
@@ -85,6 +89,8 @@ class CreateAppGroupFragment : Fragment() {
                         binding.etGroupName.setText(group.name)
                         selectedApps = ArrayList(group.selectedPackages)
                         binding.btnSelectApps.text = getString(R.string.select_apps_count, selectedApps.size)
+                        selectedWebsites = group.websites.toCollection(LinkedHashSet())
+                        updateWebsitesList()
 
                         binding.btnDeleteGroup.visibility = View.VISIBLE
                         binding.btnDeleteGroup.setOnClickListener {
@@ -107,6 +113,11 @@ class CreateAppGroupFragment : Fragment() {
         }
 
         binding.btnSelectApps.setOnClickListener { openAppSelector() }
+        binding.btnAddWebsite.setOnClickListener { addWebsite() }
+        binding.etWebsite.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) addWebsite()
+            actionId == EditorInfo.IME_ACTION_DONE
+        }
 
         binding.btnConfigureSchedule.setOnClickListener { openScheduleEditor() }
         binding.btnConfigureUsage.setOnClickListener { openUsageEditor() }
@@ -144,7 +155,7 @@ class CreateAppGroupFragment : Fragment() {
             return
         }
 
-        if (selectedApps.isEmpty()) {
+        if (selectedApps.isEmpty() && selectedWebsites.isEmpty()) {
             Toast.makeText(requireContext(), getString(R.string.please_select_at_least_one_app), Toast.LENGTH_SHORT).show()
             return
         }
@@ -164,6 +175,7 @@ class CreateAppGroupFragment : Fragment() {
             id = newGroupId,
             name = name,
             selectedPackages = selectedApps.toList(),
+            websites = selectedWebsites.toList(),
             config = AppGroupConfig(
                 schedule = viewModel.currentTimeConfig,
                 usage = viewModel.currentUsageConfig
@@ -216,6 +228,31 @@ class CreateAppGroupFragment : Fragment() {
             } finally {
                 _binding?.fabSaveGroup?.isEnabled = true
             }
+        }
+    }
+
+    private fun addWebsite() {
+        val site = AppWebsites.normalize(binding.etWebsite.text.toString())
+        if (site == null) {
+            binding.tilWebsite.error = getString(R.string.app_group_website_invalid)
+            return
+        }
+        binding.tilWebsite.error = null
+        binding.etWebsite.setText("")
+        if (selectedWebsites.add(site)) updateWebsitesList()
+    }
+
+    private fun updateWebsitesList() {
+        val list = binding.websitesList
+        list.removeAllViews()
+        selectedWebsites.forEach { site ->
+            val row = layoutInflater.inflate(R.layout.item_keyword, list, false)
+            row.findViewById<TextView>(R.id.tv_keyword).text = site
+            row.findViewById<View>(R.id.btn_remove).setOnClickListener {
+                selectedWebsites.remove(site)
+                updateWebsitesList()
+            }
+            list.addView(row)
         }
     }
 

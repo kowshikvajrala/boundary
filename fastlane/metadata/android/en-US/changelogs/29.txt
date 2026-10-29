@@ -1,0 +1,3 @@
+• Blocked apps now block their websites too. When Instagram, Facebook, X, TikTok, Reddit, Snapchat, Threads or YouTube is blocked, its website in your browser shows the same wait screen, unlock and lock as the app.
+• App groups have a new Websites box. Add any other website there and it is blocked together with the group's apps.
+• The Summary tab was removed.

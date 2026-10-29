@@ -51,6 +51,13 @@ class AppGroupRestrictionComparatorTest {
     }
 
     @Test
+    fun addingWebsiteIsStricterAndRemovingItIsWeaker() {
+        val withSite = oldGroup.copy(websites = listOf("example.com"))
+        assertTrue(RestrictionComparator.appGroups(listOf(oldGroup), listOf(withSite)))
+        assertFalse(RestrictionComparator.appGroups(listOf(withSite), listOf(oldGroup)))
+    }
+
+    @Test
     fun removingAppIsWeakerEvenWithLongerActiveSchedule() {
         val current = oldGroup.copy(
             selectedPackages = listOf("example.app", "another.app")

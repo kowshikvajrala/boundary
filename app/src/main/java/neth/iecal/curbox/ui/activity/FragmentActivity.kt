@@ -232,14 +232,12 @@ class FragmentActivity : AppCompatActivity() {
     // used to force a full reload (and its loading flash) on every tab revisit.
     private val tabTags = mapOf(
         R.id.nav_usage to "tab_usage",
-        R.id.nav_summary to "tab_summary",
         R.id.nav_reducers to "tab_reducers",
         R.id.nav_info to "tab_info",
     )
 
     private fun createTabFragment(itemId: Int): Fragment = when (itemId) {
         R.id.nav_usage -> AllAppsUsageFragment()
-        R.id.nav_summary -> neth.iecal.curbox.ui.fragments.main.summary.SummaryFragment()
         R.id.nav_reducers -> ReducersFragment()
         R.id.nav_info -> neth.iecal.curbox.ui.fragments.main.InfoFragment()
         else -> AllAppsUsageFragment()

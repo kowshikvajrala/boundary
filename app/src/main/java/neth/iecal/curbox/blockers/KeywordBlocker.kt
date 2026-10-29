@@ -31,7 +31,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import neth.iecal.curbox.Constants
 import neth.iecal.curbox.R
-import neth.iecal.curbox.utils.DailyCounters
 import android.os.SystemClock
 import androidx.core.os.CancellationSignal
 import neth.iecal.curbox.utils.HomeLocationChecker
@@ -229,7 +228,7 @@ class KeywordBlocker : BaseBlocker() {
             if (cooldownEnd != null) {
                 if (cooldownEnd > now) return@filter false
                 removeCooldownFrom(group.id)
-                unlockLocks.unlockEnded(group.id, cooldownEnd, group.warningScreenConfig.lockAfterUnlockMs)
+                unlockLocks.unlockEnded(group.id, cooldownEnd)
                 publishTimersToWidgets()
             }
             true
@@ -525,7 +524,6 @@ class KeywordBlocker : BaseBlocker() {
         val duration = intent.getLongExtra("selected_time", 120000L)
         if (duration <= 0L) return
         if (unlockLocks.lockEndsAt(groupId, lockAfterFor(groupId)) > 0L) return
-        DailyCounters.increment(service, DailyCounters.Kind.UNLOCKS)
 
         val cooldownEnd = System.currentTimeMillis() + duration
         cooldownGroupsList[groupId] = cooldownEnd
@@ -585,7 +583,7 @@ class KeywordBlocker : BaseBlocker() {
         val remaining = cooldownEnd - System.currentTimeMillis()
         if (remaining <= 0L) {
             removeCooldownFrom(groupId)
-            unlockLocks.unlockEnded(groupId, cooldownEnd, lockAfterFor(groupId))
+            unlockLocks.unlockEnded(groupId, cooldownEnd)
             publishTimersToWidgets()
             return
         }
@@ -597,7 +595,7 @@ class KeywordBlocker : BaseBlocker() {
             title = service.getString(R.string.notification_remaining_usage_lockdown),
             onFinishCallback = {
                 if (cooldownGroupsList[groupId] == cooldownEnd) {
-                    unlockLocks.unlockEnded(groupId, cooldownEnd, lockAfterFor(groupId))
+                    unlockLocks.unlockEnded(groupId, cooldownEnd)
                     publishTimersToWidgets()
                     cooldownGroupsList.remove(groupId)
                     prefs.edit {

@@ -155,6 +155,7 @@ class AppBlockerService : BaseBlockingService() {
         serviceScope.launch(Dispatchers.IO) {
             for (observation in websiteObservationChannel) {
                 try {
+                    appBlocker.onWebsiteObserved(observation)
                     keywordBlocker.onWebsiteObserved(observation)
                 } catch (t: Throwable) {
                     if (t is CancellationException) throw t

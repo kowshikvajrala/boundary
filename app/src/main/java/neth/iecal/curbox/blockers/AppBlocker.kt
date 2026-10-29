@@ -1,7 +1,6 @@
 package neth.iecal.curbox.blockers
 
 import android.app.ActivityManager
-import neth.iecal.curbox.utils.DailyCounters
 import neth.iecal.curbox.ui.activity.PaymentPauseStartActivity
 import neth.iecal.curbox.utils.PermissionUtils
 import android.os.SystemClock
@@ -29,7 +28,9 @@ import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.AppGroupConfig
 import neth.iecal.curbox.data.models.AppUsageConfig
 import neth.iecal.curbox.data.models.upgradeLegacyAppGroupConfigs
+import neth.iecal.curbox.hardcoded.AppWebsites
 import neth.iecal.curbox.services.BaseBlockingService
+import neth.iecal.curbox.trackers.WebsiteObservation
 import neth.iecal.curbox.ui.activity.WarningActivity
 import neth.iecal.curbox.utils.TimerNotification
 import neth.iecal.curbox.utils.UsageStatsHelper
@@ -106,6 +107,10 @@ class AppBlocker : BaseBlocker() {
     // starts, so a pause that ends while the payment app is open does not start a new one.
     private var lastWindowPackage: String? = null
     private lateinit var unlockLocks: UnlockLocks
+    // Browser and the site it shows, while that site is an app's website (see AppWebsites).
+    private var websiteInBrowser: Pair<String, String>? = null
+    // Websites typed into active app groups.
+    @Volatile private var groupWebsites: Set<String> = emptySet()
     // Windows that can sit over an app without the user leaving it, such as the keyboard.
     private val passThroughPackages = ConcurrentHashMap.newKeySet<String>()
 
@@ -142,9 +147,9 @@ class AppBlocker : BaseBlocker() {
     fun doAppBlockerCheck(event: AccessibilityEvent?) {
         if (event == null || (event.eventType and TARGET_EVENTS_MASK) == 0) return
 
-        val packageName = event.packageName?.toString() ?: return
+        val eventPackage = event.packageName?.toString() ?: return
 
-        if (packageName == service.packageName &&
+        if (eventPackage == service.packageName &&
             (isWarningScreenVisible || event.className?.toString() == WarningActivity::class.java.name)
         ) {
             isWarningScreenVisible = true
@@ -152,7 +157,9 @@ class AppBlocker : BaseBlocker() {
         }
         // Our own overlays (reel counter, pill) send events while another app stays in front.
         // Treating those as leaving the app stopped the usage countdown, so skip them.
-        if (packageName == service.packageName && !isOwnAppInFront()) return
+        if (eventPackage == service.packageName && !isOwnAppInFront()) return
+        // A browser showing an app's website counts as that app.
+        val packageName = appShownInBrowser(eventPackage) ?: eventPackage
 
         if (lastPackage == packageName || ignoredApps.contains(packageName)) {
             return
@@ -206,7 +213,7 @@ class AppBlocker : BaseBlocker() {
                 }
 
                 notificationManager.stopTimer()
-                showWarningScreen(packageName, entry.groupId, entry.warningConfig)
+                showWarningScreen(packageName, entry.groupId, entry.warningConfig, eventPackage)
                 return
             }
 
@@ -227,7 +234,7 @@ class AppBlocker : BaseBlocker() {
 
                 val currentUsage = runBlocking {
                     usageStats.getForegroundUsageBetween(
-                        entry.groupPackages.toSet(),
+                        entry.groupPackages.filterNot(AppWebsites::isSiteKey).toSet(),
                         activeWindow.startMs,
                         minOf(now, activeWindow.endMs)
                     )
@@ -237,7 +244,7 @@ class AppBlocker : BaseBlocker() {
 
                 if (remainingUsage <= 0) {
                     notificationManager.stopTimer()
-                    showWarningScreen(packageName, entry.groupId, entry.warningConfig)
+                    showWarningScreen(packageName, entry.groupId, entry.warningConfig, eventPackage)
                     return
                 }
                 if (remainingUsage < minRemaining) minRemaining = remainingUsage
@@ -264,6 +271,39 @@ class AppBlocker : BaseBlocker() {
         showNextCooldownNotification()
 
         lastPackage = packageName
+    }
+
+    /** Called from a background thread with the site the browser in front shows, or null. */
+    fun onWebsiteObserved(observation: WebsiteObservation?) {
+        val site = observation
+            ?.takeIf { obs ->
+                AppWebsites.packagesFor(obs.domain).isNotEmpty() ||
+                    groupWebsites.any { AppWebsites.matches(obs.domain, it) }
+            }
+            ?.let { it.packageName to it.domain }
+        handler.post {
+            try {
+                if (site == websiteInBrowser) return@post
+                websiteInBrowser = site
+                // The page changed without a window change, so check the browser again now.
+                val currentPackage = service.rootInActiveWindow?.packageName?.toString() ?: return@post
+                lastPackage = ""
+                val event = AccessibilityEvent.obtain(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
+                event.packageName = currentPackage
+                doAppBlockerCheck(event)
+                event.recycle()
+            } catch (e: Exception) {
+                Log.e("AppBlocker", "Website check failed", e)
+            }
+        }
+    }
+
+    private fun appShownInBrowser(browserPackage: String): String? {
+        val (browser, domain) = websiteInBrowser ?: return null
+        if (browser != browserPackage) return null
+        groupWebsites.firstOrNull { AppWebsites.matches(domain, it) }?.let { return AppWebsites.siteKey(it) }
+        val apps = AppWebsites.packagesFor(domain)
+        return apps.firstOrNull(blockedAppsList::containsKey) ?: apps.firstOrNull()
     }
 
     /**
@@ -333,9 +373,12 @@ class AppBlocker : BaseBlocker() {
                 Log.d("AppBlocker", "Settings updated, groups count: ${settings.blockedAppGroups.size}")
 
                 val newBlockedAppsList = ConcurrentHashMap<String, MutableList<AppGroupEntry>>()
+                val newGroupWebsites = HashSet<String>()
                 settings.blockedAppGroups.upgradeLegacyAppGroupConfigs().forEach { group ->
                     groupNames[group.id] = group.name
-                    groupPackagesById[group.id] = group.selectedPackages.map(String::trim).toSet()
+                    // A typed website takes part like one more app of the group.
+                    val siteKeys = group.websites.map(AppWebsites::siteKey)
+                    groupPackagesById[group.id] = (group.selectedPackages.map(String::trim) + siteKeys).toSet()
                     if (group.warningScreenConfig.isOnOpenConfig) onEachOpenGroupIds.add(group.id) else onEachOpenGroupIds.remove(group.id)
                     lockAfterMsById[group.id] = group.warningScreenConfig.lockAfterUnlockMs
                     if (group.warningScreenConfig.closeAppsWhileLocked) closeAppsWhileLockedIds.add(group.id) else closeAppsWhileLockedIds.remove(group.id)
@@ -343,7 +386,8 @@ class AppBlocker : BaseBlocker() {
 
                     try {
                         val config = group.config ?: return@forEach
-                        val groupPackages = group.selectedPackages.map(String::trim)
+                        val groupPackages = group.selectedPackages.map(String::trim) + siteKeys
+                        newGroupWebsites.addAll(group.websites)
                         val entry = AppGroupEntry(
                             group.id,
                             config,
@@ -358,6 +402,7 @@ class AppBlocker : BaseBlocker() {
                     }
                 }
 
+                groupWebsites = newGroupWebsites
                 paymentPauseApps = settings.paymentPauseApps.toSet()
                 isAwayMode = settings.isAwayModeActive
                 homeLocation = settings.homeLocation
@@ -415,7 +460,6 @@ class AppBlocker : BaseBlocker() {
         }
 
         pausedUnlocks.remove(groupId)
-        DailyCounters.increment(service, DailyCounters.Kind.UNLOCKS)
         putCooldownTo(groupId, realTimeEndMillis)
         showNextCooldownNotification()
         setUpForcedRefreshChecker("cooldown:$groupId", realTimeEndMillis, groupId)
@@ -543,9 +587,7 @@ class AppBlocker : BaseBlocker() {
     private fun endUnlock(groupId: String) {
         val endedAt = cooldownGroupsList[groupId]
         removeCooldownFrom(groupId)
-        if (endedAt != null && groupId !in onEachOpenGroupIds) {
-            unlockLocks.unlockEnded(groupId, endedAt, lockAfterMsById[groupId] ?: 0L)
-        }
+        if (endedAt != null && groupId !in onEachOpenGroupIds) unlockLocks.unlockEnded(groupId, endedAt)
         refreshLockedPackages()
         if (lockEndsAt(groupId) > 0L) {
             // Give the forced re check a moment to send the user home, then close the apps.
@@ -623,7 +665,7 @@ class AppBlocker : BaseBlocker() {
         if (groupId !in closeAppsWhileLockedIds || isAwayMode) return
         val activityManager = service.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         groupPackagesById[groupId].orEmpty()
-            .filter { it != service.packageName }
+            .filter { it != service.packageName && !AppWebsites.isSiteKey(it) }
             .forEach { pkg ->
                 try {
                     activityManager.killBackgroundProcesses(pkg)
@@ -738,7 +780,13 @@ class AppBlocker : BaseBlocker() {
         handler.postDelayed(runnable, delayMillis)
     }
 
-    private fun showWarningScreen(packageName: String, groupId: String, warningConfig: AppBlockerWarningScreenConfig) {
+    /** [launchPackage] is opened again after Proceed; it is the browser when an app's website was blocked. */
+    private fun showWarningScreen(
+        packageName: String,
+        groupId: String,
+        warningConfig: AppBlockerWarningScreenConfig,
+        launchPackage: String = packageName
+    ) {
         if (service.isDelayOver(1000)) {
 
             // Remember the warning that was shown so the cooldown intent can read its default duration
@@ -761,7 +809,7 @@ class AppBlocker : BaseBlocker() {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     putExtra("mode", Constants.WARNING_SCREEN_MODE_APP_BLOCKER)
                     putExtra("result_id", groupId)
-                    putExtra("launch_package", packageName)
+                    putExtra("launch_package", launchPackage)
                     putExtra(
                         "warning_config",
                         Gson().toJson(warningConfig)

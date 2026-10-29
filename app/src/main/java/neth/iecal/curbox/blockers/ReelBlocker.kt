@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import neth.iecal.curbox.Constants
 import neth.iecal.curbox.R
-import neth.iecal.curbox.utils.DailyCounters
 import neth.iecal.curbox.data.models.ReelBlocker
 import neth.iecal.curbox.data.models.ReelTimeConfig
 import neth.iecal.curbox.data.models.ReelCountConfig
@@ -237,7 +236,6 @@ class ReelBlocker : BaseBlocker() {
                         reelBlockerConfig.warningScreenConfig.timeInterval
                     )
                     if (interval <= 0L) return
-                    DailyCounters.increment(service, DailyCounters.Kind.UNLOCKS)
                     val currentUptime = SystemClock.uptimeMillis()
                     val endTime = if (interval > Long.MAX_VALUE - currentUptime) {
                         Long.MAX_VALUE
@@ -259,11 +257,7 @@ class ReelBlocker : BaseBlocker() {
         if (uptimeNow > cooldownEnd) {
             cooldownViewIdsList.remove(viewId)
             // Cooldowns run on uptime; the lock is kept in wall clock time so it survives restarts.
-            unlockLocks?.unlockEnded(
-                viewId,
-                System.currentTimeMillis() - (uptimeNow - cooldownEnd),
-                reelBlockerConfig.warningScreenConfig.lockAfterUnlockMs
-            )
+            unlockLocks?.unlockEnded(viewId, System.currentTimeMillis() - (uptimeNow - cooldownEnd))
             publishTimersToWidgets()
             return false
         }
