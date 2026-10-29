@@ -24,6 +24,7 @@ import kotlinx.coroutines.runBlocking
 import neth.iecal.curbox.Constants
 import neth.iecal.curbox.R
 import neth.iecal.curbox.services.LockedAppNotificationListener
+import neth.iecal.curbox.data.db.AppDatabase
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.AppGroupConfig
 import neth.iecal.curbox.data.models.AppUsageConfig
@@ -33,10 +34,14 @@ import neth.iecal.curbox.services.BaseBlockingService
 import neth.iecal.curbox.trackers.WebsiteObservation
 import neth.iecal.curbox.ui.activity.WarningActivity
 import neth.iecal.curbox.utils.TimerNotification
+import neth.iecal.curbox.utils.TimeTools
 import neth.iecal.curbox.utils.UsageStatsHelper
+import neth.iecal.curbox.utils.WebsiteUsageWindow
 import neth.iecal.curbox.utils.activeWindow
 import neth.iecal.curbox.utils.getCurrentKeyboardPackageName
 import neth.iecal.curbox.utils.nextChangeAfter
+import java.time.Instant
+import java.time.ZoneId
 import java.util.Calendar
 import java.util.concurrent.ConcurrentHashMap
 
@@ -232,13 +237,14 @@ class AppBlocker : BaseBlocker() {
                     continue
                 }
 
+                val usageEndMs = minOf(now, activeWindow.endMs)
                 val currentUsage = runBlocking {
                     usageStats.getForegroundUsageBetween(
                         entry.groupPackages.filterNot(AppWebsites::isSiteKey).toSet(),
                         activeWindow.startMs,
-                        minOf(now, activeWindow.endMs)
+                        usageEndMs
                     )
-                }
+                } + websiteUsage(entry, activeWindow.startMs, usageEndMs)
                 val usageLimitMillis = getUsageLimitForToday(entry.config.usage) * 60_000L
                 val remainingUsage = usageLimitMillis - currentUsage
 
@@ -463,6 +469,31 @@ class AppBlocker : BaseBlocker() {
         putCooldownTo(groupId, realTimeEndMillis)
         showNextCooldownNotification()
         setUpForcedRefreshChecker("cooldown:$groupId", realTimeEndMillis, groupId)
+    }
+
+    /** Time spent on the group's websites in any browser, so it counts toward the group's limit. */
+    private fun websiteUsage(entry: AppGroupEntry, startMs: Long, endMs: Long): Long {
+        val sites = entry.groupPackages.flatMap(AppWebsites::sitesFor)
+        if (sites.isEmpty() || endMs <= startMs) return 0L
+        return try {
+            runBlocking(Dispatchers.IO) {
+                val zone = ZoneId.systemDefault()
+                val endDate = Instant.ofEpochMilli(endMs).atZone(zone).toLocalDate()
+                var date = Instant.ofEpochMilli(startMs).atZone(zone).toLocalDate()
+                val dates = buildList {
+                    while (!date.isAfter(endDate)) {
+                        add(TimeTools.dayKey(date))
+                        date = date.plusDays(1)
+                    }
+                }
+                val rows = AppDatabase.getInstance(service).websiteStatsDao().getStatsForDates(dates)
+                    .filter { row -> sites.any { AppWebsites.matches(row.domain, it) } }
+                WebsiteUsageWindow.sum(rows, startMs, endMs)
+            }
+        } catch (e: Exception) {
+            Log.e("AppBlocker", "Could not read website time", e)
+            0L
+        }
     }
 
     private fun getUsageLimitForToday(config: AppUsageConfig): Long {
@@ -715,9 +746,19 @@ class AppBlocker : BaseBlocker() {
         notificationManager.stopTimer()
         service.pressHome()
         lastPackage = ""
-        service.blockedPill.show(packageName, UnlockLocks.pillText(service, lockEndsAt))
+        showPill(packageName, UnlockLocks.pillText(service, lockEndsAt))
         handler.postDelayed({ closeLockedApps(groupId) }, CLOSE_AFTER_HOME_MS)
         if (!activeRunnables.containsKey("lockclose:$groupId")) keepLockedAppsClosed(groupId)
+    }
+
+    /** A typed website has no app icon, so its pill shows a globe and names the site. */
+    private fun showPill(packageName: String, text: String) {
+        if (AppWebsites.isSiteKey(packageName)) {
+            val site = AppWebsites.siteOf(packageName)
+            service.blockedPill.show(null, service.getString(R.string.website_pill_text, site, text), iconRes = R.drawable.ic_website_pill)
+        } else {
+            service.blockedPill.show(packageName, text)
+        }
     }
 
     // Counts down to the soonest unlock ending and, when several groups are unlocked, lists each one.
@@ -799,7 +840,7 @@ class AppBlocker : BaseBlocker() {
 
             if (warningConfig.isWarningDialogHidden) return
             if (warningConfig.isProceedDisabled) {
-                service.blockedPill.show(packageName, warningConfig.message.filter { it.isNotBlank() }.randomOrNull() ?: service.getString(R.string.blocked_pill_fallback))
+                showPill(packageName, warningConfig.message.filter { it.isNotBlank() }.randomOrNull() ?: service.getString(R.string.blocked_pill_fallback))
                 return
             }
             isWarningScreenVisible = true

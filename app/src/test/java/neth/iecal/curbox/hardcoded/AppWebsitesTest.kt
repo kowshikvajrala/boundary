@@ -30,4 +30,11 @@ class AppWebsitesTest {
         assertEquals(listOf("com.facebook.katana"), AppWebsites.packagesFor("m.facebook.com"))
         assertTrue(AppWebsites.packagesFor("example.com").isEmpty())
     }
+
+    @Test
+    fun sitesOfAppsAndTypedWebsites() {
+        assertEquals(listOf("instagram.com"), AppWebsites.sitesFor("com.instagram.android"))
+        assertEquals(listOf("example.com"), AppWebsites.sitesFor(AppWebsites.siteKey("example.com")))
+        assertTrue(AppWebsites.sitesFor("com.example.unknown").isEmpty())
+    }
 }

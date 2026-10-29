@@ -1,0 +1,3 @@
+• Time on a blocked app's website now counts toward the group's daily limit, together with time in the app. Website usage tracking must be on.
+• When you pick apps for a group, their websites (like instagram.com) are listed under Websites, so you can see what is blocked with them.
+• Websites you add yourself now show a globe and the site name when they are locked.

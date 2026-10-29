@@ -72,9 +72,11 @@
     <string name="schedule_summary_weekdays">Monday to Friday, %1$s to %2$s</string>
     <string name="schedule_summary_custom">Custom schedule</string>
     <string name="app_group_websites_title">Websites</string>
-    <string name="app_group_websites_help">These sites are blocked in your browser just like the apps above. Instagram, Facebook, X, TikTok, Reddit, Snapchat, Threads and YouTube sites already go with their apps.</string>
+    <string name="app_group_websites_help">These sites are blocked in your browser just like the apps above. Sites of well known apps, like instagram.com, are added for you.</string>
     <string name="app_group_website_hint">example.com</string>
     <string name="app_group_website_invalid">Type a website like example.com</string>
+    <string name="app_group_website_included">%1$s, included with %2$s</string>
+    <string name="website_pill_text">%1$s: %2$s</string>
     <string name="schedule_overlap_not_saved">Overlapping time ranges were not saved</string>
     <string name="schedule_no_room_for_range">No room for another time range</string>
     <string name="schedule_conflict_title">Schedule conflict</string>

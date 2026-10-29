@@ -25,6 +25,10 @@ object AppWebsites {
     fun packagesFor(domain: String): List<String> =
         domainsByPackage.filterValues { domains -> domains.any { matches(domain, it) } }.keys.toList()
 
+    /** The websites of [packageName], or of a [siteKey]; empty for apps without a known website. */
+    fun sitesFor(packageName: String): List<String> =
+        if (isSiteKey(packageName)) listOf(siteOf(packageName)) else domainsByPackage[packageName].orEmpty()
+
     /** True when [domain] is [site] or one of its subdomains, for example "m.example.com" and "example.com". */
     fun matches(domain: String, site: String): Boolean {
         val host = domain.lowercase().removePrefix("www.")
@@ -48,4 +52,6 @@ object AppWebsites {
     fun siteKey(site: String) = SITE_KEY_PREFIX + site
 
     fun isSiteKey(packageName: String) = packageName.startsWith(SITE_KEY_PREFIX)
+
+    fun siteOf(siteKey: String) = siteKey.removePrefix(SITE_KEY_PREFIX)
 }

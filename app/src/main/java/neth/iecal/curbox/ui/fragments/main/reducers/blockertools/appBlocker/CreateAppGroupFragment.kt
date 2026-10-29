@@ -51,6 +51,7 @@ class CreateAppGroupFragment : Fragment() {
             if (apps != null) {
                 selectedApps = apps
                 binding.btnSelectApps.text = getString(R.string.select_apps_count, selectedApps.size)
+                updateWebsitesList()
             }
         }
     }
@@ -78,6 +79,7 @@ class CreateAppGroupFragment : Fragment() {
             selectedApps = arrayListOf(prefillPackage)
             binding.btnSelectApps.text = getString(R.string.select_apps_count, selectedApps.size)
         }
+        updateWebsitesList()
 
         if (groupId != null) {
             viewLifecycleOwner.lifecycleScope.launch {
@@ -245,6 +247,18 @@ class CreateAppGroupFragment : Fragment() {
     private fun updateWebsitesList() {
         val list = binding.websitesList
         list.removeAllViews()
+        // Websites of the chosen apps are blocked with them already; shown here without a remove button.
+        selectedApps.forEach { pkg ->
+            val appName = runCatching {
+                requireContext().packageManager.run { getApplicationLabel(getApplicationInfo(pkg, 0)).toString() }
+            }.getOrDefault(pkg)
+            AppWebsites.sitesFor(pkg).forEach { site ->
+                val row = layoutInflater.inflate(R.layout.item_keyword, list, false)
+                row.findViewById<TextView>(R.id.tv_keyword).text = getString(R.string.app_group_website_included, site, appName)
+                row.findViewById<View>(R.id.btn_remove).visibility = View.GONE
+                list.addView(row)
+            }
+        }
         selectedWebsites.forEach { site ->
             val row = layoutInflater.inflate(R.layout.item_keyword, list, false)
             row.findViewById<TextView>(R.id.tv_keyword).text = site
