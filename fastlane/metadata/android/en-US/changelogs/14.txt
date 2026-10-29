@@ -1,0 +1,3 @@
+• Long messages now fit on the wait screen. Short messages stay big. Longer ones use smaller text that is easy to read, and you can scroll if needed.
+• Each wait screen message now has its own box. Tap "Add another message" to add Message 2, Message 3 and more. One is picked at random each time.
+• Commas no longer split a message into pieces.

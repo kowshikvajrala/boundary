@@ -8,7 +8,7 @@ Boundary is a personal fork of [Curbox](https://github.com/curbox-app/curbox-and
 
 ## Owner preferences
 
-- **Never build locally.** Build and release only through GitHub Actions (see Releasing).
+- **Local builds are for testing only.** Run `./gradlew :app:testReleaseUnitTest :app:assembleRelease` locally before every release (tools: see Local build). Signed releases are built and published only through GitHub Actions.
 - **No Shizuku and no root.** Do not build features that depend on them.
 - Ask before big or irreversible changes. When a request is ambiguous, ask with a short multiple choice.
 - Explain things simply; the owner is not an Android developer.
@@ -29,9 +29,20 @@ Boundary is a personal fork of [Curbox](https://github.com/curbox-app/curbox-and
 - GitHub secrets: `SIGNING_KEY` (base64 keystore), `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`. The workflow writes `keystore.properties`; Gradle signs the release only when that file exists.
 - Signer SHA-256 begins `EF:E3:F9:A4` and ends `E4:41`.
 
+## Local build
+
+JDK 21 and the Android SDK are in the home folder, not on PATH: `~/dev-tools/jdk-21` and `~/dev-tools/android-sdk`. `local.properties` (gitignored) points `sdk.dir` there.
+
+```bash
+export JAVA_HOME=~/dev-tools/jdk-21 ANDROID_HOME=~/dev-tools/android-sdk PATH=~/dev-tools/jdk-21/bin:$PATH
+./gradlew :app:testReleaseUnitTest :app:assembleRelease
+```
+
+Without `keystore.properties` this gives `app/build/outputs/apk/release/app-release-unsigned.apk`, which is for checking only. Never write `keystore.properties` locally.
+
 ## Releasing
 
-`.github/workflows/release.yml` runs on a `v*` tag push: unit tests, signed `assembleRelease`, then a GitHub release with `boundary-<version>.apk`. The release notes come from `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`.
+`.github/workflows/release.yml` runs on a `v*` tag push: signed `assembleRelease`, then a GitHub release (unit tests run locally instead, see Local build) with `boundary-<version>.apk`. The release notes come from `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`.
 
 1. Bump `versionCode` and `versionName` in `app/build.gradle.kts`. **`versionCode` must always go up by 1 and is never reused**, even for deleted releases, because Android will not install a lower code over a higher one. Choose `versionName` by semantic versioning, based on what the release contains (the owner asked for this from 1.0.10 on):
    - **Patch** (`1.1.0` → `1.1.1`): only fixes; nothing new for the owner to learn.
@@ -39,7 +50,7 @@ Boundary is a personal fork of [Curbox](https://github.com/curbox-app/curbox-and
    - **Major** (`1.4.2` → `2.0.0`): breaks or reshapes existing use, for example the owner must redo setup (re enable accessibility, re add widgets) or lose data. Reset minor and patch to 0, and confirm with the owner first.
    - A release with both fixes and a feature is a minor bump. When unsure, say which bump you chose and why.
 2. Write `changelogs/<versionCode>.txt` in plain, user facing language.
-3. Commit, then `git tag -a vX.Y.Z -m "Boundary X.Y.Z"`, push `main`, push the tag.
+3. Run the local build and tests. Commit, then `git tag -a vX.Y.Z -m "Boundary X.Y.Z"`, push `main`, push the tag.
 4. Poll with `gh api repos/kowshikvajrala/boundary/actions/runs/<id> --jq '.status, .conclusion'`. `gh run watch` often dies on GitHub API 502 errors.
 5. If a build fails before publishing, fix it, move the tag (`git tag -fa`, `git push -f origin <tag>`) and let it rebuild. Never move the tag of a published release; ship a new version instead.
 6. After publishing, report to the owner what changed, what to test on the phone, and that it has not been tested on a device.
@@ -56,6 +67,7 @@ GitHub Actions quirks seen here: a tag push sometimes does not start a run (star
 | The unlock notification lists every unlocked group with its own time left | `AppBlocker.showNextCooldownNotification`, `utils/TimerNotification.kt` (`breakdown`) |
 | Unlock time counts only while the group's apps are in front; leftover time is frozen for up to 1 hour | `AppBlocker.syncUnlocksWithForegroundApp`, `pausedUnlocks` |
 | X (Twitter) in the Reels blocker and counter. Its viewer is Compose with no ids or text, so it is matched by tree path and full screen size. It is blocked but not counted (`countsReels = false`): counting by pager scroll position was unreliable, so the owner had it removed in 1.1.1 | `hardcoded/ReelAppConfig.kt`, `ReelAppData.countsReels`, `ReelsCountTracker` |
+| Wait screen messages: one box each ("Add another message"), long messages switch to smaller left aligned text | `WarningConfigFormController.addMessageBox`, `res/layout/item_warning_message.xml`, `WarningActivity.showWarningMessage` |
 | Eye breaks (20 20 20 rule) with a live countdown on the Reducers card | `anti_stimulants/EyeBreakReminder.kt` (in the service, broadcasts its schedule), `ReducersFragment.setupEyeBreakCard` |
 
 Behavior notes:
@@ -97,5 +109,6 @@ Behavior notes:
 | 1.0.10 | 11 | Unlock time counts only while the apps are in use |
 | 1.1.0 | 12 | X (Twitter) full screen videos in the Reels blocker and counter |
 | 1.1.1 | 13 | X removed from the reel counter (count was unreliable); still blocked |
+| 1.2.0 | 14 | Wait screen fits long messages; one box per message instead of comma splitting |
 
 Versions up to 1.0.10 only bumped the patch number, even for features. From 1.1.0 on, releases follow semantic versioning (see Releasing).

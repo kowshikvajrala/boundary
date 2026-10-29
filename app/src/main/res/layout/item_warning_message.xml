@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:endIconContentDescription="@string/remove_warning_message"
+    app:endIconDrawable="@drawable/baseline_close_24"
+    app:endIconMode="custom">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/warning_msg_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|start"
+        android:inputType="textMultiLine|textCapSentences"
+        android:minLines="2" />
+</com.google.android.material.textfield.TextInputLayout>

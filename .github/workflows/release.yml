@@ -46,9 +46,6 @@ jobs:
             echo "keyPassword=$KEY_PASSWORD"
           } > keystore.properties
 
-      - name: Run unit tests
-        run: ./gradlew :app:testReleaseUnitTest
-
       - name: Build signed APK
         run: ./gradlew :app:assembleRelease
 

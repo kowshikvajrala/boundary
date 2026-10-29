@@ -511,19 +511,31 @@
                     android:paddingBottom="16dp"
                     android:visibility="gone">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/warning_msg_layout"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    <LinearLayout
+                        android:id="@+id/warning_msg_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:hint="@string/hint_custom_warning">
+                        android:animateLayoutChanges="true"
+                        android:orientation="vertical" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/warning_msg_edit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        android:id="@+id/warning_msg_random_note"
+                        style="@style/TextAppearance.Material3.BodySmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/warning_messages_random_note"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_add_warning_msg"
+                        style="@style/Widget.Material3.Button.TextButton.Icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:paddingHorizontal="0dp"
+                        android:text="@string/add_warning_message"
+                        app:icon="@drawable/baseline_add_24" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_on_each_open"

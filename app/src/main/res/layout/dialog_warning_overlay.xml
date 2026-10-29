@@ -34,6 +34,7 @@
             android:paddingEnd="24dp">
 
             <ImageView
+                android:id="@+id/warning_logo"
                 android:layout_width="112dp"
                 android:layout_height="112dp"
                 android:layout_marginBottom="24dp"

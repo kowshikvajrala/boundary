@@ -12,12 +12,15 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
@@ -287,7 +290,7 @@ class WarningActivity : AppCompatActivity() {
         })
         binding.btnCloseX.setOnClickListener { binding.btnCancel.performClick() }
 
-        binding.warningMsg.text = warningScreenConfig.message.random()
+        showWarningMessage(warningScreenConfig.message.random())
 
         if (warningScreenConfig.isOnOpenConfig) {
             binding.minsPicker.visibility = View.GONE
@@ -635,6 +638,23 @@ class WarningActivity : AppCompatActivity() {
         }
     }
 
+    /** Short messages stay a big headline. Long ones switch to smaller text that is easy to read. */
+    private fun showWarningMessage(message: String) {
+        binding.warningMsg.text = message
+        if (message.length <= LONG_MESSAGE_CHARS) return
+        binding.warningMsg.apply {
+            typeface = ResourcesCompat.getFont(this@WarningActivity, R.font.inter)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+            setLineSpacing(0f, 1.25f)
+            gravity = Gravity.START
+        }
+        val logoSize = (64 * resources.displayMetrics.density).toInt()
+        binding.warningLogo.layoutParams = binding.warningLogo.layoutParams.apply {
+            width = logoSize
+            height = logoSize
+        }
+    }
+
     private fun restrictFocusGoal(message: String) {
         binding.focusGoalStatus.text = message
         binding.btnProceed.visibility = View.GONE
@@ -798,6 +818,7 @@ class WarningActivity : AppCompatActivity() {
 
     private companion object {
         const val KEY_MATH_RETRY_ENDS_AT_MS = "math_retry_ends_at_ms"
+        const val LONG_MESSAGE_CHARS = 60
         const val MATH_RETRY_DELAY_MS = 15_000L
         const val MIN_ADAPTIVE_MATH_QUESTIONS = 1
         const val MAX_ADAPTIVE_MATH_QUESTIONS = 10

@@ -2,6 +2,7 @@ package neth.iecal.curbox.ui.fragments.main.reducers.blockertools.shared
 
 import android.transition.AutoTransition
 import android.transition.TransitionManager
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
@@ -14,6 +15,7 @@ import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.ManualFocusGroup
 import neth.iecal.curbox.databinding.FragmentWarningConfigBinding
+import neth.iecal.curbox.databinding.ItemWarningMessageBinding
 
 internal class WarningConfigFormController(
     private val fragment: Fragment,
@@ -32,6 +34,7 @@ internal class WarningConfigFormController(
     }
     private var focusGroupOptions: List<FocusGroupUnlockOption> = emptyList()
     private var selectedFocusGroupId = ""
+    private val messageBoxes = mutableListOf<ItemWarningMessageBinding>()
 
     fun bind(
         config: AppBlockerWarningScreenConfig,
@@ -124,11 +127,17 @@ internal class WarningConfigFormController(
         )
         updateProceedWindowInput(initialInputValue)
 
-        binding.warningMsgEdit.setText(config.message.joinToString(", "))
+        binding.warningMsgContainer.removeAllViews()
+        messageBoxes.clear()
+        config.message.ifEmpty { listOf("") }.forEach(::addMessageBox)
         binding.switchVibrateBrightness.isChecked = config.vibrateAndIncBrightness
     }
 
     fun setupListeners(onSave: () -> Unit) {
+        binding.btnAddWarningMsg.setOnClickListener {
+            addMessageBox("")
+            messageBoxes.last().warningMsgEdit.requestFocus()
+        }
         binding.unlockChallengeDropdown.setOnItemClickListener { _, _, position, _ ->
             updateSecondaryDropdown(position)
             val isOnEachOpenEnabled = isOnEachOpenEnabled()
@@ -248,6 +257,39 @@ internal class WarningConfigFormController(
         binding.saveconfigs.setOnClickListener { onSave() }
     }
 
+    private fun addMessageBox(text: String) {
+        val box = ItemWarningMessageBinding.inflate(
+            LayoutInflater.from(fragment.requireContext()),
+            binding.warningMsgContainer,
+            false
+        )
+        // Every box shares one view id, so Android's own state restore would mix up their text.
+        box.warningMsgEdit.isSaveEnabled = false
+        box.warningMsgEdit.setText(text)
+        box.root.setEndIconOnClickListener {
+            binding.warningMsgContainer.removeView(box.root)
+            messageBoxes.remove(box)
+            updateMessageBoxes()
+        }
+        binding.warningMsgContainer.addView(box.root)
+        messageBoxes.add(box)
+        updateMessageBoxes()
+    }
+
+    private fun updateMessageBoxes() {
+        val hasSeveral = messageBoxes.size > 1
+        messageBoxes.forEachIndexed { index, box ->
+            box.root.hint = if (hasSeveral) {
+                fragment.getString(R.string.warning_message_number, index + 1)
+            } else {
+                fragment.getString(R.string.hint_custom_warning)
+            }
+            // The last box stays so there is always somewhere to type.
+            box.root.isEndIconVisible = hasSeveral
+        }
+        binding.warningMsgRandomNote.isVisible = hasSeveral
+    }
+
     fun createConfig(
         qrKeys: Map<String, Long>,
         nfcKeys: Map<String, Long>
@@ -257,9 +299,8 @@ internal class WarningConfigFormController(
             selectedSecondaryIndex(selectedChallengeIndex())
         )
         return AppBlockerWarningScreenConfig(
-            message = binding.warningMsgEdit.text.toString()
-                .split(",")
-                .map { it.trim() }
+            message = messageBoxes
+                .map { it.warningMsgEdit.text.toString().trim() }
                 .filter { it.isNotEmpty() },
 
             timeInterval = numericInputValue(binding.fixedTimeInput) * 60_000L,
