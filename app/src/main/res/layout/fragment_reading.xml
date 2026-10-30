@@ -81,6 +81,21 @@
             app:singleSelection="true" />
     </HorizontalScrollView>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_mangadex_matches"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_possible_duplicates"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/tv_reading_tracking_off"
         android:layout_width="match_parent"

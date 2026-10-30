@@ -1,0 +1,5 @@
+• Reading tab checks for new chapters once a day (change it, or check now, in the tab menu). It uses MangaDex and the site you read on. Series with new chapters show a badge, and the New chip lists them. Tap one to open your next unread chapter.
+• The same series under different names is merged by itself when MangaDex shows they are the same. Close names that MangaDex cannot confirm wait under "Review possible duplicates".
+• Series found in your browser for the first time go to "To review". Move them to Reading or Plan to read, merge them, or ignore pages that are not a series.
+• Merge now has a search box and keeps the newest chapter and all reading time.
+• The bottom bar no longer covers the screen while the keyboard is open.

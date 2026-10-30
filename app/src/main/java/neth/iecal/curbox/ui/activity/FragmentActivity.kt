@@ -34,6 +34,9 @@ import neth.iecal.curbox.utils.BlurFadeAnimator
 
 class FragmentActivity : AppCompatActivity() {
 
+    // True on the main tabs, where the bottom bar is shown.
+    private var showsTabs = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // Safety net in case the job that ends a payment pause never ran.
         neth.iecal.curbox.utils.PaymentPause.endIfDue(this)
@@ -70,6 +73,11 @@ class FragmentActivity : AppCompatActivity() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
+            // On the main tabs the bar would ride up on top of the keyboard and cover the
+            // screen, so it steps aside while the keyboard is open.
+            if (showsTabs) {
+                bottomNav.isVisible = !insets.isVisible(WindowInsetsCompat.Type.ime())
+            }
 
             // If bottom navigation is visible, it handles the bottom system bar inset itself.
             // We only apply the bottom padding from system bars if the bottom nav is hidden.
@@ -137,6 +145,7 @@ class FragmentActivity : AppCompatActivity() {
             }
             else -> {
                 // Show bottom nav for main fragments
+                showsTabs = true
                 bottomNav.visibility = android.view.View.VISIBLE
 
                 if (savedInstanceState == null) {

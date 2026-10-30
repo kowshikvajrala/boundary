@@ -78,6 +78,20 @@ class ChapterParserTest {
     }
 
     @Test
+    fun findsTheSeriesPage() {
+        assertEquals(
+            "https://asurascans.com/comics/star-embracing-swordmaster-3ebcc5a9",
+            ChapterParser.seriesPage("asurascans.com/comics/star-embracing-swordmaster-3ebcc5a9/chapter/144")
+        )
+        assertEquals(
+            "https://manhwaclan.com/manga/omniscient-reader",
+            ChapterParser.seriesPage("manhwaclan.com/manga/omniscient-reader/chapter-201/")
+        )
+        assertNull(ChapterParser.seriesPage("example.net/omniscient-reader-chapter-201"))
+        assertNull(ChapterParser.seriesPage("reader.example.com/read/eleceed?chapter=310"))
+    }
+
+    @Test
     fun formatsNumbers() {
         assertEquals("179", ChapterParser.format(179.0))
         assertEquals("120.5", ChapterParser.format(120.5))

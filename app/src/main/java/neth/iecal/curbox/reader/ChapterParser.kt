@@ -54,28 +54,10 @@ object ChapterParser {
         val query = rest.substringAfter('?', "").substringBefore('#')
         val parts = path.split('/').map(::decode).filter(String::isNotBlank)
 
-        var number: Double? = null
-        var chapterIndex = -1
-        var seriesInPart: String? = null
-        for (i in parts.indices.reversed()) {
-            val part = parts[i]
-            if (CHAPTER_WORD.matches(part) && i + 1 < parts.size && NUMBER_PART.matches(parts[i + 1])) {
-                number = toNumber(parts[i + 1])
-                chapterIndex = i
-                break
-            }
-            val match = CHAPTER_IN_PART.find(part) ?: continue
-            number = toNumber(match.groupValues[1])
-            chapterIndex = i
-            seriesInPart = part.substring(0, match.range.first).takeIf { it.isNotBlank() }
-            break
-        }
-        if (number == null) {
-            val match = QUERY_CHAPTER.find(query) ?: return null
-            number = toNumber(match.groupValues[1])
-            chapterIndex = parts.size
-        }
-        val chapterNumber = number ?: return null
+        val found = locate(parts, query) ?: return null
+        val chapterNumber = found.number
+        val chapterIndex = found.index
+        val seriesInPart = found.seriesInPart
 
         val words = seriesInPart?.let(::seriesWords)?.takeIf { it.isNotEmpty() && !isOnlySeasonWords(it) }
             ?: (chapterIndex - 1 downTo 0).asSequence()
@@ -92,6 +74,40 @@ object ChapterParser {
             site = site,
             url = "https://$original"
         )
+    }
+
+    /**
+     * The series page for a chapter address, where sites list every chapter, such as
+     * `https://asurascans.com/comics/star-embracing-swordmaster-3ebcc5a9` for chapter 144 of it.
+     * Null when the address has no separate series level (the chapter is in the query or sits
+     * in the same path part as the series name).
+     */
+    fun seriesPage(urlIdentifier: String): String? {
+        val original = urlIdentifier.trim().removePrefix("https://").removePrefix("http://")
+        val host = original.substringBefore('/').substringBefore('?').substringBefore('#')
+        val rest = original.substring(host.length)
+        val rawParts = rest.substringBefore('?').substringBefore('#').split('/').filter(String::isNotBlank)
+        val query = rest.lowercase(Locale.ROOT).substringAfter('?', "").substringBefore('#')
+        val found = locate(rawParts.map { decode(it.lowercase(Locale.ROOT)) }, query) ?: return null
+        if (found.seriesInPart != null || found.index <= 0 || found.index >= rawParts.size) return null
+        return "https://" + host + "/" + rawParts.take(found.index).joinToString("/")
+    }
+
+    private data class Found(val number: Double, val index: Int, val seriesInPart: String?)
+
+    // Finds the chapter number and the path part it is in, looking from the end of the path.
+    private fun locate(parts: List<String>, query: String): Found? {
+        for (i in parts.indices.reversed()) {
+            val part = parts[i]
+            if (CHAPTER_WORD.matches(part) && i + 1 < parts.size && NUMBER_PART.matches(parts[i + 1])) {
+                return toNumber(parts[i + 1])?.let { Found(it, i, null) }
+            }
+            val match = CHAPTER_IN_PART.find(part) ?: continue
+            val number = toNumber(match.groupValues[1]) ?: return null
+            return Found(number, i, part.substring(0, match.range.first).takeIf { it.isNotBlank() })
+        }
+        val match = QUERY_CHAPTER.find(query) ?: return null
+        return toNumber(match.groupValues[1])?.let { Found(it, parts.size, null) }
     }
 
     /** "179" for whole chapters, "179.5" otherwise. */

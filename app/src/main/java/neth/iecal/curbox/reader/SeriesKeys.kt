@@ -8,9 +8,16 @@ enum class SeriesStatus(val id: String) {
     PLAN_TO_READ("plan_to_read"),
     COMPLETED("completed"),
     ON_HOLD("on_hold"),
-    DROPPED("dropped");
+    DROPPED("dropped"),
+    /** Found in the browser for the first time; waits in "To review" until the owner moves it. */
+    DETECTED("detected"),
+    /** A page wrongly taken for a chapter; hidden and never moved again. */
+    IGNORED("ignored");
 
     companion object {
+        /** The lists shown as chips, in order; ignored series are not shown. */
+        val SHOWN = listOf(DETECTED, READING, PLAN_TO_READ, COMPLETED, ON_HOLD, DROPPED)
+
         fun of(id: String?): SeriesStatus? {
             val clean = id?.trim()?.lowercase(Locale.ROOT)?.replace(' ', '_') ?: return null
             return values().find { it.id == clean }

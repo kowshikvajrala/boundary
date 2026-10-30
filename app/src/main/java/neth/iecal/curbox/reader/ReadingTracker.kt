@@ -59,6 +59,8 @@ class ReadingTracker {
         dao = ReadingDatabase.getInstance(service).readingDao()
         scope.launch {
             service.dataStoreManager.settings.collectLatest { settings ->
+                // Keeps the new chapter check scheduled even if the Reading tab is never opened.
+                runCatching { neth.iecal.curbox.services.ReleaseCheckJob.ensureScheduled(service, settings.releaseCheckHours) }
                 isEnabled = settings.isReadingTrackerEnabled
                 if (!isEnabled) events.trySend(Event.Page(null))
             }
@@ -150,25 +152,32 @@ class ReadingTracker {
         )
         val series = dao.series(key)
         dao.putSeries(
-            SeriesEntity(
-                key = key,
-                // A name the owner set by hand stays.
-                name = series?.name ?: chapter.seriesName,
+            // A name set by hand, a MangaDex link and check results stay.
+            series?.copy(
                 lastChapter = chapter.number,
                 lastUrl = chapter.url,
                 lastSite = chapter.site,
                 lastReadAt = now,
-                readingTimeMs = series?.readingTimeMs ?: 0L,
-                status = readingStatus(series?.status)
+                status = readingStatus(series.status)
+            ) ?: SeriesEntity(
+                key = key,
+                name = chapter.seriesName,
+                lastChapter = chapter.number,
+                lastUrl = chapter.url,
+                lastSite = chapter.site,
+                lastReadAt = now,
+                readingTimeMs = 0L,
+                // A series seen for the first time waits for the owner in "To review".
+                status = SeriesStatus.DETECTED.id
             )
         )
         current = Reading(key, chapter.number, SystemClock.elapsedRealtime())
     }
 
     // Opening a chapter of a series that was planned, on hold or dropped means reading it again.
-    // A completed one stays completed (a reread).
+    // A completed one stays completed (a reread); one waiting for review or ignored stays so.
     private fun readingStatus(status: String?): String =
-        if (status == SeriesStatus.COMPLETED.id) status else SeriesStatus.READING.id
+        if (status in KEEPS_STATUS) status!! else SeriesStatus.READING.id
 
     private suspend fun finishCurrent() {
         val reading = current ?: return
@@ -191,5 +200,6 @@ class ReadingTracker {
         const val TAG = "ReadingTracker"
         const val FLUSH_INTERVAL_MS = 60_000L
         const val MAX_SEGMENT_MS = 10 * 60_000L
+        val KEEPS_STATUS = setOf(SeriesStatus.COMPLETED.id, SeriesStatus.DETECTED.id, SeriesStatus.IGNORED.id)
     }
 }

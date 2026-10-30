@@ -276,6 +276,10 @@ class DataStoreManager(private val context: Context) {
     }
 
     // A gentle reminder, not a restriction, so it is not held by the settings change delay.
+    suspend fun updateReleaseCheckHours(hours: Int) {
+        settingsDataStore.updateData { it.copy(releaseCheckHours = hours) }
+    }
+
     suspend fun updateReadingTrackerEnabled(enabled: Boolean) {
         settingsDataStore.updateData { it.copy(isReadingTrackerEnabled = enabled) }
     }
