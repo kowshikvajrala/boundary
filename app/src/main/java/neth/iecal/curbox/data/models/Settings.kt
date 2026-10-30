@@ -16,6 +16,8 @@ data class Settings(
     val serviceProtectionConfig: ServiceProtectionConfig = ServiceProtectionConfig(),
     val antiUninstallConfig2: AntiUninstallConfig = AntiUninstallConfig(),
     val eyeBreakConfig: EyeBreakConfig = EyeBreakConfig(),
+    /** Remembers manhwa and manga chapters opened in the browser. A helper, not a restriction, so not gated. */
+    val isReadingTrackerEnabled: Boolean = true,
     val settingsChangeDelayConfig2: SettingsChangeDelayConfig = SettingsChangeDelayConfig(),
     val homeLocation: HomeLocation = HomeLocation(),
     /** Apps that a payment pause can open, such as banking or UPI apps. */

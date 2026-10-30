@@ -1,0 +1,4 @@
+• New Reading tab. Boundary remembers the manhwa, manga and webtoon chapters you open in your browser, on any site, and shows each series with its last chapter, the site and your reading time. Tap a series to continue reading.
+• Sort your series into Reading, Plan to read, Completed, On hold and Dropped. Search, sort, set the chapter by hand, rename, merge or delete with a long press.
+• Import your list from Kenmei: export it as a CSV file in Kenmei settings, then tap Import from Kenmei.
+• Your reading history stays on your phone. Turn chapter tracking off in the Reading tab menu.

@@ -55,6 +55,7 @@ class AppBlockerService : BaseBlockingService() {
     private val websiteUsageTracker = WebsiteUsageTracker()
     private val appUsageTracker = AppUsageTracker()
     private val eyeBreakReminder = neth.iecal.curbox.anti_stimulants.EyeBreakReminder()
+    private val readingTracker = neth.iecal.curbox.reader.ReadingTracker()
 
     private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
@@ -157,6 +158,7 @@ class AppBlockerService : BaseBlockingService() {
                 try {
                     appBlocker.onWebsiteObserved(observation)
                     keywordBlocker.onWebsiteObserved(observation)
+                    readingTracker.onWebsiteObserved(observation)
                 } catch (t: Throwable) {
                     if (t is CancellationException) throw t
 
@@ -188,6 +190,7 @@ class AppBlockerService : BaseBlockingService() {
         reelsCountTracker.setup(this, reelsOverlayManager, reelUsageTracker::onReelCounted)
         mindfulMessage.setup(this)
         eyeBreakReminder.setup(this)
+        runFeature("reading tracker") { readingTracker.setup(this) }
         websiteUsageTracker.setup(this) { observation ->
             websiteObservationChannel.trySend(observation)
         }
@@ -241,10 +244,21 @@ class AppBlockerService : BaseBlockingService() {
         }
         cleanupFeature("mindful messages") { mindfulMessage.onDestroy() }
         cleanupFeature("eye breaks") { eyeBreakReminder.onDestroy() }
+        cleanupFeature("reading tracker") { readingTracker.onDestroy() }
         cleanupFeature("reel counter") { reelsCountTracker.onDestroy() }
         cleanupFeature("reel usage") { reelUsageTracker.onDestroy() }
         cleanupFeature("website usage") { websiteUsageTracker.onDestroy() }
         cleanupFeature("app usage") { appUsageTracker.onDestroy() }
+    }
+
+    // A feature that fails to start must not stop the service from blocking.
+    private inline fun runFeature(name: String, setup: () -> Unit) {
+        try {
+            setup()
+        } catch (error: Throwable) {
+            Log.e("AppBlockerService", "Failed to set up $name", error)
+            crashLogger.logNonFatalError(Exception("Failed to set up $name", error))
+        }
     }
 
     private inline fun cleanupFeature(name: String, cleanup: () -> Unit) {

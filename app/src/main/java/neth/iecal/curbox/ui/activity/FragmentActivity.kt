@@ -222,12 +222,14 @@ class FragmentActivity : AppCompatActivity() {
     private val tabTags = mapOf(
         R.id.nav_usage to "tab_usage",
         R.id.nav_reducers to "tab_reducers",
+        R.id.nav_reading to "tab_reading",
         R.id.nav_info to "tab_info",
     )
 
     private fun createTabFragment(itemId: Int): Fragment = when (itemId) {
         R.id.nav_usage -> AllAppsUsageFragment()
         R.id.nav_reducers -> ReducersFragment()
+        R.id.nav_reading -> neth.iecal.curbox.ui.fragments.main.reading.ReadingFragment()
         R.id.nav_info -> neth.iecal.curbox.ui.fragments.main.InfoFragment()
         else -> AllAppsUsageFragment()
     }

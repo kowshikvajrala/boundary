@@ -276,6 +276,10 @@ class DataStoreManager(private val context: Context) {
     }
 
     // A gentle reminder, not a restriction, so it is not held by the settings change delay.
+    suspend fun updateReadingTrackerEnabled(enabled: Boolean) {
+        settingsDataStore.updateData { it.copy(isReadingTrackerEnabled = enabled) }
+    }
+
     suspend fun updateEyeBreakConfig(transform: (neth.iecal.curbox.data.models.EyeBreakConfig) -> neth.iecal.curbox.data.models.EyeBreakConfig) {
         settingsDataStore.updateData { it.copy(eyeBreakConfig = transform(it.eyeBreakConfig)) }
     }
