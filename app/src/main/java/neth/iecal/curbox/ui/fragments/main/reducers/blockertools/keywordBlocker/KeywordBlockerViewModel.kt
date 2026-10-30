@@ -4,25 +4,15 @@ import android.app.Application
 import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import neth.iecal.curbox.data.db.AppDatabase
 import neth.iecal.curbox.data.models.KeywordBlocker
 import neth.iecal.curbox.data.models.KeywordGroup
 import neth.iecal.curbox.utils.DataStoreManager
-import neth.iecal.curbox.utils.KeywordMatcher
-import neth.iecal.curbox.utils.TimeTools
-import neth.iecal.curbox.utils.WebsiteUsageWindow
-import neth.iecal.curbox.utils.activeWindow
-import neth.iecal.curbox.data.models.AppUsageConfig
-import neth.iecal.curbox.data.models.AppTimeConfig
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
-import java.util.Calendar
 
 class KeywordBlockerViewModel(application: Application) : AndroidViewModel(application) {
     private val dataStoreManager = DataStoreManager(application)
@@ -32,46 +22,7 @@ class KeywordBlockerViewModel(application: Application) : AndroidViewModel(appli
     private val _temporaryDisableAvailable = MutableStateFlow(true)
     val temporaryDisableAvailable: StateFlow<Boolean> = _temporaryDisableAvailable
 
-    var currentUsageConfig = AppUsageConfig()
-    var currentTimeConfig = AppTimeConfig.allDay()
     var warningScrnConfig = AppBlockerWarningScreenConfig()
-
-    /**
-     * Time left in the current schedule before this group hits its usage limit.
-     * Usage is combined across every keyword in the group and every browser.
-     */
-    suspend fun getRemainingUsageMillis(group: KeywordGroup): Long? {
-        val config = group.config ?: return null
-        val window = config.schedule.activeWindow() ?: return null
-
-        val limitMillis = limitForToday(config.usage) * 60_000L
-        if (limitMillis <= 0L) return 0L
-        val used = withContext(Dispatchers.Default) {
-            val patterns = KeywordMatcher.compileKeywords(group.selectedKeywords)
-            val usageEndMs = minOf(System.currentTimeMillis(), window.endMs)
-            val startDate = java.time.Instant.ofEpochMilli(window.startMs)
-                .atZone(java.time.ZoneId.systemDefault()).toLocalDate()
-            val endDate = java.time.Instant.ofEpochMilli(usageEndMs)
-                .atZone(java.time.ZoneId.systemDefault()).toLocalDate()
-            val dates = buildList {
-                var date = startDate
-                while (!date.isAfter(endDate)) {
-                    add(TimeTools.dayKey(date))
-                    date = date.plusDays(1)
-                }
-            }
-            val rows = withContext(Dispatchers.IO) {
-                AppDatabase.getInstance(getApplication()).websiteStatsDao().getStatsForDates(dates)
-            }.filter { KeywordMatcher.matchesPatterns(patterns, it.urlIdentifier) }
-            WebsiteUsageWindow.sum(rows, window.startMs, usageEndMs)
-        }
-        return (limitMillis - used).coerceAtLeast(0L)
-    }
-
-    private fun limitForToday(config: AppUsageConfig): Long {
-        return if (config.isDailyUniform) config.uniformLimit
-        else config.dailyLimits[Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1]
-    }
 
     init {
         viewModelScope.launch {

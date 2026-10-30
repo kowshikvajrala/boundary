@@ -93,7 +93,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:letterSpacing="0.1"
                 android:text="@string/app_group_websites_title"
                 android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                 android:textColor="?attr/colorOnSurfaceVariant" />
@@ -109,8 +108,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_vertical">
+                android:layout_marginBottom="8dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_website"
@@ -131,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/app_group_website_hint"
                         android:imeOptions="actionDone"
-                        android:inputType="textUri"
+                        android:inputType="textUri|textNoSuggestions"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,48 +138,19 @@
                     style="@style/Widget.Material3.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:text="@string/add" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/websites_list"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_websites"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
                 android:layout_marginBottom="24dp"
-                android:orientation="vertical" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:letterSpacing="0.1"
-                android:text="@string/schedule_section_title"
-                android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
-                android:textColor="?attr/colorOnSurfaceVariant" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_configure_schedule"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/configure_group_schedule"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                app:backgroundTint="?attr/colorSurfaceContainer"
-                app:cornerRadius="16dp"
-                app:icon="@drawable/ic_timer_aesthetic"
-                app:iconTint="?attr/colorOnSurfaceVariant" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_configure_usage"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="24dp"
-                android:text="@string/configure_group_usage"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                app:backgroundTint="?attr/colorSurfaceContainer"
-                app:cornerRadius="16dp"
-                app:icon="@drawable/ic_reducers"
-                app:iconTint="?attr/colorOnSurfaceVariant" />
+                android:background="?attr/colorSurfaceContainerLowest"
+                android:clipToPadding="false"
+                android:padding="4dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <TextView
                 android:id="@+id/textView3"

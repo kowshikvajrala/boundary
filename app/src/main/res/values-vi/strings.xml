@@ -57,41 +57,11 @@
     <string name="apps_to_block">ỨNG DỤNG ĐỂ CHẶN</string>
     <string name="select_apps_0">Chọn Ứng dụng (0)</string>
     <string name="blocking_configuration">CẤU HÌNH CHẶN</string>
-    <string name="group_limits">GIỚI HẠN</string>
-    <string name="configure_group_schedule">Giờ hoạt động</string>
-    <string name="configure_group_usage">Giới hạn sử dụng trong giờ hoạt động</string>
     <string name="configure_reel_count_limit">Định cấu hình giới hạn số lượng cuộn</string>
-    <string name="schedule_section_title">LỊCH TRÌNH</string>
-    <string name="schedule_mode_title">Giờ hoạt động</string>
-    <string name="schedule_mode_all_day">Cả ngày</string>
-    <string name="schedule_mode_daily">Hằng ngày</string>
-    <string name="schedule_mode_custom">Phong tục</string>
-    <string name="schedule_summary_all_day">Cả ngày, mỗi ngày</string>
-    <string name="schedule_summary_daily">Hàng ngày, %1$s đến %2$s</string>
-    <string name="schedule_summary_weekdays">Thứ Hai đến Thứ Sáu, %1$s đến %2$s</string>
-    <string name="schedule_summary_custom">Lịch trình tùy chỉnh</string>
-    <string name="schedule_overlap_not_saved">Phạm vi thời gian chồng chéo không được lưu</string>
-    <string name="schedule_no_room_for_range">Không còn chỗ cho khoảng thời gian khác</string>
-    <string name="schedule_conflict_title">Lên lịch xung đột</string>
-    <string name="schedule_conflict_item">Các ứng dụng này cũng có trong %2$s trong cùng thời gian: %1$s. Cả hai quy tắc sẽ được áp dụng.</string>
-    <string name="schedule_conflict_edit_apps">Chỉnh sửa ứng dụng</string>
-    <string name="schedule_conflict_edit_schedule">Chỉnh sửa lịch trình</string>
-    <string name="schedule_conflict_keep_both">Giữ cả hai</string>
-    <string name="schedule_conflict_edit_group">Chỉnh sửa nhóm</string>
-    <string name="schedule_conflict_cancel">Hủy bỏ</string>
     <string name="warning_section_title">KHI KÍCH HOẠT CHẶN</string>
-    <string name="select_start_time">Chọn thời gian bắt đầu</string>
-    <string name="select_end_time">Chọn thời gian kết thúc</string>
     <string name="configure_warning_screen_1">Định cấu hình màn hình cảnh báo</string>
     <string name="done">Xong</string>
-    <string name="hours">Giờ</string>
-    <string name="minutes_1">Phút</string>
-    <string name="apply_to_every_day">Áp dụng vào mỗi ngày</string>
-    <string name="add_time_range">Thêm phạm vi thời gian</string>
     <string name="monday">Thứ hai</string>
-    <string name="sample_start_time">09:00 sáng</string>
-    <string name="to">ĐẾN</string>
-    <string name="sample_end_time">05:00 chiều</string>
     <string name="select_apps">Chọn ứng dụng</string>
     <string name="reel_limits">Giới hạn cuộn</string>
     <string name="apply_same_limit_to_every_day">Áp dụng cùng một giới hạn cho mỗi ngày</string>
@@ -106,7 +76,6 @@
     <string name="usage_welcome_message">Số liệu thống kê ứng dụng của bạn sẽ hiển thị ngay tại đây. Tôi bắt đầu theo dõi thời điểm bạn cài đặt tôi. Vui lòng đọc tài liệu để bạn có thể sử dụng Boundary một cách đầy đủ nhất.</string>
     <string name="whats_new_title">Có gì mới</string>
     <string name="whats_new_dismiss">Hiểu rồi</string>
-    <string name="configure_schedule">Định cấu hình lịch trình</string>
     <string name="track_the_number_of_short_videos">Theo dõi số lượng video ngắn bạn cuộn</string>
     <string name="your_phone_is_designed_to_be">của bạn
         điện thoại
@@ -128,11 +97,6 @@
     <string name="youtube">YouTube</string>
     <string name="reddit">Reddit</string>
     <string name="other_select_later">Khác (Chọn sau)</string>
-    <string name="daily_limit">Giới hạn hàng ngày</string>
-    <string name="limit_15_min">15 phút</string>
-    <string name="limit_30_min">30 phút</string>
-    <string name="limit_1_hour">1 giờ</string>
-    <string name="limit_2_hours">2 giờ</string>
     <string name="add_friction_to_this_app">Thêm ma sát vào ứng dụng này</string>
     <string name="skip_choosing_a_target_app">Tôi sẽ chọn cái này sau</string>
     <string name="give_us_the_keys">Đưa chìa khóa cho chúng tôi.</string>
@@ -209,7 +173,6 @@
     <string name="dialog_title_select_date_range">Chọn phạm vi ngày</string>
     <string name="dialog_title_select_export_range">Chọn phạm vi xuất</string>
     <string name="toast_unsupported_browser">Trình duyệt không được hỗ trợ</string>
-    <string name="notification_title_remaining_usage">Mức sử dụng còn lại trước khi khóa</string>
 
 
     <string name="onboarding_non_session_title">Đã phát hiện cài đặt không dựa trên phiên</string>
@@ -307,7 +270,6 @@
     <string name="desc_delete">Xóa bỏ</string>
     <string name="desc_add_group">Thêm nhóm</string>
     <string name="desc_remove">Di dời</string>
-    <string name="desc_remove_interval">Xóa khoảng thời gian</string>
 
     <string name="ascii_brain" translatable="false">"\n
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠤⠤⠤⠤⣄⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -746,11 +708,8 @@
     <string name="share">Chia sẻ</string>
     <string name="clear">Thông thoáng</string>
     <string name="select_apps_count">Chọn ứng dụng (%1$d)</string>
-    <string name="group_details_apps">%1$d Ứng dụng • %2$s</string>
     <string name="group_details_keywords_only">%1$d Từ khóa</string>
     <string name="group_details_apps_only">Ứng dụng %1$d</string>
-    <string name="group_no_usage_left">Không còn thời gian trong lịch trình này</string>
-    <string name="group_usage_left">Còn lại %1$s trong lịch trình này</string>
     <string name="warning_show_on_each_open">Hiển thị màn hình này mỗi lần tôi mở ứng dụng đã chọn</string>
     <string name="warning_current_app_session">Phiên ứng dụng hiện tại</string>
 
@@ -936,9 +895,6 @@
     <string name="keyword_add_at_least_one">Thêm ít nhất một từ khóa</string>
 
     
-    <string name="usage_disable_everyday_granular">Disable everyday to add granular changes</string>
-    <string name="time_disable_everyday_granular">Tắt hàng ngày để đặt phạm vi chi tiết</string>
-    <string name="time_overnight_split">Phạm vi qua đêm chia làm hai (đến nửa đêm và từ nửa đêm)</string>
     <string name="uihider_enter_package">Nhập tên gói</string>
 
     

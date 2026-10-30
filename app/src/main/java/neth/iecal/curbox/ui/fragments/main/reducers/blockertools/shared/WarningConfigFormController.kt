@@ -58,6 +58,16 @@ internal class WarningConfigFormController(
         )
     }
 
+    private val keepLeftoverField by lazy {
+        SecondsField(
+            binding.keepLeftoverSlider,
+            binding.keepLeftoverInput,
+            binding.keepLeftoverInputLayout,
+            binding.keepLeftoverUnitBtn,
+            minimumSeconds = 1f
+        )
+    }
+
     fun bind(
         config: AppBlockerWarningScreenConfig,
         isNew: Boolean,
@@ -137,6 +147,11 @@ internal class WarningConfigFormController(
         lockAfterField.bind(if (lockAfterSeconds > 0) lockAfterSeconds else DEFAULT_LOCK_AFTER_SECONDS)
         updateLockAfterAvailability()
 
+        binding.pauseUnlockSection.isVisible = supportsOnEachOpen && !isOnEachOpenEnabled
+        binding.pauseUnlockSwitch.isChecked = config.pauseUnlockWhenAway
+        binding.keepLeftoverInputs.isVisible = config.pauseUnlockWhenAway
+        keepLeftoverField.bind((config.keepLeftoverMs / 1000L).coerceAtLeast(1L))
+
         binding.proceedLimitSwitch.isChecked = config.proceedLimitEnabled
         binding.proceedLimitContainer.isVisible = config.proceedLimitEnabled
 
@@ -201,6 +216,11 @@ internal class WarningConfigFormController(
         )
         proceedDelayField.setupListeners()
         lockAfterField.setupListeners()
+        keepLeftoverField.setupListeners()
+        binding.pauseUnlockSwitch.setOnCheckedChangeListener { _, isChecked ->
+            TransitionManager.beginDelayedTransition(binding.mainContentContainer, AutoTransition())
+            binding.keepLeftoverInputs.isVisible = isChecked
+        }
         binding.btnLockAfterNotificationAccess.setOnClickListener {
             runCatching {
                 fragment.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
@@ -393,6 +413,8 @@ internal class WarningConfigFormController(
                 0L
             },
             closeAppsWhileLocked = binding.lockAfterCloseSwitch.isChecked,
+            pauseUnlockWhenAway = binding.pauseUnlockSwitch.isChecked,
+            keepLeftoverMs = keepLeftoverField.seconds() * 1000L,
             vibrateAndIncBrightness = binding.switchVibrateBrightness.isChecked,
             proceedLimitEnabled = binding.proceedLimitSwitch.isChecked,
             allowedProceeds = numericInputValue(binding.allowedProceedsInput).toInt(),
@@ -483,6 +505,7 @@ internal class WarningConfigFormController(
             ),
             proceedDelayField.numericInput(),
             lockAfterField.numericInput(),
+            keepLeftoverField.numericInput(),
             NumericInput(
                 binding.allowedProceedsSlider,
                 binding.allowedProceedsInput,
@@ -616,6 +639,8 @@ internal class WarningConfigFormController(
                 challengeIndex != -1
         // An each open unlock never runs out on a timer, so there is nothing to lock after.
         binding.lockAfterSection.isVisible = !isOnEachOpenEnabled()
+        // Pausing the unlock only exists for app groups, the only form that supports "each open".
+        binding.pauseUnlockSection.isVisible = supportsOnEachOpen && !isOnEachOpenEnabled()
         binding.qrSetupContainer.isVisible =
             challengeIndex == WarningUnlockSelectionMapper.EFFORT_INDEX &&
                 secondaryIndex == 0

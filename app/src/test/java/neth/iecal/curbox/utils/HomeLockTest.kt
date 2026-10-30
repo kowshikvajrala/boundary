@@ -2,12 +2,8 @@ package neth.iecal.curbox.utils
 
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.AppGroup
-import neth.iecal.curbox.data.models.AppTimeConfig
-import neth.iecal.curbox.data.models.AppUsageConfig
 import neth.iecal.curbox.data.models.GatedSettingsField
-import neth.iecal.curbox.data.models.ScheduledUsageConfig
 import neth.iecal.curbox.data.models.Settings
-import neth.iecal.curbox.data.models.TimeInterval
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -76,10 +72,6 @@ class HomeLockTest {
         id = "group",
         selectedPackages = listOf("com.example"),
         isActive = true,
-        config = ScheduledUsageConfig(
-            schedule = AppTimeConfig(everydayIntervals = mutableListOf(TimeInterval(9, 0, 17, 0))),
-            usage = AppUsageConfig(uniformLimit = 60)
-        ),
         warningScreenConfig = AppBlockerWarningScreenConfig(lockAfterUnlockMs = lockAfterMs)
     )
 }

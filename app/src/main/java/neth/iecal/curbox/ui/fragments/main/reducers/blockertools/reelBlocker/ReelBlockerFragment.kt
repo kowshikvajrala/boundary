@@ -89,14 +89,6 @@ class ReelBlockerFragment : Fragment() {
             }
         }
 
-        binding.btnConfigureSchedule.setOnClickListener {
-            ReelBlockerTimeSettingsFragment().show(childFragmentManager, ReelBlockerTimeSettingsFragment.FRAGMENT_ID)
-        }
-
-        binding.btnConfigureUsage.setOnClickListener {
-            ReelBlockerUsageSettingsFragment().show(childFragmentManager, ReelBlockerUsageSettingsFragment.FRAGMENT_ID)
-        }
-
         binding.btnConfigureCount.setOnClickListener {
             ReelBlockerCountSettingsFragment().show(childFragmentManager, ReelBlockerCountSettingsFragment.FRAGMENT_ID)
         }

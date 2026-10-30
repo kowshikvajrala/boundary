@@ -5,13 +5,9 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
-import neth.iecal.curbox.data.models.AppTimeConfig
 import neth.iecal.curbox.data.models.Settings
 import neth.iecal.curbox.data.models.SettingsChangeDelayConfig
 import neth.iecal.curbox.data.models.UiHiderConfig
-import neth.iecal.curbox.data.models.upgradeLegacyAppGroupConfigs
-import neth.iecal.curbox.data.models.upgradeLegacyKeywordGroupConfigs
-import neth.iecal.curbox.data.models.upgradeLegacyConfig
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
@@ -74,15 +70,15 @@ object SettingsBackupCodec {
     }
 
     private fun portableSettings(settings: Settings): Settings = settings.copy(
-        blockedAppGroups = settings.blockedAppGroups.upgradeLegacyAppGroupConfigs().map {
+        blockedAppGroups = settings.blockedAppGroups.map {
             it.copy(isActive = it.isActive || it.temporarilyDisabledUntilMs > 0L, temporarilyDisabledUntilMs = 0L)
         },
-        keywordBlockerConfig = settings.keywordBlockerConfig.upgradeLegacyKeywordGroupConfigs().let { config ->
+        keywordBlockerConfig = settings.keywordBlockerConfig.let { config ->
             config.copy(keywordGroups = config.keywordGroups.map {
                 it.copy(isActive = it.isActive || it.temporarilyDisabledUntilMs > 0L, temporarilyDisabledUntilMs = 0L)
             })
         },
-        reelBlockerConfig = settings.reelBlockerConfig.upgradeLegacyConfig().let {
+        reelBlockerConfig = settings.reelBlockerConfig.let {
             it.copy(isActive = it.isActive || it.temporarilyDisabledUntilMs > 0L, temporarilyDisabledUntilMs = 0L)
         },
         nextWebsiteRecheckTime = 0L,
@@ -120,6 +116,7 @@ object SettingsBackupCodec {
         when {
             value.isJsonObject -> value.asJsonObject.entrySet().forEach { (name, child) ->
                 if (child.isJsonNull) {
+                    // linkedTimeGroupId only appears in backups made before schedules were removed.
                     require(name in setOf("config", "linkedTimeGroupId", "first")) { "Null settings value" }
                 } else validateJson(child, depth + 1)
             }
@@ -130,20 +127,7 @@ object SettingsBackupCodec {
         }
     }
 
-    @Suppress("DEPRECATION")
     private fun validateSettings(settings: Settings) {
-        fun schedule(config: AppTimeConfig) {
-            require(config.dailyIntervals.keys.all { it in 0..6 })
-            (config.everydayIntervals + config.dailyIntervals.values.flatten()).forEach {
-                require(it.startHour in 0..23 && it.startMinute in 0..59)
-                require(it.endHour in 0..24 && it.endMinute in 0..59)
-                require(it.endHour != 24 || it.endMinute == 0)
-            }
-        }
-        fun limits(uniform: Long, daily: LongArray) {
-            require(uniform in 0..Long.MAX_VALUE / 60_000L)
-            require(daily.size == 7 && daily.all { it in 0..Long.MAX_VALUE / 60_000L })
-        }
         fun warning(config: AppBlockerWarningScreenConfig) {
             require(config.message.isNotEmpty())
             require(config.timeInterval > 0 && config.proceedDelayInSecs >= 0)
@@ -151,22 +135,11 @@ object SettingsBackupCodec {
             require(config.qrKeys.values.all { it == -1L || it > 0L })
             require(config.nfcKeys.values.all { it == -1L || it > 0L })
         }
-        settings.blockedAppGroups.forEach {
-            requireNotNull(it.blockingType)
-            it.config?.let { config -> schedule(config.schedule); limits(config.usage.uniformLimit, config.usage.dailyLimits) }
-            warning(it.warningScreenConfig)
-        }
-        settings.keywordBlockerConfig.keywordGroups.forEach {
-            requireNotNull(it.blockingType)
-            it.config?.let { config -> schedule(config.schedule); limits(config.usage.uniformLimit, config.usage.dailyLimits) }
-            warning(it.warningScreenConfig)
-        }
+        settings.blockedAppGroups.forEach { warning(it.warningScreenConfig) }
+        settings.keywordBlockerConfig.keywordGroups.forEach { warning(it.warningScreenConfig) }
         settings.reelBlockerConfig.let {
-            requireNotNull(it.blockingType)
             warning(it.warningScreenConfig)
             it.config?.let { config ->
-                schedule(AppTimeConfig(config.schedule.isEveryday, config.schedule.everydayIntervals, config.schedule.dailyIntervals))
-                limits(config.usage.uniformLimit, config.usage.dailyLimits)
                 require(config.reelCount.uniformLimit >= 0)
                 require(config.reelCount.dailyLimits.size == 7 && config.reelCount.dailyLimits.all { count -> count >= 0 })
             }

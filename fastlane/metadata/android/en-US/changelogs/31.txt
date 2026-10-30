@@ -1,0 +1,6 @@
+• Big change: Active Hours and Usage Limit are gone from app groups, keyword groups and short videos. Groups now block all day from the first open, and the wait screen is the only way in. Your groups become stricter as soon as you update.
+• Short videos are blocked all day. You can still set a daily reel count to allow that many each day. A count of 0 means blocked all day.
+• New switch per app group: "Pause unlock time when you leave". With it on, unlock time only counts while you use the apps. You can also choose how long leftover time is kept.
+• Fixed: leftover unlock time could last forever if you opened the app once an hour. The keep time now counts from the first time you leave and does not restart.
+• The Websites box in app groups now looks like the keyword list.
+• The "Block adult sites" switch shows the real number of sites in the list, which grows with each update.

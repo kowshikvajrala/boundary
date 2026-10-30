@@ -28,7 +28,6 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import neth.iecal.curbox.Constants
 import neth.iecal.curbox.R
 import android.os.SystemClock
@@ -37,24 +36,15 @@ import neth.iecal.curbox.utils.HomeLocationChecker
 import neth.iecal.curbox.data.models.HomeLocation
 import neth.iecal.curbox.data.db.AppDatabase
 import neth.iecal.curbox.data.db.WebsiteStatsEntity
-import neth.iecal.curbox.data.models.AppUsageConfig
 import neth.iecal.curbox.data.models.KeywordGroup
-import neth.iecal.curbox.data.models.upgradeLegacyKeywordGroupConfigs
 import neth.iecal.curbox.hardcoded.URL_BAR_ID_LIST
 import neth.iecal.curbox.services.BaseBlockingService
 import neth.iecal.curbox.trackers.WebsiteObservation
 import neth.iecal.curbox.ui.activity.WarningActivity
 import neth.iecal.curbox.utils.AccessibilityHelper
-import neth.iecal.curbox.utils.ActiveTimeGroupWindow
 import neth.iecal.curbox.utils.KeywordMatcher
 import neth.iecal.curbox.utils.TimerNotification
 import neth.iecal.curbox.utils.TimeTools
-import neth.iecal.curbox.utils.WebsiteUsageWindow
-import neth.iecal.curbox.utils.activeWindow
-import neth.iecal.curbox.utils.nextChangeAfter
-import java.time.Instant
-import java.time.ZoneId
-import java.util.Calendar
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 
@@ -115,11 +105,6 @@ class KeywordBlocker : BaseBlocker() {
         return matches
     }
 
-    private fun matchesGroup(group: KeywordGroup, urlIdentifier: String): Boolean {
-        val patterns = groupPatternMap[group.id] ?: return false
-        return matchesPatterns(patterns, urlIdentifier)
-    }
-
     private fun isInternalBrowserPage(url: String): Boolean {
         val lower = url.lowercase(Locale.ROOT)
         return lower.startsWith("chrome://") || lower.startsWith("about:") ||
@@ -143,13 +128,9 @@ class KeywordBlocker : BaseBlocker() {
         }
     }
 
-    /** True while any active group that blocks unsupported browsers is inside its schedule. */
-    private fun isGroupBlockingUnsupportedBrowsers(): Boolean {
-        val now = System.currentTimeMillis()
-        return activeGroups.any { group ->
-            group.blockUnsupportedBrowsers && group.config?.schedule?.activeWindow(now) != null
-        }
-    }
+    /** True while any active group blocks unsupported browsers. */
+    private fun isGroupBlockingUnsupportedBrowsers(): Boolean =
+        activeGroups.any { it.blockUnsupportedBrowsers }
 
     private fun startObservingDatabase() {
         if (destroyed) return
@@ -234,30 +215,19 @@ class KeywordBlocker : BaseBlocker() {
             true
         }
 
-        for (group in eligible) {
-            val window = group.config?.schedule?.activeWindow(now) ?: continue
+        // A group blocks all day; only an unlock lets its keywords through.
+        eligible.firstOrNull()?.let { group ->
             val lockEndsAt = unlockLocks.lockEndsAt(group.id, group.warningScreenConfig.lockAfterUnlockMs, now)
-            if (lockEndsAt > 0L) {
-                if (!claimBlock(packageName, urlIdentifier, group.id)) return
-                handleBlocking(group, packageName, lockEndsAt)
-                return
-            }
-            if (isUsageLimitExceeded(group, window)) {
-                if (!claimBlock(packageName, urlIdentifier, group.id)) return
-                handleBlocking(group, packageName)
-                return
-            }
+            if (!claimBlock(packageName, urlIdentifier, group.id)) return
+            handleBlocking(group, packageName, lockEndsAt)
+            return
         }
 
-        // None blocked → schedule the soonest re-check across the matched groups
-        var soonest = 0L
-        for (group in eligible) {
-            val recheck = computeNextRecheck(group)
-            if (recheck > now && (soonest == 0L || recheck < soonest)) soonest = recheck
-        }
-        if (soonest > now) {
+        // Every matched group is unlocked → re-check when the soonest unlock ends
+        val soonest = matched.mapNotNull { cooldownGroupsList[it.id] }.filter { it > now }.minOrNull()
+        if (soonest != null) {
             blockerScope.launch {
-                service.dataStoreManager.updateNextWebsiteRecheckTime(soonest)
+                service.dataStoreManager.updateNextWebsiteRecheckTime(soonest + 500)
             }
         }
     }
@@ -336,77 +306,6 @@ class KeywordBlocker : BaseBlocker() {
         }.getOrDefault(false)
     }
 
-    private fun isUsageLimitExceeded(
-        group: KeywordGroup,
-        window: ActiveTimeGroupWindow
-    ): Boolean {
-        val usage = group.config?.usage ?: return false
-        return isKeywordUsageLimitExceeded(limitForToday(usage)) {
-            groupUsage(group, window)
-        }
-    }
-
-    // Combined usage of every keyword in the group across all browsers, so the
-    // limit applies to the group as a whole rather than each browser separately.
-    private fun groupUsage(
-        group: KeywordGroup,
-        window: ActiveTimeGroupWindow
-    ): Long {
-        return runBlocking(Dispatchers.IO) {
-            val dao = AppDatabase.getInstance(service).websiteStatsDao()
-            val usageEndMs = minOf(System.currentTimeMillis(), window.endMs)
-            val zone = ZoneId.systemDefault()
-            val startDate = Instant.ofEpochMilli(window.startMs).atZone(zone).toLocalDate()
-            val endDate = Instant.ofEpochMilli(usageEndMs).atZone(zone).toLocalDate()
-            val dates = buildList {
-                var date = startDate
-                while (!date.isAfter(endDate)) {
-                    add(TimeTools.dayKey(date))
-                    date = date.plusDays(1)
-                }
-            }
-            val rows = dao.getStatsForDates(dates)
-                .filter { matchesGroup(group, it.urlIdentifier) }
-            WebsiteUsageWindow.sum(rows, window.startMs, usageEndMs)
-        }
-    }
-
-    // Returns when this group should next be re-checked (0 if no re-check is needed). The caller is
-    // responsible for persisting the soonest value across all matched groups.
-    private fun computeNextRecheck(group: KeywordGroup): Long {
-        val now = System.currentTimeMillis()
-        val config = group.config ?: return 0L
-        var nextRecheck = config.schedule.nextChangeAfter(now) ?: 0L
-
-        val window = config.schedule.activeWindow(now)
-        if (window != null) {
-            val limit = limitForToday(config.usage) * 60_000L
-            if (limit > 0) {
-                val remaining = limit - groupUsage(group, window)
-                if (remaining > 0) {
-                    val usageLimitAt = now + remaining + 1_000L
-                    if (nextRecheck == 0L || usageLimitAt < nextRecheck) {
-                        nextRecheck = usageLimitAt
-                    }
-                }
-            }
-        }
-
-        val cooldownEnd = cooldownGroupsList[group.id]
-        if (cooldownEnd != null && cooldownEnd > now) {
-            if (nextRecheck == 0L || cooldownEnd < nextRecheck) nextRecheck = cooldownEnd + 500
-        }
-
-        return nextRecheck
-    }
-
-    private fun limitForToday(config: AppUsageConfig): Long =
-        if (config.isDailyUniform) {
-            config.uniformLimit
-        } else {
-            config.dailyLimits[Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1]
-        }
-
     private var configJob: Job? = null
 
     fun setupBlocker(service: BaseBlockingService, watchSettings: Boolean = true) {
@@ -425,8 +324,7 @@ class KeywordBlocker : BaseBlocker() {
         configJob?.cancel()
         configJob = blockerScope.launch {
             service.dataStoreManager.settings.collectLatest { settings ->
-                val keywordConfig =
-                    settings.keywordBlockerConfig.upgradeLegacyKeywordGroupConfigs()
+                val keywordConfig = settings.keywordBlockerConfig
                 isTurnedOn = keywordConfig.isActive
                 isAwayMode = settings.isAwayModeActive
                 homeLocation = settings.homeLocation

@@ -21,7 +21,16 @@
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             android:textColor="?android:attr/textColorSecondary" />
-            
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/reel_count_blocked_all_day_note"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/switch_every_day"
             android:layout_width="match_parent"

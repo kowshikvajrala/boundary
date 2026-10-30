@@ -57,40 +57,11 @@
     <string name="apps_to_block">ZU BLOCKIERENDE APPS</string>
     <string name="select_apps_0">Apps auswählen (0)</string>
     <string name="blocking_configuration">BLOCKIERUNGSKONFIGURATION</string>
-    <string name="configure_group_schedule">Aktive Stunden</string>
-    <string name="configure_group_usage">Benutzungsgrenze in aktiven Stunden</string>
     <string name="configure_reel_count_limit">Konfiguriere Reel-Grenze</string>
-    <string name="schedule_section_title">ZEITPLAN</string>
-    <string name="schedule_mode_title">Aktive Stunden</string>
-    <string name="schedule_mode_all_day">Ganzer Tag</string>
-    <string name="schedule_mode_daily">Täglich</string>
-    <string name="schedule_mode_custom">Individuell</string>
-    <string name="schedule_summary_all_day">Den ganzen Tag, jeden Tag</string>
-    <string name="schedule_summary_daily">Täglich, %1$s bis %2$s</string>
-    <string name="schedule_summary_weekdays">Montag bis Freitag, %1$s bis %2$s</string>
-    <string name="schedule_summary_custom">Individueller Zeitplan</string>
-    <string name="schedule_overlap_not_saved">Sich überschneidende Zeitspannen wurden nicht gespeichert</string>
-    <string name="schedule_no_room_for_range">Kein Platz mehr für noch eine Zeitspanne</string>
-    <string name="schedule_conflict_title">Zeitplankonflikt</string>
-    <string name="schedule_conflict_item">Diese Apps sind auch in %2$s in der selben Zeit: %1$s. Beide Regeln werden angewandt.</string>
-    <string name="schedule_conflict_edit_apps">Apps bearbeiten</string>
-    <string name="schedule_conflict_edit_schedule">Zeitplan bearbeiten</string>
-    <string name="schedule_conflict_keep_both">Beide behalten</string>
-    <string name="schedule_conflict_edit_group">Gruppe bearbeiten</string>
-    <string name="schedule_conflict_cancel">Abbrechen</string>
     <string name="warning_section_title">WENN BLOCK AUSGELÖST</string>
-    <string name="select_start_time">Startzeit auswählen</string>
-    <string name="select_end_time">Endzeit auswählen</string>
     <string name="configure_warning_screen_1">Warnbildschirm konfigurieren</string>
     <string name="done">Fertig</string>
-    <string name="hours">Stunden</string>
-    <string name="minutes_1">Minuten</string>
-    <string name="apply_to_every_day">Auf jeden Tag anwenden</string>
-    <string name="add_time_range">Zeitspanne hinzufügen</string>
     <string name="monday">Montag</string>
-    <string name="sample_start_time">09:00 AM</string>
-    <string name="to">bis</string>
-    <string name="sample_end_time">05:00 PM</string>
     <string name="select_apps">Apps auswählen</string>
     <string name="reel_limits">Reel Grenzen</string>
     <string name="apply_same_limit_to_every_day">Selbe Grenze jeden Tag anwenden</string>
@@ -105,7 +76,6 @@
     <string name="usage_welcome_message">Deine Appstatistiken werden genau hier erscheinen. Ich habe angefangen mitzustoppen, als du mich installiert hast. Bitte lies die Dokumentation, sodass du Boundary\' volles Potenzial ausschöpfen kannst.</string>
     <string name="whats_new_title">Was ist neu?</string>
     <string name="whats_new_dismiss">Verstanden</string>
-    <string name="configure_schedule">Zeitplan konfigurieren</string>
     <string name="track_the_number_of_short_videos">Miss die Anzahl von Kurzvideos, durch die du scrollst.</string>
     <string name="your_phone_is_designed_to_be">Dein
         Handy
@@ -127,11 +97,6 @@
     <string name="youtube">YouTube</string>
     <string name="reddit">Reddit</string>
     <string name="other_select_later">Andere (später auswählen)</string>
-    <string name="daily_limit">Tägliche Grenze</string>
-    <string name="limit_15_min">15 min</string>
-    <string name="limit_30_min">30 min</string>
-    <string name="limit_1_hour">1 std</string>
-    <string name="limit_2_hours">2 std</string>
     <string name="add_friction_to_this_app">Dieser App Widerstand hinzufügen</string>
     <string name="skip_choosing_a_target_app">Ich wähle das später aus</string>
     <string name="give_us_the_keys">Gib die Werkzeuge</string>
@@ -199,7 +164,6 @@
     <string name="dialog_title_select_date_range">Datumsspanne auswählen</string>
     <string name="dialog_title_select_export_range">Exportspanne auswählen</string>
     <string name="toast_unsupported_browser">Nicht unterstützter Browser</string>
-    <string name="notification_title_remaining_usage">Überbliebene Nutzung vor Sperrung</string>
 
 
     <string name="onboarding_non_session_title">Nicht sitzungsbasierte Installation erkannt</string>
@@ -304,7 +268,6 @@
     <string name="desc_delete">Löschen</string>
     <string name="desc_add_group">Gruppe hinzufügen</string>
     <string name="desc_remove">Löschen</string>
-    <string name="desc_remove_interval">Intervall löschen</string>
 
     <string name="ascii_brain" translatable="false">"\n
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠤⠤⠤⠤⣄⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -743,11 +706,8 @@
     <string name="share">Teilen</string>
     <string name="clear">Löschen</string>
     <string name="select_apps_count">Ausgewählte Apps (%1$d)</string>
-    <string name="group_details_apps">%1$d Apps • %2$s</string>
     <string name="group_details_keywords_only">%1$d Stichwörter</string>
     <string name="group_details_apps_only">%1$d Apps</string>
-    <string name="group_no_usage_left">Keine Zeit übrig in diesem Zeitplan</string>
-    <string name="group_usage_left">%1$s übrig in diesem Zeitplan</string>
     <string name="warning_show_on_each_open">Zeige diesen Bildschirm immer wenn ich die ausgewählten Apps starte.</string>
     <string name="warning_current_app_session">Aktuelle Appsitzung</string>
 
@@ -942,9 +902,6 @@
     <string name="keyword_add_at_least_one">Füge mindestens ein Stichwort hinzu</string>
 
     <!-- Settings toasts -->
-    <string name="usage_disable_everyday_granular">Jeden Tag deaktivieren, um detaillierte Änderungen vorzunehmen</string>
-    <string name="time_disable_everyday_granular">Jeden Tag deaktivieren, um detaillierte Auswahl zu treffen</string>
-    <string name="time_overnight_split">Übernacht-Auswahl in zwei teilen (bis Mitternacht und ab Mitternacht)</string>
     <string name="uihider_enter_package">Gib einen Paketnamen ein</string>
 
     <!-- Intents log -->

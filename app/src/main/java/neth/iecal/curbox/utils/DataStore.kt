@@ -25,9 +25,6 @@ import neth.iecal.curbox.data.models.PendingSettingsChange
 import neth.iecal.curbox.data.models.Settings
 import neth.iecal.curbox.data.models.SettingsChangeDelayConfig
 import neth.iecal.curbox.data.models.SettingsChangeDelayPrefs
-import neth.iecal.curbox.data.models.upgradeLegacyAppGroupConfigs
-import neth.iecal.curbox.data.models.upgradeLegacyKeywordGroupConfigs
-import neth.iecal.curbox.data.models.upgradeLegacyConfig
 import neth.iecal.curbox.hardcoded.normalized
 import neth.iecal.curbox.services.TemporaryGroupDisableJob
 import java.io.File
@@ -58,69 +55,21 @@ class GsonSerializer<T>(
     }
 }
 
-private class ScheduledUsageConfigMigration(
-    private val gson: Gson
-) : DataMigration<Settings> {
-    override suspend fun shouldMigrate(currentData: Settings): Boolean {
-        if (currentData.blockedAppGroups.any { it.config == null }) return true
-        if (currentData.keywordBlockerConfig.keywordGroups.any { it.config == null }) return true
-        return currentData.settingsChangeDelayConfig2.pendingChanges.any {
-            pendingChangeNeedsMigration(it) || !isKnownField(it.field)
-        }
-    }
+/** Changes queued for removed features (Auto DND, grayscale) can never apply, so drop them. */
+private class UnknownPendingFieldMigration : DataMigration<Settings> {
+    override suspend fun shouldMigrate(currentData: Settings): Boolean =
+        currentData.settingsChangeDelayConfig2.pendingChanges.any { !isKnownField(it.field) }
 
-    override suspend fun migrate(currentData: Settings): Settings {
-        // Changes queued for removed features (Auto DND, grayscale) can never apply, so drop them.
-        val upgradedPending = currentData.settingsChangeDelayConfig2.pendingChanges.filter { isKnownField(it.field) }.map { change ->
-            when (change.field) {
-                GatedSettingsField.APP_GROUPS.name -> {
-                    val groups = parseAppGroups(change.newValueJson) ?: return@map change
-                    change.copy(
-                        newValueJson = gson.toJson(groups.upgradeLegacyAppGroupConfigs(gson))
-                    )
-                }
-                GatedSettingsField.KEYWORD_BLOCKER.name -> {
-                    val config = parseKeywordBlocker(change.newValueJson) ?: return@map change
-                    change.copy(
-                        newValueJson =
-                            gson.toJson(config.upgradeLegacyKeywordGroupConfigs(gson))
-                    )
-                }
-                else -> change
-            }
-        }
-        return currentData.copy(
-            blockedAppGroups = currentData.blockedAppGroups.upgradeLegacyAppGroupConfigs(gson),
-            keywordBlockerConfig =
-                currentData.keywordBlockerConfig.upgradeLegacyKeywordGroupConfigs(gson),
+    override suspend fun migrate(currentData: Settings): Settings =
+        currentData.copy(
             settingsChangeDelayConfig2 = currentData.settingsChangeDelayConfig2.copy(
-                pendingChanges = upgradedPending
+                pendingChanges = currentData.settingsChangeDelayConfig2.pendingChanges.filter { isKnownField(it.field) }
             )
         )
-    }
 
     override suspend fun cleanUp() = Unit
 
     private fun isKnownField(name: String): Boolean = GatedSettingsField.values().any { it.name == name }
-
-    private fun pendingChangeNeedsMigration(change: PendingSettingsChange): Boolean =
-        when (change.field) {
-            GatedSettingsField.APP_GROUPS.name ->
-                parseAppGroups(change.newValueJson)?.any { it.config == null } == true
-            GatedSettingsField.KEYWORD_BLOCKER.name ->
-                parseKeywordBlocker(change.newValueJson)
-                    ?.keywordGroups
-                    ?.any { it.config == null } == true
-            else -> false
-        }
-
-    private fun parseAppGroups(json: String): List<AppGroup>? = runCatching {
-        gson.fromJson<List<AppGroup>>(json, object : TypeToken<List<AppGroup>>() {}.type)
-    }.getOrNull()
-
-    private fun parseKeywordBlocker(json: String): KeywordBlocker? = runCatching {
-        gson.fromJson(json, KeywordBlocker::class.java)
-    }.getOrNull()
 }
 
 class DataStoreManager(private val context: Context) {
@@ -146,7 +95,7 @@ class DataStoreManager(private val context: Context) {
                         type = Settings::class.java,
                         defaultValue = Settings()
                     ),
-                    migrations = listOf(ScheduledUsageConfigMigration(gson)),
+                    migrations = listOf(UnknownPendingFieldMigration()),
                     produceFile = { File(context.applicationContext.filesDir, "datastore/settings.json") }
                 ).also { INSTANCE = it }
             }
@@ -283,12 +232,12 @@ class DataStoreManager(private val context: Context) {
 
     
     suspend fun updateReelBlockerConfig(config: neth.iecal.curbox.data.models.ReelBlocker) {
-        updateGated(GatedSettingsField.REEL_BLOCKER) { config.upgradeLegacyConfig(gson) }
+        updateGated(GatedSettingsField.REEL_BLOCKER) { config }
     }
 
     suspend fun updateAllowInstagramReelsFromDmInbox(allow: Boolean) {
         updateGated(GatedSettingsField.REEL_BLOCKER) {
-            it.reelBlockerConfig.upgradeLegacyConfig(gson).copy(
+            it.reelBlockerConfig.copy(
                 allowInstagramReelsFromDmInbox = allow
             )
         }
@@ -624,17 +573,16 @@ class DataStoreManager(private val context: Context) {
                     blockedAppGroups = gson.fromJson<List<AppGroup>>(
                         valueJson,
                         object : TypeToken<List<AppGroup>>() {}.type
-                    ).upgradeLegacyAppGroupConfigs(gson)
+                    )
                 )
                 GatedSettingsField.REEL_BLOCKER -> settings.copy(
                     reelBlockerConfig = gson.fromJson(valueJson, neth.iecal.curbox.data.models.ReelBlocker::class.java)
-                        .upgradeLegacyConfig(gson)
                 )
                 GatedSettingsField.KEYWORD_BLOCKER -> settings.copy(
                     keywordBlockerConfig = gson.fromJson(
                         valueJson,
                         neth.iecal.curbox.data.models.KeywordBlocker::class.java
-                    ).upgradeLegacyKeywordGroupConfigs(gson)
+                    )
                 )
                 GatedSettingsField.REEL_COUNTER -> settings.copy(
                     isReelCounterOn = gson.fromJson(valueJson, Boolean::class.java)

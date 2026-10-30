@@ -58,50 +58,21 @@
     <string name="apps_to_block">APPS TO BLOCK</string>
     <string name="select_apps_0">Select Apps (0)</string>
     <string name="blocking_configuration">BLOCKING CONFIGURATION</string>
-    <string name="group_limits">LIMITS</string>
-    <string name="configure_group_schedule">Active Hours</string>
-    <string name="configure_group_usage">Usage Limit during active hours</string>
     <string name="configure_reel_count_limit">Configure reel count limit</string>
-    <string name="schedule_section_title">SCHEDULE</string>
-    <string name="schedule_mode_title">Active hours</string>
-    <string name="schedule_mode_all_day">All day</string>
-    <string name="schedule_mode_daily">Daily</string>
-    <string name="schedule_mode_custom">Custom</string>
-    <string name="schedule_summary_all_day">All day, every day</string>
-    <string name="schedule_summary_daily">Daily, %1$s to %2$s</string>
-    <string name="schedule_summary_weekdays">Monday to Friday, %1$s to %2$s</string>
-    <string name="schedule_summary_custom">Custom schedule</string>
-    <string name="app_group_websites_title">Websites</string>
+    <string name="app_group_websites_title">Websites to block</string>
     <string name="app_group_websites_help">These sites are blocked in your browser just like the apps above. Sites of well known apps, like instagram.com, are added for you.</string>
-    <string name="app_group_website_hint">example.com</string>
+    <string name="app_group_website_hint">Enter a website</string>
     <string name="app_group_website_invalid">Type a website like example.com</string>
     <string name="app_group_website_included">%1$s, included with %2$s</string>
     <string name="website_pill_text">%1$s: %2$s</string>
-    <string name="schedule_overlap_not_saved">Overlapping time ranges were not saved</string>
-    <string name="schedule_no_room_for_range">No room for another time range</string>
-    <string name="schedule_conflict_title">Schedule conflict</string>
-    <string name="schedule_conflict_item">These apps are also in %2$s during the same time: %1$s. Both rules will apply.</string>
-    <string name="schedule_conflict_edit_apps">Edit apps</string>
-    <string name="schedule_conflict_edit_schedule">Edit schedule</string>
-    <string name="schedule_conflict_keep_both">Keep both</string>
-    <string name="schedule_conflict_edit_group">Edit group</string>
-    <string name="schedule_conflict_cancel">Cancel</string>
     <string name="warning_section_title">WHEN BLOCK TRIGGERED</string>
-    <string name="select_start_time">Select Start Time</string>
-    <string name="select_end_time">Select End Time</string>
     <string name="configure_warning_screen_1">Configure Warning Screen</string>
     <string name="done">Done</string>
-    <string name="hours">Hours</string>
-    <string name="minutes_1">Minutes</string>
-    <string name="apply_to_every_day">Apply to every day</string>
-    <string name="add_time_range">Add Time Range</string>
     <string name="monday">Monday</string>
-    <string name="sample_start_time">09:00 AM</string>
-    <string name="to">to</string>
-    <string name="sample_end_time">05:00 PM</string>
     <string name="select_apps">Select Apps</string>
     <string name="reel_limits">Reel Limits</string>
     <string name="apply_same_limit_to_every_day">Apply same limit to every day</string>
+    <string name="reel_count_blocked_all_day_note">Short videos are blocked all day. Set a number to allow that many each day. A day left off or at 0 stays blocked.</string>
     <string name="maximum_reels_allowed">Maximum Reels Allowed</string>
     <string name="save_limits">Save Limits</string>
     <string name="enter_a_keyword">Enter a keyword or website</string>
@@ -119,7 +90,6 @@
     <string name="usage_welcome_message">Your app stats will show up right here. I started keeping track the moment you installed me. Please read the docs so you can use Boundary to its fullest.</string>
     <string name="whats_new_title">What\'s new</string>
     <string name="whats_new_dismiss">Got it</string>
-    <string name="configure_schedule">Configure Schedule</string>
     <string name="track_the_number_of_short_videos">Track the number of short videos you scroll</string>
     <string name="your_phone_is_designed_to_be">Your
         phone
@@ -141,11 +111,6 @@
     <string name="youtube">YouTube</string>
     <string name="reddit">Reddit</string>
     <string name="other_select_later">Other (Select later)</string>
-    <string name="daily_limit">Daily Limit</string>
-    <string name="limit_15_min">15 min</string>
-    <string name="limit_30_min">30 min</string>
-    <string name="limit_1_hour">1 hour</string>
-    <string name="limit_2_hours">2 hours</string>
     <string name="add_friction_to_this_app">Add friction to this app</string>
     <string name="skip_choosing_a_target_app">I\'ll pick this later</string>
     <string name="give_us_the_keys">Give us the keys.</string>
@@ -240,7 +205,6 @@
     <string name="dialog_title_select_date_range">Select Date Range</string>
     <string name="dialog_title_select_export_range">Select Export Range</string>
     <string name="toast_unsupported_browser">Unsupported Browser</string>
-    <string name="notification_title_remaining_usage">Remaining usage before lockdown</string>
 
 
     <string name="onboarding_non_session_title">Non-session based installation detected</string>
@@ -301,7 +265,7 @@
     <string name="btn_undo">UNDO</string>
     <string name="label_loading">Loading </string>
     <string name="warning_config_title">Warning Screen Configuration</string>
-    <string name="warning_config_desc">Set what happens when your limit is met.</string>
+    <string name="warning_config_desc">Set what happens when you open something blocked.</string>
     <string name="label_wait_desc">Forces you to think before bypassing the block.</string>
     <string name="label_qr_auth">QR/Barcode Authentication</string>
     <string name="btn_generate_new">Generate New</string>
@@ -344,6 +308,10 @@
     <string name="add_warning_message">Add another message</string>
     <string name="remove_warning_message">Remove message</string>
     <string name="warning_messages_random_note">One message is picked at random each time.</string>
+    <string name="pause_unlock_title">Pause unlock time when you leave</string>
+    <string name="pause_unlock_desc">Your unlock time only counts while you use these apps. Leave or turn the screen off and it stops. Turn this off to let the time run out even when you are not using them.</string>
+    <string name="keep_leftover_input">Keep leftover time for</string>
+    <string name="keep_leftover_desc">Counted from the first time you leave the apps. Opening them again does not restart it. After that, leftover time is dropped when you leave and you unlock again as usual.</string>
     <string name="lock_after_unlock_title">Lock after unlock ends</string>
     <string name="lock_after_unlock_desc">When your unlock time runs out, this is fully locked for a while. No wait screen and no way to open it early. Once on, this group cannot be loosened or deleted except with Emergency off.</string>
     <string name="lock_after_unlock_needs_home">Set your home in Home lock first.</string>
@@ -470,7 +438,6 @@
     <string name="desc_delete">Delete</string>
     <string name="desc_add_group">Add Group</string>
     <string name="desc_remove">Remove</string>
-    <string name="desc_remove_interval">Remove interval</string>
 
     <string name="ascii_brain" translatable="false">"\n
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠤⠤⠤⠤⣄⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -955,11 +922,8 @@
     <string name="share">Share</string>
     <string name="clear">Clear</string>
     <string name="select_apps_count">Select Apps (%1$d)</string>
-    <string name="group_details_apps">%1$d Apps • %2$s</string>
     <string name="group_details_keywords_only">%1$d Keywords</string>
     <string name="group_details_apps_only">%1$d Apps</string>
-    <string name="group_no_usage_left">No time left in this schedule</string>
-    <string name="group_usage_left">%1$s left in this schedule</string>
     <string name="warning_show_on_each_open">Show this screen each time I open the selected apps</string>
     <string name="warning_current_app_session">Current app session</string>
 
@@ -1161,9 +1125,6 @@
     <string name="keyword_add_at_least_one">Add at least one keyword</string>
 
     <!-- Settings toasts -->
-    <string name="usage_disable_everyday_granular">Disable everyday to add granular changes</string>
-    <string name="time_disable_everyday_granular">Disable everyday to set granular ranges</string>
-    <string name="time_overnight_split">Overnight range split into two (up to midnight and from midnight)</string>
     <string name="uihider_enter_package">Enter a package name</string>
 
     <!-- Intents log -->
@@ -1264,7 +1225,8 @@
     <string name="blocklists_manage">Manage lists</string>
     <string name="blocklists_none_downloaded">You have no lists yet. Open Manage lists to add one.</string>
     <string name="blocklists_adult_switch">Block adult sites</string>
-    <string name="blocklists_adult_switch_desc">Adds list:adult, a list of about 90,000 adult sites. It follows this group\'s schedule and usage limit, just like your keywords.</string>
+    <string name="blocklists_adult_desc_count">Adds list:adult, a list of %1$s adult sites. The list grows each time it updates. They are blocked just like your keywords.</string>
+    <string name="blocklists_adult_desc_not_downloaded">Adds list:adult, a list of adult sites that is downloaded when you turn this on and grows each time it updates. They are blocked just like your keywords.</string>
     <string name="blocklists_more">More blocklists</string>
     <string name="blocklists_downloading">Downloading %1$s</string>
 </resources>

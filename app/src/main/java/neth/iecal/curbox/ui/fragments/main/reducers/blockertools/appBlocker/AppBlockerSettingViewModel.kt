@@ -5,57 +5,20 @@ import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import neth.iecal.curbox.blockers.AppBlocker
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.AppGroup
-import neth.iecal.curbox.data.models.AppTimeConfig
-import neth.iecal.curbox.data.models.AppUsageConfig
 import neth.iecal.curbox.utils.DataStoreManager
-import neth.iecal.curbox.utils.UsageStatsHelper
-import neth.iecal.curbox.utils.activeWindow
-import java.util.Calendar
 
 class AppBlockerSettingViewModel(application: Application) : AndroidViewModel(application) {
-    var currentUsageConfig: AppUsageConfig = AppUsageConfig(uniformLimit = 0)
-    var currentTimeConfig: AppTimeConfig = AppTimeConfig.allDay()
     var warningScrnConfig: AppBlockerWarningScreenConfig = AppBlockerWarningScreenConfig()
 
     private val dataStoreManager = DataStoreManager(application)
-    private val usageStats = UsageStatsHelper(application)
-
-    /**
-     * Time left in the current schedule before this group hits its usage limit, in millis.
-     * Returns null while the group's schedule is not active. Usage is the combined
-     * total of every app in the group, matching how the blocker compares it.
-     */
-    suspend fun getRemainingUsageMillis(group: AppGroup): Long? {
-        if (group.warningScreenConfig.isOnOpenConfig) return null
-        val config = group.config ?: return null
-        val window = config.schedule.activeWindow() ?: return null
-
-        val limitMillis = limitForToday(config.usage) * 60_000L
-        val packages = group.selectedPackages.map { it.trim() }.toSet()
-        val used = withContext(Dispatchers.IO) {
-            usageStats.getForegroundUsageBetween(
-                packages,
-                window.startMs,
-                minOf(System.currentTimeMillis(), window.endMs)
-            )
-        }
-        return (limitMillis - used).coerceAtLeast(0L)
-    }
-
-    private fun limitForToday(config: AppUsageConfig): Long {
-        return if (config.isDailyUniform) config.uniformLimit
-        else config.dailyLimits[Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1]
-    }
 
     private val _groups = MutableStateFlow<List<AppGroup>>(emptyList())
     val groups: StateFlow<List<AppGroup>> = _groups

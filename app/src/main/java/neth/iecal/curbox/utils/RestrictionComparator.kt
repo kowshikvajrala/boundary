@@ -1,11 +1,7 @@
 package neth.iecal.curbox.utils
 
-import com.google.gson.Gson
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
-import neth.iecal.curbox.data.models.AppBlockingType
 import neth.iecal.curbox.data.models.AppGroup
-import neth.iecal.curbox.data.models.AppTimeConfig
-import neth.iecal.curbox.data.models.AppUsageConfig
 import neth.iecal.curbox.data.models.GatedSettingsField
 import neth.iecal.curbox.data.models.KeywordBlocker
 import neth.iecal.curbox.data.models.KeywordGroup
@@ -13,9 +9,7 @@ import neth.iecal.curbox.data.models.MindfulMessageConfig
 import neth.iecal.curbox.data.models.ReelBlocker
 import neth.iecal.curbox.data.models.Settings
 import neth.iecal.curbox.data.models.SettingsChangeDelayConfig
-import neth.iecal.curbox.data.models.TimeInterval
 import neth.iecal.curbox.data.models.UiHiderConfig
-import neth.iecal.curbox.data.models.upgradeLegacyConfig
 import neth.iecal.curbox.hardcoded.allScripts
 
 /**
@@ -24,13 +18,11 @@ import neth.iecal.curbox.hardcoded.allScripts
  * and holds everything else for the countdown.
  *
  * The comparison is deliberately conservative: whenever a change cannot be proven to be
- * same or stricter (unparseable config, incomparable blocking types, unknown fields), it is
+ * same or stricter (unknown fields, unexpected values), it is
  * treated as a reduction and delayed. A restriction that is currently switched off imposes
  * nothing, so any change to it passes.
  */
 object RestrictionComparator {
-
-    private val gson = Gson()
 
     fun isSameOrStricter(field: GatedSettingsField, current: Settings, proposed: Settings): Boolean {
         return try {
@@ -82,12 +74,7 @@ object RestrictionComparator {
                 n.isActive, n.temporarilyDisabledUntilMs)) return false
         if (!n.selectedPackages.containsAll(o.selectedPackages)) return false
         if (!n.websites.containsAll(o.websites)) return false
-        if (!warningConfig(o.warningScreenConfig, n.warningScreenConfig)) return false
-        val oldConfig = o.config ?: return false
-        val newConfig = n.config ?: return false
-        return appTimeCoverageSameOrWider(oldConfig.schedule, newConfig.schedule) &&
-            usageLimitSameOrLower(oldConfig.usage, newConfig.usage) &&
-            usageWindowsSameOrWider(oldConfig.schedule, newConfig.schedule, newConfig.usage)
+        return warningConfig(o.warningScreenConfig, n.warningScreenConfig)
     }
 
     fun keywordBlocker(old: KeywordBlocker, new: KeywordBlocker): Boolean {
@@ -105,41 +92,30 @@ object RestrictionComparator {
                 n.isActive, n.temporarilyDisabledUntilMs)) return false
         if (!n.selectedKeywords.toHashSet().containsAll(o.selectedKeywords)) return false
         if (o.blockUnsupportedBrowsers && !n.blockUnsupportedBrowsers) return false
-        if (!warningConfig(o.warningScreenConfig, n.warningScreenConfig)) return false
-        val oldConfig = o.config ?: return false
-        val newConfig = n.config ?: return false
-        return appTimeCoverageSameOrWider(oldConfig.schedule, newConfig.schedule) &&
-            usageLimitSameOrLower(oldConfig.usage, newConfig.usage) &&
-            usageWindowsSameOrWider(oldConfig.schedule, newConfig.schedule, newConfig.usage)
+        return warningConfig(o.warningScreenConfig, n.warningScreenConfig)
     }
 
-    fun reelBlocker(old: ReelBlocker, new: ReelBlocker): Boolean {
-        val o = old.upgradeLegacyConfig(gson)
-        val n = new.upgradeLegacyConfig(gson)
+    fun reelBlocker(o: ReelBlocker, n: ReelBlocker): Boolean {
         if (!o.isActive && o.temporarilyDisabledUntilMs == 0L) return true
         if (!temporaryDisableSameOrShorter(o.isActive, o.temporarilyDisabledUntilMs,
                 n.isActive, n.temporarilyDisabledUntilMs)) return false
         if (!o.excludedPackages.containsAll(n.excludedPackages)) return false
         if (!o.allowInstagramReelsFromDmInbox && n.allowInstagramReelsFromDmInbox) return false
         if (!warningConfig(o.warningScreenConfig, n.warningScreenConfig)) return false
-        val oldConfig = o.config ?: return false
-        val newConfig = n.config ?: return false
-        val oldUsage = if (oldConfig.usage.isDailyUniform) List(7) { oldConfig.usage.uniformLimit } else oldConfig.usage.dailyLimits.toList()
-        val newUsage = if (newConfig.usage.isDailyUniform) List(7) { newConfig.usage.uniformLimit } else newConfig.usage.dailyLimits.toList()
-        val oldCount = if (oldConfig.reelCount.isDailyUniform) List(7) { oldConfig.reelCount.uniformLimit } else oldConfig.reelCount.dailyLimits.toList()
-        val newCount = if (newConfig.reelCount.isDailyUniform) List(7) { newConfig.reelCount.uniformLimit } else newConfig.reelCount.dailyLimits.toList()
-        // Reel intervals are allowed hours, so a stricter schedule must be a subset.
-        return timeCoverageSameOrWider(
-            oldFor = { day -> if (newConfig.schedule.isEveryday) newConfig.schedule.everydayIntervals else newConfig.schedule.dailyIntervals[day] ?: mutableListOf() },
-            newFor = { day -> if (oldConfig.schedule.isEveryday) oldConfig.schedule.everydayIntervals else oldConfig.schedule.dailyIntervals[day] ?: mutableListOf() }
-        ) && oldUsage.size == 7 && newUsage.size == 7 && oldCount.size == 7 && newCount.size == 7 &&
-            newUsage.indices.all { optionalLimitSameOrLower(oldUsage[it], newUsage[it]) } &&
-            newCount.indices.all { optionalLimitSameOrLower(oldCount[it].toLong(), newCount[it].toLong()) }
+        val oldCount = dailyReelCounts(o)
+        val newCount = dailyReelCounts(n)
+        return oldCount.size == 7 && newCount.size == 7 &&
+            newCount.indices.all { reelAllowanceSameOrLower(oldCount[it], newCount[it]) }
     }
 
-    // Zero disables reel limits rather than blocking every reel.
-    private fun optionalLimitSameOrLower(old: Long, new: Long): Boolean =
-        old >= 0L && new >= 0L && (old == 0L || new in 1..old)
+    // Zero means no allowance, so short videos are blocked all day; that is the strictest.
+    private fun reelAllowanceSameOrLower(old: Int, new: Int): Boolean =
+        new == 0 || (old > 0 && new in 1..old)
+
+    private fun dailyReelCounts(blocker: ReelBlocker): List<Int> {
+        val count = blocker.config?.reelCount ?: return List(7) { 0 }
+        return if (count.isDailyUniform) List(7) { count.uniformLimit } else count.dailyLimits.toList()
+    }
 
     fun mindfulMessages(old: MindfulMessageConfig, new: MindfulMessageConfig): Boolean {
         if (!old.isActive) return true
@@ -155,118 +131,10 @@ object RestrictionComparator {
         }
     }
 
-    private fun blockingSetting(type: AppBlockingType, oldJson: String, newJson: String): Boolean {
-        if (oldJson == newJson) return true
-        return when (type) {
-            AppBlockingType.Usage -> {
-                val o = parse<AppUsageConfig>(oldJson) ?: return false
-                val n = parse<AppUsageConfig>(newJson) ?: return false
-                usageLimitSameOrLower(o, n)
-            }
-            AppBlockingType.Timed -> {
-                val o = parse<AppTimeConfig>(oldJson) ?: return false
-                val n = parse<AppTimeConfig>(newJson) ?: return false
-                appTimeCoverageSameOrWider(o, n)
-            }
-            // OnOpen has no comparable knobs; a changed config is treated as a reduction
-            AppBlockingType.OnOpen -> false
-        }
-    }
-
-    /**
-     * The intervals are the times when the restriction is in force, so stricter means the new
-     * intervals cover at least every minute the old ones did, on every day of the week.
-     */
-    private fun appTimeCoverageSameOrWider(old: AppTimeConfig, new: AppTimeConfig): Boolean {
-        return timeCoverageSameOrWider(
-            oldFor = { day -> if (old.isEveryday) old.everydayIntervals else old.dailyIntervals[day] ?: mutableListOf() },
-            newFor = { day -> if (new.isEveryday) new.everydayIntervals else new.dailyIntervals[day] ?: mutableListOf() }
-        )
-    }
-
-    private fun usageLimitSameOrLower(old: AppUsageConfig, new: AppUsageConfig): Boolean {
-        val oldLimits =
-            if (old.isDailyUniform) List(7) { old.uniformLimit } else old.dailyLimits.toList()
-        val newLimits =
-            if (new.isDailyUniform) List(7) { new.uniformLimit } else new.dailyLimits.toList()
-        return oldLimits.size == 7 && newLimits.size == 7 &&
-            newLimits.indices.all { newLimits[it] >= 0 && newLimits[it] <= oldLimits[it] }
-    }
-
     private fun temporaryDisableSameOrShorter(
         oldActive: Boolean, oldUntil: Long, newActive: Boolean, newUntil: Long
     ): Boolean = if (newActive) newUntil == 0L
         else !oldActive && oldUntil > 0L && newUntil in 1..oldUntil
-
-    private fun usageWindowsSameOrWider(old: AppTimeConfig, new: AppTimeConfig, usage: AppUsageConfig): Boolean {
-        if (old == new) return true
-        fun windowsFor(config: AppTimeConfig, day: Int): List<Pair<Int, Int>> {
-            fun intervalsFor(index: Int) = if (config.isEveryday) config.everydayIntervals
-                else config.dailyIntervals[index].orEmpty()
-            return intervalsFor(day).map { it.toWindowRange() } +
-                intervalsFor((day + 6) % 7)
-                    .filter { it.toMinuteRange().first > it.toMinuteRange().second }
-                    .map { it.toWindowRange().let { range -> range.first - 1440 to range.second - 1440 } }
-        }
-        // Usage resets at each interval start. Adjacent intervals cannot replace one window.
-        return (0..6).all { day ->
-            val limit = if (usage.isDailyUniform) usage.uniformLimit else usage.dailyLimits[day]
-            if (limit <= 0L) return@all true
-            val ranges = windowsFor(new, day).sortedBy { it.first }
-            if (ranges.zipWithNext().any { (a, b) -> a.second > b.first }) return@all false
-            windowsFor(old, day).all { range ->
-                ranges.any { it.first <= range.first && it.second >= range.second }
-            }
-        }
-    }
-
-    private fun TimeInterval.toWindowRange(): Pair<Int, Int> {
-        val range = toMinuteRange()
-        return if (range.second < range.first) range.first to range.second + 1440 else range
-    }
-
-    private fun timeCoverageSameOrWider(
-        oldFor: (Int) -> List<TimeInterval>,
-        newFor: (Int) -> List<TimeInterval>
-    ): Boolean {
-        fun rangesFor(day: Int, intervalsFor: (Int) -> List<TimeInterval>): List<TimeInterval> {
-            val today = intervalsFor(day)
-            val previous = intervalsFor((day + 6) % 7)
-            return today.flatMap { interval ->
-                val range = interval.toMinuteRange()
-                require(range.first in 0..1439 && range.second in 0..1440)
-                if (range.first > range.second) listOf(interval.copy(endHour = 24, endMinute = 0))
-                else listOf(interval)
-            } + previous.filter { it.toMinuteRange().first > it.toMinuteRange().second }
-                .map { it.copy(startHour = 0, startMinute = 0) }
-        }
-        return (0..6).all { day -> covers(rangesFor(day, newFor), rangesFor(day, oldFor)) }
-    }
-
-    /** True when the union of [covering] contains every minute of every interval in [covered]. */
-    private fun covers(covering: List<TimeInterval>, covered: List<TimeInterval>): Boolean {
-        val merged = mergeRanges(covering.map { it.toMinuteRange() })
-        return covered.map { it.toMinuteRange() }
-            .filter { it.first < it.second }
-            .all { (start, end) -> merged.any { it.first <= start && end <= it.second } }
-    }
-
-    private fun TimeInterval.toMinuteRange(): Pair<Int, Int> =
-        Pair(startHour * 60 + startMinute, endHour * 60 + endMinute)
-
-    private fun mergeRanges(ranges: List<Pair<Int, Int>>): List<Pair<Int, Int>> {
-        val sorted = ranges.filter { it.first < it.second }.sortedBy { it.first }
-        val merged = mutableListOf<Pair<Int, Int>>()
-        for (range in sorted) {
-            val last = merged.lastOrNull()
-            if (last != null && range.first <= last.second) {
-                merged[merged.size - 1] = Pair(last.first, maxOf(last.second, range.second))
-            } else {
-                merged.add(range)
-            }
-        }
-        return merged
-    }
 
     fun warningConfig(o: AppBlockerWarningScreenConfig, n: AppBlockerWarningScreenConfig): Boolean {
         // Message and typing sentence wording never change how strong the block is
@@ -282,6 +150,11 @@ object RestrictionComparator {
         val proceedDelayOk = n.proceedDelayInSecs >= o.proceedDelayInSecs
         val lockAfterOk = n.lockAfterUnlockMs >= o.lockAfterUnlockMs
         val closeAppsOk = o.lockAfterUnlockMs <= 0L || !o.closeAppsWhileLocked || n.closeAppsWhileLocked
+        // Pausing the unlock while away gives more time in total, so turning it on or keeping
+        // leftover time longer is weaker.
+        val pauseUnlockOk = o.pauseUnlockWhenAway || !n.pauseUnlockWhenAway
+        val keepLeftoverOk = !o.pauseUnlockWhenAway || !n.pauseUnlockWhenAway ||
+            n.keepLeftoverMs <= o.keepLeftoverMs
         val vibrateOk = !o.vibrateAndIncBrightness || n.vibrateAndIncBrightness
         val proceedLimitOk = when {
             o.proceedLimitEnabled && !n.proceedLimitEnabled -> false
@@ -322,7 +195,7 @@ object RestrictionComparator {
 
         return onEachOpenOk && cooldownOk && dynamicIntervalOk &&
             proceedDisabledOk && dialogHiddenOk &&
-            proceedDelayOk && lockAfterOk && closeAppsOk && vibrateOk && proceedLimitOk && qrOk && nfcOk && typingOk && intentOk &&
+            proceedDelayOk && lockAfterOk && closeAppsOk && pauseUnlockOk && keepLeftoverOk && vibrateOk && proceedLimitOk && qrOk && nfcOk && typingOk && intentOk &&
             adaptiveMathOk && adaptiveMathQuestionCountOk && adaptiveMathStartingLevelOk &&
             focusGoalOk && intentMinLengthOk
     }
@@ -346,7 +219,4 @@ object RestrictionComparator {
         }
         else -> true
     }
-
-    private inline fun <reified T> parse(json: String): T? =
-        runCatching { gson.fromJson(json, T::class.java) }.getOrNull()
 }

@@ -11,10 +11,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import neth.iecal.curbox.data.models.ReelBlocker
 import neth.iecal.curbox.data.models.ReelCountConfig
-import neth.iecal.curbox.data.models.ReelTimeConfig
-import neth.iecal.curbox.data.models.ReelUsageConfig
 import neth.iecal.curbox.data.models.ReelBlockerConfig
-import neth.iecal.curbox.data.models.upgradeLegacyConfig
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.utils.DataStoreManager
 
@@ -34,7 +31,7 @@ class ReelBlockerViewModel(application: Application) : AndroidViewModel(applicat
         }
         viewModelScope.launch {
             dataStoreManager.settingsForEditing.collectLatest { settings ->
-                _reelBlockerConfig.value = settings.reelBlockerConfig.upgradeLegacyConfig()
+                _reelBlockerConfig.value = settings.reelBlockerConfig
             }
         }
     }
@@ -81,24 +78,6 @@ class ReelBlockerViewModel(application: Application) : AndroidViewModel(applicat
             dataStoreManager.updateAllowInstagramReelsFromDmInbox(allow)
             requestReelBlockerRefresh()
         }
-    }
-
-    fun getReelTimeConfig(): ReelTimeConfig {
-        return _reelBlockerConfig.value.config?.schedule ?: ReelTimeConfig()
-    }
-
-    fun saveReelTimeConfig(config: ReelTimeConfig) {
-        val current = _reelBlockerConfig.value.config ?: ReelBlockerConfig()
-        updateConfig(_reelBlockerConfig.value.copy(config = current.copy(schedule = config)))
-    }
-
-    fun getReelUsageConfig(): ReelUsageConfig {
-        return _reelBlockerConfig.value.config?.usage ?: ReelUsageConfig(uniformLimit = 0)
-    }
-
-    fun saveReelUsageConfig(config: ReelUsageConfig) {
-        val current = _reelBlockerConfig.value.config ?: ReelBlockerConfig()
-        updateConfig(_reelBlockerConfig.value.copy(config = current.copy(usage = config)))
     }
 
     fun getReelCountConfig(): ReelCountConfig {

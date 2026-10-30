@@ -12,11 +12,11 @@ class SettingsBackupCodecTest {
         val settings = Settings(
             blockedAppGroups = listOf(AppGroup(
                 id = "apps", name = "Evening", selectedPackages = listOf("example.app"),
-                isActive = true, config = AppGroupConfig(),
+                isActive = true,
                 warningScreenConfig = AppBlockerWarningScreenConfig(message = listOf("Take a break"))
             )),
             keywordBlockerConfig = KeywordBlocker(isActive = true, keywordGroups = listOf(KeywordGroup(
-                id = "sites", selectedKeywords = listOf("example.com", "こんにちは"), config = ScheduledUsageConfig()
+                id = "sites", selectedKeywords = listOf("example.com", "こんにちは")
             ))),
             uiHiderConfig = UiHiderConfig(isActive = true, enabledPresetIds = listOf("ig_feed"), scripts = listOf(
                 UiHiderScript(id = "custom", packageName = "example.app", source = "log(\"hello\")")
@@ -82,6 +82,16 @@ class SettingsBackupCodecTest {
     }
 
     @Test
+    fun backupsWithRemovedSchedulesAndLimitsStillRestore() {
+        val restored = decode(document(
+            """"blockedAppGroups":[{"id":"apps","isActive":true,"linkedTimeGroupId":null,"config":{"schedule":{"everydayIntervals":[{"startHour":9}]},"usage":{"uniformLimit":60}}}],""" +
+                """"reelBlockerConfig":{"config":{"schedule":{},"usage":{"uniformLimit":5},"reelCount":{"uniformLimit":3}}}"""
+        ))
+        assertEquals("apps", restored.blockedAppGroups.single().id)
+        assertEquals(3, restored.reelBlockerConfig.config!!.reelCount.uniformLimit)
+    }
+
+    @Test
     fun invalidDocumentsAreRejectedBeforeApplyingSettings() {
         val invalid = listOf(
             "{}", "not json", "[]",
@@ -89,9 +99,8 @@ class SettingsBackupCodecTest {
             document(""""blockedAppGroups":null"""),
             document(""""blockedAppGroups":[null]"""),
             document(""""antiUninstallConfig2":{"mode":"UNKNOWN"}"""),
-            document(""""reelBlockerConfig":{"config":{"usage":{"dailyLimits":[1]}}}"""),
-            document(""""blockedAppGroups":[{"warningScreenConfig":{"message":[]}}]"""),
-            document(""""blockedAppGroups":[{"config":{"schedule":{"everydayIntervals":[{"startHour":99}]}}}]""")
+            document(""""reelBlockerConfig":{"config":{"reelCount":{"dailyLimits":[1]}}}"""),
+            document(""""blockedAppGroups":[{"warningScreenConfig":{"message":[]}}]""")
         )
         invalid.forEach { json ->
             try {

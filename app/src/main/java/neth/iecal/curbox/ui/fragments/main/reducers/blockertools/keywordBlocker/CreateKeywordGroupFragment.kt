@@ -25,7 +25,6 @@ import kotlinx.coroutines.withContext
 import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.KeywordGroup
-import neth.iecal.curbox.data.models.ScheduledUsageConfig
 import neth.iecal.curbox.databinding.FragmentCreateKeywordGroupBinding
 import neth.iecal.curbox.utils.BlocklistStore
 import neth.iecal.curbox.utils.KeywordFileCodec
@@ -72,6 +71,7 @@ class CreateKeywordGroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         
         binding.rvKeywords.adapter = keywordAdapter
+        showAdultListSize()
         
         existingGroupId = requireActivity().intent.getStringExtra("group_id") ?: arguments?.getString("group_id")
         
@@ -98,11 +98,6 @@ class CreateKeywordGroupFragment : Fragment() {
                     keywordAdapter.submitList(keywordItems)
                     syncAdultSwitch()
                     binding.switchBlockUnsupportedBrowsers.isChecked = group.blockUnsupportedBrowsers
-
-                    group.config?.let { scheduledConfig ->
-                        viewModel.currentTimeConfig = scheduledConfig.schedule
-                        viewModel.currentUsageConfig = scheduledConfig.usage
-                    }
 
                     viewModel.warningScrnConfig = group.warningScreenConfig
                 }
@@ -135,18 +130,6 @@ class CreateKeywordGroupFragment : Fragment() {
             }
         }
 
-        binding.btnConfigureSchedule.setOnClickListener {
-            KeywordTimeBasedSettingsFragment().show(
-                parentFragmentManager,
-                KeywordTimeBasedSettingsFragment.FRAGMENT_ID
-            )
-        }
-        binding.btnConfigureUsage.setOnClickListener {
-            KeywordUsageBasedSettingsFragment().show(
-                parentFragmentManager,
-                KeywordUsageBasedSettingsFragment.FRAGMENT_ID
-            )
-        }
 
         binding.btnConfigureWarningScreen.setOnClickListener {
             val configFragment = neth.iecal.curbox.ui.fragments.main.reducers.blockertools.shared.WarningConfigFragment.newInstance(
@@ -262,6 +245,7 @@ class CreateKeywordGroupFragment : Fragment() {
                 }
                 withContext(Dispatchers.Main) {
                     Toast.makeText(appContext, message, Toast.LENGTH_LONG).show()
+                    if (_binding != null) showAdultListSize()
                 }
             }
         }
@@ -321,6 +305,27 @@ class CreateKeywordGroupFragment : Fragment() {
         syncAdultSwitch()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Manage lists may have updated the adult list while this screen was hidden.
+        showAdultListSize()
+    }
+
+    /** The adult list grows each time it updates, so its size is read from the saved list. */
+    private fun showAdultListSize() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val count = withContext(Dispatchers.IO) {
+                BlocklistStore.sources().find { it.id == ADULT_LIST_ID }?.domainCount ?: 0
+            }
+            val view = _binding?.tvBlockAdultDesc ?: return@launch
+            view.text = if (count > 0) {
+                getString(R.string.blocklists_adult_desc_count, NumberFormat.getIntegerInstance().format(count))
+            } else {
+                getString(R.string.blocklists_adult_desc_not_downloaded)
+            }
+        }
+    }
+
     private fun syncAdultSwitch() {
         isSyncingAdultSwitch = true
         binding.switchBlockAdult.isChecked = BlocklistStore.keywordFor(ADULT_LIST_ID) in selectedKeywords
@@ -377,10 +382,6 @@ class CreateKeywordGroupFragment : Fragment() {
             id = existingGroupId ?: UUID.randomUUID().toString(),
             name = name,
             selectedKeywords = selectedKeywords.toList(),
-            config = ScheduledUsageConfig(
-                schedule = viewModel.currentTimeConfig,
-                usage = viewModel.currentUsageConfig
-            ),
             isActive = existing?.isActive ?: true,
             temporarilyDisabledUntilMs = existing?.temporarilyDisabledUntilMs ?: 0L,
             warningScreenConfig = viewModel.warningScrnConfig.copy(isOnOpenConfig = false),

@@ -23,7 +23,6 @@ import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.KeywordGroup
 import neth.iecal.curbox.databinding.FragmentKeywordBlockerBinding
 import neth.iecal.curbox.ui.activity.FragmentActivity
-import neth.iecal.curbox.utils.TimeTools
 import neth.iecal.curbox.utils.TemporaryDisableDialog
 import neth.iecal.curbox.utils.SettingsChangeDelayUtils
 
@@ -150,24 +149,6 @@ class KeywordBlockerFragment : Fragment() {
                     SettingsChangeDelayUtils.formatRemaining(requireContext(), temporaryRemaining)
                 )
                 holder.tvRemaining.visibility = View.VISIBLE
-            } else {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    val remaining = viewModel.getRemainingUsageMillis(group)
-                    if (holder.tvRemaining.tag != group.id) return@launch
-                    if (remaining == null) {
-                        holder.tvRemaining.visibility = View.GONE
-                    } else {
-                        holder.tvRemaining.text = if (remaining <= 0L) {
-                            getString(R.string.group_no_usage_left)
-                        } else {
-                            getString(
-                                R.string.group_usage_left,
-                                TimeTools.formatTimeForWidget(remaining)
-                            )
-                        }
-                        holder.tvRemaining.visibility = View.VISIBLE
-                    }
-                }
             }
 
             holder.switchActive.setOnCheckedChangeListener(null)

@@ -35,9 +35,6 @@ import neth.iecal.curbox.CrashLogger
 import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.AppGroup
-import neth.iecal.curbox.data.models.AppGroupConfig
-import neth.iecal.curbox.data.models.AppTimeConfig
-import neth.iecal.curbox.data.models.AppUsageConfig
 import neth.iecal.curbox.databinding.FragmentOnboardingPermissionsBinding
 import neth.iecal.curbox.services.AppBlockerService
 import neth.iecal.curbox.ui.activity.FragmentActivity
@@ -186,7 +183,6 @@ class OnboardingPermissionsFragment : Fragment() {
 
     private suspend fun createStarterGroup() {
         val targetApp = onboardingViewModel.targetAppPackage.value
-        val limit = onboardingViewModel.dailyLimitMinutes.value ?: 30L
         val packageMap = mapOf(
             "Instagram" to "com.instagram.android",
             "TikTok" to "com.zhiliaoapp.musically",
@@ -198,10 +194,6 @@ class OnboardingPermissionsFragment : Fragment() {
             id = UUID.randomUUID().toString(),
             name = getString(R.string.onboarding_app_limit_group_name, targetApp),
             selectedPackages = listOf(pkg),
-            config = AppGroupConfig(
-                schedule = AppTimeConfig.allDay(),
-                usage = AppUsageConfig(isDailyUniform = true, uniformLimit = limit, dailyLimits = LongArray(7) { limit })
-            ),
             isActive = true,
             warningScreenConfig = AppBlockerWarningScreenConfig()
         ))

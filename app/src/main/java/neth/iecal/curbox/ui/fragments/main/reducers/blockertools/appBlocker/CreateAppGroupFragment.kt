@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.CancellationException
 import neth.iecal.curbox.CrashLogger
@@ -22,11 +23,9 @@ import kotlinx.coroutines.flow.collectLatest
 import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.data.models.AppGroup
-import neth.iecal.curbox.data.models.AppGroupConfig
 import neth.iecal.curbox.databinding.FragmentCreateAppGroupBinding
 import neth.iecal.curbox.hardcoded.AppWebsites
 import neth.iecal.curbox.ui.activity.SelectAppsActivity
-import neth.iecal.curbox.utils.scheduleConflictsWith
 import java.util.UUID
 
 class CreateAppGroupFragment : Fragment() {
@@ -42,6 +41,7 @@ class CreateAppGroupFragment : Fragment() {
     private var selectedWebsites = linkedSetOf<String>()
     private var isPrefilled = false
     private val viewModel: AppBlockerSettingViewModel by activityViewModels()
+    private val websiteAdapter by lazy { WebsiteAdapter() }
 
     private val selectAppsLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -73,6 +73,7 @@ class CreateAppGroupFragment : Fragment() {
         val groupId = requireActivity().intent.getStringExtra("group_id") ?: arguments?.getString("group_id")
         val prefillPackage = requireActivity().intent.getStringExtra("prefill_package")
         binding.btnDeleteGroup.visibility = View.GONE
+        binding.rvWebsites.adapter = websiteAdapter
 
         if (groupId == null && !isPrefilled && prefillPackage != null) {
             isPrefilled = true
@@ -104,10 +105,6 @@ class CreateAppGroupFragment : Fragment() {
                             }
                         }
 
-                        group.config?.let { config ->
-                            viewModel.currentTimeConfig = config.schedule
-                            viewModel.currentUsageConfig = config.usage
-                        }
                         viewModel.warningScrnConfig = group.warningScreenConfig
                     }
                 }
@@ -121,8 +118,6 @@ class CreateAppGroupFragment : Fragment() {
             actionId == EditorInfo.IME_ACTION_DONE
         }
 
-        binding.btnConfigureSchedule.setOnClickListener { openScheduleEditor() }
-        binding.btnConfigureUsage.setOnClickListener { openUsageEditor() }
         binding.configureWarningScreen.setOnClickListener {
             val configFragment = neth.iecal.curbox.ui.fragments.main.reducers.blockertools.shared.WarningConfigFragment.newInstance(
                 viewModel.warningScrnConfig, 
@@ -149,7 +144,7 @@ class CreateAppGroupFragment : Fragment() {
         }
     }
 
-    private fun saveGroup(skipConflictCheck: Boolean = false) {
+    private fun saveGroup() {
         if (_binding == null || isDeleting) return
         val name = binding.etGroupName.text.toString().trim()
         if (name.isEmpty()) {
@@ -178,34 +173,12 @@ class CreateAppGroupFragment : Fragment() {
             name = name,
             selectedPackages = selectedApps.toList(),
             websites = selectedWebsites.toList(),
-            config = AppGroupConfig(
-                schedule = viewModel.currentTimeConfig,
-                usage = viewModel.currentUsageConfig
-            ),
             isActive =
                 if (isEditingRecord && targetExistingGroup != null) targetExistingGroup.isActive
                 else true,
             temporarilyDisabledUntilMs = targetExistingGroup?.temporarilyDisabledUntilMs ?: 0L,
             warningScreenConfig = viewModel.warningScrnConfig
         )
-
-        val conflicts = newGroup.scheduleConflictsWith(viewModel.groups.value)
-        if (!skipConflictCheck && conflicts.isNotEmpty()) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.schedule_conflict_title)
-                .setMessage(requireContext().appGroupConflictMessage(conflicts))
-                .setNegativeButton(R.string.schedule_conflict_edit_apps) { _, _ ->
-                    openAppSelector()
-                }
-                .setNeutralButton(R.string.schedule_conflict_edit_schedule) { _, _ ->
-                    openScheduleEditor()
-                }
-                .setPositiveButton(R.string.schedule_conflict_keep_both) { _, _ ->
-                    saveGroup(skipConflictCheck = true)
-                }
-                .show()
-            return
-        }
 
         binding.fabSaveGroup.isEnabled = false
         viewLifecycleOwner.lifecycleScope.launch {
@@ -245,29 +218,50 @@ class CreateAppGroupFragment : Fragment() {
     }
 
     private fun updateWebsitesList() {
-        val list = binding.websitesList
-        list.removeAllViews()
         // Websites of the chosen apps are blocked with them already; shown here without a remove button.
-        selectedApps.forEach { pkg ->
+        val included = selectedApps.flatMap { pkg ->
             val appName = runCatching {
                 requireContext().packageManager.run { getApplicationLabel(getApplicationInfo(pkg, 0)).toString() }
             }.getOrDefault(pkg)
-            AppWebsites.sitesFor(pkg).forEach { site ->
-                val row = layoutInflater.inflate(R.layout.item_keyword, list, false)
-                row.findViewById<TextView>(R.id.tv_keyword).text = getString(R.string.app_group_website_included, site, appName)
-                row.findViewById<View>(R.id.btn_remove).visibility = View.GONE
-                list.addView(row)
+            AppWebsites.sitesFor(pkg).map { site ->
+                WebsiteRow(getString(R.string.app_group_website_included, site, appName), removableSite = null)
             }
         }
-        selectedWebsites.forEach { site ->
-            val row = layoutInflater.inflate(R.layout.item_keyword, list, false)
-            row.findViewById<TextView>(R.id.tv_keyword).text = site
-            row.findViewById<View>(R.id.btn_remove).setOnClickListener {
+        websiteAdapter.submitList(included + selectedWebsites.map { WebsiteRow(it, removableSite = it) })
+    }
+
+    private data class WebsiteRow(val text: String, val removableSite: String?)
+
+    private inner class WebsiteAdapter : RecyclerView.Adapter<WebsiteAdapter.ViewHolder>() {
+        private var items = listOf<WebsiteRow>()
+
+        fun submitList(newItems: List<WebsiteRow>) {
+            items = newItems
+            notifyDataSetChanged()
+        }
+
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val tvWebsite: TextView = view.findViewById(R.id.tv_keyword)
+            val btnRemove: ImageButton = view.findViewById(R.id.btn_remove)
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_keyword, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val row = items[position]
+            holder.tvWebsite.text = row.text
+            holder.btnRemove.visibility = if (row.removableSite == null) View.GONE else View.VISIBLE
+            holder.btnRemove.setOnClickListener {
+                val site = items.getOrNull(holder.adapterPosition)?.removableSite ?: return@setOnClickListener
                 selectedWebsites.remove(site)
                 updateWebsitesList()
             }
-            list.addView(row)
         }
+
+        override fun getItemCount() = items.size
     }
 
     private fun openAppSelector() {
@@ -276,20 +270,6 @@ class CreateAppGroupFragment : Fragment() {
             putExtra(SelectAppsActivity.EXTRA_ALLOW_CURBOX, true)
         }
         selectAppsLauncher.launch(intent)
-    }
-
-    private fun openScheduleEditor() {
-        TimeBasedSettingsFragment().show(
-            parentFragmentManager,
-            TimeBasedSettingsFragment.FRAGMENT_ID
-        )
-    }
-
-    private fun openUsageEditor() {
-        UsageBasedSettingsFragment().show(
-            parentFragmentManager,
-            UsageBasedSettingsFragment.FRAGMENT_ID
-        )
     }
 
     override fun onDestroyView() {

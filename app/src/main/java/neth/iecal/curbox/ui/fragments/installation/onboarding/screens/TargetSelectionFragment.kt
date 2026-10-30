@@ -30,7 +30,6 @@ class TargetSelectionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.setTargetApp("Instagram")
-        viewModel.setDailyLimit(30L)
 
         binding.targetChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             if (checkedIds.isEmpty()) return@setOnCheckedStateChangeListener
@@ -43,18 +42,6 @@ class TargetSelectionFragment : Fragment() {
                 else -> "Instagram"
             }
             viewModel.setTargetApp(target)
-        }
-
-        binding.limitChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
-            if (checkedIds.isEmpty()) return@setOnCheckedStateChangeListener
-            val limit = when (checkedIds.first()) {
-                R.id.chip_15m -> 15L
-                R.id.chip_30m -> 30L
-                R.id.chip_1h -> 60L
-                R.id.chip_2h -> 120L
-                else -> 30L
-            }
-            viewModel.setDailyLimit(limit)
         }
 
         binding.btnAction.setOnClickListener {

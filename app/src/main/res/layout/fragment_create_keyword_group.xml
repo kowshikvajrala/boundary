@@ -129,10 +129,11 @@
                         android:textAppearance="?attr/textAppearanceTitleSmall" />
 
                     <TextView
+                        android:id="@+id/tv_block_adult_desc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="@string/blocklists_adult_switch_desc"
+                        android:text="@string/blocklists_adult_desc_not_downloaded"
                         android:textAppearance="?attr/textAppearanceBodySmall"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -176,33 +177,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:text="@string/group_limits"
+                android:text="@string/warning_section_title"
                 android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                 android:textColor="?attr/colorOnSurfaceVariant" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_configure_schedule"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/configure_group_schedule"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                app:backgroundTint="?attr/colorSurfaceContainer"
-                app:cornerRadius="16dp"
-                app:icon="@drawable/ic_timer_aesthetic"
-                app:iconTint="?attr/colorOnSurfaceVariant" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_configure_usage"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/configure_group_usage"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                app:backgroundTint="?attr/colorSurfaceContainer"
-                app:cornerRadius="16dp"
-                app:icon="@drawable/ic_reducers"
-                app:iconTint="?attr/colorOnSurfaceVariant" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_configure_warning_screen"

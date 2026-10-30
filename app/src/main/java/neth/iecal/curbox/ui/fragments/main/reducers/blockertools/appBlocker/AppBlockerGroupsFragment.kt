@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -26,9 +25,7 @@ import kotlinx.coroutines.launch
 import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.AppGroup
 import neth.iecal.curbox.ui.activity.FragmentActivity
-import neth.iecal.curbox.utils.TimeTools
 import neth.iecal.curbox.utils.TemporaryDisableDialog
-import neth.iecal.curbox.utils.scheduleConflictsWith
 
 class AppBlockerGroupsFragment : Fragment() {
 
@@ -113,13 +110,7 @@ class AppBlockerGroupsFragment : Fragment() {
             val group = getItem(position)
             holder.tvName.text = group.name
 
-            holder.tvDetails.text = group.config?.let { config ->
-                getString(
-                    R.string.group_details_apps,
-                    group.selectedPackages.size,
-                    requireContext().appGroupScheduleSummary(config.schedule)
-                )
-            } ?: getString(R.string.group_details_apps_only, group.selectedPackages.size)
+            holder.tvDetails.text = getString(R.string.group_details_apps_only, group.selectedPackages.size)
 
             holder.tvRemaining.visibility = View.GONE
             holder.tvRemaining.tag = group.id
@@ -137,24 +128,6 @@ class AppBlockerGroupsFragment : Fragment() {
                     )
                 )
                 holder.tvRemaining.visibility = View.VISIBLE
-            } else {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    val remaining = viewModel.getRemainingUsageMillis(group)
-                    if (holder.tvRemaining.tag != group.id) return@launch
-                    if (remaining == null) {
-                        holder.tvRemaining.visibility = View.GONE
-                    } else {
-                        holder.tvRemaining.text = if (remaining <= 0L) {
-                            getString(R.string.group_no_usage_left)
-                        } else {
-                            getString(
-                                R.string.group_usage_left,
-                                TimeTools.formatTimeForWidget(remaining)
-                            )
-                        }
-                        holder.tvRemaining.visibility = View.VISIBLE
-                    }
-                }
             }
 
             holder.switchActive.setOnCheckedChangeListener(null)
@@ -164,32 +137,7 @@ class AppBlockerGroupsFragment : Fragment() {
                 val pos = holder.adapterPosition
                 if (pos == RecyclerView.NO_POSITION) return@setOnCheckedChangeListener
                 if (isChecked && !group.isActive) {
-                    val conflicts = group.copy(isActive = true)
-                        .scheduleConflictsWith(viewModel.groups.value)
-                    if (conflicts.isNotEmpty()) {
-                        holder.switchActive.setOnCheckedChangeListener(null)
-                        holder.switchActive.isChecked = false
-                        holder.switchActive.post {
-                            if (pos in 0 until itemCount) notifyItemChanged(pos)
-                        }
-                        MaterialAlertDialogBuilder(requireContext())
-                            .setTitle(R.string.schedule_conflict_title)
-                            .setMessage(requireContext().appGroupConflictMessage(conflicts))
-                            .setNegativeButton(R.string.schedule_conflict_cancel, null)
-                            .setNeutralButton(R.string.schedule_conflict_edit_group) { _, _ ->
-                                openGroup(group.id)
-                            }
-                            .setPositiveButton(R.string.schedule_conflict_keep_both) { _, _ ->
-                                val currentIndex = viewModel.groups.value
-                                    .indexOfFirst { it.id == group.id }
-                                if (currentIndex != -1) {
-                                    viewModel.updateGroupActiveState(currentIndex, true)
-                                }
-                            }
-                            .show()
-                    } else {
-                        viewModel.updateGroupActiveState(pos, true)
-                    }
+                    viewModel.updateGroupActiveState(pos, true)
                 } else if (!isChecked &&
                     group.isActive &&
                     viewModel.temporaryDisableAvailable.value

@@ -50,28 +50,6 @@
                 android:textColor="?android:attr/textColorSecondary" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_configure_schedule"
-                style="@style/Widget.Material3.Button"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/configure_schedule"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                app:backgroundTint="?attr/colorSurfaceContainer"
-                app:icon="@drawable/ic_reducers"
-                app:iconTint="?attr/colorOnSurfaceVariant" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_configure_usage"
-                style="@style/Widget.Material3.Button.TonalButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/configure_group_usage"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                app:backgroundTint="?attr/colorSurfaceContainer"
-                app:icon="@drawable/ic_reducers"
-                app:iconTint="?attr/colorOnSurfaceVariant" />
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_configure_count"
                 style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="match_parent"

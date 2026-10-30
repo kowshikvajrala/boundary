@@ -40,6 +40,10 @@ data class AppBlockerWarningScreenConfig(
     val lockAfterUnlockMs: Long = 0L,
     /** App groups only: close the group's apps in the background while that lock runs. */
     val closeAppsWhileLocked: Boolean = true,
+    /** App groups only: unlock time stops while the group's apps are not in front. */
+    val pauseUnlockWhenAway: Boolean = true,
+    /** How long paused unlock time is kept, counted from the first time the apps were left. */
+    val keepLeftoverMs: Long = 60 * 60_000L,
 )
 
 class WarningMessagesAdapter : TypeAdapter<List<String>>() {

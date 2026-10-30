@@ -12,8 +12,6 @@ class OnboardingViewModel : ViewModel() {
     private val _targetAppPackage = MutableLiveData<String?>(null)
     val targetAppPackage: LiveData<String?> = _targetAppPackage
 
-    private val _dailyLimitMinutes = MutableLiveData<Long>(30L)
-    val dailyLimitMinutes: LiveData<Long> = _dailyLimitMinutes
 
     fun setEstimatedHours(hours: Int) {
         _estimatedHours.value = hours
@@ -25,9 +23,5 @@ class OnboardingViewModel : ViewModel() {
 
     fun skipTargetApp() {
         _targetAppPackage.value = null
-    }
-
-    fun setDailyLimit(limit: Long) {
-        _dailyLimitMinutes.value = limit
     }
 }

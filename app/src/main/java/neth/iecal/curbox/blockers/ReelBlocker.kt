@@ -15,13 +15,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import neth.iecal.curbox.Constants
 import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.ReelBlocker
-import neth.iecal.curbox.data.models.ReelTimeConfig
 import neth.iecal.curbox.data.models.ReelCountConfig
-import neth.iecal.curbox.data.models.upgradeLegacyConfig
 import neth.iecal.curbox.data.db.AppDatabase
 import neth.iecal.curbox.hardcoded.ReelAppConfig
 import neth.iecal.curbox.services.BaseBlockingService
@@ -48,7 +45,6 @@ class ReelBlocker : BaseBlocker() {
     private lateinit var service : BaseBlockingService
 
     private var reelBlockerConfig: ReelBlocker = ReelBlocker(isActive = false)
-    private var timeBAsedConfig : ReelTimeConfig? = null
     private var countBasedConfig : ReelCountConfig? = null
     private var currentDailyCount: Int = 0
     private var currentCountDate: String? = null
@@ -120,21 +116,10 @@ class ReelBlocker : BaseBlocker() {
                 return
             }
 
-            val endAllowedMillis = getEndTimeInMillis()
-            if (endAllowedMillis == null) {
-                showWarningScreen(viewId)
-                return
-            }
-
-            val usageLimit = getDailyReelUsageLimit()
-            if (usageLimit > 0 && getTodayReelUsageMillis() >= usageLimit * 60_000L) {
-                showWarningScreen(viewId)
-                return
-            }
-
+            // Short videos are blocked all day, except for a daily reel count allowance if set.
             ensureCountFlowForToday()
             val limit = getDailyReelCountLimit()
-            if (limit != null && limit > 0 && currentDailyCount >= limit) {
+            if (limit == null || limit <= 0 || currentDailyCount >= limit) {
                 showWarningScreen(viewId)
             }
         }
@@ -166,12 +151,11 @@ class ReelBlocker : BaseBlocker() {
 
         settingsJob = CoroutineScope(Dispatchers.IO).launch {
             service.dataStoreManager.settings.collectLatest { settings ->
-                reelBlockerConfig = settings.reelBlockerConfig.upgradeLegacyConfig()
+                reelBlockerConfig = settings.reelBlockerConfig
                 isAwayMode = settings.isAwayModeActive
                 homeLocation = settings.homeLocation
                 publishTimersToWidgets()
                 val config = reelBlockerConfig.config
-                timeBAsedConfig = config?.schedule
                 countBasedConfig = config?.reelCount
             }
         }
@@ -298,63 +282,6 @@ class ReelBlocker : BaseBlocker() {
             val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1 // 0=Sunday, 1=Monday...
             return config.dailyLimits[dayOfWeek]
         }
-    }
-
-    private fun getDailyReelUsageLimit(): Long {
-        val config = reelBlockerConfig.config?.usage ?: return 0
-        if (config.isDailyUniform) return config.uniformLimit
-        val dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
-        return config.dailyLimits[dayOfWeek]
-    }
-
-    private fun getTodayReelUsageMillis(): Long = runBlocking {
-        AppDatabase.getInstance(service).reelUsageStatsDao()
-            .getForDate(TimeTools.getCurrentDate())
-            .filter { it.packageName !in reelBlockerConfig.excludedPackages }
-            .sumOf { it.totalTime }
-    }
-
-    /**
-     * @return null if reels is not currently allowed by time config, or the end time in uptimeMillis if allowed.
-     */
-    private fun getEndTimeInMillis(): Long? {
-
-        if(timeBAsedConfig==null) return null
-        val calendar = Calendar.getInstance()
-        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-        val currentMinute = calendar.get(Calendar.MINUTE)
-        val currentMinutes = TimeTools.convertToMinutesFromMidnight(currentHour, currentMinute)
-
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1 // 0=Sunday, 1=Monday...
-
-        val intervals = if (timeBAsedConfig!!.isEveryday) {
-            timeBAsedConfig!!.everydayIntervals
-        } else {
-            timeBAsedConfig!!.dailyIntervals[dayOfWeek] ?: emptyList()
-        }
-
-        intervals.forEach { interval ->
-            val startMinutes = TimeTools.convertToMinutesFromMidnight(interval.startHour, interval.startMinute)
-            val endMinutes = TimeTools.convertToMinutesFromMidnight(interval.endHour, interval.endMinute)
-
-            if (startMinutes <= endMinutes) {
-                if (currentMinutes in startMinutes until endMinutes) {
-                    val remainingMins = endMinutes - currentMinutes
-                    return SystemClock.uptimeMillis() + (remainingMins * 60 * 1000L)
-                }
-            } else {
-                // cross midnight
-                if (currentMinutes >= startMinutes || currentMinutes < endMinutes) {
-                    val remainingMins = if (currentMinutes >= startMinutes) {
-                        (1440 - currentMinutes) + endMinutes
-                    } else {
-                        endMinutes - currentMinutes
-                    }
-                    return SystemClock.uptimeMillis() + (remainingMins * 60 * 1000L)
-                }
-            }
-        }
-        return null
     }
 
 }
