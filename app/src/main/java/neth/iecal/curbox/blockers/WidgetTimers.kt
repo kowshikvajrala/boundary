@@ -12,7 +12,8 @@ import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Collects the lock and unlock timers of every blocker in the service process and sends them
- * to the home screen widgets, only when something changed. The widgets count down on their own,
+ * to the home screen widgets and the unlock notification ([UnlockNotification]), only when
+ * something changed. The widgets count down on their own,
  * so this never wakes the phone; it only redraws when a timer ends.
  *
  * A timer value is the wall clock time it ends. A negative value is a frozen unlock: minus the
@@ -46,6 +47,13 @@ object WidgetTimers {
         scheduleExpiry(context, kind, merged.values.filter { it > now }.minOrNull(), now)
         if (!force && merged == lastSent[kind]) return
         lastSent[kind] = merged
+        if (kind == Kind.UNLOCKS) {
+            try {
+                UnlockNotification.update(context, merged)
+            } catch (e: Exception) {
+                Log.e("WidgetTimers", "Could not update the unlock notification", e)
+            }
+        }
         val provider = if (kind == Kind.LOCKS) LocksWidgetProvider::class.java else UnlocksWidgetProvider::class.java
         try {
             context.sendBroadcast(

@@ -1,8 +1,10 @@
 package neth.iecal.curbox.ui.fragments.main.reducers.advanced
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
@@ -29,6 +31,9 @@ class PermissionsFragment : Fragment() {
 
     companion object {
         const val FRAGMENT_ID = "permissions_status"
+        // Settings.ACTION_MANAGE_APP_PROMOTED_NOTIFICATIONS (Android 16).
+        private const val ACTION_MANAGE_APP_PROMOTED_NOTIFICATIONS =
+            "android.settings.MANAGE_APP_PROMOTED_NOTIFICATIONS"
     }
 
     private var _binding: FragmentPermissionsBinding? = null
@@ -39,7 +44,8 @@ class PermissionsFragment : Fragment() {
         val descRes: Int,
         val isRequired: Boolean,
         val isOn: (Context) -> Boolean,
-        val fix: (Context) -> Intent
+        val fix: (Context) -> Intent,
+        val isAvailable: Boolean = true
     )
 
     private val entries = listOf(
@@ -52,6 +58,11 @@ class PermissionsFragment : Fragment() {
         Entry(R.string.permissions_notifications, R.string.permissions_notifications_desc, true,
             { PermissionUtils.isNotificationPermissionGiven(it) },
             { Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, it.packageName) }),
+        // Live Updates (Android 16): the unlock countdown as a chip in the status bar.
+        Entry(R.string.permissions_live_updates, R.string.permissions_live_updates_desc, false,
+            { canPostLiveUpdates(it) },
+            { Intent(ACTION_MANAGE_APP_PROMOTED_NOTIFICATIONS).putExtra(Settings.EXTRA_APP_PACKAGE, it.packageName) },
+            isAvailable = Build.VERSION.SDK_INT >= 36),
         Entry(R.string.permissions_battery, R.string.permissions_battery_desc, true,
             { (it.getSystemService(Context.POWER_SERVICE) as PowerManager).isIgnoringBatteryOptimizations(it.packageName) },
             { Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, packageUri(it)) }),
@@ -93,7 +104,7 @@ class PermissionsFragment : Fragment() {
     private fun render() {
         val context = requireContext()
         binding.permissionsContainer.removeAllViews()
-        entries.forEach { entry ->
+        entries.filter { it.isAvailable }.forEach { entry ->
             val row = ItemPermissionStatusBinding.inflate(layoutInflater, binding.permissionsContainer, false)
             val isOn = runCatching { entry.isOn(context) }.getOrDefault(false)
             row.permissionTitle.text = getString(entry.titleRes)
@@ -106,6 +117,13 @@ class PermissionsFragment : Fragment() {
             }
             binding.permissionsContainer.addView(row.root)
         }
+    }
+
+    // NotificationManager.canPostPromotedNotifications() is Android 16 API; this app compiles
+    // against Android 15, so it is called by name.
+    private fun canPostLiveUpdates(context: Context): Boolean {
+        val manager = context.getSystemService(NotificationManager::class.java)
+        return manager.javaClass.getMethod("canPostPromotedNotifications").invoke(manager) as Boolean
     }
 
     private fun packageUri(context: Context): Uri = Uri.parse("package:" + context.packageName)

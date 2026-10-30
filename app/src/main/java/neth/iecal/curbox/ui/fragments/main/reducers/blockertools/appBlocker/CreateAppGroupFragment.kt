@@ -123,7 +123,8 @@ class CreateAppGroupFragment : Fragment() {
                 viewModel.warningScrnConfig, 
                 "result_warning_config",
                 isNew = groupId == null,
-                supportsOnEachOpen = true
+                supportsOnEachOpen = true,
+                supportsPauseUnlock = true
             )
             parentFragmentManager.beginTransaction()
                 .hide(this)

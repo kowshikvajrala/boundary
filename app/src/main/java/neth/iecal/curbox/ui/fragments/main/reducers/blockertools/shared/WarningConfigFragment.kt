@@ -83,8 +83,10 @@ class WarningConfigFragment : Fragment() {
             ?: (arguments?.getString(ARG_CONFIG) == null)
         val supportsOnEachOpen =
             arguments?.getBoolean(ARG_SUPPORTS_ON_EACH_OPEN) == true
+        val supportsPauseUnlock =
+            arguments?.getBoolean(ARG_SUPPORTS_PAUSE_UNLOCK) == true
 
-        formController.bind(config, isNew, supportsOnEachOpen)
+        formController.bind(config, isNew, supportsOnEachOpen, supportsPauseUnlock)
         viewLifecycleOwner.lifecycleScope.launch {
             val settings = DataStoreManager(requireContext()).settings.first()
             formController.bindFocusGroups()
@@ -142,6 +144,7 @@ class WarningConfigFragment : Fragment() {
         const val ARG_REQUEST_KEY = "arg_request_key"
         const val ARG_IS_NEW = "arg_is_new"
         const val ARG_SUPPORTS_ON_EACH_OPEN = "arg_supports_on_each_open"
+        const val ARG_SUPPORTS_PAUSE_UNLOCK = "arg_supports_pause_unlock"
         const val RESULT_KEY = "request_key_warning_config"
         const val RESULT_CONFIG = "result_config"
 
@@ -149,7 +152,8 @@ class WarningConfigFragment : Fragment() {
             config: AppBlockerWarningScreenConfig,
             requestKey: String = RESULT_KEY,
             isNew: Boolean = false,
-            supportsOnEachOpen: Boolean = false
+            supportsOnEachOpen: Boolean = false,
+            supportsPauseUnlock: Boolean = false
         ): WarningConfigFragment {
             return WarningConfigFragment().apply {
                 arguments = Bundle().apply {
@@ -157,6 +161,7 @@ class WarningConfigFragment : Fragment() {
                     putString(ARG_REQUEST_KEY, requestKey)
                     putBoolean(ARG_IS_NEW, isNew)
                     putBoolean(ARG_SUPPORTS_ON_EACH_OPEN, supportsOnEachOpen)
+                    putBoolean(ARG_SUPPORTS_PAUSE_UNLOCK, supportsPauseUnlock)
                 }
             }
         }

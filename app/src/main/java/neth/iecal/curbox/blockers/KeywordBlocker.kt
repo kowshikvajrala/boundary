@@ -60,6 +60,7 @@ class KeywordBlocker : BaseBlocker() {
         private const val BLOCK_SUPPRESSION_MS = 5_000L
         private const val REPLACEMENT_PAGE = "about:blank"
         private const val COOLDOWN_NOTIFICATION_ID = 1004
+        private const val DEFAULT_KEEP_LEFTOVER_MS = 60 * 60_000L
     }
 
     private lateinit var service: BaseBlockingService
@@ -74,6 +75,13 @@ class KeywordBlocker : BaseBlocker() {
     private var isTurnedOn = false
     private var isUnsupportedBrowserBlockingOn = false
     private var cooldownGroupsList = ConcurrentHashMap<String, Long>()
+    // Unlocks only count down while a page of their group is open. Leaving freezes what is left.
+    // firstLeftAtMs is the first time the pages were left; opening them again does not reset it.
+    private data class PausedUnlock(val remainingMs: Long, val firstLeftAtMs: Long)
+    private val pausedUnlocks = ConcurrentHashMap<String, PausedUnlock>()
+    // Running unlocks that were paused before -> the first time their pages were left.
+    private val firstLeftAtMs = ConcurrentHashMap<String, Long>()
+    private val pauseGuard = Any()
     private lateinit var unlockLocks: UnlockLocks
     @Volatile private var isAwayMode = false
     @Volatile private var homeLocation = HomeLocation()
@@ -194,8 +202,81 @@ class KeywordBlocker : BaseBlocker() {
     fun onWebsiteObserved(observation: WebsiteObservation?) {
         if (destroyed) return
         lastWebsiteObservation = observation
+        syncUnlocksWithPage(observation?.urlIdentifier)
         if (observation == null || !isTurnedOn) return
         evaluateAndBlock(observation.packageName, observation.urlIdentifier)
+    }
+
+    /**
+     * Freezes the unlock of every group whose pages are not open, and lets a frozen unlock run
+     * again when one of its pages comes back. Null means no page is open.
+     */
+    private fun syncUnlocksWithPage(urlIdentifier: String?) = synchronized(pauseGuard) {
+        if (destroyed || !::prefs.isInitialized) return@synchronized
+        val now = System.currentTimeMillis()
+        val openIds = if (urlIdentifier == null || !isTurnedOn) emptySet()
+            else findMatchingGroups(urlIdentifier).map(KeywordGroup::id).toSet()
+        var changed = false
+        cooldownGroupsList.forEach { (id, end) ->
+            if (end <= now || id in openIds || !pausesUnlock(id)) return@forEach
+            pauseUnlock(id, end - now, now)
+            changed = true
+        }
+        pausedUnlocks.forEach { (id, paused) ->
+            if (id !in openIds) return@forEach
+            pausedUnlocks.remove(id)
+            // Time left over from long ago is not saved up for later.
+            if (isLeftoverKept(id, paused, now)) {
+                cooldownGroupsList[id] = now + paused.remainingMs
+                firstLeftAtMs[id] = paused.firstLeftAtMs
+            }
+            changed = true
+        }
+        if (changed) {
+            persistCooldownData()
+            if (::notificationManager.isInitialized) {
+                notificationManager.stopTimer()
+                notifiedCooldownGroupId = null
+            }
+            showNextCooldownNotification()
+        }
+    }
+
+    private fun pausesUnlock(id: String): Boolean =
+        activeGroups.find { it.id == id }?.warningScreenConfig?.pauseUnlockWhenAway == true
+
+    private fun pauseUnlock(id: String, remainingMs: Long, now: Long) {
+        cooldownGroupsList.remove(id)
+        // The keep time counts from the first time the pages were left, not from this time, so a
+        // quick visit now and then cannot keep the leftover time forever.
+        val paused = PausedUnlock(remainingMs, firstLeftAtMs.remove(id) ?: now)
+        if (isLeftoverKept(id, paused, now)) pausedUnlocks[id] = paused
+    }
+
+    private fun isLeftoverKept(id: String, paused: PausedUnlock, now: Long): Boolean {
+        val keepMs = activeGroups.find { it.id == id }?.warningScreenConfig?.keepLeftoverMs
+            ?: DEFAULT_KEEP_LEFTOVER_MS
+        return now - paused.firstLeftAtMs <= keepMs
+    }
+
+    private fun isUnlockPaused(id: String, now: Long): Boolean =
+        pausedUnlocks[id]?.let { isLeftoverKept(id, it, now) } == true
+
+    private val screenReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            blockerScope.launch {
+                when (intent?.action) {
+                    Intent.ACTION_SCREEN_OFF -> syncUnlocksWithPage(null)
+                    // The tracker does not report a page again if it did not change, so resume
+                    // here when the same page is still in front after unlocking the phone.
+                    Intent.ACTION_USER_PRESENT -> {
+                        val page = lastWebsiteObservation ?: return@launch
+                        val front = runCatching { service.rootInActiveWindow?.packageName?.toString() }.getOrNull()
+                        if (front == page.packageName) syncUnlocksWithPage(page.urlIdentifier)
+                    }
+                }
+            }
+        }
     }
 
     private fun evaluateAndBlock(packageName: String, urlIdentifier: String) {
@@ -205,6 +286,7 @@ class KeywordBlocker : BaseBlocker() {
         val now = System.currentTimeMillis()
 
         val eligible = matched.filter { group ->
+            if (isUnlockPaused(group.id, now)) return@filter false
             val cooldownEnd = cooldownGroupsList[group.id]
             if (cooldownEnd != null) {
                 if (cooldownEnd > now) return@filter false
@@ -315,7 +397,7 @@ class KeywordBlocker : BaseBlocker() {
         this.prefs = service.getSharedPreferences("keyword_blocker_prefs", Context.MODE_PRIVATE)
         this.unlockLocks = UnlockLocks(service, "keyword_blocker_unlock_locks")
         if (!::notificationManager.isInitialized) {
-            notificationManager = TimerNotification(service, COOLDOWN_NOTIFICATION_ID)
+            notificationManager = TimerNotification(service, COOLDOWN_NOTIFICATION_ID, postsNotification = false)
         }
         loadPersistedData()
 
@@ -391,17 +473,35 @@ class KeywordBlocker : BaseBlocker() {
             val end = prefs.getLong("cooldown_$id", 0L)
             if (end > System.currentTimeMillis()) cooldownGroupsList[id] = end
         }
+        (prefs.getStringSet("paused_unlock_keys", setOf()) ?: setOf()).forEach { id ->
+            val remaining = prefs.getLong("paused_unlock_left_$id", 0L)
+            val leftAt = prefs.getLong("paused_unlock_at_$id", 0L)
+            if (remaining > 0L) pausedUnlocks[id] = PausedUnlock(remaining, leftAt)
+        }
+        (prefs.getStringSet("unlock_left_at_keys", setOf()) ?: setOf()).forEach { id ->
+            val leftAt = prefs.getLong("unlock_left_at_$id", 0L)
+            if (leftAt > 0L) firstLeftAtMs[id] = leftAt
+        }
     }
 
     private fun persistCooldownData() {
         prefs.edit {
             putStringSet("cooldown_keys", cooldownGroupsList.keys.toSet())
             cooldownGroupsList.forEach { (id, end) -> putLong("cooldown_$id", end) }
+            putStringSet("paused_unlock_keys", pausedUnlocks.keys.toSet())
+            pausedUnlocks.forEach { (id, paused) ->
+                putLong("paused_unlock_left_$id", paused.remainingMs)
+                putLong("paused_unlock_at_$id", paused.firstLeftAtMs)
+            }
+            putStringSet("unlock_left_at_keys", firstLeftAtMs.keys.toSet())
+            firstLeftAtMs.forEach { (id, leftAt) -> putLong("unlock_left_at_$id", leftAt) }
         }
     }
 
     private fun removeCooldownFrom(id: String) {
         cooldownGroupsList.remove(id)
+        pausedUnlocks.remove(id)
+        firstLeftAtMs.remove(id)
         publishTimersToWidgets()
         prefs.edit {
             remove("cooldown_$id")
@@ -424,8 +524,11 @@ class KeywordBlocker : BaseBlocker() {
         if (unlockLocks.lockEndsAt(groupId, lockAfterFor(groupId)) > 0L) return
 
         val cooldownEnd = System.currentTimeMillis() + duration
+        pausedUnlocks.remove(groupId)
+        firstLeftAtMs.remove(groupId)
         cooldownGroupsList[groupId] = cooldownEnd
         persistCooldownData()
+        publishTimersToWidgets()
         showCooldownNotification(groupId, cooldownEnd)
 
         val date = TimeTools.getCurrentDate()
@@ -447,7 +550,9 @@ class KeywordBlocker : BaseBlocker() {
         val now = System.currentTimeMillis()
         val names = activeGroups.associate { it.id to it.name }
         val unlocks = cooldownGroupsList.filter { it.value > now && it.key in names }
-            .entries.associate { names.getValue(it.key) to it.value }
+            .entries.associate { names.getValue(it.key) to it.value } +
+            pausedUnlocks.filter { (id, paused) -> id in names && isLeftoverKept(id, paused, now) }
+                .entries.associate { names.getValue(it.key) to -it.value.remainingMs }
         val locks = activeGroups.mapNotNull { group ->
             val endsAt = unlockLocks.lockEndsAt(group.id, group.warningScreenConfig.lockAfterUnlockMs, now)
             if (endsAt > 0L) group.name to endsAt else null
@@ -525,6 +630,10 @@ class KeywordBlocker : BaseBlocker() {
             filter,
             ContextCompat.RECEIVER_EXPORTED
         )
+        service.registerReceiver(screenReceiver, IntentFilter().apply {
+            addAction(Intent.ACTION_SCREEN_OFF)
+            addAction(Intent.ACTION_USER_PRESENT)
+        })
     }
 
     fun removeReceivers() {
@@ -539,6 +648,7 @@ class KeywordBlocker : BaseBlocker() {
         }
         notifiedCooldownGroupId = null
         service.unregisterReceiver(refreshReceiver)
+        runCatching { service.unregisterReceiver(screenReceiver) }
     }
 
     private val refreshReceiver = object : BroadcastReceiver() {

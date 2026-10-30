@@ -277,6 +277,7 @@ class AppBlocker : BaseBlocker() {
         service.unregisterReceiver(refreshReceiver)
         runCatching { service.unregisterReceiver(screenOffReceiver) }
         notificationManager.release()
+        UnlockNotification.stop()
         handler.removeCallbacksAndMessages(null)
         activeRunnables.clear()
         settingsJob?.cancel()
@@ -285,7 +286,7 @@ class AppBlocker : BaseBlocker() {
     fun setupAppBlocker(service: BaseBlockingService) {
         this.service = service
         if (!this::notificationManager.isInitialized) {
-            notificationManager = TimerNotification(service, TIMER_NOTIFICATION_ID)
+            notificationManager = TimerNotification(service, TIMER_NOTIFICATION_ID, postsNotification = false)
         }
         prefs = service.getSharedPreferences("app_blocker_prefs", Context.MODE_PRIVATE)
         unlockLocks = UnlockLocks(service, "app_blocker_unlock_locks")

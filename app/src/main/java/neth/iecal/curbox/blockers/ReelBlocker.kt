@@ -143,7 +143,7 @@ class ReelBlocker : BaseBlocker() {
         if (unlockLocks == null) unlockLocks = UnlockLocks(service, "reel_blocker_unlock_locks")
 
         if (!this::notificationManager.isInitialized) {
-            notificationManager = TimerNotification(service, TIMER_NOTIFICATION_ID)
+            notificationManager = TimerNotification(service, TIMER_NOTIFICATION_ID, postsNotification = false)
         }
 
         settingsJob?.cancel()

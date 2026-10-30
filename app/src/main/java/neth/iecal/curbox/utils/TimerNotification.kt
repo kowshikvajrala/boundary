@@ -3,16 +3,20 @@ package neth.iecal.curbox.utils
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import neth.iecal.curbox.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 
 class TimerNotification(
     private val context: Context,
-    private val notificationId: Int
+    private val notificationId: Int,
+    // False keeps only the timer and its callbacks; UnlockNotification shows unlocks for everyone.
+    private val postsNotification: Boolean = true
 ) {
 
     enum class TimerState { IDLE, RUNNING, FINISHED }
@@ -26,6 +30,9 @@ class TimerNotification(
     companion object {
         private const val TAG = "NotificationTimerMgr"
         private const val CHANNEL_ID = "TimerNotificationChannel"
+        // Notification.EXTRA_REQUEST_PROMOTED_ONGOING (Android 16). Asks for a Live Update, which
+        // shows the countdown as a chip in the status bar. Older versions ignore it.
+        private const val EXTRA_REQUEST_PROMOTED_ONGOING = "android.requestPromotedOngoing"
     }
 
     private val notificationManager: NotificationManager by lazy {
@@ -34,11 +41,12 @@ class TimerNotification(
 
     private val notificationBuilder by lazy {
         NotificationCompat.Builder(context.applicationContext, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_dialog_info) // Swap for your actual app icon
+            .setSmallIcon(R.drawable.icon)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .addExtras(Bundle().apply { putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, true) })
     }
 
     private val timerDispatcher = Dispatchers.Default
@@ -46,7 +54,8 @@ class TimerNotification(
     private var timerJob: Job? = null
 
     private var currentTimerId = ""
-    // Label -> wall clock end time, listed under the main countdown when several run at once.
+    // Label -> wall clock end time, listed under the main countdown. A negative value is a
+    // paused unlock: minus the time it still has left.
     @Volatile private var breakdown: Map<String, Long> = emptyMap()
 
     init {
@@ -77,6 +86,13 @@ class TimerNotification(
 
         // Setup the cached notification UI title
         notificationBuilder.setContentTitle(title)
+        // A running clock in the notification, and in the status bar chip of a Live Update.
+        val now = System.currentTimeMillis()
+        notificationBuilder
+            .setWhen(if (isCountdown) now + totalMillis else now)
+            .setShowWhen(true)
+            .setUsesChronometer(true)
+            .setChronometerCountDown(isCountdown)
 
         timerJob = scope.launch {
             try {
@@ -146,23 +162,31 @@ class TimerNotification(
     }
 
     private fun updateNotificationUI(remainingMillis: Long) {
+        if (!postsNotification) return
         runCatching {
             val timeString = formatDuration(remainingMillis)
 
             val now = System.currentTimeMillis()
-            val lines = breakdown.entries.sortedBy { it.value }.map { (label, endMs) ->
-                "$label  ${formatDuration((endMs - now).coerceAtLeast(0L))}"
-            }
+            // Running unlocks first, soonest end first, then paused ones.
+            val lines = breakdown.entries
+                .sortedWith(compareBy({ it.value < 0L }, { if (it.value < 0L) -it.value else it.value }))
+                .map { (label, endMs) ->
+                    if (endMs < 0L) {
+                        context.getString(R.string.notification_unlock_paused_row, label, formatDuration(-endMs))
+                    } else {
+                        "$label  ${formatDuration((endMs - now).coerceAtLeast(0L))}"
+                    }
+                }
+            // InboxStyle cannot be a Live Update, so the list uses BigTextStyle.
             val style = if (lines.size > 1) {
-                NotificationCompat.InboxStyle().also { inbox -> lines.forEach(inbox::addLine) }
+                NotificationCompat.BigTextStyle().bigText(lines.joinToString("\n"))
             } else {
                 null
             }
-            val contentText = if (lines.size > 1) lines.joinToString(" · ") else timeString
+            val contentText = if (lines.isNotEmpty()) lines.joinToString(" · ") else timeString
 
             val notification = notificationBuilder
                 .setContentText(contentText)
-                .setContentInfo(timeString)
                 .setStyle(style)
                 .build()
 
@@ -184,6 +208,7 @@ class TimerNotification(
     }
 
     private fun dismissNotification() {
+        if (!postsNotification) return
         runCatching { notificationManager.cancel(notificationId) }
     }
 

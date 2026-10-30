@@ -25,6 +25,8 @@ internal class WarningConfigFormController(
     private val onEachOpenChanged: () -> Unit
 ) {
     private var supportsOnEachOpen = false
+    // App and keyword groups; their unlocks can pause while their apps or pages are not open.
+    private var supportsPauseUnlock = false
     private val warningChallengeOptions by lazy {
         createWarningChallengeOptions(fragment.requireContext())
     }
@@ -67,9 +69,11 @@ internal class WarningConfigFormController(
     fun bind(
         config: AppBlockerWarningScreenConfig,
         isNew: Boolean,
-        supportsOnEachOpen: Boolean
+        supportsOnEachOpen: Boolean,
+        supportsPauseUnlock: Boolean
     ) {
         this.supportsOnEachOpen = supportsOnEachOpen
+        this.supportsPauseUnlock = supportsPauseUnlock
         val isOnEachOpenEnabled = supportsOnEachOpen && config.isOnOpenConfig
         binding.switchOnEachOpen.isVisible = supportsOnEachOpen
         binding.switchOnEachOpen.isChecked = isOnEachOpenEnabled
@@ -135,7 +139,7 @@ internal class WarningConfigFormController(
         lockAfterField.bind(if (lockAfterSeconds > 0) lockAfterSeconds else DEFAULT_LOCK_AFTER_SECONDS)
         updateLockAfterAvailability()
 
-        binding.pauseUnlockSection.isVisible = supportsOnEachOpen && !isOnEachOpenEnabled
+        binding.pauseUnlockSection.isVisible = supportsPauseUnlock && !isOnEachOpenEnabled
         binding.pauseUnlockSwitch.isChecked = config.pauseUnlockWhenAway
         binding.keepLeftoverInputs.isVisible = config.pauseUnlockWhenAway
         keepLeftoverField.bind((config.keepLeftoverMs / 1000L).coerceAtLeast(1L))
@@ -601,8 +605,7 @@ internal class WarningConfigFormController(
                 challengeIndex != -1
         // An each open unlock never runs out on a timer, so there is nothing to lock after.
         binding.lockAfterSection.isVisible = !isOnEachOpenEnabled()
-        // Pausing the unlock only exists for app groups, the only form that supports "each open".
-        binding.pauseUnlockSection.isVisible = supportsOnEachOpen && !isOnEachOpenEnabled()
+        binding.pauseUnlockSection.isVisible = supportsPauseUnlock && !isOnEachOpenEnabled()
         binding.qrSetupContainer.isVisible =
             challengeIndex == WarningUnlockSelectionMapper.EFFORT_INDEX &&
                 secondaryIndex == 0

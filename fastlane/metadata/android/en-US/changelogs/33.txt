@@ -1,0 +1,3 @@
+• Android 16: the time left on an unlock shows as a small timer next to the clock (Live Updates). If it does not show, check Permissions, Live updates.
+• One notification for all unlocks. It counts down to the unlock that ends first and lists every unlocked app group, keyword group and short video app. Paused ones are marked as paused.
+• Keyword groups can now pause unlock time too. The time only counts while a matching page is open, and stops when you leave or turn the screen off. It is on for existing keyword groups; turn it off in the group's unlock settings if you do not want it.

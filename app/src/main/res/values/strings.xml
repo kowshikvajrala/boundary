@@ -309,9 +309,9 @@
     <string name="remove_warning_message">Remove message</string>
     <string name="warning_messages_random_note">One message is picked at random each time.</string>
     <string name="pause_unlock_title">Pause unlock time when you leave</string>
-    <string name="pause_unlock_desc">Your unlock time only counts while you use these apps. Leave or turn the screen off and it stops. Turn this off to let the time run out even when you are not using them.</string>
+    <string name="pause_unlock_desc">Your unlock time only counts while these apps or sites are open. Leave, or turn the screen off, and it stops. Turn this off to let the time run out even when you are not using them.</string>
     <string name="keep_leftover_input">Keep leftover time for</string>
-    <string name="keep_leftover_desc">Counted from the first time you leave the apps. Opening them again does not restart it. After that, leftover time is dropped when you leave and you unlock again as usual.</string>
+    <string name="keep_leftover_desc">Counted from the first time you leave. Opening them again does not restart it. After that, leftover time is dropped when you leave and you unlock again as usual.</string>
     <string name="lock_after_unlock_title">Lock after unlock ends</string>
     <string name="lock_after_unlock_desc">When your unlock time runs out, this is fully locked for a while. No wait screen and no way to open it early. Once on, this group cannot be loosened or deleted except with Emergency off.</string>
     <string name="lock_after_unlock_needs_home">Set your home in Home lock first.</string>
@@ -336,6 +336,8 @@
     <string name="permissions_overlay_desc">Shows the wait screen, pills and reel counter.</string>
     <string name="permissions_notifications">Notifications</string>
     <string name="permissions_notifications_desc">Shows unlock timers and keeps Boundary running.</string>
+    <string name="permissions_live_updates">Live updates</string>
+    <string name="permissions_live_updates_desc">Shows the time left on an unlock as a small timer next to the clock.</string>
     <string name="permissions_battery">No battery limits</string>
     <string name="permissions_battery_desc">Stops the phone from putting Boundary to sleep.</string>
     <string name="permissions_device_admin">Device admin</string>
@@ -1165,6 +1167,8 @@
     <string name="select_apps_add_custom_title">Add a custom package</string>
 
     <!-- Service notifications -->
+    <string name="notification_unlocked_title">Unlocked</string>
+    <string name="notification_unlock_paused_row">%1$s  %2$s, paused</string>
     <string name="notification_remaining_usage_lockdown">Remaining usage before lockdown</string>
     <string name="notification_remaining_usage_reels_lockdown">Remaining usage before reels lockdown</string>
     <string name="usage_tracking_settings">Usage tracking</string>
