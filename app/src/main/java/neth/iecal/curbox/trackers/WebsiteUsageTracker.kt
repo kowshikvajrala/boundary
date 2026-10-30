@@ -34,6 +34,7 @@ class WebsiteUsageTracker {
         // browser (e.g. Firefox/GeckoView) does not fire a url change or leave
         // event that would otherwise trigger a commit.
         private const val HEARTBEAT_MS = 15_000L
+        private const val SYSTEM_UI_PACKAGE = "com.android.systemui"
     }
 
     private lateinit var service: BaseBlockingService
@@ -47,6 +48,9 @@ class WebsiteUsageTracker {
     private var currentPackage: String? = null
     private var currentDomain: String? = null
     private var currentUrlIdentifier: String? = null
+    // Browser -> the last page read from its address bar. Chrome hides the bar while scrolling,
+    // so coming back mid page would otherwise show no page until the next one loads.
+    private val lastSiteByBrowser = HashMap<String, SiteInfo>()
     private var domainStartTimeMs: Long = 0L
     private var onWebsiteObserved: (WebsiteObservation?) -> Unit = {}
 
@@ -150,8 +154,10 @@ class WebsiteUsageTracker {
         val packageName = event.packageName?.toString() ?: return
         
         if (!URL_BAR_ID_LIST.containsKey(packageName)) {
-            // The keyboard, system UI and Boundary's own overlays send events while the page stays
-            // open. Forgetting the site then let app websites through and paused their unlocks.
+            // Pulling down the notification panel is not leaving the page, as for app groups.
+            if (packageName == SYSTEM_UI_PACKAGE) return
+            // The keyboard and Boundary's own overlays send events while the page stays open.
+            // Forgetting the site then let app websites through and paused their unlocks.
             val front = runCatching { service.rootInActiveWindow?.packageName?.toString() }.getOrNull()
             if (front != null && front == currentPackage) return
             mainHandler.post { if (!destroyed) leaveCurrentWebsite() }
@@ -168,6 +174,7 @@ class WebsiteUsageTracker {
 
         val rootNode = service.rootInActiveWindow ?: return
         val urlBarInfo = URL_BAR_ID_LIST[packageName] ?: return
+        val isBrowserInFront = rootNode.packageName?.toString() == packageName
 
 
         Log.d("w source node",event.source.toString())
@@ -178,7 +185,12 @@ class WebsiteUsageTracker {
             ) ?: AccessibilityHelper.findElementById(
                 event.source,
                 urlBarInfo.displayUrlBarId
-            ) ?: return
+            )
+            if (nodes == null) {
+                // Address bar hidden: back in the browser on the page it last showed.
+                if (isBrowserInFront) mainHandler.post { resumeLastSite(packageName) }
+                return
+            }
             Log.d("found node",nodes.toString())
             val text = (nodes.text ?: nodes.contentDescription).toString()
 
@@ -197,8 +209,15 @@ class WebsiteUsageTracker {
     private data class SiteInfo(val domain: String, val urlIdentifier: String)
     private data class HourSlice(val date: String, val hour: Int, val durationMs: Long)
 
+    private fun resumeLastSite(packageName: String) {
+        if (destroyed || currentPackage != null) return
+        val siteInfo = lastSiteByBrowser[packageName] ?: return
+        observeWebsite(packageName, siteInfo)
+    }
+
     private fun observeWebsite(packageName: String, siteInfo: SiteInfo) {
         if (destroyed) return
+        lastSiteByBrowser[packageName] = siteInfo
         if (siteInfo.urlIdentifier == currentUrlIdentifier && packageName == currentPackage) return
 
         Log.d("saving session", siteInfo.urlIdentifier)

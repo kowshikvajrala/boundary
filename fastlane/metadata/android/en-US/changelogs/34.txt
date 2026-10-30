@@ -1,0 +1,2 @@
+• Fixed: unlock time for websites stayed paused after coming back to a page until you loaded a new one. It now continues as soon as you are back, even when the browser has hidden its address bar while you scroll.
+• Pulling down the notification panel no longer pauses the time for websites.
