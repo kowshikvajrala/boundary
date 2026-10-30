@@ -9,10 +9,6 @@
         android:icon="@drawable/ic_reducers"
         android:title="@string/reducers" />
     <item
-        android:id="@+id/nav_reading"
-        android:icon="@drawable/ic_reading"
-        android:title="@string/reading_tab" />
-    <item
         android:id="@+id/nav_info"
         android:icon="@drawable/ic_info"
         android:title="@string/info" />

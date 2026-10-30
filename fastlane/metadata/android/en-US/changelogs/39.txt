@@ -1,0 +1,3 @@
+• The Reading tab is removed, with chapter tracking, the Kenmei import, new chapter checks, covers and reading stats. Its saved reading history and covers are deleted from your phone.
+• Keyword wait screens no longer show how much you read today.
+• Your blocking setup, including keyword groups, is unchanged.

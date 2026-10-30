@@ -46,7 +46,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import neth.iecal.curbox.utils.TimeTools
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.widget.doAfterTextChanged
@@ -294,7 +293,6 @@ class WarningActivity : AppCompatActivity() {
         binding.btnCloseX.setOnClickListener { binding.btnCancel.performClick() }
 
         showWarningMessage(warningScreenConfig.message.random())
-        if (mode == Constants.WARNING_SCREEN_MODE_KEYWORD_BLOCKER) showReadingToday()
 
         if (warningScreenConfig.isOnOpenConfig) {
             binding.minsPicker.visibility = View.GONE
@@ -642,25 +640,6 @@ class WarningActivity : AppCompatActivity() {
             String.format(Locale.getDefault(), "%d:%02d", minutes, seconds)
         }
         return getString(R.string.proceed_in_time, clock)
-    }
-
-    /** A nudge on keyword wait screens: how much was read in the browser today (Reading tab). */
-    private fun showReadingToday() {
-        lifecycleScope.launch {
-            val today = withContext(Dispatchers.IO) {
-                runCatching {
-                    neth.iecal.curbox.reader.ReadingDatabase.getInstance(this@WarningActivity).readingDao()
-                        .day(java.time.LocalDate.now().toString())
-                }.getOrNull()
-            } ?: return@launch
-            if (today.readingTimeMs < 60_000L && today.chapters == 0) return@launch
-            binding.readingToday.text = getString(
-                R.string.reading_today_wait,
-                TimeTools.formatTimeForWidget(today.readingTimeMs),
-                today.chapters
-            )
-            binding.readingToday.visibility = View.VISIBLE
-        }
     }
 
     /** Short messages stay a big headline. Long ones switch to smaller text that is easy to read. */

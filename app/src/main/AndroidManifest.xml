@@ -133,11 +133,6 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service
-            android:name=".services.ReleaseCheckJob"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <service
             android:name=".services.PendingSettingsChangeJob"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
