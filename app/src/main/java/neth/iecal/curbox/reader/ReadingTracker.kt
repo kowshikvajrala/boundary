@@ -139,6 +139,7 @@ class ReadingTracker {
         finishCurrent()
         val now = System.currentTimeMillis()
         val read = dao.chapterRead(key, chapter.number)
+        if (read == null) dao.addDayChapter(java.time.LocalDate.now().toString())
         dao.putChapterRead(
             ChapterReadEntity(
                 seriesKey = key,
@@ -194,6 +195,7 @@ class ReadingTracker {
         dao.series(reading.seriesKey)?.let {
             dao.putSeries(it.copy(readingTimeMs = it.readingTimeMs + ms))
         }
+        dao.addDayTime(java.time.LocalDate.now().toString(), ms)
     }
 
     private companion object {

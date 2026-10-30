@@ -44,6 +44,14 @@ data class SeriesEntity(
     @ColumnInfo(defaultValue = "0") val mangadexTitlesAt: Long = 0L
 )
 
+/** Reading time and new chapters opened on one day (local date, like 2026-10-30). */
+@Entity(tableName = "reading_days")
+data class ReadingDayEntity(
+    @PrimaryKey val date: String,
+    val readingTimeMs: Long,
+    val chapters: Int
+)
+
 /** Two series the owner said are not the same; keys in alphabetical order. */
 @Entity(tableName = "not_duplicates", primaryKeys = ["keyA", "keyB"])
 data class NotDuplicateEntity(
@@ -264,6 +272,33 @@ interface ReadingDao {
     @Query("UPDATE series SET mangadexTitlesAt = :at WHERE `key` = :key")
     suspend fun setMangadexTitlesAt(key: String, at: Long)
 
+    @Query("INSERT OR IGNORE INTO reading_days (date, readingTimeMs, chapters) VALUES (:date, 0, 0)")
+    suspend fun ensureDay(date: String)
+
+    @Query("UPDATE reading_days SET readingTimeMs = readingTimeMs + :ms WHERE date = :date")
+    suspend fun addDayTimeRow(date: String, ms: Long)
+
+    @Query("UPDATE reading_days SET chapters = chapters + 1 WHERE date = :date")
+    suspend fun addDayChapterRow(date: String)
+
+    @Transaction
+    suspend fun addDayTime(date: String, ms: Long) {
+        ensureDay(date)
+        addDayTimeRow(date, ms)
+    }
+
+    @Transaction
+    suspend fun addDayChapter(date: String) {
+        ensureDay(date)
+        addDayChapterRow(date)
+    }
+
+    @Query("SELECT * FROM reading_days WHERE date >= :fromDate ORDER BY date")
+    suspend fun daysFrom(fromDate: String): List<ReadingDayEntity>
+
+    @Query("SELECT * FROM reading_days WHERE date = :date")
+    suspend fun day(date: String): ReadingDayEntity?
+
     @Query("SELECT * FROM not_duplicates")
     fun observeNotDuplicates(): Flow<List<NotDuplicateEntity>>
 
@@ -287,9 +322,9 @@ interface ReadingDao {
 @Database(
     entities = [
         SeriesEntity::class, ChapterReadEntity::class, SeriesAliasEntity::class,
-        AvailableChapterEntity::class, NotDuplicateEntity::class
+        AvailableChapterEntity::class, NotDuplicateEntity::class, ReadingDayEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class ReadingDatabase : RoomDatabase() {
@@ -301,6 +336,16 @@ abstract class ReadingDatabase : RoomDatabase() {
 
         // 2.2.0 -> new chapter checks (MangaDex links, check results, released chapters) and
         // duplicate handling (other MangaDex names, pairs the owner said are different).
+        // 2.3.0 -> reading stats per day.
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `reading_days` (`date` TEXT NOT NULL, " +
+                        "`readingTimeMs` INTEGER NOT NULL, `chapters` INTEGER NOT NULL, PRIMARY KEY(`date`))"
+                )
+            }
+        }
+
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE series ADD COLUMN mangadexId TEXT")
@@ -328,7 +373,7 @@ abstract class ReadingDatabase : RoomDatabase() {
                     context.applicationContext,
                     ReadingDatabase::class.java,
                     "reading_db"
-                ).addMigrations(MIGRATION_1_2)
+                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .enableMultiInstanceInvalidation()
                     .build()
                     .also { INSTANCE = it }

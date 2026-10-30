@@ -26,7 +26,7 @@ object ReleaseChecker {
     suspend fun checkAll(context: Context) {
         val dao = ReadingDatabase.getInstance(context).readingDao()
         mergeSameMangadexSeries(dao)
-        learnOtherNames(dao)
+        learnOtherNames(context, dao)
         dao.allSeries().filter { it.status in CHECKED }.forEach { listed ->
             // An earlier step may have merged this one away.
             val series = dao.series(listed.key) ?: return@forEach
@@ -92,16 +92,23 @@ object ReleaseChecker {
      * counts for the same series, and merges entries already listed under one of those names.
      * Refreshed monthly; up to 100 series per request.
      */
-    private suspend fun learnOtherNames(dao: ReadingDao) {
+    private suspend fun learnOtherNames(context: Context, dao: ReadingDao) {
         val now = System.currentTimeMillis()
-        val due = dao.allSeries().filter { it.mangadexId != null && now - it.mangadexTitlesAt > TITLES_AGAIN_MS }
+        val due = dao.allSeries().filter {
+            it.mangadexId != null && (now - it.mangadexTitlesAt > TITLES_AGAIN_MS || !Covers.file(context, it.mangadexId).exists())
+        }
         due.chunked(100).forEach { chunk ->
-            val titles = attempt { MangaDex.titles(chunk.mapNotNull { it.mangadexId }) } ?: return@forEach
+            val infos = attempt { MangaDex.info(chunk.mapNotNull { it.mangadexId }) } ?: return@forEach
             delay(PAUSE_MS)
             chunk.forEach { listed ->
                 val series = dao.series(listed.key) ?: return@forEach
-                val names = titles[series.mangadexId] ?: return@forEach
-                names.map(SeriesKeys::of).filter { it.isNotEmpty() && it != series.key }.distinct().forEach { otherKey ->
+                val info = infos[series.mangadexId] ?: return@forEach
+                val id = series.mangadexId ?: return@forEach
+                info.coverFile?.let { cover ->
+                    attempt { Covers.saveIfMissing(context, id, cover) }
+                    delay(PAUSE_MS)
+                }
+                info.titles.map(SeriesKeys::of).filter { it.isNotEmpty() && it != series.key }.distinct().forEach { otherKey ->
                     val other = dao.series(otherKey)
                     if (other != null && (other.mangadexId == null || other.mangadexId == series.mangadexId)) {
                         dao.merge(otherKey, series.key)

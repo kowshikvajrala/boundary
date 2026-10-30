@@ -1194,4 +1194,11 @@
     <string name="reading_review_plan">Move to Plan to read</string>
     <string name="reading_review_open">Open chapter</string>
     <string name="reading_action_ignore">Ignore (not a series)</string>
+    <string name="reading_stats">Reading stats</string>
+    <string name="reading_stats_today">Today</string>
+    <string name="reading_stats_week">Last 7 days</string>
+    <string name="reading_stats_line">%1$s · %2$d chapters</string>
+    <string name="reading_stats_top">Most time spent</string>
+    <string name="reading_stats_none">No reading recorded yet. Stats start counting from this version.</string>
+    <string name="reading_today_wait">You read %1$s today, %2$d chapters.</string>
 </resources>

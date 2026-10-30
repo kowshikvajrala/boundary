@@ -231,6 +231,7 @@ class ReadingFragment : Fragment() {
             menu.add(0, MENU_IMPORT, 2, R.string.reading_import_kenmei)
             menu.add(0, MENU_CHECK_NOW, 3, R.string.reading_check_now)
             menu.add(0, MENU_CHECK_EVERY, 4, R.string.reading_check_every)
+            menu.add(0, MENU_STATS, 5, R.string.reading_stats)
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     MENU_TRACKING -> viewLifecycleOwner.lifecycleScope.launch {
@@ -246,10 +247,83 @@ class ReadingFragment : Fragment() {
                         Toast.makeText(requireContext(), R.string.reading_check_now_started, Toast.LENGTH_LONG).show()
                     }
                     MENU_CHECK_EVERY -> chooseCheckInterval()
+                    MENU_STATS -> showStats()
                 }
                 true
             }
             show()
+        }
+    }
+
+    /** Today, the last 7 days as bars, and the series that take the most time. */
+    private fun showStats() {
+        val context = requireContext()
+        viewLifecycleOwner.lifecycleScope.launch {
+            val today = java.time.LocalDate.now()
+            val days = withContext(Dispatchers.IO) { dao.daysFrom(today.minusDays(6).toString()) }
+                .associateBy { it.date }
+            val week = (6 downTo 0).map { today.minusDays(it.toLong()) }
+            val density = resources.displayMetrics.density
+            val content = LinearLayout(context).apply {
+                orientation = LinearLayout.VERTICAL
+                val padding = (24 * density).toInt()
+                setPadding(padding, padding / 2, padding, 0)
+            }
+            fun text(value: String, bold: Boolean = false, topDp: Int = 0) = android.widget.TextView(context).apply {
+                this.text = value
+                textSize = if (bold) 15f else 14f
+                if (bold) setTypeface(typeface, android.graphics.Typeface.BOLD)
+                setPadding(0, (topDp * density).toInt(), 0, 0)
+                content.addView(this)
+            }
+            val todayRow = days[today.toString()]
+            if (days.isEmpty()) {
+                text(getString(R.string.reading_stats_none))
+            } else {
+                text(getString(R.string.reading_stats_today), bold = true)
+                text(getString(R.string.reading_stats_line, TimeTools.formatTimeForWidget(todayRow?.readingTimeMs ?: 0L), todayRow?.chapters ?: 0))
+                text(getString(R.string.reading_stats_week), bold = true, topDp = 16)
+                text(getString(
+                    R.string.reading_stats_line,
+                    TimeTools.formatTimeForWidget(days.values.sumOf { it.readingTimeMs }),
+                    days.values.sumOf { it.chapters }
+                ))
+                val most = days.values.maxOfOrNull { it.readingTimeMs }?.coerceAtLeast(1L) ?: 1L
+                val barColor = com.google.android.material.color.MaterialColors.getColor(content, com.google.android.material.R.attr.colorPrimary)
+                week.forEach { date ->
+                    val row = days[date.toString()]
+                    val ms = row?.readingTimeMs ?: 0L
+                    val line = LinearLayout(context).apply {
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = android.view.Gravity.CENTER_VERTICAL
+                        setPadding(0, (6 * density).toInt(), 0, 0)
+                    }
+                    line.addView(android.widget.TextView(context).apply {
+                        this.text = date.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, Locale.getDefault())
+                        layoutParams = LinearLayout.LayoutParams((44 * density).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
+                    })
+                    line.addView(View(context).apply {
+                        setBackgroundColor(barColor)
+                        val width = (160 * density * ms / most).toInt().coerceAtLeast(if (ms > 0) (2 * density).toInt() else 0)
+                        layoutParams = LinearLayout.LayoutParams(width, (10 * density).toInt())
+                    })
+                    line.addView(android.widget.TextView(context).apply {
+                        this.text = if (ms > 0) "  " + TimeTools.formatTimeForWidget(ms) else ""
+                        textSize = 12f
+                    })
+                    content.addView(line)
+                }
+            }
+            val top = allSeries.map { it.series }.filter { it.readingTimeMs > 0 }.sortedByDescending { it.readingTimeMs }.take(5)
+            if (top.isNotEmpty()) {
+                text(getString(R.string.reading_stats_top), bold = true, topDp = 16)
+                top.forEach { text("${it.name}  ${TimeTools.formatTimeForWidget(it.readingTimeMs)}") }
+            }
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.reading_stats)
+                .setView(android.widget.ScrollView(context).apply { addView(content) })
+                .setPositiveButton(R.string.okay, null)
+                .show()
         }
     }
 
@@ -459,6 +533,30 @@ class ReadingFragment : Fragment() {
         addView(input)
     }
 
+    // Small covers decoded once and kept while the tab is open.
+    private val coverCache = android.util.LruCache<String, android.graphics.Bitmap>(120)
+
+    private fun bindCover(holder: SeriesAdapter.ViewHolder, series: SeriesEntity) {
+        val image = holder.binding.ivSeriesCover
+        val id = series.mangadexId
+        image.tag = id
+        val cached = id?.let(coverCache::get)
+        image.setImageBitmap(cached)
+        image.isVisible = cached != null
+        if (id == null || cached != null) return
+        val file = neth.iecal.curbox.reader.Covers.file(requireContext(), id)
+        viewLifecycleOwner.lifecycleScope.launch {
+            val bitmap = withContext(Dispatchers.IO) {
+                if (file.exists()) runCatching { android.graphics.BitmapFactory.decodeFile(file.path) }.getOrNull() else null
+            } ?: return@launch
+            coverCache.put(id, bitmap)
+            if (image.tag == id) {
+                image.setImageBitmap(bitmap)
+                image.isVisible = true
+            }
+        }
+    }
+
     private inner class SeriesAdapter : RecyclerView.Adapter<SeriesAdapter.ViewHolder>() {
         private var items = listOf<SeriesWithReleases>()
 
@@ -477,6 +575,7 @@ class ReadingFragment : Fragment() {
             val series = item.series
             val chapter = ChapterParser.format(series.lastChapter)
             holder.binding.tvSeriesLetter.text = series.name.firstOrNull { it.isLetterOrDigit() }?.uppercase() ?: "?"
+            bindCover(holder, series)
             holder.binding.tvSeriesName.text = series.name
             holder.binding.tvSeriesDetail.text = if (series.lastSite.isNotEmpty()) {
                 getString(R.string.reading_series_detail, chapter, series.lastSite)
@@ -526,6 +625,7 @@ class ReadingFragment : Fragment() {
         const val MENU_IMPORT = 3
         const val MENU_CHECK_NOW = 4
         const val MENU_CHECK_EVERY = 5
+        const val MENU_STATS = 6
         val NEW_STATUSES = setOf(SeriesStatus.READING.id, SeriesStatus.ON_HOLD.id)
     }
 }

@@ -41,8 +41,11 @@ class SeriesMatchingTest {
     @Test
     fun mangadexBatchTitles() {
         val json = """{"data":[{"id":"x1","attributes":{"title":{"en":"Return of the Mount Hua Sect"},
-            "altTitles":[{"en":"Return of the Blossoming Blade"},{"ko-ro":"Hwasan Gwihwan"}]}}]}"""
-        val titles = MangaDex.parseTitles(json).getValue("x1")
+            "altTitles":[{"en":"Return of the Blossoming Blade"},{"ko-ro":"Hwasan Gwihwan"}]},
+            "relationships":[{"type":"author","id":"a"},{"type":"cover_art","id":"c","attributes":{"fileName":"abc.jpg"}}]}]}"""
+        val info = MangaDex.parseInfo(json).getValue("x1")
+        assertEquals("abc.jpg", info.coverFile)
+        val titles = info.titles
         assertTrue(SeriesKeys.of("Return of the Blossoming Blade") in titles.map(SeriesKeys::of))
         assertEquals(3, titles.size)
     }

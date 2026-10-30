@@ -32,17 +32,29 @@ object MangaDex {
         return parseSearch(Http.get(url), SeriesKeys.of(title))
     }
 
-    /** Every name of each series in [ids] (up to 100), by id. */
-    fun titles(ids: List<String>): Map<String, List<String>> {
+    /** Every name of a series, and its cover image file name if it has one. */
+    data class Info(val titles: List<String>, val coverFile: String?)
+
+    /** Names and cover of each series in [ids] (up to 100), by id. */
+    fun info(ids: List<String>): Map<String, Info> {
         val query = ids.joinToString("&") { "ids%5B%5D=$it" }
-        return parseTitles(Http.get("$API/manga?$query&limit=100&$RATINGS"))
+        return parseInfo(Http.get("$API/manga?$query&limit=100&includes%5B%5D=cover_art&$RATINGS"))
     }
 
-    internal fun parseTitles(json: String): Map<String, List<String>> {
+    /** A small (256 px) copy of the cover, as MangaDex serves it. */
+    fun coverBytes(id: String, coverFile: String): ByteArray =
+        Http.getBytes("https://uploads.mangadex.org/covers/$id/$coverFile.256.jpg")
+
+    internal fun parseInfo(json: String): Map<String, Info> {
         val data = JsonParser.parseString(json).asJsonObject.getAsJsonArray("data") ?: return emptyMap()
         return data.associate { element ->
             val manga = element.asJsonObject
-            manga.get("id").asString to titlesOf(manga.getAsJsonObject("attributes"))
+            val cover = manga.getAsJsonArray("relationships")
+                ?.map { it.asJsonObject }
+                ?.firstOrNull { it.get("type")?.asString == "cover_art" }
+                ?.getAsJsonObject("attributes")
+                ?.get("fileName")?.takeIf { it.isJsonPrimitive }?.asString
+            manga.get("id").asString to Info(titlesOf(manga.getAsJsonObject("attributes")), cover)
         }
     }
 
@@ -119,7 +131,9 @@ internal object Http {
     private const val BROWSER_AGENT =
         "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36"
 
-    fun get(url: String, browserLike: Boolean = false): String {
+    fun get(url: String, browserLike: Boolean = false): String = getBytes(url, browserLike).decodeToString()
+
+    fun getBytes(url: String, browserLike: Boolean = false): ByteArray {
         val connection = URL(url).openConnection() as HttpURLConnection
         try {
             connection.connectTimeout = 15_000
@@ -130,10 +144,7 @@ internal object Http {
                 if (browserLike) BROWSER_AGENT else "Boundary/${BuildConfig.VERSION_NAME} (personal reading list)"
             )
             if (connection.responseCode !in 200..299) throw IOException("HTTP ${connection.responseCode} for $url")
-            return connection.inputStream.use { input ->
-                val bytes = input.readNBytesCompat(MAX_BYTES)
-                bytes.decodeToString()
-            }
+            return connection.inputStream.use { it.readNBytesCompat(MAX_BYTES) }
         } finally {
             connection.disconnect()
         }

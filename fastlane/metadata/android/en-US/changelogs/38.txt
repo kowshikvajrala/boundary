@@ -1,0 +1,3 @@
+• Reading stats in the Reading tab menu: time and chapters today, the last 7 days, and the series you spend the most time on. Daily stats start counting from this version.
+• Covers for series linked to MangaDex, downloaded once in a small size and kept on your phone. They appear after the next new chapter check.
+• Keyword wait screens show how much you read today, like "You read 1h 40m today, 12 chapters."
