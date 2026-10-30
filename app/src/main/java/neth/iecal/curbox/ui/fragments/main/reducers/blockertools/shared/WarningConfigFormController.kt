@@ -12,7 +12,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import neth.iecal.curbox.R
@@ -41,30 +40,27 @@ internal class WarningConfigFormController(
     private var isHomeLocationSet = false
     private val proceedDelayField by lazy {
         SecondsField(
-            binding.proceedDelaySlider,
             binding.proceedDelayInput,
             binding.proceedDelayInputLayout,
             binding.proceedDelayUnitBtn,
-            minimumSeconds = 0f
+            minimumSeconds = 0L
         )
     }
     private val lockAfterField by lazy {
         SecondsField(
-            binding.lockAfterSlider,
             binding.lockAfterInput,
             binding.lockAfterInputLayout,
             binding.lockAfterUnitBtn,
-            minimumSeconds = 1f
+            minimumSeconds = 1L
         )
     }
 
     private val keepLeftoverField by lazy {
         SecondsField(
-            binding.keepLeftoverSlider,
             binding.keepLeftoverInput,
             binding.keepLeftoverInputLayout,
             binding.keepLeftoverUnitBtn,
-            minimumSeconds = 1f
+            minimumSeconds = 1L
         )
     }
 
@@ -108,21 +104,14 @@ internal class WarningConfigFormController(
 
         binding.typingSentenceEdit.setText(config.typingSentence)
         val intentMinLength = config.minIntentLength.coerceAtLeast(1)
-        binding.intentMinLengthSlider.value = intentMinLength.toFloat().coerceAtMost(100f)
         updateIntentMinLengthInput(intentMinLength.toLong())
 
         val mathQuestionCount = config.adaptiveMathQuestionCount.coerceAtLeast(MIN_MATH_QUESTIONS)
-        binding.mathQuestionCountSlider.value = mathQuestionCount.toFloat()
-            .coerceAtMost(MAX_MATH_QUESTIONS.toFloat())
         updateMathQuestionCountInput(mathQuestionCount.toLong())
         val mathStartingLevel = config.adaptiveMathStartingLevel.coerceAtLeast(MIN_MATH_LEVEL)
-        binding.mathStartingLevelSlider.value = mathStartingLevel.toFloat()
-            .coerceAtMost(MAX_MATH_LEVEL.toFloat())
         updateMathStartingLevelInput(mathStartingLevel.toLong())
 
         val focusGoalMinutes = config.focusGoalRequiredMinutes.coerceAtLeast(MIN_FOCUS_MINUTES)
-        binding.focusGoalMinutesSlider.value = focusGoalMinutes.toFloat()
-            .coerceAtMost(MAX_FOCUS_MINUTES.toFloat())
         updateFocusGoalMinutesInput(focusGoalMinutes.toLong())
         selectedFocusGroupId = config.focusGoalGroupId
         binding.focusGoalRequirementSwitch.isChecked = config.isFocusGoalRequirementEnabled
@@ -132,7 +121,6 @@ internal class WarningConfigFormController(
         binding.focusGoalSetupContainer.isVisible = config.isFocusGoalRequirementEnabled
 
         val fixedTimeMinutes = (config.timeInterval / 60_000L).coerceAtLeast(1L)
-        binding.fixedTimeSlider.value = fixedTimeMinutes.toFloat().coerceAtMost(120f)
         updateFixedTimeInput(fixedTimeMinutes)
 
         proceedDelayField.bind(config.proceedDelayInSecs.coerceAtLeast(0).toLong())
@@ -156,7 +144,6 @@ internal class WarningConfigFormController(
         binding.proceedLimitContainer.isVisible = config.proceedLimitEnabled
 
         val allowedProceeds = config.allowedProceeds.coerceAtLeast(1)
-        binding.allowedProceedsSlider.value = allowedProceeds.toFloat().coerceAtMost(20f)
         updateAllowedProceedsInput(allowedProceeds.toLong())
 
         val totalMinutes = config.proceedsTimeWindowMn
@@ -168,11 +155,6 @@ internal class WarningConfigFormController(
             else -> MINUTES_INDEX to totalMinutes.coerceAtLeast(1L)
         }
         binding.proceedWindowUnitBtn.text = unitOptions()[initialUnitIndex]
-        updateProceedWindowSliderBounds(initialUnitIndex)
-        binding.proceedWindowSlider.value = initialInputValue.toFloat().coerceIn(
-            binding.proceedWindowSlider.valueFrom,
-            binding.proceedWindowSlider.valueTo
-        )
         updateProceedWindowInput(initialInputValue)
 
         binding.warningMsgContainer.removeAllViews()
@@ -208,7 +190,7 @@ internal class WarningConfigFormController(
         }
 
         setupNumericInput(
-            binding.fixedTimeSlider,
+            minimumValue = { 1L },
             binding.fixedTimeInput,
             binding.fixedTimeInputLayout,
             maximumValue = { Long.MAX_VALUE / 60_000L },
@@ -251,13 +233,13 @@ internal class WarningConfigFormController(
             onEachOpenChanged()
         }
         setupNumericInput(
-            binding.allowedProceedsSlider,
+            minimumValue = { 1L },
             binding.allowedProceedsInput,
             binding.allowedProceedsInputLayout,
             updateInput = ::updateAllowedProceedsInput
         )
         setupNumericInput(
-            binding.proceedWindowSlider,
+            minimumValue = { 1L },
             binding.proceedWindowInput,
             binding.proceedWindowInputLayout,
             maximumValue = {
@@ -269,25 +251,25 @@ internal class WarningConfigFormController(
             showProceedWindowUnitMenu(button)
         }
         setupNumericInput(
-            binding.intentMinLengthSlider,
+            minimumValue = { 1L },
             binding.intentMinLengthInput,
             binding.intentMinLengthInputLayout,
             updateInput = ::updateIntentMinLengthInput
         )
         setupNumericInput(
-            binding.mathQuestionCountSlider,
+            minimumValue = { MIN_MATH_QUESTIONS.toLong() },
             binding.mathQuestionCountInput,
             binding.mathQuestionCountInputLayout,
             updateInput = ::updateMathQuestionCountInput
         )
         setupNumericInput(
-            binding.mathStartingLevelSlider,
+            minimumValue = { MIN_MATH_LEVEL.toLong() },
             binding.mathStartingLevelInput,
             binding.mathStartingLevelInputLayout,
             updateInput = ::updateMathStartingLevelInput
         )
         setupNumericInput(
-            binding.focusGoalMinutesSlider,
+            minimumValue = { MIN_FOCUS_MINUTES.toLong() },
             binding.focusGoalMinutesInput,
             binding.focusGoalMinutesInputLayout,
             updateInput = ::updateFocusGoalMinutesInput
@@ -459,38 +441,26 @@ internal class WarningConfigFormController(
     }
 
     private fun setupNumericInput(
-        slider: Slider,
+        minimumValue: () -> Long,
         input: TextInputEditText,
         inputLayout: TextInputLayout,
         maximumValue: () -> Long = { Int.MAX_VALUE.toLong() },
         updateInput: (Long) -> Unit
     ) {
-        slider.addOnChangeListener { _, value, _ ->
-            updateInput(value.toLong())
-        }
         input.doAfterTextChanged { editable ->
             val value = editable?.toString()?.toLongOrNull()
-            if (value == null) {
-                inputLayout.error = null
-                return@doAfterTextChanged
-            }
-            if (value < slider.valueFrom.toLong()) {
-                showNumericInputMinimumError(slider, inputLayout)
-                return@doAfterTextChanged
-            }
-            if (value > maximumValue()) {
-                showNumericInputTooLargeError(inputLayout)
-                return@doAfterTextChanged
-            }
-            inputLayout.error = null
-            if (value <= slider.valueTo.toLong() && slider.value.toLong() != value) {
-                slider.value = value.toFloat()
+            inputLayout.error = when {
+                value == null -> null
+                value < minimumValue() -> minimumError(minimumValue())
+                value > maximumValue() -> fragment.getString(R.string.warning_numeric_value_too_large)
+                else -> null
             }
         }
         input.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus && !isNumericInputValid(slider, input, maximumValue())) {
+            if (!hasFocus && !isNumericInputValid(minimumValue(), input, maximumValue())) {
                 inputLayout.error = null
-                updateInput(slider.value.toLong())
+                val value = input.text?.toString()?.toLongOrNull() ?: minimumValue()
+                updateInput(value.coerceIn(minimumValue(), maximumValue()))
             }
         }
     }
@@ -498,7 +468,7 @@ internal class WarningConfigFormController(
     private fun numericInputs(): List<NumericInput> {
         return listOf(
             NumericInput(
-                binding.fixedTimeSlider,
+                1L,
                 binding.fixedTimeInput,
                 binding.fixedTimeInputLayout,
                 Long.MAX_VALUE / 60_000L
@@ -507,33 +477,33 @@ internal class WarningConfigFormController(
             lockAfterField.numericInput(),
             keepLeftoverField.numericInput(),
             NumericInput(
-                binding.allowedProceedsSlider,
+                1L,
                 binding.allowedProceedsInput,
                 binding.allowedProceedsInputLayout
             ),
             NumericInput(
-                binding.proceedWindowSlider,
+                1L,
                 binding.proceedWindowInput,
                 binding.proceedWindowInputLayout,
                 Long.MAX_VALUE / 60_000L / minutesForUnit(selectedUnitIndex())
             ),
             NumericInput(
-                binding.intentMinLengthSlider,
+                1L,
                 binding.intentMinLengthInput,
                 binding.intentMinLengthInputLayout
             ),
             NumericInput(
-                binding.mathQuestionCountSlider,
+                MIN_MATH_QUESTIONS.toLong(),
                 binding.mathQuestionCountInput,
                 binding.mathQuestionCountInputLayout
             ),
             NumericInput(
-                binding.mathStartingLevelSlider,
+                MIN_MATH_LEVEL.toLong(),
                 binding.mathStartingLevelInput,
                 binding.mathStartingLevelInputLayout
             ),
             NumericInput(
-                binding.focusGoalMinutesSlider,
+                MIN_FOCUS_MINUTES.toLong(),
                 binding.focusGoalMinutesInput,
                 binding.focusGoalMinutesInputLayout
             )
@@ -542,7 +512,7 @@ internal class WarningConfigFormController(
 
     private fun validateNumericInput(numericInput: NumericInput): Boolean {
         if (isNumericInputValid(
-                numericInput.slider,
+                numericInput.minimumValue,
                 numericInput.input,
                 numericInput.maximumValue
             )
@@ -551,34 +521,26 @@ internal class WarningConfigFormController(
             return true
         }
         val value = numericInput.input.text?.toString()?.toLongOrNull()
-        if (value != null && value > numericInput.maximumValue) {
-            showNumericInputTooLargeError(numericInput.inputLayout)
+        numericInput.inputLayout.error = if (value != null && value > numericInput.maximumValue) {
+            fragment.getString(R.string.warning_numeric_value_too_large)
         } else {
-            showNumericInputMinimumError(numericInput.slider, numericInput.inputLayout)
+            minimumError(numericInput.minimumValue)
         }
         numericInput.input.requestFocus()
         return false
     }
 
     private fun isNumericInputValid(
-        slider: Slider,
+        minimumValue: Long,
         input: TextInputEditText,
         maximumValue: Long
     ): Boolean {
         val value = input.text?.toString()?.toLongOrNull() ?: return false
-        return value >= slider.valueFrom.toLong() && value <= maximumValue
+        return value in minimumValue..maximumValue
     }
 
-    private fun showNumericInputMinimumError(slider: Slider, inputLayout: TextInputLayout) {
-        inputLayout.error = fragment.getString(
-            R.string.warning_numeric_value_minimum,
-            slider.valueFrom.toInt()
-        )
-    }
-
-    private fun showNumericInputTooLargeError(inputLayout: TextInputLayout) {
-        inputLayout.error = fragment.getString(R.string.warning_numeric_value_too_large)
-    }
+    private fun minimumError(minimumValue: Long): String =
+        fragment.getString(R.string.warning_numeric_value_minimum, minimumValue.toInt())
 
     private fun hideUnlockConfiguration() {
         binding.secondaryBehaviorLayout.isVisible = false
@@ -684,30 +646,10 @@ internal class WarningConfigFormController(
             }
             setOnMenuItemClickListener { item ->
                 binding.proceedWindowUnitBtn.text = item.title
-                updateProceedWindowSliderBounds(item.itemId)
-                updateProceedWindowInput(
-                    binding.proceedWindowSlider.value.toLong()
-                )
                 true
             }
             show()
         }
-    }
-
-    private fun updateProceedWindowSliderBounds(unitIndex: Int) {
-        val (minimum, maximum) = when (unitIndex) {
-            HOURS_INDEX -> 1f to 24f
-            DAYS_INDEX -> 1f to 30f
-            else -> 1f to 60f
-        }
-        val currentValue = binding.proceedWindowSlider.value
-        val newValue = currentValue.coerceIn(minimum, maximum)
-        if (currentValue < minimum || currentValue > maximum) {
-            binding.proceedWindowSlider.value = minimum
-        }
-        binding.proceedWindowSlider.valueFrom = minimum
-        binding.proceedWindowSlider.valueTo = maximum
-        binding.proceedWindowSlider.value = newValue
     }
 
     private fun selectedProceedWindowMinutes(): Long {
@@ -777,11 +719,10 @@ internal class WarningConfigFormController(
 
     /** A number with a Seconds, Minutes or Hours button. The value is kept in seconds. */
     private inner class SecondsField(
-        private val slider: Slider,
         private val input: TextInputEditText,
         private val inputLayout: TextInputLayout,
         private val unitButton: MaterialButton,
-        private val minimumSeconds: Float
+        private val minimumSeconds: Long
     ) {
         fun bind(totalSeconds: Long) {
             val (unitIndex, value) = when {
@@ -792,14 +733,12 @@ internal class WarningConfigFormController(
                 else -> SECONDS_UNIT_INDEX to totalSeconds
             }
             unitButton.text = unitOptions()[unitIndex]
-            updateSliderBounds(unitIndex)
-            slider.value = value.toFloat().coerceIn(slider.valueFrom, slider.valueTo)
             setNumericInputValue(input, value)
         }
 
         fun setupListeners() {
             setupNumericInput(
-                slider,
+                ::minimumValue,
                 input,
                 inputLayout,
                 maximumValue = ::maximumValue,
@@ -810,7 +749,9 @@ internal class WarningConfigFormController(
 
         fun seconds(): Long = numericInputValue(input) * secondsForUnit(unitIndex())
 
-        fun numericInput() = NumericInput(slider, input, inputLayout, maximumValue())
+        fun numericInput() = NumericInput(minimumValue(), input, inputLayout, maximumValue())
+
+        private fun minimumValue(): Long = if (unitIndex() == SECONDS_UNIT_INDEX) minimumSeconds else 1L
 
         private fun maximumValue(): Long = Int.MAX_VALUE.toLong() / secondsForUnit(unitIndex())
 
@@ -821,25 +762,10 @@ internal class WarningConfigFormController(
                 }
                 setOnMenuItemClickListener { item ->
                     unitButton.text = item.title
-                    updateSliderBounds(item.itemId)
-                    setNumericInputValue(input, slider.value.toLong())
                     true
                 }
                 show()
             }
-        }
-
-        private fun updateSliderBounds(unitIndex: Int) {
-            val (minimum, maximum) = when (unitIndex) {
-                MINUTES_UNIT_INDEX -> 1f to 60f
-                HOURS_UNIT_INDEX -> 1f to 24f
-                else -> minimumSeconds to 60f
-            }
-            val newValue = slider.value.coerceIn(minimum, maximum)
-            if (slider.value < minimum || slider.value > maximum) slider.value = minimum
-            slider.valueFrom = minimum
-            slider.valueTo = maximum
-            slider.value = newValue
         }
 
         private fun unitIndex(): Int =
@@ -871,11 +797,8 @@ internal class WarningConfigFormController(
         const val SECONDS_PER_HOUR = 3_600L
         const val DEFAULT_LOCK_AFTER_SECONDS = 30 * SECONDS_PER_MINUTE
         const val MIN_MATH_QUESTIONS = 1
-        const val MAX_MATH_QUESTIONS = 10
         const val MIN_MATH_LEVEL = 1
-        const val MAX_MATH_LEVEL = 10
         const val MIN_FOCUS_MINUTES = 15
-        const val MAX_FOCUS_MINUTES = 24 * 60
     }
 }
 
@@ -887,7 +810,7 @@ private data class FocusGroupUnlockOption(
 }
 
 private data class NumericInput(
-    val slider: Slider,
+    val minimumValue: Long,
     val input: TextInputEditText,
     val inputLayout: TextInputLayout,
     val maximumValue: Long = Int.MAX_VALUE.toLong()

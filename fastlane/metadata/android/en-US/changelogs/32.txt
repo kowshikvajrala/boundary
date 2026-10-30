@@ -1,0 +1,3 @@
+• Fixed: websites of blocked apps (like instagram.com) now follow the app's unlock time. Typing, pulling down notifications or scrolling no longer lets the site through or pauses its timer.
+• Keyword blocking also keeps track of the open page while you type or check notifications.
+• The unlock settings screen no longer has sliders. Type the numbers in the boxes instead.

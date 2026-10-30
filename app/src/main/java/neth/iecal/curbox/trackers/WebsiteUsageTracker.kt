@@ -150,6 +150,10 @@ class WebsiteUsageTracker {
         val packageName = event.packageName?.toString() ?: return
         
         if (!URL_BAR_ID_LIST.containsKey(packageName)) {
+            // The keyboard, system UI and Boundary's own overlays send events while the page stays
+            // open. Forgetting the site then let app websites through and paused their unlocks.
+            val front = runCatching { service.rootInActiveWindow?.packageName?.toString() }.getOrNull()
+            if (front != null && front == currentPackage) return
             mainHandler.post { if (!destroyed) leaveCurrentWebsite() }
             return
         }

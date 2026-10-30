@@ -91,14 +91,6 @@
                         android:selectAllOnFocus="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/fixed_time_slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:valueFrom="1.0"
-                    android:valueTo="120.0"
-                    android:stepSize="1.0"
-                    android:value="5.0" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -157,14 +149,6 @@
                     style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_marginTop="4dp" />
 
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/proceed_delay_slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:valueFrom="0.0"
-                    android:valueTo="60.0"
-                    android:stepSize="1.0"
-                    android:value="15.0" />
 
                 <LinearLayout
                     android:id="@+id/pause_unlock_section"
@@ -234,14 +218,6 @@
                                 app:iconPadding="4dp" />
                         </LinearLayout>
 
-                        <com.google.android.material.slider.Slider
-                            android:id="@+id/keep_leftover_slider"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:stepSize="1.0"
-                            android:value="1.0"
-                            android:valueFrom="1.0"
-                            android:valueTo="60.0" />
 
                         <TextView
                             style="@style/TextAppearance.Material3.BodySmall"
@@ -328,14 +304,6 @@
                                 app:iconPadding="4dp" />
                         </LinearLayout>
 
-                        <com.google.android.material.slider.Slider
-                            android:id="@+id/lock_after_slider"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:stepSize="1.0"
-                            android:value="30.0"
-                            android:valueFrom="1.0"
-                            android:valueTo="60.0" />
 
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/lock_after_close_switch"
@@ -595,14 +563,6 @@
                         android:selectAllOnFocus="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/intent_min_length_slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stepSize="1.0"
-                    android:value="1.0"
-                    android:valueFrom="1.0"
-                    android:valueTo="100.0" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -651,14 +611,6 @@
                         android:selectAllOnFocus="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/math_question_count_slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stepSize="1.0"
-                    android:value="3.0"
-                    android:valueFrom="1.0"
-                    android:valueTo="10.0" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/math_starting_level_input_layout"
@@ -684,14 +636,6 @@
                     android:layout_marginTop="4dp"
                     android:text="@string/label_adaptive_math_level_desc" />
 
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/math_starting_level_slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stepSize="1.0"
-                    android:value="3.0"
-                    android:valueFrom="1.0"
-                    android:valueTo="10.0" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -832,14 +776,6 @@
                                 android:selectAllOnFocus="true" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.slider.Slider
-                            android:id="@+id/focus_goal_minutes_slider"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:stepSize="1.0"
-                            android:value="60.0"
-                            android:valueFrom="15.0"
-                            android:valueTo="1440.0" />
                     </LinearLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -873,14 +809,6 @@
                                 android:selectAllOnFocus="true" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.slider.Slider
-                            android:id="@+id/allowed_proceeds_slider"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:stepSize="1.0"
-                            android:value="3.0"
-                            android:valueFrom="1.0"
-                            android:valueTo="20.0" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -917,14 +845,6 @@
                                 app:iconPadding="4dp" />
                         </LinearLayout>
 
-                        <com.google.android.material.slider.Slider
-                            android:id="@+id/proceed_window_slider"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:stepSize="1.0"
-                            android:value="60.0"
-                            android:valueFrom="1.0"
-                            android:valueTo="60.0" />
                     </LinearLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial

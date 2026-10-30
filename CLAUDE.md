@@ -115,6 +115,8 @@ Behavior notes:
 - Boundary's own overlays (reel counter, pill) send accessibility events with Boundary's package while another app is in front. Treat an own package event as "Boundary in front" only when `rootInActiveWindow` is Boundary, or app timers stop (fixed in 1.3.1).
 - Blockers read settings from a DataStore flow that emits a moment after the service starts, so their config starts as the default (off). `AntiUninstallBlocker` therefore treats an active device admin as "protected" until its config has loaded, and is set up first in `onServiceConnected` (fixed after the owner could reach uninstall right after a reboot).
 - `AppBlocker` also runs its check on `TYPE_WINDOW_CONTENT_CHANGED`, which the keyboard emits. Logic about "which app is in front" must use window state changes only and skip the keyboard and system UI.
+- `WebsiteUsageTracker.onEvent` must not forget the current site on events from the keyboard, system UI or Boundary's overlays while the browser is still the active window. It did until 2.0.0, which let app websites through and paused their unlocks; it now leaves only when `rootInActiveWindow` is another app.
+- The unlock settings screen has no sliders (removed after 2.0.0 at the owner's request); number boxes carry their minimum in `NumericInput.minimumValue`. The QR/NFC unlock time pop up (`WarningUnlockTimingDialog`) still uses one, as its only control.
 - Append to files with a trailing newline. An append without one once merged two `.gitignore` lines.
 
 ## Release history
@@ -152,5 +154,6 @@ Behavior notes:
 | 1.13.0 | 29 | App websites follow their app's group (built in list plus a Websites box per app group); Summary tab removed |
 | 1.14.0 | 30 | Website time counts toward app group limits; editor lists the apps' built in sites; globe pill for typed sites |
 | 2.0.0 | 31 | Active Hours and Usage Limit removed (groups block all day; reels blocked all day except a count allowance); per group pause unlock switch and keep leftover time, fixed leftover reset; Websites list styled like keywords; real adult list size |
+| 2.0.1 | 32 | App websites and keyword pages no longer forgotten on keyboard, system UI or overlay events; sliders removed from the unlock settings screen |
 
 Versions up to 1.0.10 only bumped the patch number, even for features. From 1.1.0 on, releases follow semantic versioning (see Releasing).
