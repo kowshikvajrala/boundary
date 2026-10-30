@@ -147,6 +147,9 @@ open class BaseBlockingService : AccessibilityService() {
         lastBackPressTimeStamp = SystemClock.uptimeMillis()
     }
 
+    /** Drops the page [browserPackage] last showed, so a blocked site is not assumed again on return. */
+    open fun forgetBrowserPage(browserPackage: String) {}
+
     fun pressBack() {
             performGlobalAction(GLOBAL_ACTION_BACK)
             lastBackPressTimeStamp = SystemClock.uptimeMillis()

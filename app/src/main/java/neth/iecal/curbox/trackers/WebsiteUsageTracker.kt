@@ -209,6 +209,15 @@ class WebsiteUsageTracker {
     private data class SiteInfo(val domain: String, val urlIdentifier: String)
     private data class HourSlice(val date: String, val hour: Int, val durationMs: Long)
 
+    /**
+     * Called when a blocker sends [packageName] home from a blocked page. Without this, the tab
+     * switcher or a loading screen (no address bar) counted as that page, so the browser was
+     * blocked again on every open and the tab could not even be closed.
+     */
+    fun forgetLastSite(packageName: String) {
+        mainHandler.post { lastSiteByBrowser.remove(packageName) }
+    }
+
     private fun resumeLastSite(packageName: String) {
         if (destroyed || currentPackage != null) return
         val siteInfo = lastSiteByBrowser[packageName] ?: return

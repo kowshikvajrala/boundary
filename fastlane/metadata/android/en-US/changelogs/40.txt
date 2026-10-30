@@ -1,0 +1,3 @@
+• Fixed: after a blocked app website (like instagram.com) was opened, the browser closed every time you opened it again. The blocked tab now changes to a blank page before you are sent home.
+• Fixed: the tab switcher or a loading screen no longer counts as the blocked site you just left, so you can always get back into your browser and close the tab.
+• After unlocking from the wait screen, the browser opens on a blank page, so type the site again.

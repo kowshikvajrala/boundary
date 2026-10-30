@@ -54,6 +54,8 @@ class AppBlocker : BaseBlocker() {
         const val EXTRA_WARNING_SCREEN_VISIBLE = "warning_screen_visible"
         private const val DEFAULT_KEEP_LEFTOVER_MS = 60 * 60_000L
         private const val CLOSE_AFTER_HOME_MS = 1_500L
+        // Time for the browser to load the blank page before Home hides it.
+        private const val PAGE_REPLACE_WAIT_MS = 400L
         private const val PAYMENT_PAUSE_DEBOUNCE_MS = 10_000L
 
         // Package -> when its lock ends. Read by LockedAppNotificationListener in this process.
@@ -107,6 +109,8 @@ class AppBlocker : BaseBlocker() {
     private var websiteInBrowser: Pair<String, String>? = null
     // Websites typed into active app groups.
     @Volatile private var groupWebsites: Set<String> = emptySet()
+    // True while a browser tab is moved off a blocked website, until Home is pressed.
+    @Volatile private var isLeavingWebsite = false
     // Windows that can sit over an app without the user leaving it, such as the keyboard.
     private val passThroughPackages = ConcurrentHashMap.newKeySet<String>()
 
@@ -143,6 +147,7 @@ class AppBlocker : BaseBlocker() {
         if (event == null || (event.eventType and TARGET_EVENTS_MASK) == 0) return
 
         val eventPackage = event.packageName?.toString() ?: return
+        if (isLeavingWebsite) return
 
         if (eventPackage == service.packageName &&
             (isWarningScreenVisible || event.className?.toString() == WarningActivity::class.java.name)
@@ -155,6 +160,7 @@ class AppBlocker : BaseBlocker() {
         if (eventPackage == service.packageName && !isOwnAppInFront()) return
         // A browser showing an app's website counts as that app.
         val packageName = appShownInBrowser(eventPackage) ?: eventPackage
+        val browserPackage = eventPackage.takeIf { it != packageName }
 
         if (lastPackage == packageName || ignoredApps.contains(packageName)) {
             return
@@ -186,7 +192,7 @@ class AppBlocker : BaseBlocker() {
             for (entry in entries) {
                 val lockEndsAt = lockEndsAt(entry, now)
                 if (lockEndsAt > 0L) {
-                    showLockedPill(packageName, entry.groupId, lockEndsAt)
+                    showLockedPill(packageName, entry.groupId, lockEndsAt, browserPackage)
                     return
                 }
             }
@@ -703,14 +709,45 @@ class AppBlocker : BaseBlocker() {
         return lockEndsAt(entry.groupId, now)
     }
 
-    private fun showLockedPill(packageName: String, groupId: String, lockEndsAt: Long) {
+    private fun showLockedPill(packageName: String, groupId: String, lockEndsAt: Long, browserPackage: String?) {
         if (!service.isDelayOver(1000)) return
         notificationManager.stopTimer()
-        service.pressHome()
-        lastPackage = ""
-        showPill(packageName, UnlockLocks.pillText(service, lockEndsAt))
-        handler.postDelayed({ closeLockedApps(groupId) }, CLOSE_AFTER_HOME_MS)
-        if (!activeRunnables.containsKey("lockclose:$groupId")) keepLockedAppsClosed(groupId)
+        leaveForeground(browserPackage) {
+            lastPackage = ""
+            showPill(packageName, UnlockLocks.pillText(service, lockEndsAt))
+            handler.postDelayed({ closeLockedApps(groupId) }, CLOSE_AFTER_HOME_MS)
+            if (!activeRunnables.containsKey("lockclose:$groupId")) keepLockedAppsClosed(groupId)
+        }
+    }
+
+    /**
+     * Presses Home, then runs [afterHome]. When [browserPackage] shows a blocked website, its tab is
+     * first moved to a blank page; otherwise the browser reopens on that site and is sent home at
+     * once, every time, so it cannot be used at all.
+     */
+    private fun leaveForeground(browserPackage: String?, afterHome: () -> Unit) {
+        if (browserPackage == null) {
+            service.pressHome()
+            afterHome()
+            return
+        }
+        isLeavingWebsite = true
+        Thread {
+            // Off the main thread: replacing the page walks the browser's node tree.
+            val replaced = runCatching { BlockedPage.replace(service, browserPackage) }.getOrDefault(false)
+            handler.postDelayed({
+                try {
+                    // After the wait, so a late read of the blocked address cannot bring it back.
+                    service.forgetBrowserPage(browserPackage)
+                    service.pressHome()
+                    afterHome()
+                } catch (e: Exception) {
+                    Log.e("AppBlocker", "Leaving website failed", e)
+                } finally {
+                    isLeavingWebsite = false
+                }
+            }, if (replaced) PAGE_REPLACE_WAIT_MS else 0L)
+        }.start()
     }
 
     /** A typed website has no app icon, so its pill shows a globe and names the site. */
@@ -797,29 +834,30 @@ class AppBlocker : BaseBlocker() {
 
             Log.d("AppBlocker", "Showing warning screen for $packageName")
             notificationManager.stopTimer()
-            service.pressHome()
-            lastPackage = ""
+            leaveForeground(launchPackage.takeIf { it != packageName }) {
+                lastPackage = ""
 
-            if (warningConfig.isWarningDialogHidden) return
-            if (warningConfig.isProceedDisabled) {
-                showPill(packageName, warningConfig.message.filter { it.isNotBlank() }.randomOrNull() ?: service.getString(R.string.blocked_pill_fallback))
-                return
-            }
-            isWarningScreenVisible = true
-
-            handler.postDelayed({
-                val dialogIntent = Intent(service, WarningActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    putExtra("mode", Constants.WARNING_SCREEN_MODE_APP_BLOCKER)
-                    putExtra("result_id", groupId)
-                    putExtra("launch_package", launchPackage)
-                    putExtra(
-                        "warning_config",
-                        Gson().toJson(warningConfig)
-                    )
+                if (warningConfig.isWarningDialogHidden) return@leaveForeground
+                if (warningConfig.isProceedDisabled) {
+                    showPill(packageName, warningConfig.message.filter { it.isNotBlank() }.randomOrNull() ?: service.getString(R.string.blocked_pill_fallback))
+                    return@leaveForeground
                 }
-                service.startActivity(dialogIntent)
-            }, 100)
+                isWarningScreenVisible = true
+
+                handler.postDelayed({
+                    val dialogIntent = Intent(service, WarningActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        putExtra("mode", Constants.WARNING_SCREEN_MODE_APP_BLOCKER)
+                        putExtra("result_id", groupId)
+                        putExtra("launch_package", launchPackage)
+                        putExtra(
+                            "warning_config",
+                            Gson().toJson(warningConfig)
+                        )
+                    }
+                    service.startActivity(dialogIntent)
+                }, 100)
+            }
         }
     }
 

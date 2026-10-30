@@ -58,7 +58,7 @@ class KeywordBlocker : BaseBlocker() {
         private const val TARGET_EVENTS_MASK =
             AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED or AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
         private const val BLOCK_SUPPRESSION_MS = 5_000L
-        private const val REPLACEMENT_PAGE = "about:blank"
+        private const val REPLACEMENT_PAGE = BlockedPage.REPLACEMENT_PAGE
         private const val COOLDOWN_NOTIFICATION_ID = 1004
         private const val DEFAULT_KEEP_LEFTOVER_MS = 60 * 60_000L
     }
@@ -393,6 +393,7 @@ class KeywordBlocker : BaseBlocker() {
             service.pressBack()
             service.pressHome()
         }
+        service.forgetBrowserPage(packageName)
         Thread.sleep(1000)
 
         if (lockEndsAt > 0L) {
@@ -418,25 +419,8 @@ class KeywordBlocker : BaseBlocker() {
     }
 
     private fun replaceBlockedPage(packageName: String): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return false
         if (findMatchingGroups(REPLACEMENT_PAGE).isNotEmpty()) return false
-        val urlBarId = URL_BAR_ID_LIST[packageName]?.displayUrlBarId ?: return false
-        return runCatching {
-            val root = service.rootInActiveWindow ?: return false
-            if (root.packageName?.toString() != packageName) return false
-            val urlBar = AccessibilityHelper.findElementById(root, urlBarId) ?: return false
-            if (!urlBar.isEditable) return false
-            urlBar.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-            urlBar.refresh()
-            val text = Bundle().apply {
-                putCharSequence(
-                    AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
-                    REPLACEMENT_PAGE
-                )
-            }
-            urlBar.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, text) &&
-                urlBar.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_IME_ENTER.id)
-        }.getOrDefault(false)
+        return BlockedPage.replace(service, packageName)
     }
 
     private var configJob: Job? = null

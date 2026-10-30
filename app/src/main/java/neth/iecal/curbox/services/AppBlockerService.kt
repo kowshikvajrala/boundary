@@ -263,4 +263,8 @@ class AppBlockerService : BaseBlockingService() {
             crashLogger.logNonFatalError(Exception("Failed to clean up $name", error))
         }
     }
+
+    override fun forgetBrowserPage(browserPackage: String) {
+        websiteUsageTracker.forgetLastSite(browserPackage)
+    }
 }
