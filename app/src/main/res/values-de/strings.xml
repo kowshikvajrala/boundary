@@ -112,15 +112,6 @@
     <string name="usage">Verwendung</string>
     <string name="reducers">Verringerer</string>
     <string name="info">Info</string>
-    <string name="settings">Einstellungen</string>
-    <string name="log_in">Anmelden</string>
-    <string name="sync_across_devices">Zwischen Geräten synchronisieren</string>
-    <string name="sync_across_devices_pitch">Ich behalte deine Einstellungen und Zeitstatistiken lokal auf deinem Handy oder Browser, verschlüsselt mit einem Schlüssel den nur du besitzt.</string>
-    <string name="sync_finish_setup_pitch">Du bist angemeldet. Ein letzter Schritt aktiviert die Synchronisation und aktiviert die Zeitmessung auf diesem Gerät</string>
-    <string name="finish_sync_setup">Einrichtung abschließen</string>
-    <string name="sync_is_on">Synchronisation ist an</string>
-    <string name="sync_is_on_pitch">Deine Einstellungen und Zeitstatistiken bleiben auf deinem Gerät. Klicke um die Synchronisation zu verwalten oder dich abzumelden.</string>
-    <string name="manage_sync">Synchronisation verwalten</string>
     <string name="please_provide_draw_over_other_apps">Bitte aktiviere \'Über anderen Apps anzeigen\', um diese Funktion richtig funktionieren zu lassen.</string>
     <string name="added_successfully">Erfolgreich hinzugefügt</string>
     <string name="package_already_exists">Paket existiert bereits</string>
@@ -170,24 +161,6 @@
     <string name="onboarding_restricted_settings_desc">Android 13+ schränkt Zugriffsdienste für Apps, die nicht aus App Stores (wie F-Droid oder Play Store) kommen ein. Um Berechtigungen zu aktivieren musst du \'Eingeschränkte Einstellungen\' manuell für Boundary aktivieren. Alternativ installire via F-Droid App (nicht Webseite), um dies zu vermeiden.</string>
     <string name="onboarding_show_tutorial">Anleitung um Berechtigungen zu aktivieren anzeigen</string>
     <string name="onboarding_shizuku_grant">Gewähre alle Berechtigungen mit Shizuku</string>
-    <string name="sync_paywall_title">Stelle die Einrichtung der Synchronisation fertig.</string>
-    <string name="sync_paywall_subtitle">Dein Account ist bereit. Wähle den jährlichen Plan um fortzufahren.</string>
-    <string name="sync_paywall_body">Ein Plan. Alles unten geschriebene ist darin enthalten</string>
-    <string name="sync_paywall_feature_devices">✓ Synchronisiere jedes Handy und jeden Browser</string>
-    <string name="sync_paywall_feature_private">✓ Halte deine Daten sicher mit einem persönlichen Passwort</string>
-    <string name="sync_paywall_feature_cancel">✓ Kündige vor der nächsten Erneuerung</string>
-    <string name="sync_paywall_price">%1$s pro Jahr</string>
-    <string name="sync_paywall_price_fallback">$25</string>
-    <string name="sync_paywall_subscribe">Abonniere</string>
-    <string name="sync_paywall_subscribe_price">Fortfahren für %1$s</string>
-    <string name="sync_paywall_restore">Mein Abo wiederherstellen</string>
-    <string name="sync_paywall_checking">Prüfe dein Abo</string>
-    <string name="sync_paywall_renewal_note">Erneuert sich jedes Jahr bis du abbrichst.</string>
-    <string name="sync_paywall_signed_in_as">Angemeldet als %1$s</string>
-    <string name="sync_paywall_your_account">dein Account</string>
-    <string name="pairing_code_warning_title">Halte diesen Code privat</string>
-    <string name="pairing_code_warning_message">Dieser Code beinhaltet den geheimen Schlüssel, der all deine synchronisierten Daten freischaltet. Jeder, der ein Foto davon macht, kann deine Daten lesen. Bitte mach keine Screenshots und teile ihn auf keinen Fall. Der Code versteckt sich selbst nach einer Minute.</string>
-    <string name="pairing_code_show">Code anzeigen</string>
     <string name="dnd_access_dialog_title">Bitte nicht stören</string>
     <string name="dnd_access_dialog_message">Boundary benötigt dies, um Bitte nicht stören für dich zu aktivieren, sodass du Anrufe und Wecker stummschalten kannst während du dich fokussierst. Ohne kann Boundary Ablenkungen nicht stummschalten.\n\n🔒 Boundary sammelt, sendet oder speichert niemals deine Daten auf einem Server ohne deine Zustimmung.\n\n🛡️ Boundary respektiert deinen Frieden: Es benutzt dies nur um Ablenkungen stummzuschalten wenn du danach fragst.</string>
     <string name="picker_dialog_block_element">Dieses Element blockieren</string>
@@ -700,7 +673,6 @@
     <!-- Boundary API permission screen -->
 
     <!-- Common / shared -->
-    <string name="common_back">Zurück</string>
     <string name="common_continue">Fortfahren</string>
     <string name="okay">Okay</string>
     <string name="share">Teilen</string>
@@ -712,78 +684,6 @@
     <string name="warning_current_app_session">Aktuelle Appsitzung</string>
 
     <!-- Sync account -->
-    <string name="account_sync_title">Zwischen meinen Geräten synchronisieren</string>
-    <string name="account_sync_desc">Ich behalte deine Einstellungen und Zeitstatistiken synchron auf allen Handys und Browsern. Alles ist mit einem Schlüssel gesichert, den nur sie haben und den sonst niemand lesen kann.</string>
-    <string name="account_hint_email">Email</string>
-    <string name="account_hint_password">Passwort</string>
-    <string name="account_hint_email_code">Emailcode</string>
-    <string name="account_hint_new_password">Neues Passwort</string>
-    <string name="account_hint_secret_phrase">Geheime Phrase</string>
-    <string name="account_hint_paste_code">Kopplungscode eingeben</string>
-    <string name="account_pairing_code_desc">Kopplungscode</string>
-    <string name="account_sign_in">Anmelden</string>
-    <string name="account_continue_google">Mit Google fortfahren</string>
-    <string name="account_google_fast_hint">Schnellste Option. Kein Passwort der Code nötig</string>
-    <string name="account_use_email">Alternativ Email verwenden</string>
-    <string name="account_email_section">Email und Passwort</string>
-    <string name="account_use_different_account">Einen andere Account verwenden</string>
-    <string name="account_forgot_password">Passwort vergessen?</string>
-    <string name="account_new_here">Neu hier? </string>
-    <string name="account_create_account">Einen Account erstellen</string>
-    <string name="account_verify_continue">Verifizieren und fortfahren</string>
-    <string name="account_send_new_code">Einen neuen Code senden</string>
-    <string name="account_send_reset_code">Zurücksetzungscode senden</string>
-    <string name="account_back_to_sign_in">Zurück zur Anmeldung</string>
-    <string name="account_set_new_password">Neues Passwort setzen</string>
-    <string name="account_turn_on_sync">Synchronisation aktivieren</string>
-    <string name="account_pair_desc">Wenn du dein anderes Gerät zur Hand hast ist das der einfachste Weg. Öffne dort die Synchronisation und zeig dir dort den Code an.</string>
-    <string name="account_scan_code">Einen Code scannen</string>
-    <string name="account_use_pasted_code">Eingefügten Code verwenden</string>
-    <string name="account_show_pairing_code">Kopplungscode für ein anderes Gerät anzeigen</string>
-    <string name="account_pairing_warning">Jeder der diesen Code sieht kann deine Daten lesen, also zeit ihn nur deinen eigenen Geräten.</string>
-    <string name="account_sync_now">Jetzt synchronisieren</string>
-    <string name="account_sign_out">Aus diesem Gerät abmelden</string>
-    <string name="account_device_name">Dieses Gerät</string>
-    <string name="account_save_device_name">Name speichern</string>
-    <string name="account_what_syncs">WAS SYNCHRONISIERT</string>
-    <string name="account_sync_usage_stats">Nutzerstatistiken</string>
-    <string name="account_sync_reducer_configs">Verringererstatistiken</string>
-    <string name="account_usage_shown_from">NUTZUNG ANZEIGEN VON</string>
-    <string name="account_usage_filter_desc">Wähle aus welche anderen Geräte zur gemeinsamen Nutzung beitragen.</string>
-    <string name="account_all_devices">Alle Geräte</string>
-    <string name="account_create_account_action">Account erstellen</string>
-    <string name="account_already_have_account">Du hast bereits einen Account? </string>
-    <string name="account_unlock_data">Meine Daten freischalten</string>
-    <string name="account_make_secret_phrase">Eine geheime Phrase festlegen</string>
-    <string name="account_title_sync_on">Synchronisierung ist an</string>
-    <string name="account_title_check_email">Prüfe deine Emails</string>
-    <string name="account_title_reset_password">Passwort zurücksetzen</string>
-    <string name="account_title_choose_new_password">Neues Passwort wählen</string>
-    <string name="account_title_create_account">Deinen Account erstellen</string>
-    <string name="account_title_sign_in">Synchronisation aktivieren</string>
-    <string name="account_sub_sync_on">Deine Einstellungen und Zeitstatistiken bleiben aktuell auf all deinen Geräten.</string>
-    <string name="account_sub_unlock">Tippe die geheime Phrase ein, die du auf deinem ersten Gerät erstellt hast. Solltest du das Gerät in der Nähe haben, tippe auf einen Code scannen unten und verbinde dieses Gerät ohne irgendwas tippen zu müssen.</string>
-    <string name="account_sub_make_phrase">Erstelle ein Phrase die du dir merken kannst. Sie bleibt auf deinen Geräten und hält deine synchronisierten Daten privat.</string>
-    <string name="account_sub_verify">Code wurde per Email gesendet an %1$s. Gib ihn unten ein um die Einrichtung abzuschließen</string>
-    <string name="account_sub_forgot">Sag mir deine Email-Adresse und ich schicke dir einen Code, um dein Passwort zurückzusetzen.</string>
-    <string name="account_sub_reset">Gib den Code ein, der per Email kam und dein neues Passwort.</string>
-    <string name="account_sub_sign_up">Erstelle einene Account sodass deine Einstellungen und Statistiken bei dir bleiben</string>
-    <string name="account_sub_sign_in">Melde dich an um deine Einstellungen und Zeitstatistiken live auf allen Geräten zu haben, Ende zu Ende verschlüsselt.</string>
-    <string name="account_sub_google_first">Verwende Google für eine schnelle Einrichtung.Deine Einstellungen und Statistiken bleiben privat.</string>
-    <string name="account_msg_new_code_sent">Neuer Code gesendet an %1$s</string>
-    <string name="account_msg_reset_code_sent">Wiederherstellungscode gesendet an %1$s</string>
-    <string name="account_msg_phrase_too_short">Wähle eine geheime Phrase mit mindestens 8 Buchstaben</string>
-    <string name="account_msg_syncing">Neuste Daten jetzt Synchronisiert.</string>
-    <string name="account_err_generic">Etwas ist schief gelaufen. Bitte versuch es erneut.</string>
-    <string name="account_err_invalid_login">Email-Adresse oder Passwort stimmen nicht. Bitte versuch es nochmal.</string>
-    <string name="account_err_already_registered">Es existiert bereits ein Account mit dieser Email-Adresse. Bitte melde dich stattdessen an.</string>
-    <string name="account_err_email_not_confirmed">Bestätige zuerst deine Email-Adresse. Ich kann dir einen neuen Code senden.</string>
-    <string name="account_err_bad_code">Der Code hat nicht funktioniert. Prüfe ihn oder frag mich, einen neuen zu senden.</string>
-    <string name="account_err_rate_limit">Bitte warte einen Moment, dann versuch es erneut</string>
-    <string name="account_err_weak_password">Bitte verwende ein Passwort mit mindestens 6 Zeichen oder Zahlen.</string>
-    <string name="account_err_no_network">Ich kann das Internet grade nicht erreichen. Bitte prüfe deine Verbindung und versuche es erneut.</string>
-    <string name="account_err_google">Google-Anmeldung hat nicht funktioniert. Versuche es erneut oder verwende deine Email-Adresse.</string>
-    <string name="account_err_google_not_configured">Google-Anmeldung ist noch nicht bereit. Bitte verwende vorerst deine Email-Adresse.</string>
 
     <!-- Language -->
     <string name="language">Sprache</string>
@@ -921,8 +821,6 @@
     <string name="usage_ignore_title">Zu ignorierten Apps hinzufügen?</string>
     <string name="usage_ignore_message">Diese Aktion wird dazu führen, dass keine Statistiken der App mehr angezeigt werden.</string>
     <string name="rule_type_app_blocker">Appsperre</string>
-    <string name="synced_browsing">Synchronisiertes Browsen</string>
-    <string name="synced_other_devices">ANDERE GERÄTE</string>
 
     <!-- Select apps -->
     <string name="app_category_audio">Audio</string>

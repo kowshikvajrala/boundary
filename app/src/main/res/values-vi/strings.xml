@@ -112,15 +112,6 @@
     <string name="usage">Cách sử dụng</string>
     <string name="reducers">Bộ giảm tốc</string>
     <string name="info">Thông tin</string>
-    <string name="settings">Cài đặt</string>
-    <string name="log_in">Đăng nhập</string>
-    <string name="sync_across_devices">Đồng bộ hóa trên các thiết bị của tôi</string>
-    <string name="sync_across_devices_pitch">Tôi lưu giữ từng bước cài đặt và thống kê thời gian của bạn trên mọi điện thoại và trình duyệt, được khóa bằng một chiếc chìa khóa chỉ bạn giữ.</string>
-    <string name="sync_finish_setup_pitch">Bạn đã đăng nhập. Một bước nữa sẽ bật đồng bộ hóa và mở khóa dữ liệu của bạn trên thiết bị này.</string>
-    <string name="finish_sync_setup">Hoàn tất thiết lập</string>
-    <string name="sync_is_on">Đồng bộ hóa đang bật</string>
-    <string name="sync_is_on_pitch">Cài đặt và số liệu thống kê thời gian của bạn luôn được cập nhật trên mọi thiết bị. Nhấn để quản lý đồng bộ hóa hoặc đăng xuất.</string>
-    <string name="manage_sync">Quản lý đồng bộ hóa</string>
     <string name="please_provide_draw_over_other_apps">Vui lòng cung cấp quyền \'Vẽ lên các ứng dụng khác\' để dịch vụ này hoạt động bình thường.</string>
     <string name="added_successfully">Đã thêm thành công</string>
     <string name="package_already_exists">Gói đã tồn tại</string>
@@ -179,17 +170,6 @@
     <string name="onboarding_restricted_settings_desc">Android 13+ hạn chế các dịch vụ Hỗ trợ tiếp cận đối với các ứng dụng được cài đặt bên ngoài cửa hàng ứng dụng (như F-Droid hoặc Play Store). Để bật quyền, bạn cần phải cho phép \'Cài đặt bị hạn chế\' theo cách thủ công đối với Boundary. Ngoài ra, hãy cài đặt qua ứng dụng F-Droid (không phải trang web) để tránh điều này.</string>
     <string name="onboarding_show_tutorial">Hiển thị hướng dẫn để kích hoạt quyền</string>
     <string name="onboarding_shizuku_grant">Cấp mọi quyền với Shizuku</string>
-    <string name="sync_paywall_title">Đồng bộ hóa cao cấp</string>
-    <string name="sync_paywall_subtitle">Luôn cập nhật dữ liệu Boundary của bạn trên mọi thiết bị.</string>
-    <string name="sync_paywall_body">Đồng bộ hóa cài đặt, phiên tập trung và thống kê thời gian của bạn trên các trình duyệt và điện thoại. Dữ liệu của bạn luôn được mã hóa từ đầu đến cuối.</string>
-    <string name="sync_paywall_price">%1$s/năm</string>
-    <string name="sync_paywall_price_fallback">$25</string>
-    <string name="sync_paywall_subscribe">Đặt mua</string>
-    <string name="sync_paywall_restore">Tôi đã đăng ký rồi</string>
-    <string name="sync_paywall_checking">Đang kiểm tra đăng ký của bạn</string>
-    <string name="pairing_code_warning_title">Giữ mã này ở chế độ riêng tư</string>
-    <string name="pairing_code_warning_message">Mã này chứa khóa bí mật mở khóa tất cả dữ liệu đã đồng bộ hóa của bạn. Bất cứ ai chụp ảnh nó đều có thể đọc dữ liệu của bạn. Vui lòng không chụp màn hình hoặc chia sẻ nó. Mã sẽ tự ẩn sau một phút.</string>
-    <string name="pairing_code_show">Hiển thị mã</string>
     <string name="dnd_access_dialog_title">Đừng làm phiền</string>
     <string name="dnd_access_dialog_message">Boundary cần điều này để bật chế độ Không làm phiền cho bạn, nhờ đó nó có thể tắt tiếng cuộc gọi và cảnh báo trong khi bạn tập trung. Không có nó, Boundary không thể tự mình tắt tiếng những phiền nhiễu.\n\n🔒 Boundary không thu thập, gửi hoặc lưu trữ bất kỳ dữ liệu nào của bạn trên máy chủ mà không có sự cho phép của bạn.\n\n🛡️ Boundary tôn trọng sự yên bình của bạn: Boundary chỉ sử dụng điều này để tắt tiếng những phiền nhiễu khi bạn yêu cầu.</string>
     <string name="picker_dialog_block_element">Chặn phần tử này</string>
@@ -702,7 +682,6 @@
     
 
     
-    <string name="common_back">Mặt sau</string>
     <string name="common_continue">Tiếp tục</string>
     <string name="okay">Đồng ý</string>
     <string name="share">Chia sẻ</string>
@@ -714,69 +693,6 @@
     <string name="warning_current_app_session">Phiên ứng dụng hiện tại</string>
 
     
-    <string name="account_sync_title">Đồng bộ hóa trên các thiết bị của tôi</string>
-    <string name="account_sync_desc">Tôi luôn cập nhật các cài đặt và thống kê thời gian của bạn trên mọi trình duyệt và điện thoại. Mọi thứ đều được khóa bằng chìa khóa chỉ bạn giữ, nên không ai khác có thể đọc được.</string>
-    <string name="account_hint_email">E-mail</string>
-    <string name="account_hint_password">Mật khẩu</string>
-    <string name="account_hint_email_code">Mã email</string>
-    <string name="account_hint_new_password">Mật khẩu mới</string>
-    <string name="account_hint_secret_phrase">Cụm từ bí mật</string>
-    <string name="account_hint_paste_code">Dán mã ghép nối</string>
-    <string name="account_pairing_code_desc">Mã ghép nối</string>
-    <string name="account_sign_in">Đăng nhập</string>
-    <string name="account_forgot_password">Quên mật khẩu?</string>
-    <string name="account_new_here">"Mới ở đây à?"</string>
-    <string name="account_create_account">Tạo một tài khoản</string>
-    <string name="account_verify_continue">Xác minh và tiếp tục</string>
-    <string name="account_send_new_code">Gửi mã mới</string>
-    <string name="account_send_reset_code">Gửi mã đặt lại</string>
-    <string name="account_back_to_sign_in">Quay lại để đăng nhập</string>
-    <string name="account_set_new_password">Đặt mật khẩu mới</string>
-    <string name="account_turn_on_sync">Bật đồng bộ hóa</string>
-    <string name="account_pair_desc">Khi thiết bị khác của tôi tiện dụng thì đây là cách dễ dàng. Mở Đồng bộ hóa ở đó và hiển thị mã của nó.</string>
-    <string name="account_scan_code">Quét mã</string>
-    <string name="account_use_pasted_code">Sử dụng mã đã dán</string>
-    <string name="account_show_pairing_code">Hiển thị mã ghép nối cho thiết bị khác</string>
-    <string name="account_pairing_warning">Bất kỳ ai nhìn thấy mã này đều có thể đọc dữ liệu của bạn, vì vậy, chỉ hiển thị mã đó trên thiết bị của riêng bạn.</string>
-    <string name="account_sync_now">Đồng bộ hóa ngay bây giờ</string>
-    <string name="account_sign_out">Đăng xuất khỏi thiết bị này</string>
-    <string name="account_device_name">Thiết bị này</string>
-    <string name="account_save_device_name">Lưu tên</string>
-    <string name="account_what_syncs">ĐỒNG BỘ GÌ</string>
-    <string name="account_sync_usage_stats">Số liệu thống kê sử dụng</string>
-    <string name="account_sync_reducer_configs">Cấu hình giảm tốc</string>
-    <string name="account_usage_shown_from">SỬ DỤNG ĐƯỢC HIỂN THỊ TỪ</string>
-    <string name="account_usage_filter_desc">Chọn những thiết bị khác góp phần vào việc sử dụng kết hợp.</string>
-    <string name="account_all_devices">Tất cả các thiết bị</string>
-    <string name="account_create_account_action">Tạo tài khoản</string>
-    <string name="account_already_have_account">"Đã có tài khoản?"</string>
-    <string name="account_unlock_data">Mở khóa dữ liệu của tôi</string>
-    <string name="account_make_secret_phrase">Tạo một cụm từ bí mật</string>
-    <string name="account_title_sync_on">Đồng bộ hóa đang bật</string>
-    <string name="account_title_check_email">Kiểm tra email của bạn</string>
-    <string name="account_title_reset_password">Đặt lại mật khẩu</string>
-    <string name="account_title_choose_new_password">Chọn mật khẩu mới</string>
-    <string name="account_title_create_account">Tạo tài khoản của bạn</string>
-    <string name="account_sub_sync_on">Cài đặt và số liệu thống kê thời gian của bạn luôn được cập nhật trên mọi thiết bị.</string>
-    <string name="account_sub_unlock">Nhập cụm từ bí mật bạn đã thực hiện trên thiết bị đầu tiên của mình. Hoặc nếu thiết bị đó ở gần, hãy nhấn vào Quét mã bên dưới để đưa mã này vào mà không cần nhập bất cứ thứ gì.</string>
-    <string name="account_sub_make_phrase">Cụm từ này sẽ mở khóa dữ liệu của bạn trên mọi thiết bị. Tôi không bao giờ gửi nó đi bất cứ đâu, vì vậy hãy chọn thứ gì đó bạn sẽ nhớ và giữ nó an toàn. Nếu bạn quên nó, dữ liệu của bạn sẽ không thể mở lại được.</string>
-    <string name="account_sub_verify">Tôi đã gửi mã tới %1$s. Nhập nó bên dưới để hoàn tất thiết lập.</string>
-    <string name="account_sub_forgot">Hãy cho tôi biết email của bạn và tôi sẽ gửi cho bạn mã để đặt mật khẩu mới.</string>
-    <string name="account_sub_reset">Nhập mã tôi đã gửi qua email cho bạn và mật khẩu mới của bạn.</string>
-    <string name="account_sub_sign_up">Tạo một tài khoản để các cài đặt và số liệu thống kê có thể đồng hành cùng bạn.</string>
-    <string name="account_sub_sign_in">Đăng nhập để duy trì cài đặt và thống kê thời gian của bạn trên mọi thiết bị, được mã hóa từ đầu đến cuối.</string>
-    <string name="account_msg_new_code_sent">Tôi đã gửi mã mới tới %1$s</string>
-    <string name="account_msg_reset_code_sent">Tôi đã gửi mã đặt lại tới %1$s</string>
-    <string name="account_msg_phrase_too_short">Vui lòng chọn một cụm từ bí mật có ít nhất 8 chữ cái.</string>
-    <string name="account_msg_syncing">Đang đồng bộ hóa dữ liệu mới nhất của bạn ngay bây giờ</string>
-    <string name="account_err_generic">Đã xảy ra lỗi. Vui lòng thử lại.</string>
-    <string name="account_err_invalid_login">Email hoặc mật khẩu đó không khớp. Vui lòng thử lại.</string>
-    <string name="account_err_already_registered">Bạn đã có tài khoản với email này. Vui lòng đăng nhập thay thế.</string>
-    <string name="account_err_email_not_confirmed">Vui lòng xác nhận email của bạn trước. Tôi có thể gửi cho bạn một mã mới.</string>
-    <string name="account_err_bad_code">Mã đó không hoạt động. Kiểm tra nó hoặc yêu cầu tôi cho một cái mới.</string>
-    <string name="account_err_rate_limit">Vui lòng đợi một lát rồi thử lại.</string>
-    <string name="account_err_weak_password">Vui lòng sử dụng mật khẩu có ít nhất 6 chữ cái hoặc số.</string>
-    <string name="account_err_no_network">Tôi không thể truy cập internet ngay bây giờ. Hãy kiểm tra kết nối của bạn và thử lại.</string>
 
     
     <string name="language">Ngôn ngữ</string>
@@ -914,8 +830,6 @@
     <string name="usage_ignore_title">Thêm vào các gói bị bỏ qua?</string>
     <string name="usage_ignore_message">This action will cause the tracker to not display any stats from this app.</string>
     <string name="rule_type_app_blocker">Trình chặn ứng dụng</string>
-    <string name="synced_browsing">Duyệt web được đồng bộ hóa</string>
-    <string name="synced_other_devices">THIẾT BỊ KHÁC</string>
 
     
     <string name="app_category_audio">Âm thanh</string>

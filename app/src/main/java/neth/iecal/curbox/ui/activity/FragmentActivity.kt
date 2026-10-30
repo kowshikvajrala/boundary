@@ -95,7 +95,6 @@ class FragmentActivity : AppCompatActivity() {
                 IntentsLogFragment.FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.mindful_messages.MindfulMessagesFragment.FRAGMENT_ID,
             KeywordBlockerFragment.FRAGMENT_ID,
-            neth.iecal.curbox.ui.fragments.main.reducers.sync.SyncFragment.FRAGMENT_ID,
             AntiUninstallFragment.FRAGMENT_ID,
             ServiceProtectionFragment.FRAGMENT_ID,
             SettingsChangeDelayFragment.FRAGMENT_ID,
@@ -121,7 +120,6 @@ class FragmentActivity : AppCompatActivity() {
                     neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.reel_counter.ReelCounterFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.reel_counter.ReelCounterFragment()
                     neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.mindful_messages.MindfulMessagesFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.mindful_messages.MindfulMessagesFragment()
                     IntentsLogFragment.FRAGMENT_ID -> IntentsLogFragment()
-                    neth.iecal.curbox.ui.fragments.main.reducers.sync.SyncFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.sync.SyncFragment()
                     AntiUninstallFragment.FRAGMENT_ID -> AntiUninstallFragment()
                     ServiceProtectionFragment.FRAGMENT_ID -> ServiceProtectionFragment()
                     SettingsChangeDelayFragment.FRAGMENT_ID -> SettingsChangeDelayFragment()
@@ -140,15 +138,6 @@ class FragmentActivity : AppCompatActivity() {
             else -> {
                 // Show bottom nav for main fragments
                 bottomNav.visibility = android.view.View.VISIBLE
-
-                // The last tab is "Info" on F-Droid. The Play Store build also
-                // hosts account and sync here, so it reads "Settings" instead.
-                if (!neth.iecal.curbox.BuildConfig.FDROID_VARIANT) {
-                    bottomNav.menu.findItem(R.id.nav_info)?.apply {
-                        title = getString(R.string.settings)
-                        setIcon(R.drawable.baseline_settings_24)
-                    }
-                }
 
                 if (savedInstanceState == null) {
                     bottomNav.selectedItemId = R.id.nav_usage

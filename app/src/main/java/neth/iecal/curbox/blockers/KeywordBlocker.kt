@@ -82,6 +82,8 @@ class KeywordBlocker : BaseBlocker() {
     // Running unlocks that were paused before -> the first time their pages were left.
     private val firstLeftAtMs = ConcurrentHashMap<String, Long>()
     private val pauseGuard = Any()
+    private val mainHandler = Handler(Looper.getMainLooper())
+    private val leftoverExpiry = ConcurrentHashMap<String, Runnable>()
     private lateinit var unlockLocks: UnlockLocks
     @Volatile private var isAwayMode = false
     @Volatile private var homeLocation = HomeLocation()
@@ -224,11 +226,14 @@ class KeywordBlocker : BaseBlocker() {
         }
         pausedUnlocks.forEach { (id, paused) ->
             if (id !in openIds) return@forEach
-            pausedUnlocks.remove(id)
             // Time left over from long ago is not saved up for later.
             if (isLeftoverKept(id, paused, now)) {
+                pausedUnlocks.remove(id)
+                leftoverExpiry.remove(id)?.let(mainHandler::removeCallbacks)
                 cooldownGroupsList[id] = now + paused.remainingMs
                 firstLeftAtMs[id] = paused.firstLeftAtMs
+            } else {
+                dropLeftover(id, leftoverExpiresAt(id, paused))
             }
             changed = true
         }
@@ -250,17 +255,63 @@ class KeywordBlocker : BaseBlocker() {
         // The keep time counts from the first time the pages were left, not from this time, so a
         // quick visit now and then cannot keep the leftover time forever.
         val paused = PausedUnlock(remainingMs, firstLeftAtMs.remove(id) ?: now)
-        if (isLeftoverKept(id, paused, now)) pausedUnlocks[id] = paused
+        if (isLeftoverKept(id, paused, now)) {
+            pausedUnlocks[id] = paused
+            scheduleLeftoverExpiry(id, paused)
+        } else {
+            // The keep time ran out while the pages were open: the unlock ends now.
+            dropLeftover(id, now)
+        }
     }
 
-    private fun isLeftoverKept(id: String, paused: PausedUnlock, now: Long): Boolean {
+    private fun isLeftoverKept(id: String, paused: PausedUnlock, now: Long): Boolean =
+        now < leftoverExpiresAt(id, paused)
+
+    private fun leftoverExpiresAt(id: String, paused: PausedUnlock): Long {
         val keepMs = activeGroups.find { it.id == id }?.warningScreenConfig?.keepLeftoverMs
             ?: DEFAULT_KEEP_LEFTOVER_MS
-        return now - paused.firstLeftAtMs <= keepMs
+        return paused.firstLeftAtMs + keepMs
     }
 
-    private fun isUnlockPaused(id: String, now: Long): Boolean =
-        pausedUnlocks[id]?.let { isLeftoverKept(id, it, now) } == true
+    /** Drops the leftover the moment its keep time runs out, even while no page is open. */
+    private fun scheduleLeftoverExpiry(id: String, paused: PausedUnlock) {
+        leftoverExpiry.remove(id)?.let(mainHandler::removeCallbacks)
+        val runnable = Runnable {
+            leftoverExpiry.remove(id)
+            synchronized(pauseGuard) {
+                if (destroyed || pausedUnlocks[id] != paused) return@synchronized
+                dropLeftover(id, leftoverExpiresAt(id, paused))
+                persistCooldownData()
+                publishTimersToWidgets()
+            }
+        }
+        leftoverExpiry[id] = runnable
+        mainHandler.postDelayed(runnable, (leftoverExpiresAt(id, paused) - System.currentTimeMillis()).coerceAtLeast(0L) + 500L)
+    }
+
+    /**
+     * Leftover time not used within its keep time is dropped. That ends the unlock like running
+     * out does, so a lock after unlock starts from [endedAt].
+     */
+    private fun dropLeftover(id: String, endedAt: Long) {
+        pausedUnlocks.remove(id)
+        firstLeftAtMs.remove(id)
+        leftoverExpiry.remove(id)?.let(mainHandler::removeCallbacks)
+        unlockLocks.unlockEnded(id, endedAt)
+    }
+
+    private fun isUnlockPaused(id: String, now: Long): Boolean {
+        val paused = pausedUnlocks[id] ?: return false
+        if (isLeftoverKept(id, paused, now)) return true
+        synchronized(pauseGuard) {
+            if (pausedUnlocks[id] == paused) {
+                dropLeftover(id, leftoverExpiresAt(id, paused))
+                persistCooldownData()
+                publishTimersToWidgets()
+            }
+        }
+        return false
+    }
 
     private val screenReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -424,6 +475,8 @@ class KeywordBlocker : BaseBlocker() {
                 }.toMutableMap()
 
                 detectionCache.evictAll()
+                // Leftover kept from before a restart still runs out on time.
+                pausedUnlocks.forEach { (id, paused) -> scheduleLeftoverExpiry(id, paused) }
                 publishTimersToWidgets()
 
                 if (isTurnedOn) {
@@ -638,6 +691,8 @@ class KeywordBlocker : BaseBlocker() {
 
     fun removeReceivers() {
         destroyed = true
+        leftoverExpiry.values.forEach(mainHandler::removeCallbacks)
+        leftoverExpiry.clear()
         blockerScope.cancel()
         configJob?.cancel()
         observationJob?.cancel()

@@ -626,13 +626,7 @@ class AllAppsUsageFragment : Fragment() {
                     )
                 )
                 binding.root.setOnClickListener {
-                    val destination = if (stats.packageName == neth.iecal.curbox.data.sync.SYNCED_WEB_PACKAGE) {
-                        // There's no single app behind synced browsing, so per app
-                        // stats don't apply here. Go straight to the website list.
-                        WebsiteUsageFragment.newInstance(stats.packageName)
-                    } else {
-                        AppUsageBreakdown(stats)
-                    }
+                    val destination = AppUsageBreakdown(stats)
                     activity?.supportFragmentManager?.beginTransaction()
                         ?.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                         ?.replace(R.id.fragment_holder, destination)

@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
@@ -52,9 +51,7 @@ class AllAppsUsageViewModel(application: Application) : AndroidViewModel(applica
 
     private data class DayUsageSource(
         val localApps: List<AppUsageStat>,
-        val remoteApps: Map<String, Long>,
         val websites: List<WebsiteStatsEntity>,
-        val remoteWebsites: Map<String, Long>,
         val reels: List<ReelUsageStatsEntity>
     )
 
@@ -122,19 +119,7 @@ class AllAppsUsageViewModel(application: Application) : AndroidViewModel(applica
             val datastore = DataStoreManager(getApplication())
             ignoredPackages.addAll(datastore.settings.first().usageTrackerIgnoredApps)
             loadChartData()
-            refreshSyncedUsage()
         }
-    }
-
-    // Usage records never send a push to this device, so the freshest usage from
-    // other devices only arrives when we ask. Pull once when the screen opens,
-    // then reload with whatever came in.
-    private suspend fun refreshSyncedUsage() {
-        val provider = neth.iecal.curbox.data.sync.SyncGateway.provider
-        if (!provider.isAvailable) return
-        refreshProvider(provider)
-        dayUsageCache.clear()
-        loadChartData()
     }
 
     fun goToPreviousPeriod() {
@@ -180,7 +165,7 @@ class AllAppsUsageViewModel(application: Application) : AndroidViewModel(applica
     }
 
     // A user asked refresh: drop the cached day stats so the system's freshest
-    // usage is read again, pull the latest usage from other devices, then reload.
+    // usage is read again, then reload.
     // Unlike reload() this always shows the loading overlay so the tap has visible feedback.
     fun refresh() {
         chartLoadJob?.cancel()
@@ -188,8 +173,6 @@ class AllAppsUsageViewModel(application: Application) : AndroidViewModel(applica
         chartLoadJob = viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) { _isLoading.value = true }
             dayUsageCache.clear()
-            val provider = neth.iecal.curbox.data.sync.SyncGateway.provider
-            if (provider.isAvailable) refreshProvider(provider)
             loadChartData()
             withContext(Dispatchers.Main) { _isLoading.value = false }
         }
@@ -292,26 +275,9 @@ class AllAppsUsageViewModel(application: Application) : AndroidViewModel(applica
         val localApps = source.localApps.filter {
             it.totalTime >= 1_000 && it.packageName !in ignoredPackages
         }
-        var apps = mergeRemoteApps(localApps, source.remoteApps)
-        var websites = source.websites.filter { it.isWebsite() }
+        val websites = source.websites.filter { it.isWebsite() }
 
-        if (source.remoteWebsites.isNotEmpty()) {
-            val dateString = neth.iecal.curbox.utils.TimeTools.dayKey(date)
-            websites = websites + source.remoteWebsites.map { (domain, duration) ->
-                WebsiteStatsEntity(
-                    date = dateString,
-                    packageName = neth.iecal.curbox.data.sync.SYNCED_WEB_PACKAGE,
-                    urlIdentifier = domain,
-                    domain = domain,
-                    totalTime = duration
-                )
-            }
-            apps = apps + AppUsageStat(
-                neth.iecal.curbox.data.sync.SYNCED_WEB_PACKAGE,
-                source.remoteWebsites.values.sum()
-            )
-        }
-        return DayUsage(apps, websites, source.reels)
+        return DayUsage(localApps, websites, source.reels)
     }
 
     private suspend fun sourceForDay(date: LocalDate): DayUsageSource {
@@ -328,7 +294,6 @@ class AllAppsUsageViewModel(application: Application) : AndroidViewModel(applica
             neth.iecal.curbox.utils.TimeTools.dayKey(date)
         }
         val datesByKey = dateKeys.entries.associate { (date, key) -> key to date }
-        val isoDates = missingDates.mapTo(linkedSetOf()) { it.toString() }
 
         val appStats = async { usageStatsHelper.getForegroundStatsByDays(missingDates) }
         val websites = async {
@@ -341,75 +306,20 @@ class AllAppsUsageViewModel(application: Application) : AndroidViewModel(applica
                 .mapNotNull { stat -> datesByKey[stat.date]?.let { date -> date to stat } }
                 .groupBy({ it.first }, { it.second })
         }
-        val remoteUsage = async {
-            remoteUsageForDates(neth.iecal.curbox.data.sync.SyncGateway.provider, isoDates)
-        }
 
         val appStatsByDate = appStats.await()
         val websitesByDate = websites.await()
         val reelsByDate = reels.await()
-        val remoteUsageByDate = remoteUsage.await()
         missingDates.forEach { date ->
-            val remote = remoteUsageByDate[date.toString()]
             dayUsageCache.putIfAbsent(
                 date,
                 DayUsageSource(
                     localApps = appStatsByDate[date].orEmpty(),
-                    remoteApps = remote?.apps.orEmpty(),
                     websites = websitesByDate[date].orEmpty(),
-                    remoteWebsites = remote?.websites.orEmpty(),
                     reels = reelsByDate[date].orEmpty()
                 )
             )
         }
-    }
-
-    private suspend fun refreshProvider(provider: neth.iecal.curbox.data.sync.SyncProvider) {
-        try {
-            provider.refresh()
-        } catch (error: CancellationException) {
-            throw error
-        } catch (_: Exception) {
-            // Local usage remains available when a sync refresh fails.
-        }
-    }
-
-    private suspend fun remoteUsageForDates(
-        provider: neth.iecal.curbox.data.sync.SyncProvider,
-        dates: Set<String>
-    ): Map<String, neth.iecal.curbox.data.sync.RemoteUsageTotals> = try {
-        provider.remoteUsageForDates(dates)
-    } catch (error: CancellationException) {
-        throw error
-    } catch (_: Exception) {
-        emptyMap()
-    }
-
-    // Combines other devices' per app time into this device's list: matching apps
-    // get their time added together, and apps that only ran on another device are
-    // appended as their own rows.
-    private fun mergeRemoteApps(
-        local: List<AppUsageStat>,
-        remote: Map<String, Long>,
-    ): List<AppUsageStat> {
-        val localByPkg = local.associateBy { it.packageName }
-        val merged = ArrayList<AppUsageStat>(local.size + remote.size)
-        for (st in local) {
-            val extra = remote[st.packageName] ?: 0L
-            merged.add(
-                if (extra > 0L) {
-                    AppUsageStat(st.packageName, st.totalTime + extra, st.sessions, st.hourlyUsage)
-                } else {
-                    st
-                },
-            )
-        }
-        for ((pkg, ms) in remote) {
-            if (pkg !in localByPkg && ms >= 1_000 && pkg !in ignoredPackages) {
-                merged.add(AppUsageStat(pkg, ms))
-            }
-        }
-        return merged
     }
 
     private fun datesIn(period: AppUsagePeriod, today: LocalDate): List<LocalDate> {
@@ -442,16 +352,6 @@ class AllAppsUsageViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun getAppMetadata(packageName: String): AppMetadata {
-        if (packageName == neth.iecal.curbox.data.sync.SYNCED_WEB_PACKAGE) {
-            return AppMetadata(
-                label = getApplication<android.app.Application>().getString(neth.iecal.curbox.R.string.synced_browsing),
-                category = getApplication<android.app.Application>().getString(neth.iecal.curbox.R.string.synced_other_devices),
-                isSystemApp = false,
-                installDate = "",
-                lastUpdate = "",
-                icon = androidx.core.content.ContextCompat.getDrawable(getApplication(), neth.iecal.curbox.R.drawable.ic_synced_web),
-            )
-        }
         return appMetadataCache.computeIfAbsent(packageName) {
             try {
                 val appInfo = packageManager.getApplicationInfo(it, 0)

@@ -1,0 +1,2 @@
+• Fixed: when leftover unlock time was dropped because you did not come back in time, "Lock after unlock ends" did not start. It now starts the moment the leftover is dropped, for app groups and keyword groups.
+• Removed leftover code from the old cloud sync. Nothing changes in the app.

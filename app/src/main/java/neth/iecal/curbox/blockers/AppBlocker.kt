@@ -349,6 +349,8 @@ class AppBlocker : BaseBlocker() {
 
                 // Locks that were running before a restart keep their apps closed too.
                 handler.post {
+                    // Leftover kept from before a restart still runs out on time.
+                    pausedUnlocks.forEach { (groupId, paused) -> scheduleLeftoverExpiry(groupId, paused) }
                     refreshLockedPackages()
                     lockAfterMsById.keys
                         .filter { lockEndsAt(it) > 0L && !activeRunnables.containsKey("lockclose:$it") }
@@ -471,13 +473,16 @@ class AppBlocker : BaseBlocker() {
         }
         pausedUnlocks.forEach { (groupId, paused) ->
             if (packageName !in groupPackagesById[groupId].orEmpty()) return@forEach
-            pausedUnlocks.remove(groupId)
             // Time left over from long ago is not saved up for later.
             if (isLeftoverKept(groupId, paused, now)) {
+                pausedUnlocks.remove(groupId)
+                activeRunnables.remove("leftover:$groupId")?.let(handler::removeCallbacks)
                 val endMs = now + paused.remainingMs
                 cooldownGroupsList[groupId] = endMs
                 firstLeftAtMs[groupId] = paused.pausedAtMs
                 setUpForcedRefreshChecker("cooldown:$groupId", endMs, groupId)
+            } else {
+                dropLeftover(groupId, leftoverExpiresAt(groupId, paused))
             }
             changed = true
         }
@@ -495,11 +500,51 @@ class AppBlocker : BaseBlocker() {
         // a quick open now and then cannot keep the leftover time forever.
         val leftAt = firstLeftAtMs.remove(groupId) ?: now
         val paused = PausedUnlock(remainingMs, leftAt)
-        if (isLeftoverKept(groupId, paused, now)) pausedUnlocks[groupId] = paused
+        if (isLeftoverKept(groupId, paused, now)) {
+            pausedUnlocks[groupId] = paused
+            scheduleLeftoverExpiry(groupId, paused)
+        } else {
+            // The keep time ran out while the apps were open: the unlock ends now.
+            dropLeftover(groupId, now)
+        }
     }
 
     private fun isLeftoverKept(groupId: String, paused: PausedUnlock, now: Long): Boolean =
-        now - paused.pausedAtMs <= (keepLeftoverMsById[groupId] ?: DEFAULT_KEEP_LEFTOVER_MS)
+        now < leftoverExpiresAt(groupId, paused)
+
+    private fun leftoverExpiresAt(groupId: String, paused: PausedUnlock): Long =
+        paused.pausedAtMs + (keepLeftoverMsById[groupId] ?: DEFAULT_KEEP_LEFTOVER_MS)
+
+    /** Drops the leftover the moment its keep time runs out, even while the apps stay closed. */
+    private fun scheduleLeftoverExpiry(groupId: String, paused: PausedUnlock) {
+        val key = "leftover:$groupId"
+        activeRunnables[key]?.let(handler::removeCallbacks)
+        val runnable = Runnable {
+            activeRunnables.remove(key)
+            if (pausedUnlocks[groupId] != paused) return@Runnable
+            dropLeftover(groupId, leftoverExpiresAt(groupId, paused))
+            persistCooldownData()
+            showNextCooldownNotification()
+        }
+        activeRunnables[key] = runnable
+        handler.postDelayed(runnable, (leftoverExpiresAt(groupId, paused) - System.currentTimeMillis()).coerceAtLeast(0L) + 500L)
+    }
+
+    /**
+     * Leftover time not used within its keep time is dropped. That ends the unlock like running
+     * out does, so a lock after unlock starts from [endedAt].
+     */
+    private fun dropLeftover(groupId: String, endedAt: Long) {
+        pausedUnlocks.remove(groupId)
+        firstLeftAtMs.remove(groupId)
+        activeRunnables.remove("leftover:$groupId")?.let(handler::removeCallbacks)
+        unlockLocks.unlockEnded(groupId, endedAt)
+        refreshLockedPackages()
+        if (lockEndsAt(groupId) > 0L) {
+            closeLockedApps(groupId)
+            keepLockedAppsClosed(groupId)
+        }
+    }
 
     private fun pauseAllRunningUnlocks() {
         val now = System.currentTimeMillis()
@@ -514,7 +559,12 @@ class AppBlocker : BaseBlocker() {
 
     private fun isGroupInCooldown(groupId: String, now: Long = System.currentTimeMillis()): Boolean {
         // A frozen unlock still has time left; it starts running again once its app is in front.
-        pausedUnlocks[groupId]?.let { if (isLeftoverKept(groupId, it, now)) return true }
+        pausedUnlocks[groupId]?.let { paused ->
+            if (isLeftoverKept(groupId, paused, now)) return true
+            dropLeftover(groupId, leftoverExpiresAt(groupId, paused))
+            persistCooldownData()
+            return false
+        }
         val endTime = cooldownGroupsList[groupId] ?: return false
         if (endTime > now) return true
         endUnlock(groupId)

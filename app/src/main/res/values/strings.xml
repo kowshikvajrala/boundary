@@ -127,15 +127,6 @@
     <string name="reducers">Reducers</string>
     <string name="info">Info</string>
     <string name="app_version">Version %1$s</string>
-    <string name="settings">Settings</string>
-    <string name="log_in">Log in</string>
-    <string name="sync_across_devices">Sync across my devices</string>
-    <string name="sync_across_devices_pitch">I keep your settings and time stats in step on every phone and browser, locked with a key only you hold.</string>
-    <string name="sync_finish_setup_pitch">You are signed in. One more step turns on sync and unlocks your data on this device.</string>
-    <string name="finish_sync_setup">Finish setup</string>
-    <string name="sync_is_on">Sync is on</string>
-    <string name="sync_is_on_pitch">Your settings and time stats stay in step on every device. Tap to manage sync or sign out.</string>
-    <string name="manage_sync">Manage sync</string>
     <string name="please_provide_draw_over_other_apps">Please provide \'Draw over other apps\' permission to make this service work properly. </string>
     <string name="added_successfully">Added Successfully</string>
     <string name="package_already_exists">Package already exists</string>
@@ -211,24 +202,6 @@
     <string name="onboarding_restricted_settings_desc">Android 13+ restricts Accessibility services for apps installed outside of app stores (like F-Droid or Play Store). To enable permissions, you\'ll need to manually allow \'Restricted settings\' for Boundary. Alternatively, install via the F-Droid app(not website) to avoid this.</string>
     <string name="onboarding_show_tutorial">Show tutorial to enable permissions</string>
     <string name="onboarding_shizuku_grant">Grant all permissions with Shizuku</string>
-    <string name="sync_paywall_title">Finish setting up sync</string>
-    <string name="sync_paywall_subtitle">Your account is ready. Choose the yearly plan to continue.</string>
-    <string name="sync_paywall_body">One plan. Everything below is included.</string>
-    <string name="sync_paywall_feature_devices">✓ Sync every phone and browser</string>
-    <string name="sync_paywall_feature_private">✓ Keep your data private with your own secret phrase</string>
-    <string name="sync_paywall_feature_cancel">✓ Cancel before the next renewal</string>
-    <string name="sync_paywall_price">%1$s per year</string>
-    <string name="sync_paywall_price_fallback">$25</string>
-    <string name="sync_paywall_subscribe">Subscribe</string>
-    <string name="sync_paywall_subscribe_price">Continue for %1$s</string>
-    <string name="sync_paywall_restore">Restore my subscription</string>
-    <string name="sync_paywall_checking">Checking your subscription</string>
-    <string name="sync_paywall_renewal_note">Renews every year until you cancel.</string>
-    <string name="sync_paywall_signed_in_as">Signed in as %1$s</string>
-    <string name="sync_paywall_your_account">your account</string>
-    <string name="pairing_code_warning_title">Keep this code private</string>
-    <string name="pairing_code_warning_message">This code holds the secret key that unlocks all your synced data. Anyone who snaps a photo of it can read your data. Please do not screenshot or share it. The code hides itself after one minute.</string>
-    <string name="pairing_code_show">Show code</string>
     <string name="dnd_access_dialog_title">Do Not Disturb</string>
     <string name="dnd_access_dialog_message">Boundary needs this to turn on Do Not Disturb for you, so it can mute calls and alerts while you focus. Without it, Boundary cannot silence distractions on its own.\n\n🔒 Boundary does not collect, send, or store any of your data on a server without your permission.\n\n🛡️ Boundary respects your peace: It uses this only to mute distractions when you ask it to.</string>
     <string name="picker_dialog_block_element">Block This Element</string>
@@ -918,7 +891,6 @@
     <!-- Boundary API permission screen -->
 
     <!-- Common / shared -->
-    <string name="common_back">Back</string>
     <string name="common_continue">Continue</string>
     <string name="okay">Okay</string>
     <string name="share">Share</string>
@@ -930,78 +902,6 @@
     <string name="warning_current_app_session">Current app session</string>
 
     <!-- Sync account -->
-    <string name="account_sync_title">Sync across my devices</string>
-    <string name="account_sync_desc">I keep your settings and time stats in step on every browser and phone. Everything is locked with a key only you hold, so no one else can read it.</string>
-    <string name="account_hint_email">Email</string>
-    <string name="account_hint_password">Password</string>
-    <string name="account_hint_email_code">Email code</string>
-    <string name="account_hint_new_password">New password</string>
-    <string name="account_hint_secret_phrase">Secret phrase</string>
-    <string name="account_hint_paste_code">Paste pairing code</string>
-    <string name="account_pairing_code_desc">Pairing code</string>
-    <string name="account_sign_in">Sign in</string>
-    <string name="account_continue_google">Continue with Google</string>
-    <string name="account_google_fast_hint">Fastest. No password or email code.</string>
-    <string name="account_use_email">Use email instead</string>
-    <string name="account_email_section">Email and password</string>
-    <string name="account_use_different_account">Use a different account</string>
-    <string name="account_forgot_password">Forgot password?</string>
-    <string name="account_new_here">"New here? "</string>
-    <string name="account_create_account">Create an account</string>
-    <string name="account_verify_continue">Verify and continue</string>
-    <string name="account_send_new_code">Send a new code</string>
-    <string name="account_send_reset_code">Send reset code</string>
-    <string name="account_back_to_sign_in">Back to sign in</string>
-    <string name="account_set_new_password">Set new password</string>
-    <string name="account_turn_on_sync">Turn on sync</string>
-    <string name="account_pair_desc">When my other device is handy, this is the easy way. Open Sync there and show its code.</string>
-    <string name="account_scan_code">Scan a code</string>
-    <string name="account_use_pasted_code">Use pasted code</string>
-    <string name="account_show_pairing_code">Show pairing code for another device</string>
-    <string name="account_pairing_warning">Anyone who sees this code can read your data, so only show it to your own devices.</string>
-    <string name="account_sync_now">Sync now</string>
-    <string name="account_sign_out">Sign out of this device</string>
-    <string name="account_device_name">This device</string>
-    <string name="account_save_device_name">Save name</string>
-    <string name="account_what_syncs">WHAT SYNCS</string>
-    <string name="account_sync_usage_stats">Usage stats</string>
-    <string name="account_sync_reducer_configs">Reducer configs</string>
-    <string name="account_usage_shown_from">USAGE SHOWN FROM</string>
-    <string name="account_usage_filter_desc">Choose which other devices contribute to combined usage.</string>
-    <string name="account_all_devices">All devices</string>
-    <string name="account_create_account_action">Create account</string>
-    <string name="account_already_have_account">"Already have an account? "</string>
-    <string name="account_unlock_data">Unlock my data</string>
-    <string name="account_make_secret_phrase">Make a secret phrase</string>
-    <string name="account_title_sync_on">Sync is on</string>
-    <string name="account_title_check_email">Check your email</string>
-    <string name="account_title_reset_password">Reset password</string>
-    <string name="account_title_choose_new_password">Choose a new password</string>
-    <string name="account_title_create_account">Create your account</string>
-    <string name="account_title_sign_in">Turn on sync</string>
-    <string name="account_sub_sync_on">Your settings and time stats stay in step on every device.</string>
-    <string name="account_sub_unlock">Type the secret phrase you made on your first device. Or if that device is nearby, tap Scan a code below to bring this one in without typing anything.</string>
-    <string name="account_sub_make_phrase">Make one phrase you will remember. It stays on your devices and keeps your synced data private.</string>
-    <string name="account_sub_verify">I sent a code to %1$s. Type it below to finish setting up.</string>
-    <string name="account_sub_forgot">Tell me your email and I will send you a code to set a new password.</string>
-    <string name="account_sub_reset">Type the code I emailed you and your new password.</string>
-    <string name="account_sub_sign_up">Make an account so your settings and stats can travel with you.</string>
-    <string name="account_sub_sign_in">Sign in to keep your settings and time stats in step on every device, end to end encrypted.</string>
-    <string name="account_sub_google_first">Use Google for the quickest setup. Your settings and time stats stay private.</string>
-    <string name="account_msg_new_code_sent">I sent a new code to %1$s</string>
-    <string name="account_msg_reset_code_sent">I sent a reset code to %1$s</string>
-    <string name="account_msg_phrase_too_short">Please pick a secret phrase with at least 8 letters.</string>
-    <string name="account_msg_syncing">Syncing your latest data now</string>
-    <string name="account_err_generic">Something went wrong. Please try again.</string>
-    <string name="account_err_invalid_login">That email or password did not match. Please try again.</string>
-    <string name="account_err_already_registered">You already have an account with this email. Please sign in instead.</string>
-    <string name="account_err_email_not_confirmed">Please confirm your email first. I can send you a new code.</string>
-    <string name="account_err_bad_code">That code did not work. Check it or ask me for a new one.</string>
-    <string name="account_err_rate_limit">Please wait a moment, then try again.</string>
-    <string name="account_err_weak_password">Please use a password with at least 6 letters or numbers.</string>
-    <string name="account_err_no_network">I cannot reach the internet right now. Check your connection and try again.</string>
-    <string name="account_err_google">Google sign in did not work. Please try again or use email.</string>
-    <string name="account_err_google_not_configured">Google sign in is not ready yet. Please use email for now.</string>
 
     <!-- Language -->
     <string name="language">Language</string>
@@ -1146,8 +1046,6 @@
     <string name="usage_ignore_title">Add to ignored packages?</string>
     <string name="usage_ignore_message">This action will cause the tracker to not display any stats from this app.</string>
     <string name="rule_type_app_blocker">App Blocker</string>
-    <string name="synced_browsing">Synced browsing</string>
-    <string name="synced_other_devices">OTHER DEVICES</string>
 
     <!-- Select apps -->
     <string name="app_category_audio">Audio</string>

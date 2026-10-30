@@ -65,8 +65,8 @@ android {
         applicationId = appId
         minSdk = 26
         targetSdk = 35
-        versionCode = 34
-        versionName = "2.1.1"
+        versionCode = 35
+        versionName = "2.1.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         resValue("string", "app_name", appName)
         resValue("string", "blocker_service_label", "$appName App Blocker")
@@ -76,8 +76,6 @@ android {
         // Holds WRITE_SECURE_SETTINGS (granted once via Shizuku) so grayscale can
         // flip secure settings directly instead of shelling out per toggle.
         buildConfigField("Boolean", "SUPPORTS_WRITE_SECURE_SETTINGS", "true")
-        // Cloud sync talks to Curbox's own servers, so this build ships without it.
-        buildConfigField("Boolean", "FDROID_VARIANT", "true")
     }
 
     signingConfigs {
