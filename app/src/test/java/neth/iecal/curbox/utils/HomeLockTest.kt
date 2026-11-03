@@ -35,17 +35,6 @@ class HomeLockTest {
     }
 
     @Test
-    fun awayModeDoesNotLetALockedGroupLoosen() {
-        assertTrue(
-            HomeLock.weakensLock(
-                GatedSettingsField.APP_GROUPS,
-                current.copy(isAwayModeActive = true),
-                Settings(blockedAppGroups = listOf(lockedGroup.copy(isActive = false)))
-            )
-        )
-    }
-
-    @Test
     fun groupsWithoutALockAreNotGuarded() {
         val free = group(lockAfterMs = 0L)
         assertFalse(

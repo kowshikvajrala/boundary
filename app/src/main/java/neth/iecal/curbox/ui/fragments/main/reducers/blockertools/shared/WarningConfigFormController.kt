@@ -39,7 +39,6 @@ internal class WarningConfigFormController(
     private var focusGroupOptions: List<FocusGroupUnlockOption> = emptyList()
     private var selectedFocusGroupId = ""
     private val messageBoxes = mutableListOf<ItemWarningMessageBinding>()
-    private var isHomeLocationSet = false
     private val proceedDelayField by lazy {
         SecondsField(
             binding.proceedDelayInput,
@@ -137,7 +136,7 @@ internal class WarningConfigFormController(
         binding.lockAfterCloseSwitch.isVisible = supportsOnEachOpen
         binding.lockAfterCloseDesc.isVisible = supportsOnEachOpen
         lockAfterField.bind(if (lockAfterSeconds > 0) lockAfterSeconds else DEFAULT_LOCK_AFTER_SECONDS)
-        updateLockAfterAvailability()
+        refreshNotificationAccess()
 
         binding.pauseUnlockSection.isVisible = supportsPauseUnlock && !isOnEachOpenEnabled
         binding.pauseUnlockSwitch.isChecked = config.pauseUnlockWhenAway
@@ -215,7 +214,7 @@ internal class WarningConfigFormController(
         binding.lockAfterSwitch.setOnCheckedChangeListener { _, isChecked ->
             TransitionManager.beginDelayedTransition(binding.mainContentContainer, AutoTransition())
             binding.lockAfterInputs.isVisible = isChecked
-            updateLockAfterAvailability()
+            refreshNotificationAccess()
         }
         binding.proceedLimitSwitch.setOnCheckedChangeListener { _, isChecked ->
             binding.proceedLimitContainer.isVisible = isChecked
@@ -336,19 +335,6 @@ internal class WarningConfigFormController(
     }
 
     /** The lock after an unlock can only be turned on once a home is set, because home is what lets it be turned off. */
-    fun bindHomeLocation(isSet: Boolean) {
-        isHomeLocationSet = isSet
-        updateLockAfterAvailability()
-    }
-
-    private fun isLockAfterAvailable(): Boolean = isHomeLocationSet || binding.lockAfterSwitch.isChecked
-
-    private fun updateLockAfterAvailability() {
-        binding.lockAfterSwitch.isEnabled = isLockAfterAvailable()
-        binding.lockAfterHomeNote.isVisible = !isHomeLocationSet && !binding.lockAfterSwitch.isChecked
-        refreshNotificationAccess()
-    }
-
     /** Shows the notification access prompt while the lock is on and the access is missing. */
     fun refreshNotificationAccess() {
         val context = fragment.context ?: return
@@ -393,7 +379,7 @@ internal class WarningConfigFormController(
             },
             focusGoalRequiredMinutes = numericInputValue(binding.focusGoalMinutesInput).toInt(),
             proceedDelayInSecs = proceedDelayField.seconds().toInt(),
-            lockAfterUnlockMs = if (binding.lockAfterSwitch.isChecked && isLockAfterAvailable()) {
+            lockAfterUnlockMs = if (binding.lockAfterSwitch.isChecked) {
                 lockAfterField.seconds() * 1000L
             } else {
                 0L

@@ -6,19 +6,15 @@ import neth.iecal.curbox.data.models.Settings
 
 /**
  * Guards the lock after unlock. Anything that would weaken a group using it (turning the lock
- * off or shorter, loosening, pausing or deleting the group) is always refused. Away mode only
- * pauses blocking, so nothing loosened while away could carry over to home; Emergency off is
- * the one way to loosen a locked group.
+ * off or shorter, loosening, pausing or deleting the group) waits [LOOSEN_WAIT_MS] as a pending
+ * change, however the settings change delay is set, so it can be undone but never on an urge.
+ * Turning a locked group off for a while is refused outright.
  */
 object HomeLock {
+    const val LOOSEN_WAIT_MS = 7 * 86_400_000L
+
     fun usesLock(config: AppBlockerWarningScreenConfig): Boolean =
         config.lockAfterUnlockMs > 0L && !config.isOnOpenConfig
-
-    fun hasAnyLock(settings: Settings): Boolean =
-        settings.blockedAppGroups.any { it.isActive && usesLock(it.warningScreenConfig) } ||
-            (settings.keywordBlockerConfig.isActive &&
-                settings.keywordBlockerConfig.keywordGroups.any { it.isActive && usesLock(it.warningScreenConfig) }) ||
-            (settings.reelBlockerConfig.isActive && usesLock(settings.reelBlockerConfig.warningScreenConfig))
 
     /** True when [proposed] loosens something that is currently protected by a lock after unlock. */
     fun weakensLock(field: GatedSettingsField, current: Settings, proposed: Settings): Boolean {

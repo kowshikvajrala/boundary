@@ -1,0 +1,5 @@
+• Removed: Emergency off. There is no longer a button that turns every restriction off at once.
+• Removed: Away mode and the Home lock screen. Blocking no longer pauses while you are out, and Boundary no longer uses your location. If Away mode was on, blocking comes back on after this update.
+• Changed: loosening or deleting a group that uses Lock after unlock now waits 7 days, even with the settings change delay off. You can cancel it while it waits. Turning a locked group off for a while is still refused.
+• Lock after unlock no longer needs a home to be set.
+• Fixed: the wait screen crashed when a group had no warning messages.

@@ -8,11 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.journeyapps.barcodescanner.ScanContract
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.databinding.FragmentWarningConfigBinding
-import neth.iecal.curbox.utils.DataStoreManager
 
 class WarningConfigFragment : Fragment() {
     private var _binding: FragmentWarningConfigBinding? = null
@@ -88,9 +86,7 @@ class WarningConfigFragment : Fragment() {
 
         formController.bind(config, isNew, supportsOnEachOpen, supportsPauseUnlock)
         viewLifecycleOwner.lifecycleScope.launch {
-            val settings = DataStoreManager(requireContext()).settings.first()
             formController.bindFocusGroups()
-            formController.bindHomeLocation(settings.homeLocation.isSet)
         }
         qrController.bind(config.qrKeys)
         nfcController.bind(config.nfcKeys)

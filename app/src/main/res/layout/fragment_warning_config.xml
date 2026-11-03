@@ -252,16 +252,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/lock_after_unlock_desc" />
 
-                    <TextView
-                        android:id="@+id/lock_after_home_note"
-                        style="@style/TextAppearance.Material3.BodySmall"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/lock_after_unlock_needs_home"
-                        android:textColor="?attr/colorError"
-                        android:visibility="gone" />
-
                     <LinearLayout
                         android:id="@+id/lock_after_inputs"
                         android:layout_width="match_parent"

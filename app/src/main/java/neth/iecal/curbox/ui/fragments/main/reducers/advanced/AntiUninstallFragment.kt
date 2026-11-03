@@ -61,7 +61,6 @@ class AntiUninstallFragment : Fragment() {
     private lateinit var radioPassword: MaterialRadioButton
     private lateinit var radioTimed: MaterialRadioButton
     private lateinit var radioCooldown: MaterialRadioButton
-    private lateinit var radioAway: MaterialRadioButton
     private lateinit var daysInputLayout: TextInputLayout
     private lateinit var daysInput: TextInputEditText
     private lateinit var cancelUnlockButton: MaterialButton
@@ -115,7 +114,6 @@ class AntiUninstallFragment : Fragment() {
         radioPassword = view.findViewById(R.id.radio_mode_password)
         radioTimed = view.findViewById(R.id.radio_mode_timed)
         radioCooldown = view.findViewById(R.id.radio_mode_cooldown)
-        radioAway = view.findViewById(R.id.radio_mode_away)
         daysInputLayout = view.findViewById(R.id.input_layout_days)
         daysInput = view.findViewById(R.id.input_days)
         cancelUnlockButton = view.findViewById(R.id.btn_cancel_unlock)
@@ -123,7 +121,6 @@ class AntiUninstallFragment : Fragment() {
         view.findViewById<MaterialCardView>(R.id.card_mode_password).setOnClickListener { selectMode(AntiUninstallMode.PASSWORD) }
         view.findViewById<MaterialCardView>(R.id.card_mode_timed).setOnClickListener { selectMode(AntiUninstallMode.TIMED) }
         view.findViewById<MaterialCardView>(R.id.card_mode_cooldown).setOnClickListener { selectMode(AntiUninstallMode.COOLDOWN) }
-        view.findViewById<MaterialCardView>(R.id.card_mode_away).setOnClickListener { selectMode(AntiUninstallMode.AWAY_FROM_HOME) }
         selectMode(AntiUninstallMode.PASSWORD)
 
         view.findViewById<MaterialButton>(R.id.btn_enable).setOnClickListener { onEnableClicked() }
@@ -181,7 +178,6 @@ class AntiUninstallFragment : Fragment() {
         radioPassword.isChecked = mode == AntiUninstallMode.PASSWORD
         radioTimed.isChecked = mode == AntiUninstallMode.TIMED
         radioCooldown.isChecked = mode == AntiUninstallMode.COOLDOWN
-        radioAway.isChecked = mode == AntiUninstallMode.AWAY_FROM_HOME
         daysInputLayout.isVisible = mode == AntiUninstallMode.TIMED
     }
 
@@ -250,17 +246,9 @@ class AntiUninstallFragment : Fragment() {
                 pendingDays = days
                 requestAdminThenEnable()
             }
-            AntiUninstallMode.COOLDOWN -> {
+            // The away from home method was removed and can no longer be picked.
+            AntiUninstallMode.COOLDOWN, AntiUninstallMode.AWAY_FROM_HOME -> {
                 pendingMode = AntiUninstallMode.COOLDOWN
-                requestAdminThenEnable()
-            }
-            AntiUninstallMode.AWAY_FROM_HOME -> viewLifecycleOwner.lifecycleScope.launch {
-                // Without a home, "away" can never be proven and protection could never lift.
-                if (!dataStore.settings.first().homeLocation.isSet) {
-                    Toast.makeText(requireContext(), R.string.anti_uninstall_away_needs_home, Toast.LENGTH_LONG).show()
-                    return@launch
-                }
-                pendingMode = AntiUninstallMode.AWAY_FROM_HOME
                 requestAdminThenEnable()
             }
         }

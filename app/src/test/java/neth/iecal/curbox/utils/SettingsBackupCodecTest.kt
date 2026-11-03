@@ -21,18 +21,14 @@ class SettingsBackupCodecTest {
             uiHiderConfig = UiHiderConfig(isActive = true, enabledPresetIds = listOf("ig_feed"), scripts = listOf(
                 UiHiderScript(id = "custom", packageName = "example.app", source = "log(\"hello\")")
             )),
-            homeLocation = HomeLocation(latitude = 12.9, longitude = 77.6, isSet = true),
             paymentPauseApps = listOf("example.pay"),
-            emergencyOffWaitDays = 45,
             isAppUsageTrackingEnabled = false
         )
         val restored = roundTrip(settings)
         assertEquals(settings.blockedAppGroups, restored.blockedAppGroups)
         assertEquals(settings.keywordBlockerConfig, restored.keywordBlockerConfig)
         assertEquals(settings.uiHiderConfig, restored.uiHiderConfig)
-        assertEquals(settings.homeLocation, restored.homeLocation)
         assertEquals(settings.paymentPauseApps, restored.paymentPauseApps)
-        assertEquals(45, restored.emergencyOffWaitDays)
         assertFalse(restored.isAppUsageTrackingEnabled)
     }
 
@@ -148,12 +144,10 @@ class SettingsBackupCodecTest {
     private fun roundTrip(settings: Settings) = SettingsBackupCodec.decode(SettingsBackupCodec.encode(settings).inputStream())
 
     @Test
-    fun blocklistLinksSurviveAndAwayModeIsNotRestored() {
+    fun blocklistLinksSurvive() {
         val source = BlocklistStore.Source(id = "gambling", name = "Gambling", url = "https://example.com/list.txt", domainCount = 50)
-        val bytes = SettingsBackupCodec.encode(Settings(isAwayModeActive = true, emergencyOffLastUsedAtMs = 123L), listOf(source))
+        val bytes = SettingsBackupCodec.encode(Settings(), listOf(source))
         val restored = SettingsBackupCodec.decodeFull(bytes.inputStream())
         org.junit.Assert.assertEquals(listOf(source.copy(domainCount = 0)), restored.blocklists)
-        org.junit.Assert.assertFalse(restored.settings.isAwayModeActive)
-        org.junit.Assert.assertEquals(123L, restored.settings.emergencyOffLastUsedAtMs)
     }
 }

@@ -106,10 +106,8 @@ class FragmentActivity : AppCompatActivity() {
             AntiUninstallFragment.FRAGMENT_ID,
             ServiceProtectionFragment.FRAGMENT_ID,
             SettingsChangeDelayFragment.FRAGMENT_ID,
-            neth.iecal.curbox.ui.fragments.main.reducers.advanced.HomeLockFragment.FRAGMENT_ID,
             neth.iecal.curbox.utils.PaymentPause.PAGE_FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.advanced.PermissionsFragment.FRAGMENT_ID,
-            neth.iecal.curbox.ui.fragments.main.reducers.advanced.EmergencyOffFragment.FRAGMENT_ID,
             CreateKeywordGroupFragment.FRAGMENT_ID,
             neth.iecal.curbox.ui.fragments.main.reducers.blockertools.keywordBlocker.BlocklistsFragment.FRAGMENT_ID -> {
                 // Hide bottom nav for these standalone fragments
@@ -131,10 +129,8 @@ class FragmentActivity : AppCompatActivity() {
                     AntiUninstallFragment.FRAGMENT_ID -> AntiUninstallFragment()
                     ServiceProtectionFragment.FRAGMENT_ID -> ServiceProtectionFragment()
                     SettingsChangeDelayFragment.FRAGMENT_ID -> SettingsChangeDelayFragment()
-                    neth.iecal.curbox.ui.fragments.main.reducers.advanced.HomeLockFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.advanced.HomeLockFragment()
                     neth.iecal.curbox.utils.PaymentPause.PAGE_FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.advanced.PaymentPauseFragment()
                     neth.iecal.curbox.ui.fragments.main.reducers.advanced.PermissionsFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.advanced.PermissionsFragment()
-                    neth.iecal.curbox.ui.fragments.main.reducers.advanced.EmergencyOffFragment.FRAGMENT_ID -> neth.iecal.curbox.ui.fragments.main.reducers.advanced.EmergencyOffFragment()
                     else -> AccessibilityGuide()
                 }
                 fragment.arguments = intent.extras

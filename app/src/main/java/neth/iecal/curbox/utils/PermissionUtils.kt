@@ -30,11 +30,6 @@ object PermissionUtils {
         }
     }
 
-    /** Fine or coarse is enough to tell home from away. */
-    fun hasLocationPermission(context: Context): Boolean =
-        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-
     fun hasOverlayPermission(context: Context): Boolean {
         return Settings.canDrawOverlays(context)
     }
@@ -73,11 +68,6 @@ object PermissionUtils {
                 isNotificationPermissionGiven(context) &&
                 isAccessibilityServiceEnabled(context, AppBlockerService::class.java)
     }
-
-    /** "Allow all the time" location, so Away mode can check for home while a browser is in front. */
-    fun hasBackgroundLocationPermission(context: Context): Boolean =
-        Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ||
-            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
 
     fun hasWriteSecureSettings(context: Context): Boolean {
         return ActivityCompat.checkSelfPermission(

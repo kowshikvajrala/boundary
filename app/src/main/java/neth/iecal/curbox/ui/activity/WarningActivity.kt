@@ -292,7 +292,7 @@ class WarningActivity : AppCompatActivity() {
         })
         binding.btnCloseX.setOnClickListener { binding.btnCancel.performClick() }
 
-        showWarningMessage(warningScreenConfig.message.random())
+        showWarningMessage(warningScreenConfig.message.randomOrNull().orEmpty())
 
         if (warningScreenConfig.isOnOpenConfig) {
             binding.minsPicker.visibility = View.GONE

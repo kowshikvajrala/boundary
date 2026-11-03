@@ -77,13 +77,7 @@ class PermissionsFragment : Fragment() {
             { Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS) }),
         Entry(R.string.permissions_notification_access, R.string.permissions_notification_access_desc, false,
             { NotificationManagerCompat.getEnabledListenerPackages(it).contains(it.packageName) },
-            { Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS) }),
-        Entry(R.string.permissions_location, R.string.permissions_location_desc, false,
-            { PermissionUtils.hasLocationPermission(it) },
-            { Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageUri(it)) }),
-        Entry(R.string.permissions_background_location, R.string.permissions_background_location_desc, false,
-            { PermissionUtils.hasBackgroundLocationPermission(it) },
-            { Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageUri(it)) })
+            { Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS) })
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

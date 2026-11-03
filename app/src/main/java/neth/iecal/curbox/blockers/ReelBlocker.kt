@@ -53,8 +53,6 @@ class ReelBlocker : BaseBlocker() {
     
     private val cooldownViewIdsList = mutableMapOf<String, Long>()
     private var unlockLocks: UnlockLocks? = null
-    @Volatile private var isAwayMode = false
-    @Volatile private var homeLocation = neth.iecal.curbox.data.models.HomeLocation()
     private var lastEventTimeStamp = 0L
 
     private lateinit var notificationManager: TimerNotification
@@ -87,10 +85,7 @@ class ReelBlocker : BaseBlocker() {
         }
         if (event == null || (event.eventType and TARGET_EVENTS_MASK) == 0) return
 
-        if (isAwayMode && reelBlockerConfig.isActive && dynamicComparator != null) {
-            AwayModeHomeCheck.checkIfBackHome(service, homeLocation)
-        }
-        if (!reelBlockerConfig.isActive || isAwayMode) {
+        if (!reelBlockerConfig.isActive) {
             return
         }
 
@@ -152,8 +147,6 @@ class ReelBlocker : BaseBlocker() {
         settingsJob = CoroutineScope(Dispatchers.IO).launch {
             service.dataStoreManager.settings.collectLatest { settings ->
                 reelBlockerConfig = settings.reelBlockerConfig
-                isAwayMode = settings.isAwayModeActive
-                homeLocation = settings.homeLocation
                 publishTimersToWidgets()
                 val config = reelBlockerConfig.config
                 countBasedConfig = config?.reelCount

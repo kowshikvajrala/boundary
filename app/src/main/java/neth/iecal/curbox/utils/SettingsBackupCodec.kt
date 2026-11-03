@@ -85,9 +85,6 @@ object SettingsBackupCodec {
         serviceProtectionConfig = settings.serviceProtectionConfig.copy(appBlockerLastAliveMs = 0L),
         // Device admin must be granted on this installation before protection can be enabled.
         antiUninstallConfig2 = settings.antiUninstallConfig2.copy(isEnabled = false, unlockRequestedAtMs = 0L),
-        // Away mode is a state of this phone, not a setting. Emergency off timing is kept on
-        // purpose, so a reinstall and restore cannot reset its wait.
-        isAwayModeActive = false,
         settingsChangeDelayConfig2 = settings.settingsChangeDelayConfig2.copy(pendingChanges = emptyList())
     )
 

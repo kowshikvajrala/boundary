@@ -32,8 +32,6 @@ import neth.iecal.curbox.Constants
 import neth.iecal.curbox.R
 import android.os.SystemClock
 import androidx.core.os.CancellationSignal
-import neth.iecal.curbox.utils.HomeLocationChecker
-import neth.iecal.curbox.data.models.HomeLocation
 import neth.iecal.curbox.data.db.AppDatabase
 import neth.iecal.curbox.data.db.WebsiteStatsEntity
 import neth.iecal.curbox.data.models.KeywordGroup
@@ -85,8 +83,6 @@ class KeywordBlocker : BaseBlocker() {
     private val mainHandler = Handler(Looper.getMainLooper())
     private val leftoverExpiry = ConcurrentHashMap<String, Runnable>()
     private lateinit var unlockLocks: UnlockLocks
-    @Volatile private var isAwayMode = false
-    @Volatile private var homeLocation = HomeLocation()
     private lateinit var notificationManager: TimerNotification
     private var notifiedCooldownGroupId: String? = null
     private var observationJob: Job? = null
@@ -385,7 +381,6 @@ class KeywordBlocker : BaseBlocker() {
         "$groupId\u0000$packageName\u0000$urlIdentifier"
 
     private fun handleBlocking(group: KeywordGroup, packageName: String, lockEndsAt: Long = 0L) {
-        if (isAwayMode) AwayModeHomeCheck.checkIfBackHome(service, homeLocation)
         Thread.sleep(250)
         if (destroyed) return
         // Back + Home can leave the tab on the blocked page, so leave it from the URL bar.
@@ -443,8 +438,6 @@ class KeywordBlocker : BaseBlocker() {
             service.dataStoreManager.settings.collectLatest { settings ->
                 val keywordConfig = settings.keywordBlockerConfig
                 isTurnedOn = keywordConfig.isActive
-                isAwayMode = settings.isAwayModeActive
-                homeLocation = settings.homeLocation
                 isUnsupportedBrowserBlockingOn = keywordConfig.blockAllExceptSupported
                 browserBlocker.isTurnedOn = isTurnedOn
 

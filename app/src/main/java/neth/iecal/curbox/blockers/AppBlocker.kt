@@ -98,8 +98,6 @@ class AppBlocker : BaseBlocker() {
     private val lockAfterMsById = ConcurrentHashMap<String, Long>()
     private val closeAppsWhileLockedIds = ConcurrentHashMap.newKeySet<String>()
     @Volatile private var paymentPauseApps: Set<String> = emptySet()
-    @Volatile private var isAwayMode = false
-    @Volatile private var homeLocation = neth.iecal.curbox.data.models.HomeLocation()
     private var lastPaymentPauseStartMs = 0L
     // The app in front before the current one. Null until the first switch after the service
     // starts, so a pause that ends while the payment app is open does not start a new one.
@@ -176,14 +174,6 @@ class AppBlocker : BaseBlocker() {
             if (previousWindowPackage != null && previousWindowPackage != packageName &&
                 maybeStartPaymentPause(packageName)
             ) return
-        }
-
-        // Away mode: app groups and their locks rest until the owner is home again.
-        if (isAwayMode) {
-            notificationManager.stopTimer()
-            lastPackage = packageName
-            if (blockedAppsList.containsKey(packageName)) AwayModeHomeCheck.checkIfBackHome(service, homeLocation)
-            return
         }
 
         val now = System.currentTimeMillis()
@@ -344,8 +334,6 @@ class AppBlocker : BaseBlocker() {
 
                 groupWebsites = newGroupWebsites
                 paymentPauseApps = settings.paymentPauseApps.toSet()
-                isAwayMode = settings.isAwayModeActive
-                homeLocation = settings.homeLocation
 
                 // Atomic-like update of the maps
                 blockedAppsList.clear()
@@ -636,7 +624,7 @@ class AppBlocker : BaseBlocker() {
         val locked = HashMap<String, Long>()
         val lockedGroups = sortedMapOf<String, Long>()
         lockAfterMsById.keys.forEach { groupId ->
-            val endsAt = if (isAwayMode) 0L else lockEndsAt(groupId, now)
+            val endsAt = lockEndsAt(groupId, now)
             if (endsAt <= 0L) return@forEach
             lockedGroups[groupNames[groupId] ?: groupId] = endsAt
             groupPackagesById[groupId].orEmpty().forEach { pkg ->
@@ -662,7 +650,7 @@ class AppBlocker : BaseBlocker() {
     }
 
     private fun closeLockedApps(groupId: String) {
-        if (groupId !in closeAppsWhileLockedIds || isAwayMode) return
+        if (groupId !in closeAppsWhileLockedIds) return
         val activityManager = service.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         groupPackagesById[groupId].orEmpty()
             .filter { it != service.packageName && !AppWebsites.isSiteKey(it) }

@@ -19,7 +19,6 @@ import kotlinx.coroutines.withContext
 import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.AppGroup
 import neth.iecal.curbox.data.models.GatedSettingsField
-import neth.iecal.curbox.data.models.HomeLocation
 import neth.iecal.curbox.data.models.KeywordBlocker
 import neth.iecal.curbox.data.models.PendingSettingsChange
 import neth.iecal.curbox.data.models.Settings
@@ -55,7 +54,7 @@ class GsonSerializer<T>(
     }
 }
 
-/** Changes queued for removed features (Auto DND, grayscale) can never apply, so drop them. */
+/** Changes queued for removed features (Auto DND, grayscale, Emergency off) can never apply, so drop them. */
 private class UnknownPendingFieldMigration : DataMigration<Settings> {
     override suspend fun shouldMigrate(currentData: Settings): Boolean =
         currentData.settingsChangeDelayConfig2.pendingChanges.any { !isKnownField(it.field) }
@@ -76,9 +75,6 @@ class DataStoreManager(private val context: Context) {
     private val gson = Gson()
 
     companion object {
-        const val EMERGENCY_OFF_MIN_DAYS = 1
-        const val EMERGENCY_OFF_MAX_DAYS = 365
-
         @Volatile
         private var INSTANCE: androidx.datastore.core.DataStore<Settings>? = null
 
@@ -483,19 +479,16 @@ class DataStoreManager(private val context: Context) {
         var hadPendingForField = false
         var tamperGated = false
         var unchangedPending = false
-        var refusedAtHome = false
         settingsDataStore.updateData { current ->
             deferredUntilMs = 0L
             hadPendingForField = false
             tamperGated = false
             unchangedPending = false
-            refusedAtHome = false
             val newValueJson = gson.toJson(computeNewValue(overlayPendingChanges(current)))
             val proposed = withFieldValue(current, field, newValueJson) ?: return@updateData current
-            if (HomeLock.weakensLock(field, current, proposed)) {
-                refusedAtHome = true
-                return@updateData current
-            }
+            // Every new request restarts this wait, so a small change cannot be queued early and
+            // swapped for a bigger one just before it lands.
+            val weakensLock = HomeLock.weakensLock(field, current, proposed)
             val delayConfig = current.settingsChangeDelayConfig2
             val existingPending = delayConfig.pendingChanges.find { it.field == field.name }
             hadPendingForField = existingPending != null
@@ -505,8 +498,8 @@ class DataStoreManager(private val context: Context) {
             }
             val timeGateActive = delayConfig.isEnabled && delayConfig.delayMinutes > 0
             tamperGated = delayConfig.requireTamperProtectionOff && current.antiUninstallConfig2.isEnabled
-            if ((!timeGateActive && !tamperGated) ||
-                RestrictionComparator.isSameOrStricter(field, current, proposed)
+            if (!weakensLock && ((!timeGateActive && !tamperGated) ||
+                RestrictionComparator.isSameOrStricter(field, current, proposed))
             ) {
                 tamperGated = false
                 val proposedDelayConfig = proposed.settingsChangeDelayConfig2
@@ -518,7 +511,9 @@ class DataStoreManager(private val context: Context) {
                 // With no active timer, the pending value is due the instant tamper protection
                 // turns off; applyDuePendingChanges re-checks that condition on every sweep.
                 val delayMinutes = delayConfig.delayMinutes.coerceIn(0, SettingsChangeDelayConfig.MAX_DELAY_MINUTES)
-                deferredUntilMs = if (timeGateActive) now + delayMinutes * 60_000L else now
+                var waitMs = if (timeGateActive) delayMinutes * 60_000L else 0L
+                if (weakensLock) waitMs = maxOf(waitMs, HomeLock.LOOSEN_WAIT_MS)
+                deferredUntilMs = now + waitMs
                 val pending = PendingSettingsChange(
                     field = field.name,
                     newValueJson = newValueJson,
@@ -529,10 +524,6 @@ class DataStoreManager(private val context: Context) {
                     pendingChanges = delayConfig.pendingChanges.filterNot { it.field == field.name } + pending
                 ))
             }
-        }
-        if (refusedAtHome) {
-            notifyRefusedAtHome()
-            return@withContext
         }
         schedulePendingChanges()
         if (unchangedPending) {
@@ -599,10 +590,6 @@ class DataStoreManager(private val context: Context) {
                 GatedSettingsField.WEBSITE_USAGE_TRACKING -> settings.copy(
                     isWebsiteUsageTrackingEnabled = gson.fromJson(valueJson, Boolean::class.java)
                 )
-                GatedSettingsField.EMERGENCY_OFF_WAIT -> settings.copy(
-                    emergencyOffWaitDays = gson.fromJson(valueJson, Int::class.java)
-                        .coerceIn(EMERGENCY_OFF_MIN_DAYS, EMERGENCY_OFF_MAX_DAYS)
-                )
                 GatedSettingsField.CHANGE_DELAY -> {
                     val prefs = gson.fromJson(valueJson, SettingsChangeDelayPrefs::class.java)
                     settings.copy(settingsChangeDelayConfig2 = settings.settingsChangeDelayConfig2.copy(
@@ -626,7 +613,6 @@ class DataStoreManager(private val context: Context) {
                 GatedSettingsField.UI_HIDER -> settings.uiHiderConfig
                 GatedSettingsField.APP_USAGE_TRACKING -> settings.isAppUsageTrackingEnabled
                 GatedSettingsField.WEBSITE_USAGE_TRACKING -> settings.isWebsiteUsageTrackingEnabled
-                GatedSettingsField.EMERGENCY_OFF_WAIT -> settings.emergencyOffWaitDays
                 GatedSettingsField.CHANGE_DELAY -> SettingsChangeDelayPrefs(
                     isEnabled = settings.settingsChangeDelayConfig2.isEnabled,
                     delayMinutes = settings.settingsChangeDelayConfig2.delayMinutes.coerceIn(
@@ -677,79 +663,8 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    /**
-     * Saves a new home. Moving home is refused while a lock after unlock is in use or Away mode is
-     * on, because moving it would let the owner count as away while at home.
-     */
-    suspend fun updateHomeLocation(home: HomeLocation): Boolean {
-        var saved = false
-        settingsDataStore.updateData { current ->
-            saved = !current.homeLocation.isSet || (!HomeLock.hasAnyLock(current) && !current.isAwayModeActive)
-            if (saved) current.copy(homeLocation = home) else current
-        }
-        return saved
-    }
-
     suspend fun updatePaymentPauseApps(apps: List<String>) {
         settingsDataStore.updateData { it.copy(paymentPauseApps = apps) }
-    }
-
-    /** When Emergency off can be used again, or 0 when it can be used now. */
-    fun emergencyOffAvailableAt(settings: Settings, now: Long = System.currentTimeMillis()): Long {
-        if (settings.emergencyOffLastUsedAtMs <= 0L) return 0L
-        val availableAt = settings.emergencyOffLastUsedAtMs + settings.emergencyOffWaitDays * 86_400_000L
-        return if (availableAt > now) availableAt else 0L
-    }
-
-    /**
-     * Emergency off: switches off every restriction at once, with no delay and no location
-     * check, then stays unavailable for [waitDays], chosen now and fixed until it has passed.
-     * Waiting changes are applied first, since the owner already asked for them. Returns false
-     * while still waiting.
-     */
-    suspend fun useEmergencyOff(waitDays: Int): Boolean {
-        val days = waitDays.coerceIn(EMERGENCY_OFF_MIN_DAYS, EMERGENCY_OFF_MAX_DAYS)
-        var used = false
-        settingsDataStore.updateData { stored ->
-            used = false
-            val now = System.currentTimeMillis()
-            if (emergencyOffAvailableAt(stored, now) > 0L) return@updateData stored
-            used = true
-            val current = overlayPendingChanges(stored)
-            val keywordBlocker = current.keywordBlockerConfig
-            current.copy(
-                blockedAppGroups = current.blockedAppGroups.map { it.copy(isActive = false, temporarilyDisabledUntilMs = 0L) },
-                keywordBlockerConfig = keywordBlocker.copy(
-                    isActive = false,
-                    keywordGroups = keywordBlocker.keywordGroups.map { it.copy(isActive = false, temporarilyDisabledUntilMs = 0L) }
-                ),
-                reelBlockerConfig = current.reelBlockerConfig.copy(isActive = false, temporarilyDisabledUntilMs = 0L),
-                antiUninstallConfig2 = current.antiUninstallConfig2.copy(isEnabled = false, unlockRequestedAtMs = 0L),
-                settingsChangeDelayConfig2 = current.settingsChangeDelayConfig2.copy(
-                    isEnabled = false,
-                    requireTamperProtectionOff = false,
-                    pendingChanges = emptyList()
-                ),
-                isAwayModeActive = false,
-                emergencyOffWaitDays = days,
-                emergencyOffLastUsedAtMs = now
-            )
-        }
-        if (used) {
-            schedulePendingChanges()
-            runCatching { ServiceProtectionManager.removeDeviceAdmin(context) }
-        }
-        return used
-    }
-
-    /** Starts Away mode. Callers must have just found the owner away from home (Home lock screen). */
-    suspend fun startAwayMode() {
-        settingsDataStore.updateData { it.copy(isAwayModeActive = true) }
-    }
-
-    /** Ends Away mode and brings every blocker back. Always allowed, because it is stricter. */
-    suspend fun endAwayMode() {
-        settingsDataStore.updateData { it.copy(isAwayModeActive = false) }
     }
 
     private fun notifyRefusedAtHome() {
