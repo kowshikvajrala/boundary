@@ -153,24 +153,60 @@ class ReelAppConfig {
                 scriptSource = """
                     ${isOnScreenFunction()}
 
-                    # X's full screen video viewer is Compose with no ids or text, so match it by
-                    # its place in the tree and by covering the whole screen.
-                    viewer = find(path="androidx.compose.ui.platform.ComposeView[0]>android.view.View[0]>android.view.View[0]>android.view.View[0]>android.view.View[0]>android.view.View[0]>android.view.View[0]>android.view.View[0]", scrollable=true)
-                    if not isOnScreen(viewer) { return null }
-                    if viewer.top > 0 or viewer.w < screen.width * 0.95 or viewer.h < screen.height * 0.9 {
+                    fn isFullScreen(node) {
+                        return node != null and node.top <= 0 and
+                            node.w >= screen.width * 0.95 and node.h >= screen.height * 0.9
+                    }
+
+                    # X's full screen video viewer is a stack of Compose views that each cover the
+                    # whole screen, with a scrollable pager inside. Walk down only through full
+                    # screen views instead of a fixed path, so X adding or removing a layer does
+                    # not break it, and feeds stop after a few levels.
+                    fn findViewer(node, depth) {
+                        if depth > 40 { return null }
+                        if node.scrollable { return node }
+                        for child in node.children() {
+                            if isFullScreen(child) {
+                                found = findViewer(child, depth + 1)
+                                if found != null { return found }
+                            }
+                        }
                         return null
                     }
 
-                    # Only videos: the current page embeds a player view, which photos do not.
+                    top = root()
+                    if top == null { return null }
+                    viewer = findViewer(top, 0)
+                    if not isOnScreen(viewer) or not isFullScreen(viewer) { return null }
+
+                    # Only videos, not photos. X has changed how a video page looks before, so
+                    # any one of these signs is enough:
+                    # 1. X tags the video screen "VideoTab" (photos are "MediaGallery").
+                    isVideo = false
+                    tagged = viewer.parent()
+                    for i in 0..6 {
+                        if tagged == null { break }
+                        if tagged.id == "VideoTab" { isVideo = true }
+                        tagged = tagged.parent()
+                    }
+
                     page = viewer.child(0)
-                    if page == null { return null }
-                    hasPlayer = false
-                    for item in page.children() {
-                        if item.class != null and containsIgnoreCase(item.class, "viewinterop") {
-                            hasPlayer = true
+                    if not isVideo and isFullScreen(page) {
+                        # 2. A full width seek bar in the player controls next to the pager.
+                        controls = viewer.parent()
+                        if controls != null {
+                            for bar in controls.findAll(class="android.widget.SeekBar") {
+                                if bar.w >= screen.width * 0.9 { isVideo = true }
+                            }
+                        }
+                        # 3. An embedded player view on the page (older X versions).
+                        for item in page.children() {
+                            if item.class != null and containsIgnoreCase(item.class, "viewinterop") {
+                                isVideo = true
+                            }
                         }
                     }
-                    if not hasPlayer { return null }
+                    if not isVideo { return null }
 
                     # Pages carry no text to tell videos apart, so X is blocked but not counted.
                     return ""

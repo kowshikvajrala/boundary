@@ -1,0 +1,1 @@
+• Fixed: full screen videos in X (Twitter) were no longer blocked after an X update. Boundary now recognizes X's video screen in several ways, so a small X update should not break it again.
