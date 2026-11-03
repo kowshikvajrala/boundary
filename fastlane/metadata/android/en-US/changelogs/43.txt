@@ -1,0 +1,1 @@
+• Fixed: in Firefox, a blocked website stayed open in its tab, so reopening Firefox showed it again. Boundary now switches the tab to a blank page in Firefox too.

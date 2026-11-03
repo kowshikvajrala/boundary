@@ -118,7 +118,7 @@ Behavior notes:
 - `AppBlocker` also runs its check on `TYPE_WINDOW_CONTENT_CHANGED`, which the keyboard emits. Logic about "which app is in front" must use window state changes only and skip the keyboard and system UI.
 - `WebsiteUsageTracker.onEvent` must not forget the current site on events from the keyboard, system UI or Boundary's overlays while the browser is still the active window. It did until 2.0.0, which let app websites through and paused their unlocks; it now leaves only when `rootInActiveWindow` is another app.
 - Chrome hides its address bar while scrolling, so `WebsiteUsageTracker` keeps the last page per browser (`lastSiteByBrowser`) and assumes it again when the browser is back in front with no address bar visible (`resumeLastSite`). Events from `com.android.systemui` (notification panel, lock screen) are not treated as leaving the page; screen off still pauses through the blockers' own receivers. Before this, keyword and app website unlocks stayed paused until the next page load.
-- Pressing Home alone on a blocked website leaves the tab on it, so the browser reopens there and is blocked again on every open (the remembered page from `lastSiteByBrowser` even blocked the tab switcher). `AppBlocker.leaveForeground` and `KeywordBlocker.handleBlocking` first change the tab with `BlockedPage.replace` (off the main thread) and call `service.forgetBrowserPage` (fixed in 2.5.1).
+- Pressing Home alone on a blocked website leaves the tab on it, so the browser reopens there and is blocked again on every open (the remembered page from `lastSiteByBrowser` even blocked the tab switcher). `AppBlocker.leaveForeground` and `KeywordBlocker.handleBlocking` first change the tab with `BlockedPage.replace` (off the main thread; when the address bar is not editable, as in Firefox's Compose toolbar, it taps it and waits up to 0.9 s for the focused edit box, fixed in 2.6.2) and call `service.forgetBrowserPage` (fixed in 2.5.1).
 - The unlock settings screen has no sliders (removed after 2.0.0 at the owner's request); number boxes carry their minimum in `NumericInput.minimumValue`. The QR/NFC unlock time pop up (`WarningUnlockTimingDialog`) still uses one, as its only control.
 - Append to files with a trailing newline. An append without one once merged two `.gitignore` lines.
 
@@ -168,5 +168,6 @@ Behavior notes:
 | 2.5.1 | 40 | Blocked app websites no longer lock the browser in a loop: the tab is changed to about:blank and the browser's remembered page is forgotten before Home |
 | 2.6.0 | 41 | Emergency off, Away mode, the Home lock screen and location permissions removed; loosening a locked group waits 7 days instead of being refused or needing Emergency off; wait screen no longer crashes with no messages |
 | 2.6.1 | 42 | X full screen videos blocked again after X 12.39.0 dropped the player view; detector no longer uses a fixed tree path |
+| 2.6.2 | 43 | Firefox: blocked pages are replaced with a blank tab (tap the address bar, type into the edit box that opens) |
 
 Versions up to 1.0.10 only bumped the patch number, even for features. From 1.1.0 on, releases follow semantic versioning (see Releasing).

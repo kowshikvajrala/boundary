@@ -24,17 +24,37 @@ object BlockedPage {
             val root = service.rootInActiveWindow ?: return false
             if (root.packageName?.toString() != packageName) return false
             val urlBar = AccessibilityHelper.findElementById(root, urlBarId) ?: return false
-            if (!urlBar.isEditable) return false
             urlBar.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-            urlBar.refresh()
+            val input = if (urlBar.isEditable) {
+                urlBar.refresh()
+                urlBar
+            } else {
+                // Firefox only shows the address there; tapping it opens a separate edit box.
+                findEditBox(service, packageName) ?: return false
+            }
             val text = Bundle().apply {
                 putCharSequence(
                     AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
                     REPLACEMENT_PAGE
                 )
             }
-            urlBar.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, text) &&
-                urlBar.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_IME_ENTER.id)
+            input.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, text) &&
+                input.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_IME_ENTER.id)
         }.getOrDefault(false)
     }
+
+    /** Waits briefly for the browser's focused, editable address box after the bar was tapped. */
+    private fun findEditBox(service: BaseBlockingService, packageName: String): AccessibilityNodeInfo? {
+        repeat(EDIT_BOX_TRIES) {
+            Thread.sleep(EDIT_BOX_WAIT_MS)
+            val root = service.rootInActiveWindow ?: return@repeat
+            if (root.packageName?.toString() != packageName) return null
+            val focused = root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
+            if (focused != null && focused.isEditable) return focused
+        }
+        return null
+    }
+
+    private const val EDIT_BOX_TRIES = 6
+    private const val EDIT_BOX_WAIT_MS = 150L
 }
