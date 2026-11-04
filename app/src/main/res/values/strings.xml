@@ -320,6 +320,8 @@
     <string name="permissions_usage_access_desc">Ends a payment pause early when a blocked app opens.</string>
     <string name="permissions_notification_access">Notification access</string>
     <string name="permissions_notification_access_desc">Hides notifications from locked apps until the lock ends.</string>
+    <string name="onboarding_optional_permissions_title">Optional</string>
+    <string name="onboarding_optional_permissions_desc">Not needed to start. Each one turns on a feature. You can also do these later in Permissions. Device admin and the computer grant are set up there.</string>
     <string name="permissions_physical_activity">Physical activity</string>
     <string name="permissions_physical_activity_desc">Counts your steps for walk to unlock. Fix opens Boundary\'s app info, then tap Permissions.</string>
     <string name="permissions_camera">Camera</string>

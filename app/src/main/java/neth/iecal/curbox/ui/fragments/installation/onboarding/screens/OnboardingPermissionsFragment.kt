@@ -40,6 +40,7 @@ import neth.iecal.curbox.services.AppBlockerService
 import neth.iecal.curbox.ui.activity.FragmentActivity
 import neth.iecal.curbox.ui.fragments.BackupViewModel
 import neth.iecal.curbox.ui.fragments.installation.onboarding.OnboardingViewModel
+import neth.iecal.curbox.ui.fragments.main.reducers.advanced.PermissionRows
 import neth.iecal.curbox.ui.fragments.main.reducers.blockertools.appBlocker.AppBlockerSettingViewModel
 import neth.iecal.curbox.ui.fragments.main.usage.AllAppsUsageFragment
 import neth.iecal.curbox.utils.OnboardingState
@@ -58,6 +59,18 @@ class OnboardingPermissionsFragment : Fragment() {
     private val notificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             updatePermissionsState()
+        }
+
+    private var pendingOptional: PermissionRows.Entry? = null
+    private val optionalPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            val entry = pendingOptional
+            pendingOptional = null
+            // Android stops asking after a refusal or two, so send the user to app info instead.
+            if (!isGranted && entry != null && !shouldShowRequestPermissionRationale(entry.runtimePermission!!)) {
+                PermissionRows.openFix(requireContext(), entry)
+            }
+            if (_binding != null) updatePermissionsState()
         }
 
     private val restorePicker = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -288,6 +301,15 @@ class OnboardingPermissionsFragment : Fragment() {
         setPermissionIcon(hasOverlay, binding.overlayPermIcon)
         setPermissionIcon(hasNotif, binding.notifPermIcon)
         setPermissionIcon(hasBlocker, binding.blockerAccPermIcon)
+        PermissionRows.render(
+            requireContext(),
+            layoutInflater,
+            binding.optionalPermissionsContainer,
+            PermissionRows.optional.filter { !it.needsSetupDone }
+        ) { entry ->
+            pendingOptional = entry
+            optionalPermissionLauncher.launch(entry.runtimePermission)
+        }
 
         // Enforce Sequence
         binding.overlayPermRoot.isEnabled = !hasOverlay

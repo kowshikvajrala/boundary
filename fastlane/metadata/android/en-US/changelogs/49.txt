@@ -1,0 +1,3 @@
+• New: setup now also shows the optional permissions (battery, live updates, usage access, notification access, physical activity, camera, NFC) under the three required ones.
+• New: Microsoft Edge is now a supported browser, so blocked sites and keywords are checked there too. Please check that a blocked site is blocked in Edge.
+• Camera and Physical activity can now be allowed straight from the Permissions screen.

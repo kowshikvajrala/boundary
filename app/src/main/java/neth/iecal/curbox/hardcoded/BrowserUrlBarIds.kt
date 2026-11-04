@@ -22,6 +22,10 @@ val URL_BAR_ID_LIST = mapOf(
     "org.calyxos.chromium" to BrowserUrlBarInfo(
         displayUrlBarId = "org.calyxos.chromium:id/url_bar",
     ),
+    // Microsoft Edge is built on Chromium and keeps its address bar id.
+    "com.microsoft.emmx" to BrowserUrlBarInfo(
+        displayUrlBarId = "com.microsoft.emmx:id/url_bar",
+    ),
 
     
     "org.mozilla.focus" to BrowserUrlBarInfo(
