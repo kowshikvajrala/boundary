@@ -9,7 +9,8 @@ import neth.iecal.curbox.utils.TimerNotification
  * One notification for every running unlock: app groups, keyword groups and short videos. It
  * lists all of them, so several blockers never post separate notifications that look the same.
  * It counts down the unlock of what is on screen, as a status bar chip on Android 16. With
- * nothing unlocked on screen it is a plain notification that counts down the unlock ending first.
+ * nothing unlocked on screen it is a plain notification that counts down the unlock ending first,
+ * or, when every unlock is paused, just lists them.
  *
  * Fed by [WidgetTimers] with the merged unlock timers: wall clock end times, or minus the time
  * left for a paused unlock.
@@ -28,7 +29,17 @@ object UnlockNotification {
         val notification = timer ?: create(context).also { timer = it }
         val shown = pickShown(running, inFront)
         if (shown == null) {
-            notification.stopTimer()
+            // Unlocks pause when their apps are left. They stay listed, just without the chip.
+            val paused = timers.filterValues { it < 0L }
+            if (paused.isEmpty()) {
+                notification.stopTimer()
+            } else {
+                notification.showStill(
+                    title = context.getString(R.string.notification_unlocked_title),
+                    timerId = "paused:" + paused.entries.joinToString(",") { "${it.key}=${it.value}" },
+                    breakdown = paused
+                )
+            }
             return
         }
         val isOnScreen = shown.key in inFront

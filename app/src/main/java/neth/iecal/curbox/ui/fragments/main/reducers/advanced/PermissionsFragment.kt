@@ -1,6 +1,9 @@
 package neth.iecal.curbox.ui.fragments.main.reducers.advanced
 
+import android.Manifest
 import android.app.NotificationManager
+import android.content.pm.PackageManager
+import android.nfc.NfcAdapter
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,12 +15,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import neth.iecal.curbox.R
 import neth.iecal.curbox.databinding.FragmentPermissionsBinding
 import neth.iecal.curbox.databinding.ItemPermissionStatusBinding
 import neth.iecal.curbox.services.AppBlockerService
+import neth.iecal.curbox.ui.activity.StepCounting
 import neth.iecal.curbox.ui.activity.FragmentActivity
 import neth.iecal.curbox.utils.AntiUninstallManager
 import neth.iecal.curbox.utils.PaymentPause
@@ -45,7 +50,7 @@ class PermissionsFragment : Fragment() {
         val isRequired: Boolean,
         val isOn: (Context) -> Boolean,
         val fix: (Context) -> Intent,
-        val isAvailable: Boolean = true
+        val isAvailable: (Context) -> Boolean = { true }
     )
 
     private val entries = listOf(
@@ -62,7 +67,7 @@ class PermissionsFragment : Fragment() {
         Entry(R.string.permissions_live_updates, R.string.permissions_live_updates_desc, false,
             { canPostLiveUpdates(it) },
             { Intent(ACTION_MANAGE_APP_PROMOTED_NOTIFICATIONS).putExtra(Settings.EXTRA_APP_PACKAGE, it.packageName) },
-            isAvailable = Build.VERSION.SDK_INT >= 36),
+            isAvailable = { Build.VERSION.SDK_INT >= 36 }),
         Entry(R.string.permissions_battery, R.string.permissions_battery_desc, true,
             { (it.getSystemService(Context.POWER_SERVICE) as PowerManager).isIgnoringBatteryOptimizations(it.packageName) },
             { Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, packageUri(it)) }),
@@ -77,7 +82,18 @@ class PermissionsFragment : Fragment() {
             { Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS) }),
         Entry(R.string.permissions_notification_access, R.string.permissions_notification_access_desc, false,
             { NotificationManagerCompat.getEnabledListenerPackages(it).contains(it.packageName) },
-            { Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS) })
+            { Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS) }),
+        Entry(R.string.permissions_physical_activity, R.string.permissions_physical_activity_desc, false,
+            { StepCounting.hasPermission(it) },
+            { appDetails(it) },
+            isAvailable = { Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && StepCounting.isAvailable(it) }),
+        Entry(R.string.permissions_camera, R.string.permissions_camera_desc, false,
+            { ContextCompat.checkSelfPermission(it, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED },
+            { appDetails(it) }),
+        Entry(R.string.permissions_nfc, R.string.permissions_nfc_desc, false,
+            { NfcAdapter.getDefaultAdapter(it)?.isEnabled == true },
+            { Intent(Settings.ACTION_NFC_SETTINGS) },
+            isAvailable = { NfcAdapter.getDefaultAdapter(it) != null })
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -98,7 +114,7 @@ class PermissionsFragment : Fragment() {
     private fun render() {
         val context = requireContext()
         binding.permissionsContainer.removeAllViews()
-        entries.filter { it.isAvailable }.forEach { entry ->
+        entries.filter { runCatching { it.isAvailable(context) }.getOrDefault(false) }.forEach { entry ->
             val row = ItemPermissionStatusBinding.inflate(layoutInflater, binding.permissionsContainer, false)
             val isOn = runCatching { entry.isOn(context) }.getOrDefault(false)
             row.permissionTitle.text = getString(entry.titleRes)
@@ -119,6 +135,9 @@ class PermissionsFragment : Fragment() {
         val manager = context.getSystemService(NotificationManager::class.java)
         return manager.javaClass.getMethod("canPostPromotedNotifications").invoke(manager) as Boolean
     }
+
+    private fun appDetails(context: Context): Intent =
+        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageUri(context))
 
     private fun packageUri(context: Context): Uri = Uri.parse("package:" + context.packageName)
 

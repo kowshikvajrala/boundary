@@ -605,7 +605,9 @@ class WarningActivity : AppCompatActivity() {
             return
         }
         binding.stepsHint.visibility = View.VISIBLE
-        stepCounting = StepCounting(this, ::showSteps)
+        stepCounting = StepCounting(this, ::showSteps) {
+            binding.stepsHint.setText(R.string.warning_steps_shake_ignored)
+        }
         showSteps(0)
         // The phone stays in hand while walking, so the screen must not time out and reset the count.
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -617,6 +619,7 @@ class WarningActivity : AppCompatActivity() {
     }
 
     private fun showSteps(steps: Int) {
+        if (steps > 0) binding.stepsHint.setText(R.string.warning_steps_hint)
         binding.stepsProgress.text = getString(
             R.string.warning_steps_progress,
             steps.coerceAtMost(requiredSteps),

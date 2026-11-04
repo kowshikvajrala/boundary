@@ -1,0 +1,3 @@
+• Fixed: shaking the phone no longer counts as steps for walking to unlock. Hold the phone steady and walk at a normal pace.
+• Fixed: when you leave an unlocked app and its time pauses, the unlock notification stays and lists the paused unlocks. Only the status bar chip goes away.
+• The Permissions screen now also shows Physical activity (walking to unlock), Camera (QR unlock) and NFC.

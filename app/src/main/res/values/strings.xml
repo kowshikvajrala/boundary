@@ -320,6 +320,12 @@
     <string name="permissions_usage_access_desc">Ends a payment pause early when a blocked app opens.</string>
     <string name="permissions_notification_access">Notification access</string>
     <string name="permissions_notification_access_desc">Hides notifications from locked apps until the lock ends.</string>
+    <string name="permissions_physical_activity">Physical activity</string>
+    <string name="permissions_physical_activity_desc">Counts your steps for walk to unlock. Fix opens Boundary\'s app info, then tap Permissions.</string>
+    <string name="permissions_camera">Camera</string>
+    <string name="permissions_camera_desc">Scans the code for QR unlock. Fix opens Boundary\'s app info, then tap Permissions.</string>
+    <string name="permissions_nfc">NFC</string>
+    <string name="permissions_nfc_desc">Must be on to tap a tag for NFC unlock.</string>
     <string name="keyword_group_block_unsupported_browsers">Block unsupported browsers</string>
     <string name="keyword_group_block_unsupported_browsers_desc">While this group is on, browsers Boundary cannot check are closed, so these words cannot be searched there. Turning this off counts as loosening the group.</string>
     <string name="payment_pause_widget_desc">Tap, pick a payment app, and Boundary pauses for 5 minutes.</string>
@@ -946,7 +952,8 @@
     <string name="warning_steps_count_input">Steps required</string>
     <string name="warning_steps_no_sensor">This phone has no step counter, so walking cannot be used.</string>
     <string name="warning_steps_progress">%1$d of %2$d steps</string>
-    <string name="warning_steps_hint">Keep this screen open and walk.</string>
+    <string name="warning_steps_hint">Keep this screen open, hold the phone steady and walk.</string>
+    <string name="warning_steps_shake_ignored">Shaking does not count. Hold the phone steady and walk.</string>
     <string name="warning_steps_allow">Allow step counting</string>
     <string name="warning_steps_permission_denied">Step counting is off. Turn on Physical activity for Boundary in Settings.</string>
     <string name="label_focus_goal_unlock">Daily focus requirement</string>

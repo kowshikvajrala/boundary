@@ -120,6 +120,20 @@ class TimerNotification(
         }
     }
 
+    /** A plain notification with no countdown and no status bar chip, listing [breakdown]. */
+    fun showStill(title: String, timerId: String, breakdown: Map<String, Long>) {
+        if (currentTimerId == timerId && timerJob == null) return
+        stopTimer()
+        currentTimerId = timerId
+        this.breakdown = breakdown
+        notificationBuilder
+            .setContentTitle(title)
+            .setShowWhen(false)
+            .setUsesChronometer(false)
+        notificationBuilder.extras.putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, false)
+        updateNotificationUI(0L)
+    }
+
     fun stopTimer() {
         timerJob?.cancel()
         timerJob = null
