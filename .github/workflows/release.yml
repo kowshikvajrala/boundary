@@ -1,10 +1,13 @@
 name: Release
 
-# Push a tag like v1.0.0 to build, sign and publish a GitHub release.
+# Push a tag like v1.0.0 first, then push main: a main commit with a v* tag on it is built,
+# signed and published as a GitHub release. Other main pushes stop after a few seconds.
+# It runs on main, not on the tag, because GitHub only lets later runs reuse caches saved on
+# main; a tag's cache is never seen by the next tag, so every build started cold.
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -17,17 +20,30 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-tags: true
+
+      - name: Find release tag
+        id: tag
+        run: |
+          git fetch --tags --force --quiet
+          TAG="$(git tag --points-at HEAD | grep -E '^v[0-9]' | head -n1 || true)"
+          echo "name=$TAG" >> "$GITHUB_OUTPUT"
+          if [ -z "$TAG" ]; then echo "No v* tag on this commit, so nothing to release."; fi
 
       - name: Set up JDK 21
+        if: steps.tag.outputs.name != ''
         uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '21'
 
       - name: Set up Gradle
+        if: steps.tag.outputs.name != ''
         uses: gradle/actions/setup-gradle@v4
 
       - name: Write signing config
+        if: steps.tag.outputs.name != ''
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -47,12 +63,16 @@ jobs:
           } > keystore.properties
 
       - name: Build signed APK
+        if: steps.tag.outputs.name != ''
         run: ./gradlew :app:assembleRelease
 
       - name: Name the APK
+        if: steps.tag.outputs.name != ''
         id: apk
+        env:
+          TAG: ${{ steps.tag.outputs.name }}
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${TAG#v}"
           DEST="boundary-${VERSION}.apk"
           cp app/build/outputs/apk/release/app-release.apk "$DEST"
           echo "path=$DEST" >> "$GITHUB_OUTPUT"
@@ -61,15 +81,17 @@ jobs:
           echo "notes=fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt" >> "$GITHUB_OUTPUT"
 
       - name: Upload APK to the run
+        if: steps.tag.outputs.name != ''
         uses: actions/upload-artifact@v4
         with:
           name: boundary-apk
           path: ${{ steps.apk.outputs.path }}
 
       - name: Publish GitHub release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: steps.tag.outputs.name != ''
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.tag.outputs.name }}
           name: Boundary ${{ steps.apk.outputs.version }}
           body_path: ${{ steps.apk.outputs.notes }}
           files: ${{ steps.apk.outputs.path }}

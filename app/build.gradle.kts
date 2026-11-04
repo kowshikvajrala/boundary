@@ -59,6 +59,8 @@ android {
     lint {
         disable.add("NullSafeMutableLiveData")
         abortOnError = false
+        // Lint never stopped a build here and took about 45 s of every release build.
+        checkReleaseBuilds = false
     }
 
     defaultConfig {

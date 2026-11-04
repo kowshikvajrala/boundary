@@ -38,11 +38,11 @@ export JAVA_HOME=~/dev-tools/jdk-21 ANDROID_HOME=~/dev-tools/android-sdk PATH=~/
 ./gradlew :app:testReleaseUnitTest :app:assembleRelease
 ```
 
-Without `keystore.properties` this gives `app/build/outputs/apk/release/app-release-unsigned.apk`, which is for checking only. Never write `keystore.properties` locally.
+Lint is off for release builds (`checkReleaseBuilds = false`) and the Gradle build cache is on (`gradle.properties`). Without `keystore.properties` this gives `app/build/outputs/apk/release/app-release-unsigned.apk`, which is for checking only. Never write `keystore.properties` locally.
 
 ## Releasing
 
-`.github/workflows/release.yml` runs on a `v*` tag push: signed `assembleRelease`, then a GitHub release (unit tests run locally instead, see Local build) with `boundary-<version>.apk`. The release notes come from `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`.
+`.github/workflows/release.yml` runs on every push to `main` and releases only when the pushed commit carries a `v*` tag (other pushes stop after a few seconds). Since 2.8.3 it runs on `main`, not on tag pushes, because GitHub lets later runs reuse caches saved on `main` only; on tags every build started cold (about 5 minutes). It does a signed `assembleRelease`, then a GitHub release (unit tests run locally instead, see Local build) with `boundary-<version>.apk`. The release notes come from `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`.
 
 1. Bump `versionCode` and `versionName` in `app/build.gradle.kts`. **`versionCode` must always go up by 1 and is never reused**, even for deleted releases, because Android will not install a lower code over a higher one. Choose `versionName` by semantic versioning, based on what the release contains (the owner asked for this from 1.0.10 on):
    - **Patch** (`1.1.0` → `1.1.1`): only fixes; nothing new for the owner to learn.
@@ -50,12 +50,12 @@ Without `keystore.properties` this gives `app/build/outputs/apk/release/app-rele
    - **Major** (`1.4.2` → `2.0.0`): breaks or reshapes existing use, for example the owner must redo setup (re enable accessibility, re add widgets) or lose data. Reset minor and patch to 0, and confirm with the owner first.
    - A release with both fixes and a feature is a minor bump. When unsure, say which bump you chose and why.
 2. Write `changelogs/<versionCode>.txt` in plain, user facing language.
-3. Run the local build and tests. Commit, then `git tag -a vX.Y.Z -m "Boundary X.Y.Z"`, push `main`, push the tag.
+3. Run the local build and tests. Commit, then `git tag -a vX.Y.Z -m "Boundary X.Y.Z"`, push the tag first, then push `main` (the main push starts the build and must see the tag).
 4. Poll with `gh api repos/kowshikvajrala/boundary/actions/runs/<id> --jq '.status, .conclusion'`. `gh run watch` often dies on GitHub API 502 errors.
-5. If a build fails before publishing, fix it, move the tag (`git tag -fa`, `git push -f origin <tag>`) and let it rebuild. Never move the tag of a published release; ship a new version instead.
+5. If a build fails before publishing, fix it, commit the fix, move the tag onto it (`git tag -fa`, `git push -f origin <tag>`), then push `main`; or rerun with `gh workflow run release.yml --ref main` when the tag already sits on main's head. Never move the tag of a published release; ship a new version instead.
 6. After publishing, report to the owner what changed, what to test on the phone, and that it has not been tested on a device.
 
-GitHub Actions quirks seen here: a tag push sometimes does not start a run (start one with `gh workflow run release.yml --ref <tag>`); runs can show "in progress" long after finishing, and then refuse to cancel as "completed"; `android-actions/setup-android` breaks the build (the runner already has the SDK).
+GitHub Actions quirks seen here: a push sometimes does not start a run (start one with `gh workflow run release.yml --ref main`); runs can show "in progress" long after finishing, and then refuse to cancel as "completed"; `android-actions/setup-android` breaks the build (the runner already has the SDK).
 
 ## Features added in this fork
 
