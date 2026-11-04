@@ -1,0 +1,1 @@
+• New: walk to unlock. Under "Require effort to unlock", choose "Unlock requires walking" and set how many steps are needed. Steps count only while the wait screen is open, and leaving it starts the count over. The first time, Boundary asks for permission to count steps.

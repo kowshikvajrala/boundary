@@ -939,6 +939,16 @@
     <string name="label_adaptive_math">Adaptive math</string>
     <string name="label_adaptive_math_desc">Choose how many correct answers are required.</string>
     <string name="label_adaptive_math_level_desc">Level 1 uses simple arithmetic. Level 10 combines decimals, fractions, roots, powers, and order of operations.</string>
+    <string name="warning_option_steps">Unlock requires walking</string>
+    <string name="warning_option_steps_desc">Walk a set number of steps while this screen is open.</string>
+    <string name="label_steps_unlock">Walking</string>
+    <string name="label_steps_unlock_desc">Choose how many steps you must walk. Steps count only while the wait screen is open. Leaving it starts the count over.</string>
+    <string name="warning_steps_count_input">Steps required</string>
+    <string name="warning_steps_no_sensor">This phone has no step counter, so walking cannot be used.</string>
+    <string name="warning_steps_progress">%1$d of %2$d steps</string>
+    <string name="warning_steps_hint">Keep this screen open and walk.</string>
+    <string name="warning_steps_allow">Allow step counting</string>
+    <string name="warning_steps_permission_denied">Step counting is off. Turn on Physical activity for Boundary in Settings.</string>
     <string name="label_focus_goal_unlock">Daily focus requirement</string>
     <string name="label_focus_goal_unlock_desc">Unlocking is allowed after the selected focus time is completed today.</string>
     <string name="hint_focus_group">Focus group</string>

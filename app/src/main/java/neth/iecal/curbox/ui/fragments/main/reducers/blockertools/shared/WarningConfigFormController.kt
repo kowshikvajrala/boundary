@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputLayout
 import neth.iecal.curbox.R
 import neth.iecal.curbox.data.models.AppBlockerWarningScreenConfig
 import neth.iecal.curbox.databinding.FragmentWarningConfigBinding
+import neth.iecal.curbox.ui.activity.StepCounting
 import neth.iecal.curbox.databinding.ItemWarningMessageBinding
 
 internal class WarningConfigFormController(
@@ -113,6 +114,7 @@ internal class WarningConfigFormController(
         updateMathQuestionCountInput(mathQuestionCount.toLong())
         val mathStartingLevel = config.adaptiveMathStartingLevel.coerceAtLeast(MIN_MATH_LEVEL)
         updateMathStartingLevelInput(mathStartingLevel.toLong())
+        updateStepsCountInput(config.requiredSteps.coerceAtLeast(MIN_STEPS).toLong())
 
         val focusGoalMinutes = config.focusGoalRequiredMinutes.coerceAtLeast(MIN_FOCUS_MINUTES)
         updateFocusGoalMinutesInput(focusGoalMinutes.toLong())
@@ -272,6 +274,12 @@ internal class WarningConfigFormController(
             updateInput = ::updateMathStartingLevelInput
         )
         setupNumericInput(
+            minimumValue = { MIN_STEPS.toLong() },
+            binding.stepsCountInput,
+            binding.stepsCountInputLayout,
+            updateInput = ::updateStepsCountInput
+        )
+        setupNumericInput(
             minimumValue = { MIN_FOCUS_MINUTES.toLong() },
             binding.focusGoalMinutesInput,
             binding.focusGoalMinutesInputLayout,
@@ -371,6 +379,8 @@ internal class WarningConfigFormController(
             isAdaptiveMathRequirementEnabled = flags.isAdaptiveMathRequirementEnabled,
             adaptiveMathQuestionCount = numericInputValue(binding.mathQuestionCountInput).toInt(),
             adaptiveMathStartingLevel = numericInputValue(binding.mathStartingLevelInput).toInt(),
+            isStepsRequirementEnabled = flags.isStepsRequirementEnabled,
+            requiredSteps = numericInputValue(binding.stepsCountInput).toInt(),
             isFocusGoalRequirementEnabled = binding.focusGoalRequirementSwitch.isChecked,
             focusGoalGroupId = if (binding.focusGoalRequirementSwitch.isChecked) {
                 selectedFocusGroupId
@@ -417,6 +427,10 @@ internal class WarningConfigFormController(
 
     fun validate(): Boolean {
         if (!numericInputs().all { validateNumericInput(it) }) {
+            return false
+        }
+        if (isStepsSelected() && !StepCounting.isAvailable(fragment.requireContext())) {
+            binding.stepsNoSensor.isVisible = true
             return false
         }
         if (binding.focusGoalRequirementSwitch.isChecked &&
@@ -493,6 +507,11 @@ internal class WarningConfigFormController(
                 binding.mathStartingLevelInputLayout
             ),
             NumericInput(
+                MIN_STEPS.toLong(),
+                binding.stepsCountInput,
+                binding.stepsCountInputLayout
+            ),
+            NumericInput(
                 MIN_FOCUS_MINUTES.toLong(),
                 binding.focusGoalMinutesInput,
                 binding.focusGoalMinutesInputLayout
@@ -540,6 +559,7 @@ internal class WarningConfigFormController(
         binding.nfcSetupContainer.isVisible = false
         binding.typingSetupContainer.isVisible = false
         binding.mathSetupContainer.isVisible = false
+        binding.stepsSetupContainer.isVisible = false
     }
 
     private fun updateSecondaryDropdown(challengeIndex: Int) {
@@ -582,7 +602,8 @@ internal class WarningConfigFormController(
             WarningUnlockSelectionMapper.NO_EFFORT_INDEX ->
                 secondaryIndex == WarningUnlockSelectionMapper.FIXED_TIME_INDEX
             WarningUnlockSelectionMapper.EFFORT_INDEX ->
-                secondaryIndex == 1 || secondaryIndex == 2 || secondaryIndex == 4
+                secondaryIndex == 1 || secondaryIndex == 2 || secondaryIndex == 4 ||
+                    secondaryIndex == STEPS_INDEX
             else -> false
         }
         binding.timingContainer.isVisible = !isOnEachOpenEnabled() && usesSharedTiming
@@ -607,6 +628,17 @@ internal class WarningConfigFormController(
         binding.mathSetupContainer.isVisible =
             challengeIndex == WarningUnlockSelectionMapper.EFFORT_INDEX &&
                 secondaryIndex == 4
+        val isSteps = challengeIndex == WarningUnlockSelectionMapper.EFFORT_INDEX &&
+            secondaryIndex == STEPS_INDEX
+        binding.stepsSetupContainer.isVisible = isSteps
+        binding.stepsNoSensor.isVisible =
+            isSteps && !StepCounting.isAvailable(fragment.requireContext())
+    }
+
+    private fun isStepsSelected(): Boolean {
+        val challengeIndex = selectedChallengeIndex()
+        return challengeIndex == WarningUnlockSelectionMapper.EFFORT_INDEX &&
+            selectedSecondaryIndex(challengeIndex) == STEPS_INDEX
     }
 
     private fun selectedChallengeIndex(): Int {
@@ -681,6 +713,10 @@ internal class WarningConfigFormController(
 
     private fun updateMathStartingLevelInput(value: Long) {
         setNumericInputValue(binding.mathStartingLevelInput, value)
+    }
+
+    private fun updateStepsCountInput(value: Long) {
+        setNumericInputValue(binding.stepsCountInput, value)
     }
 
     private fun updateFocusGoalMinutesInput(value: Long) {
@@ -786,6 +822,8 @@ internal class WarningConfigFormController(
         const val SECONDS_PER_HOUR = 3_600L
         const val DEFAULT_LOCK_AFTER_SECONDS = 30 * SECONDS_PER_MINUTE
         const val MIN_MATH_QUESTIONS = 1
+        const val MIN_STEPS = 10
+        const val STEPS_INDEX = 5
         const val MIN_MATH_LEVEL = 1
         const val MIN_FOCUS_MINUTES = 15
     }

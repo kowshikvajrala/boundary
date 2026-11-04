@@ -18,6 +18,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -70,6 +71,10 @@ class WarningActivity : AppCompatActivity() {
     private var isFocusGoalRequired = false
     private var isFocusGoalVerified = true
     private var isPrimaryUnlockActionReady = false
+    private var stepCounting: StepCounting? = null
+    private var requiredSteps = 0
+    private var isStepGoalMet = false
+    private var isProceedTimerDone = false
 
     private lateinit var binding: DialogWarningOverlayBinding
     private val barcodeLauncher = registerForActivityResult(
@@ -98,6 +103,17 @@ class WarningActivity : AppCompatActivity() {
                  Toast.makeText(this@WarningActivity, R.string.warning_invalid_qr, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private val stepPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            startStepCounting()
+        } else {
+            Toast.makeText(this, R.string.warning_steps_permission_denied, Toast.LENGTH_LONG).show()
+        }
+        updateStepsUnlockState()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -159,6 +175,12 @@ class WarningActivity : AppCompatActivity() {
         ) {
             setupFocusGoalRequirement(warningScreenConfig)
         }
+        if (warningScreenConfig.isStepsRequirementEnabled &&
+            !warningScreenConfig.isProceedDisabled &&
+            !isProceedLimitExceeded
+        ) {
+            setupStepsChallenge(warningScreenConfig.requiredSteps)
+        }
         val isHomePressRequested = intent.getBooleanExtra("is_press_home", false)
         binding.minsPicker.setValue(3)
         binding.minsPicker.minValue = 2
@@ -187,6 +209,7 @@ class WarningActivity : AppCompatActivity() {
                     }
 
                     override fun onFinish() {
+                        isProceedTimerDone = true
                         binding.btnProceed.let { button ->
                             if (!warningScreenConfig.isOnOpenConfig &&
                                 !warningScreenConfig.isQrUnlockRequirementEnabled &&
@@ -267,6 +290,8 @@ class WarningActivity : AppCompatActivity() {
                                     warningScreenConfig.adaptiveMathQuestionCount,
                                     warningScreenConfig.adaptiveMathStartingLevel
                                 )
+                            } else if (warningScreenConfig.isStepsRequirementEnabled) {
+                                updateStepsUnlockState()
                             } else if (warningScreenConfig.isQrUnlockRequirementEnabled && !isQrScanned) {
                                 button.text = getString(R.string.warning_scan_qr_code)
                                 setPrimaryUnlockActionReady(true)
@@ -325,6 +350,13 @@ class WarningActivity : AppCompatActivity() {
                 !isAdaptiveMathComplete
             ) {
                 submitAdaptiveMathAnswer()
+                return@setOnClickListener
+            }
+
+            if (warningScreenConfig.isStepsRequirementEnabled && !isStepGoalMet) {
+                if (!StepCounting.hasPermission(this)) {
+                    stepPermissionLauncher.launch(android.Manifest.permission.ACTIVITY_RECOGNITION)
+                }
                 return@setOnClickListener
             }
 
@@ -559,6 +591,51 @@ class WarningActivity : AppCompatActivity() {
         binding.mathProblem.text = challenge.currentProblem.expression
     }
 
+    private fun setupStepsChallenge(steps: Int) {
+        requiredSteps = steps.coerceIn(MIN_STEPS, MAX_STEPS)
+        binding.stepsProgress.visibility = View.VISIBLE
+        if (!StepCounting.isAvailable(this)) {
+            binding.stepsProgress.setText(R.string.warning_steps_no_sensor)
+            return
+        }
+        binding.stepsHint.visibility = View.VISIBLE
+        stepCounting = StepCounting(this, ::showSteps)
+        showSteps(0)
+        // The phone stays in hand while walking, so the screen must not time out and reset the count.
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    private fun startStepCounting() {
+        if (isStepGoalMet || !StepCounting.hasPermission(this)) return
+        stepCounting?.start()
+    }
+
+    private fun showSteps(steps: Int) {
+        binding.stepsProgress.text = getString(
+            R.string.warning_steps_progress,
+            steps.coerceAtMost(requiredSteps),
+            requiredSteps
+        )
+        if (steps >= requiredSteps && !isStepGoalMet) {
+            isStepGoalMet = true
+            stepCounting?.stop()
+            binding.stepsHint.visibility = View.GONE
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            updateStepsUnlockState()
+        }
+    }
+
+    private fun updateStepsUnlockState() {
+        if (!isProceedTimerDone || stepCounting == null) return
+        if (!isStepGoalMet && !StepCounting.hasPermission(this)) {
+            binding.btnProceed.setText(R.string.warning_steps_allow)
+            setPrimaryUnlockActionReady(true)
+            return
+        }
+        binding.btnProceed.setText(R.string.proceed)
+        setPrimaryUnlockActionReady(isStepGoalMet)
+    }
+
     private fun setPrimaryUnlockActionReady(isReady: Boolean) {
         isPrimaryUnlockActionReady = isReady
         binding.btnProceed.isEnabled = isReady &&
@@ -716,9 +793,19 @@ class WarningActivity : AppCompatActivity() {
         nfcTapDialog = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        startStepCounting()
+    }
+
     override fun onPause() {
         super.onPause()
         stopNfcUnlockScan()
+        // Steps count only while this screen is open, so leaving it starts the count over.
+        if (stepCounting != null && !isStepGoalMet) {
+            stepCounting?.stop()
+            showSteps(0)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -732,6 +819,7 @@ class WarningActivity : AppCompatActivity() {
         stopNfcUnlockScan()
         proceedTimer?.cancel()
         mathRetryTimer?.cancel()
+        stepCounting?.stop()
         vibrator?.cancel()
     }
 
@@ -829,6 +917,8 @@ class WarningActivity : AppCompatActivity() {
         const val MAX_ADAPTIVE_MATH_QUESTIONS = 10
         const val MIN_ADAPTIVE_MATH_LEVEL = 1
         const val MAX_ADAPTIVE_MATH_LEVEL = 10
+        const val MIN_STEPS = 10
+        const val MAX_STEPS = 100_000
         const val MIN_FOCUS_GOAL_MINUTES = 15
         const val MAX_FOCUS_GOAL_MINUTES = 24 * 60
     }

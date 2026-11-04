@@ -122,6 +122,28 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/steps_progress"
+                style="@style/TextAppearance.Material3.HeadlineMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textColor="?attr/colorOnSurface"
+                android:visibility="gone"
+                tools:text="120 of 200 steps" />
+
+            <TextView
+                android:id="@+id/steps_hint"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:alpha="0.7"
+                android:gravity="center"
+                android:text="@string/warning_steps_hint"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/focus_goal_status"
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="match_parent"

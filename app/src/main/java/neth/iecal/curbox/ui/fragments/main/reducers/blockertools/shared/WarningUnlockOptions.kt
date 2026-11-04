@@ -55,6 +55,10 @@ internal fun createWarningEffortOptions(context: Context) = listOf(
     WarningUnlockOption(
         context.getString(R.string.warning_option_adaptive_math),
         context.getString(R.string.warning_option_adaptive_math_desc)
+    ),
+    WarningUnlockOption(
+        context.getString(R.string.warning_option_steps),
+        context.getString(R.string.warning_option_steps_desc)
     )
 )
 
@@ -82,6 +86,7 @@ internal data class WarningUnlockFlags(
     val isIntentRequirementEnabled: Boolean = false,
     val isNfcUnlockRequirementEnabled: Boolean = false,
     val isAdaptiveMathRequirementEnabled: Boolean = false,
+    val isStepsRequirementEnabled: Boolean = false,
     val isDynamicIntervalSettingAllowed: Boolean = false
 )
 
@@ -102,6 +107,7 @@ internal object WarningUnlockSelectionMapper {
             config.isIntentRequirementEnabled -> WarningUnlockSelection(EFFORT_INDEX, 2)
             config.isNfcUnlockRequirementEnabled -> WarningUnlockSelection(EFFORT_INDEX, 3)
             config.isAdaptiveMathRequirementEnabled -> WarningUnlockSelection(EFFORT_INDEX, 4)
+            config.isStepsRequirementEnabled -> WarningUnlockSelection(EFFORT_INDEX, 5)
             config.isDynamicIntervalSettingAllowed -> WarningUnlockSelection(NO_EFFORT_INDEX, 0)
             else -> WarningUnlockSelection(NO_EFFORT_INDEX, FIXED_TIME_INDEX)
         }
@@ -121,6 +127,7 @@ internal object WarningUnlockSelectionMapper {
                 2 -> WarningUnlockFlags(isIntentRequirementEnabled = true)
                 3 -> WarningUnlockFlags(isNfcUnlockRequirementEnabled = true)
                 4 -> WarningUnlockFlags(isAdaptiveMathRequirementEnabled = true)
+                5 -> WarningUnlockFlags(isStepsRequirementEnabled = true)
                 else -> WarningUnlockFlags()
             }
             NO_EFFORT_INDEX -> WarningUnlockFlags(

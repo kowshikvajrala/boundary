@@ -178,6 +178,11 @@ object RestrictionComparator {
             else -> n.adaptiveMathStartingLevel.coerceIn(1, 10) >=
                 o.adaptiveMathStartingLevel.coerceIn(1, 10)
         }
+        val stepsOk = !o.isStepsRequirementEnabled || n.isStepsRequirementEnabled
+        val requiredStepsOk = when {
+            !o.isStepsRequirementEnabled || !n.isStepsRequirementEnabled -> true
+            else -> n.requiredSteps.coerceAtLeast(1) >= o.requiredSteps.coerceAtLeast(1)
+        }
         val focusGoalOk = when {
             o.isFocusGoalRequirementEnabled && !n.isFocusGoalRequirementEnabled -> false
             o.isFocusGoalRequirementEnabled && n.isFocusGoalRequirementEnabled ->
@@ -195,7 +200,7 @@ object RestrictionComparator {
             proceedDisabledOk && dialogHiddenOk &&
             proceedDelayOk && lockAfterOk && closeAppsOk && pauseUnlockOk && keepLeftoverOk && vibrateOk && proceedLimitOk && qrOk && nfcOk && typingOk && intentOk &&
             adaptiveMathOk && adaptiveMathQuestionCountOk && adaptiveMathStartingLevelOk &&
-            focusGoalOk && intentMinLengthOk
+            stepsOk && requiredStepsOk && focusGoalOk && intentMinLengthOk
     }
 
     /**

@@ -31,6 +31,9 @@ data class AppBlockerWarningScreenConfig(
     val isAdaptiveMathRequirementEnabled: Boolean = false,
     val adaptiveMathQuestionCount: Int = 3,
     val adaptiveMathStartingLevel: Int = 3,
+    /** Walk this many steps while the wait screen is open before Proceed works. */
+    val isStepsRequirementEnabled: Boolean = false,
+    val requiredSteps: Int = 200,
     val isFocusGoalRequirementEnabled: Boolean = false,
     val focusGoalGroupId: String = "",
     val focusGoalRequiredMinutes: Int = 60,

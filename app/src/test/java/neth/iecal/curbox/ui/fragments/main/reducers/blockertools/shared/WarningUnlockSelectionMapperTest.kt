@@ -20,6 +20,8 @@ class WarningUnlockSelectionMapperTest {
                 WarningUnlockSelection(1, 3),
             AppBlockerWarningScreenConfig(isAdaptiveMathRequirementEnabled = true) to
                 WarningUnlockSelection(1, 4),
+            AppBlockerWarningScreenConfig(isStepsRequirementEnabled = true) to
+                WarningUnlockSelection(1, 5),
             AppBlockerWarningScreenConfig(isDynamicIntervalSettingAllowed = true) to
                 WarningUnlockSelection(2, 0),
             AppBlockerWarningScreenConfig() to WarningUnlockSelection(2, 1)
@@ -61,6 +63,8 @@ class WarningUnlockSelectionMapperTest {
                 WarningUnlockFlags(isNfcUnlockRequirementEnabled = true),
             WarningUnlockSelection(1, 4) to
                 WarningUnlockFlags(isAdaptiveMathRequirementEnabled = true),
+            WarningUnlockSelection(1, 5) to
+                WarningUnlockFlags(isStepsRequirementEnabled = true),
             WarningUnlockSelection(2, 0) to
                 WarningUnlockFlags(isDynamicIntervalSettingAllowed = true),
             WarningUnlockSelection(2, 1) to WarningUnlockFlags()
