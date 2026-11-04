@@ -607,9 +607,13 @@ internal class WarningConfigFormController(
             else -> false
         }
         binding.timingContainer.isVisible = !isOnEachOpenEnabled() && usesSharedTiming
+        // Walking replaces the wait, so its box is hidden. The stored wait is kept, so switching
+        // back to another method still needs it.
         binding.proceedDelayContainer.isVisible =
             challengeIndex != WarningUnlockSelectionMapper.NEVER_UNLOCK_INDEX &&
-                challengeIndex != -1
+                challengeIndex != -1 &&
+                !(challengeIndex == WarningUnlockSelectionMapper.EFFORT_INDEX &&
+                    secondaryIndex == STEPS_INDEX)
         // An each open unlock never runs out on a timer, so there is nothing to lock after.
         binding.lockAfterSection.isVisible = !isOnEachOpenEnabled()
         binding.pauseUnlockSection.isVisible = supportsPauseUnlock && !isOnEachOpenEnabled()
@@ -822,7 +826,7 @@ internal class WarningConfigFormController(
         const val SECONDS_PER_HOUR = 3_600L
         const val DEFAULT_LOCK_AFTER_SECONDS = 30 * SECONDS_PER_MINUTE
         const val MIN_MATH_QUESTIONS = 1
-        const val MIN_STEPS = 10
+        const val MIN_STEPS = 100
         const val STEPS_INDEX = 5
         const val MIN_MATH_LEVEL = 1
         const val MIN_FOCUS_MINUTES = 15

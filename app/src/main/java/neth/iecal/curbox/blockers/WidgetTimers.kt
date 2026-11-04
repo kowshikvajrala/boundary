@@ -23,6 +23,9 @@ object WidgetTimers {
     enum class Kind { LOCKS, UNLOCKS }
 
     private val bySource = ConcurrentHashMap<String, Map<String, Long>>()
+    // Per blocker, the timer names that belong to what is on screen now.
+    private val inFrontBySource = ConcurrentHashMap<String, Set<String>>()
+    @Volatile private var lastInFront: Set<String> = emptySet()
     private val lastSent = ConcurrentHashMap<Kind, Map<String, Long>>()
     private val handler = Handler(Looper.getMainLooper())
     private val expiryChecks = ConcurrentHashMap<Kind, Runnable>()
@@ -30,6 +33,13 @@ object WidgetTimers {
     fun publish(context: Context, kind: Kind, source: String, timers: Map<String, Long>) {
         bySource["${kind.name}/$source"] = timers
         send(context.applicationContext, kind, force = false)
+    }
+
+    /** The unlock notification counts down and shows its status bar chip only for these. */
+    fun setInFront(context: Context, source: String, names: Set<String>) {
+        if (inFrontBySource[source] == names) return
+        inFrontBySource[source] = names
+        send(context.applicationContext, Kind.UNLOCKS, force = false)
     }
 
     /** Sends everything again, for a widget that was just added. */
@@ -45,15 +55,17 @@ object WidgetTimers {
             timers.forEach { (name, endsAt) -> if (endsAt < 0L || endsAt > now) merged[name] = endsAt }
         }
         scheduleExpiry(context, kind, merged.values.filter { it > now }.minOrNull(), now)
-        if (!force && merged == lastSent[kind]) return
-        lastSent[kind] = merged
+        val inFront = if (kind == Kind.UNLOCKS) inFrontBySource.values.flatten().toSet() else emptySet()
+        val timersChanged = force || merged != lastSent[kind]
+        val frontChanged = kind == Kind.UNLOCKS && inFront != lastInFront
+        if (!timersChanged && !frontChanged) return
         if (kind == Kind.UNLOCKS) {
-            try {
-                UnlockNotification.update(context, merged)
-            } catch (e: Exception) {
-                Log.e("WidgetTimers", "Could not update the unlock notification", e)
-            }
+            lastInFront = inFront
+            updateNotification(context, merged, inFront)
         }
+        // When only what is on screen changed, the widgets need no redraw.
+        if (!timersChanged) return
+        lastSent[kind] = merged
         val provider = if (kind == Kind.LOCKS) LocksWidgetProvider::class.java else UnlocksWidgetProvider::class.java
         try {
             context.sendBroadcast(
@@ -64,6 +76,14 @@ object WidgetTimers {
             )
         } catch (e: Exception) {
             Log.e("WidgetTimers", "Could not update the widget", e)
+        }
+    }
+
+    private fun updateNotification(context: Context, timers: Map<String, Long>, inFront: Set<String>) {
+        try {
+            UnlockNotification.update(context, timers, inFront)
+        } catch (e: Exception) {
+            Log.e("WidgetTimers", "Could not update the unlock notification", e)
         }
     }
 

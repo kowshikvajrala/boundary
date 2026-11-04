@@ -214,6 +214,11 @@ class KeywordBlocker : BaseBlocker() {
         val now = System.currentTimeMillis()
         val openIds = if (urlIdentifier == null || !isTurnedOn) emptySet()
             else findMatchingGroups(urlIdentifier).map(KeywordGroup::id).toSet()
+        WidgetTimers.setInFront(
+            service,
+            "keywords",
+            activeGroups.filter { it.id in openIds }.map { it.name }.toSet()
+        )
         var changed = false
         cooldownGroupsList.forEach { (id, end) ->
             if (end <= now || id in openIds || !pausesUnlock(id)) return@forEach

@@ -3,7 +3,6 @@ package neth.iecal.curbox.utils
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -46,7 +45,6 @@ class TimerNotification(
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .addExtras(Bundle().apply { putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, true) })
     }
 
     private val timerDispatcher = Dispatchers.Default
@@ -68,6 +66,8 @@ class TimerNotification(
         title: String = "Timer",
         timerId: String = "focusMode",
         breakdown: Map<String, Long> = emptyMap(),
+        // False keeps it a plain notification, without the status bar chip.
+        promoted: Boolean = true,
         onTickCallback: ((Long) -> Unit)? = null,
         onFinishCallback: (() -> Unit)? = null,
     ) {
@@ -86,6 +86,7 @@ class TimerNotification(
 
         // Setup the cached notification UI title
         notificationBuilder.setContentTitle(title)
+        notificationBuilder.extras.putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, promoted)
         // A running clock in the notification, and in the status bar chip of a Live Update.
         val now = System.currentTimeMillis()
         notificationBuilder

@@ -117,6 +117,7 @@ class AppBlocker : BaseBlocker() {
             if (intent?.action != Intent.ACTION_SCREEN_OFF) return
             handler.post {
                 pauseAllRunningUnlocks()
+                WidgetTimers.setInFront(service, "apps", emptySet())
                 // Re check the app that shows after unlock so its unlock resumes.
                 lastPackage = ""
             }
@@ -169,6 +170,7 @@ class AppBlocker : BaseBlocker() {
             packageName !in passThroughPackages
         ) {
             syncUnlocksWithForegroundApp(packageName)
+            publishInFront(packageName)
             val previousWindowPackage = lastWindowPackage
             lastWindowPackage = packageName
             if (previousWindowPackage != null && previousWindowPackage != packageName &&
@@ -634,6 +636,24 @@ class AppBlocker : BaseBlocker() {
         lockedPackagesUntil = locked
         if (locked.isNotEmpty()) LockedAppNotificationListener.instance?.snoozeLockedNow()
         WidgetTimers.publish(service, WidgetTimers.Kind.LOCKS, "apps", lockedGroups)
+    }
+
+    /**
+     * Tells the unlock notification which timers belong to the app in front: its app groups, and
+     * its own name, which is how the Reels blocker names its short video unlocks.
+     */
+    private fun publishInFront(packageName: String) {
+        val names = HashSet<String>()
+        groupPackagesById.forEach { (groupId, packages) ->
+            if (packageName in packages) names.add(groupNames[groupId] ?: groupId)
+        }
+        if (packageName != service.packageName && !AppWebsites.isSiteKey(packageName)) {
+            runCatching {
+                val pm = service.packageManager
+                names.add(pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0)).toString())
+            }
+        }
+        WidgetTimers.setInFront(service, "apps", names)
     }
 
     /** Running unlocks count down; frozen ones (their app is not in front) are sent as minus the time left. */

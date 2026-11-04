@@ -942,7 +942,7 @@
     <string name="warning_option_steps">Unlock requires walking</string>
     <string name="warning_option_steps_desc">Walk a set number of steps while this screen is open.</string>
     <string name="label_steps_unlock">Walking</string>
-    <string name="label_steps_unlock_desc">Choose how many steps you must walk. Steps count only while the wait screen is open. Leaving it starts the count over.</string>
+    <string name="label_steps_unlock_desc">Choose how many steps you must walk, at least 100. There is no wait first. Steps count only while the wait screen is open. Leaving it starts the count over.</string>
     <string name="warning_steps_count_input">Steps required</string>
     <string name="warning_steps_no_sensor">This phone has no step counter, so walking cannot be used.</string>
     <string name="warning_steps_progress">%1$d of %2$d steps</string>
@@ -1023,6 +1023,7 @@
 
     <!-- Service notifications -->
     <string name="notification_unlocked_title">Unlocked</string>
+    <string name="notification_unlocked_title_app">%1$s unlocked</string>
     <string name="notification_unlock_paused_row">%1$s  %2$s, paused</string>
     <string name="notification_remaining_usage_lockdown">Remaining usage before lockdown</string>
     <string name="notification_remaining_usage_reels_lockdown">Remaining usage before reels lockdown</string>

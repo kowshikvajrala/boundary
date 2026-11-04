@@ -203,7 +203,12 @@ class WarningActivity : AppCompatActivity() {
                 binding.proceedsLeft.text = getString(R.string.warning_proceeds_left, proceedsLeft, warningScreenConfig.allowedProceeds)
             }
             proceedTimer =
-                object : CountDownTimer(warningScreenConfig.proceedDelayInSecs * 1000L, 1000) {
+                // Walking is the effort, so there is no wait before it.
+                object : CountDownTimer(
+                    if (warningScreenConfig.isStepsRequirementEnabled) 0L
+                    else warningScreenConfig.proceedDelayInSecs * 1000L,
+                    1000
+                ) {
                     override fun onTick(millisUntilFinished: Long) {
                         binding.proceedSeconds.text = proceedCountdownText(millisUntilFinished / 1000)
                     }
@@ -594,6 +599,7 @@ class WarningActivity : AppCompatActivity() {
     private fun setupStepsChallenge(steps: Int) {
         requiredSteps = steps.coerceIn(MIN_STEPS, MAX_STEPS)
         binding.stepsProgress.visibility = View.VISIBLE
+        binding.proceedSeconds.visibility = View.GONE
         if (!StepCounting.isAvailable(this)) {
             binding.stepsProgress.setText(R.string.warning_steps_no_sensor)
             return
@@ -917,7 +923,7 @@ class WarningActivity : AppCompatActivity() {
         const val MAX_ADAPTIVE_MATH_QUESTIONS = 10
         const val MIN_ADAPTIVE_MATH_LEVEL = 1
         const val MAX_ADAPTIVE_MATH_LEVEL = 10
-        const val MIN_STEPS = 10
+        const val MIN_STEPS = 100
         const val MAX_STEPS = 100_000
         const val MIN_FOCUS_GOAL_MINUTES = 15
         const val MAX_FOCUS_GOAL_MINUTES = 24 * 60

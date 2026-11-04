@@ -1,0 +1,2 @@
+• Changed: the unlock notification now counts down the app you are using. If two apps are unlocked, the status bar chip shows the one on screen, with its name in the title. When you are not in any blocked app, it is a normal notification without the chip.
+• Changed: walking to unlock has no wait before it. You start counting steps right away. The lowest step goal is now 100.
