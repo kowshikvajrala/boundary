@@ -1,0 +1,2 @@
+• Fixed: with "Unlock requires walking", the "Lock after unlock ends" and "Pause unlock time when you leave" settings were hidden. They show again.
+• Fixed: deleting an app group while it was unlocked left its timer in the notification and widgets. It now goes away right after the group is deleted.

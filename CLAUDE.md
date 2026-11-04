@@ -121,6 +121,7 @@ Behavior notes:
 - Chrome hides its address bar while scrolling, so `WebsiteUsageTracker` keeps the last page per browser (`lastSiteByBrowser`) and assumes it again when the browser is back in front with no address bar visible (`resumeLastSite`). Events from `com.android.systemui` (notification panel, lock screen) are not treated as leaving the page; screen off still pauses through the blockers' own receivers. Before this, keyword and app website unlocks stayed paused until the next page load.
 - Pressing Home alone on a blocked website leaves the tab on it, so the browser reopens there and is blocked again on every open (the remembered page from `lastSiteByBrowser` even blocked the tab switcher). `AppBlocker.leaveForeground` and `KeywordBlocker.handleBlocking` first change the tab with `BlockedPage.replace` (off the main thread; when the address bar is not editable, as in Firefox's Compose toolbar, it taps it and waits up to 0.9 s for the focused edit box, fixed in 2.6.2) and call `service.forgetBrowserPage` (fixed in 2.5.1).
 - The unlock settings screen has no sliders (removed after 2.0.0 at the owner's request); number boxes carry their minimum in `NumericInput.minimumValue`. The QR/NFC unlock time pop up (`WarningUnlockTimingDialog`) still uses one, as its only control.
+- In `fragment_warning_config.xml` the lock after unlock and pause unlock sections live inside `proceed_delay_container`. Hide `proceed_delay_row`/`proceed_delay_desc` to hide just the wait, never the container (2.8.0 hid both for walking).
 - Append to files with a trailing newline. An append without one once merged two `.gitignore` lines.
 
 ## Release history
@@ -173,5 +174,6 @@ Behavior notes:
 | 2.7.0 | 44 | Walk to unlock: a step count effort option on the wait screen |
 | 2.8.0 | 45 | Unlock notification counts down the app on screen, chip only while in an unlocked app; walking has no wait before it, minimum 100 steps |
 | 2.8.1 | 46 | Shaking no longer counts as steps; notification stays (no chip) when every unlock is paused; Permissions lists physical activity, camera and NFC |
+| 2.8.2 | 47 | Walking groups show the lock and pause settings again; deleted app groups drop their unlock, lock and timers (`AppBlocker.forgetDeletedGroups`) |
 
 Versions up to 1.0.10 only bumped the patch number, even for features. From 1.1.0 on, releases follow semantic versioning (see Releasing).

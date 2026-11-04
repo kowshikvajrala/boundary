@@ -607,13 +607,15 @@ internal class WarningConfigFormController(
             else -> false
         }
         binding.timingContainer.isVisible = !isOnEachOpenEnabled() && usesSharedTiming
-        // Walking replaces the wait, so its box is hidden. The stored wait is kept, so switching
-        // back to another method still needs it.
         binding.proceedDelayContainer.isVisible =
             challengeIndex != WarningUnlockSelectionMapper.NEVER_UNLOCK_INDEX &&
-                challengeIndex != -1 &&
-                !(challengeIndex == WarningUnlockSelectionMapper.EFFORT_INDEX &&
-                    secondaryIndex == STEPS_INDEX)
+                challengeIndex != -1
+        // Walking replaces the wait, so only the wait box is hidden; the lock and pause settings
+        // in the same card stay. The stored wait is kept, so switching back still needs it.
+        val hidesWait = challengeIndex == WarningUnlockSelectionMapper.EFFORT_INDEX &&
+            secondaryIndex == STEPS_INDEX
+        binding.proceedDelayRow.isVisible = !hidesWait
+        binding.proceedDelayDesc.isVisible = !hidesWait
         // An each open unlock never runs out on a timer, so there is nothing to lock after.
         binding.lockAfterSection.isVisible = !isOnEachOpenEnabled()
         binding.pauseUnlockSection.isVisible = supportsPauseUnlock && !isOnEachOpenEnabled()

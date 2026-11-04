@@ -343,6 +343,15 @@ class AppBlocker : BaseBlocker() {
 
                 Log.d("AppBlocker", "Loaded ${blockedAppsList.size} blocked apps")
 
+                val groupIds = settings.blockedAppGroups.map { it.id }.toSet()
+                handler.post {
+                    try {
+                        forgetDeletedGroups(groupIds)
+                    } catch (e: Exception) {
+                        Log.e("AppBlocker", "Could not forget deleted groups", e)
+                    }
+                }
+
                 // Locks that were running before a restart keep their apps closed too.
                 handler.post {
                     // Leftover kept from before a restart still runs out on time.
@@ -434,6 +443,29 @@ class AppBlocker : BaseBlocker() {
             putStringSet("unlock_left_at_keys", firstLeftAtMs.keys.toSet())
             firstLeftAtMs.forEach { (groupId, leftAt) -> putLong("unlock_left_at_$groupId", leftAt) }
         }
+    }
+
+    /** Drops the unlocks, timers and cached settings of groups that were deleted. */
+    private fun forgetDeletedGroups(groupIds: Set<String>) {
+        val known = cooldownGroupsList.keys + pausedUnlocks.keys + groupNames.keys + lockAfterMsById.keys
+        val deleted = known.filter { it !in groupIds }.toSet()
+        if (deleted.isEmpty()) return
+        deleted.forEach { groupId ->
+            removeCooldownFrom(groupId)
+            listOf("cooldown:", "leftover:", "lockclose:").forEach { prefix ->
+                activeRunnables.remove(prefix + groupId)?.let(handler::removeCallbacks)
+            }
+            groupNames.remove(groupId)
+            groupPackagesById.remove(groupId)
+            onEachOpenGroupIds.remove(groupId)
+            lockAfterMsById.remove(groupId)
+            closeAppsWhileLockedIds.remove(groupId)
+            pauseUnlockIds.remove(groupId)
+            keepLeftoverMsById.remove(groupId)
+        }
+        refreshLockedPackages()
+        notificationManager.stopTimer()
+        showNextCooldownNotification()
     }
 
     private fun putCooldownTo(groupId: String, realTimeEnd: Long) {
