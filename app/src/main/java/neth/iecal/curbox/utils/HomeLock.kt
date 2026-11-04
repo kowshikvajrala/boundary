@@ -11,7 +11,7 @@ import neth.iecal.curbox.data.models.Settings
  * Turning a locked group off for a while is refused outright.
  */
 object HomeLock {
-    const val LOOSEN_WAIT_MS = 7 * 86_400_000L
+    const val LOOSEN_WAIT_MS = 86_400_000L
 
     fun usesLock(config: AppBlockerWarningScreenConfig): Boolean =
         config.lockAfterUnlockMs > 0L && !config.isOnOpenConfig

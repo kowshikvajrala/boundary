@@ -286,7 +286,7 @@
     <string name="keep_leftover_input">Keep leftover time for</string>
     <string name="keep_leftover_desc">Counted from the first time you leave. Opening them again does not restart it. After that, leftover time is dropped when you leave and you unlock again as usual.</string>
     <string name="lock_after_unlock_title">Lock after unlock ends</string>
-    <string name="lock_after_unlock_desc">When your unlock time runs out, this is fully locked for a while. No wait screen and no way to open it early. Once on, loosening or deleting this group waits 7 days. You can cancel it while it waits.</string>
+    <string name="lock_after_unlock_desc">When your unlock time runs out, this is fully locked for a while. No wait screen and no way to open it early. Once on, loosening or deleting this group waits 24 hours. You can cancel it while it waits.</string>
     <string name="lock_after_unlock_input">Lock for</string>
     <string name="lock_after_close_title">Close the apps while locked</string>
     <string name="lock_after_close_desc">Stops them running in the background until the lock ends. Apps playing music with a notification cannot be closed.</string>
@@ -360,7 +360,7 @@
     <string name="payment_pause_failed">Could not start the pause.</string>
     <string name="payment_pause_notification_title">Boundary is paused</string>
     <string name="payment_pause_notification_text">Blocking comes back on by itself when the timer ends.</string>
-    <string name="home_lock_refused_toast">This group has a lock after unlock, so it cannot be turned off for a while. Changing its settings waits 7 days.</string>
+    <string name="home_lock_refused_toast">This group has a lock after unlock, so it cannot be turned off for a while. Changing its settings waits 24 hours.</string>
     <string name="desc_previous_week">Previous week</string>
     <string name="desc_next_week">Next week</string>
     <string name="desc_earlier_weeks">Earlier weeks</string>

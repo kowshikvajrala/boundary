@@ -1,0 +1,1 @@
+• Changed: loosening or deleting a group that uses "Lock after unlock ends" now waits 24 hours instead of 7 days. Changes already waiting keep their old end time; cancel and ask again to use the 24 hour wait.
