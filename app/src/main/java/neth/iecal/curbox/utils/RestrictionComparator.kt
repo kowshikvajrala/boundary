@@ -123,11 +123,16 @@ object RestrictionComparator {
         return new.isActive && new.selectedApps.containsAll(old.selectedApps)
     }
 
-    /** Stricter means a break comes sooner or lasts longer. */
+    /**
+     * Stricter means a break comes sooner, lasts longer or is harder to reset. The warning and the
+     * notification are only reminders, so they may change freely.
+     */
     fun scrollBreak(old: ScrollBreakConfig, new: ScrollBreakConfig): Boolean {
         if (!old.isEnabled) return true
-        return new.isEnabled && new.scrollMinutes <= old.scrollMinutes &&
-            new.watchMinutes <= old.watchMinutes && new.breakMinutes >= old.breakMinutes
+        if (!new.isEnabled || new.breakMinutes < old.breakMinutes || new.resetMinutes < old.resetMinutes) return false
+        val scrollOk = !old.countScrolling || (new.countScrolling && new.scrollMinutes <= old.scrollMinutes)
+        val watchOk = !old.countWatching || (new.countWatching && new.watchMinutes <= old.watchMinutes)
+        return scrollOk && watchOk
     }
 
     fun uiHider(old: UiHiderConfig, new: UiHiderConfig): Boolean {

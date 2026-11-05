@@ -38,4 +38,22 @@ class ScrollBreakRestrictionComparatorTest {
         assertFalse(RestrictionComparator.scrollBreak(on, on.copy(watchMinutes = 90)))
         assertFalse(RestrictionComparator.scrollBreak(on, on.copy(scrollMinutes = 10, breakMinutes = 2)))
     }
+
+    @Test
+    fun stoppingAKindOfCountingIsWeaker() {
+        assertFalse(RestrictionComparator.scrollBreak(on, on.copy(countScrolling = false)))
+        assertFalse(RestrictionComparator.scrollBreak(on, on.copy(countWatching = false)))
+        assertTrue(RestrictionComparator.scrollBreak(on.copy(countWatching = false), on))
+    }
+
+    @Test
+    fun quickerResetIsWeaker() {
+        assertFalse(RestrictionComparator.scrollBreak(on, on.copy(resetMinutes = 2)))
+        assertTrue(RestrictionComparator.scrollBreak(on, on.copy(resetMinutes = 10)))
+    }
+
+    @Test
+    fun remindersMayChangeFreely() {
+        assertTrue(RestrictionComparator.scrollBreak(on, on.copy(warnMinutes = 0, showNotification = false)))
+    }
 }

@@ -322,32 +322,10 @@ class ReducersFragment : Fragment() {
             }
         }
 
-        // Asks for the scrolling limit, then the watching limit, then the break length.
-        fun pick(title: Int, options: List<Int>, current: Int, onPicked: (Int) -> Unit) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(title)
-                .setSingleChoiceItems(
-                    options.map { getString(R.string.eye_break_minutes, it) }.toTypedArray(),
-                    options.indexOf(current)
-                ) { dialog, which ->
-                    dialog.dismiss()
-                    onPicked(options[which])
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
-        }
-
         card.setOnClickListener {
-            val config = scrollBreakConfig
-            pick(R.string.scroll_break_scroll_title, listOf(10, 15, 20, 30, 45, 60), config.scrollMinutes) { scroll ->
-                pick(R.string.scroll_break_watch_title, listOf(30, 45, 60, 90, 120), config.watchMinutes) { watch ->
-                    pick(R.string.scroll_break_length_title, listOf(2, 5, 10, 15, 30), config.breakMinutes) { length ->
-                        save {
-                            it.copy(isEnabled = true, scrollMinutes = scroll, watchMinutes = watch, breakMinutes = length)
-                        }
-                    }
-                }
-            }
+            startActivity(Intent(requireContext(), FragmentActivity::class.java).apply {
+                putExtra("fragment", neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.ScrollBreakFragment.FRAGMENT_ID)
+            })
         }
     }
 

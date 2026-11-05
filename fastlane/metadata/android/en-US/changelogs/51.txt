@@ -1,0 +1,2 @@
+• New: tap the Scrolling and watching breaks card to open its own settings page. You can set every time yourself: minutes of scrolling, minutes of watching, break length, how long away starts the count again, and how early the warning shows (0 for none). Scrolling and watching can each be turned off.
+• New: a notification shows how many minutes are left before your next break, and counts down during a break. You can turn it off on the settings page.
