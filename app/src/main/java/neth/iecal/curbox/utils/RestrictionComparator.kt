@@ -7,6 +7,7 @@ import neth.iecal.curbox.data.models.KeywordBlocker
 import neth.iecal.curbox.data.models.KeywordGroup
 import neth.iecal.curbox.data.models.MindfulMessageConfig
 import neth.iecal.curbox.data.models.ReelBlocker
+import neth.iecal.curbox.data.models.ScrollBreakConfig
 import neth.iecal.curbox.data.models.Settings
 import neth.iecal.curbox.data.models.SettingsChangeDelayConfig
 import neth.iecal.curbox.data.models.UiHiderConfig
@@ -45,6 +46,8 @@ object RestrictionComparator {
                     !current.isWebsiteUsageTrackingEnabled || proposed.isWebsiteUsageTrackingEnabled
                 GatedSettingsField.CHANGE_DELAY ->
                     changeDelay(current.settingsChangeDelayConfig2, proposed.settingsChangeDelayConfig2)
+                GatedSettingsField.SCROLL_BREAK ->
+                    scrollBreak(current.scrollBreakConfig, proposed.scrollBreakConfig)
             }
         } catch (e: Exception) {
             false
@@ -118,6 +121,13 @@ object RestrictionComparator {
     fun mindfulMessages(old: MindfulMessageConfig, new: MindfulMessageConfig): Boolean {
         if (!old.isActive) return true
         return new.isActive && new.selectedApps.containsAll(old.selectedApps)
+    }
+
+    /** Stricter means a break comes sooner or lasts longer. */
+    fun scrollBreak(old: ScrollBreakConfig, new: ScrollBreakConfig): Boolean {
+        if (!old.isEnabled) return true
+        return new.isEnabled && new.scrollMinutes <= old.scrollMinutes &&
+            new.watchMinutes <= old.watchMinutes && new.breakMinutes >= old.breakMinutes
     }
 
     fun uiHider(old: UiHiderConfig, new: UiHiderConfig): Boolean {

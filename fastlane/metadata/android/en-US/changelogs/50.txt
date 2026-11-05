@@ -1,0 +1,3 @@
+• New: Scrolling and watching breaks, on the Reducers tab. After 20 minutes of scrolling, or 60 minutes of watching videos, a break screen shows for 5 minutes and cannot be skipped. Tap the card to change the times. A note at the top warns you one minute before.
+• Only real scrolling counts: chatting and typing do not. Watching counts when the app on screen is playing a video, which needs notification access. Five minutes away resets the count.
+• Changed: the unlock countdown no longer shows as a chip in the status bar, so other apps' notification icons stay visible. The countdown is still in the notification.

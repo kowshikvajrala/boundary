@@ -55,6 +55,7 @@ class AppBlockerService : BaseBlockingService() {
     private val websiteUsageTracker = WebsiteUsageTracker()
     private val appUsageTracker = AppUsageTracker()
     private val eyeBreakReminder = neth.iecal.curbox.anti_stimulants.EyeBreakReminder()
+    private val scrollBreak = neth.iecal.curbox.anti_stimulants.ScrollBreak()
 
     private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
@@ -117,6 +118,13 @@ class AppBlockerService : BaseBlockingService() {
 
             crashLogger.logNonFatalError(Exception(t))
             Log.e("Usage Tracking", "Usage tracking or mindful message error", t)
+        }
+
+        try {
+            scrollBreak.onEvent(event)
+        } catch (t: Throwable) {
+            crashLogger.logNonFatalError(Exception(t))
+            Log.e("ScrollBreak", "Scrolling break error", t)
         }
 
         val eventCopy = AccessibilityEvent.obtain(event)
@@ -196,6 +204,7 @@ class AppBlockerService : BaseBlockingService() {
         reelsCountTracker.setup(this, reelsOverlayManager, reelUsageTracker::onReelCounted)
         mindfulMessage.setup(this)
         eyeBreakReminder.setup(this)
+        scrollBreak.setup(this)
         websiteUsageTracker.setup(this) { observation ->
             websiteObservationChannel.trySend(observation)
         }
@@ -249,6 +258,7 @@ class AppBlockerService : BaseBlockingService() {
         }
         cleanupFeature("mindful messages") { mindfulMessage.onDestroy() }
         cleanupFeature("eye breaks") { eyeBreakReminder.onDestroy() }
+        cleanupFeature("scrolling breaks") { scrollBreak.onDestroy() }
         cleanupFeature("reel counter") { reelsCountTracker.onDestroy() }
         cleanupFeature("reel usage") { reelUsageTracker.onDestroy() }
         cleanupFeature("website usage") { websiteUsageTracker.onDestroy() }

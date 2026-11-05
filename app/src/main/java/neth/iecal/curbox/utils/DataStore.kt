@@ -276,6 +276,10 @@ class DataStoreManager(private val context: Context) {
         settingsDataStore.updateData { it.copy(eyeBreakConfig = transform(it.eyeBreakConfig)) }
     }
 
+    suspend fun updateScrollBreakConfig(transform: (neth.iecal.curbox.data.models.ScrollBreakConfig) -> neth.iecal.curbox.data.models.ScrollBreakConfig) {
+        updateGated(GatedSettingsField.SCROLL_BREAK) { transform(it.scrollBreakConfig) }
+    }
+
     suspend fun updateReelCounterOverlayConfig(config: neth.iecal.curbox.data.models.ReelCounterOverlayConfig) {
         settingsDataStore.updateData { it.copy(reelCounterOverlayConfig = config) }
     }
@@ -590,6 +594,9 @@ class DataStoreManager(private val context: Context) {
                 GatedSettingsField.WEBSITE_USAGE_TRACKING -> settings.copy(
                     isWebsiteUsageTrackingEnabled = gson.fromJson(valueJson, Boolean::class.java)
                 )
+                GatedSettingsField.SCROLL_BREAK -> settings.copy(
+                    scrollBreakConfig = gson.fromJson(valueJson, neth.iecal.curbox.data.models.ScrollBreakConfig::class.java)
+                )
                 GatedSettingsField.CHANGE_DELAY -> {
                     val prefs = gson.fromJson(valueJson, SettingsChangeDelayPrefs::class.java)
                     settings.copy(settingsChangeDelayConfig2 = settings.settingsChangeDelayConfig2.copy(
@@ -613,6 +620,7 @@ class DataStoreManager(private val context: Context) {
                 GatedSettingsField.UI_HIDER -> settings.uiHiderConfig
                 GatedSettingsField.APP_USAGE_TRACKING -> settings.isAppUsageTrackingEnabled
                 GatedSettingsField.WEBSITE_USAGE_TRACKING -> settings.isWebsiteUsageTrackingEnabled
+                GatedSettingsField.SCROLL_BREAK -> settings.scrollBreakConfig
                 GatedSettingsField.CHANGE_DELAY -> SettingsChangeDelayPrefs(
                     isEnabled = settings.settingsChangeDelayConfig2.isEnabled,
                     delayMinutes = settings.settingsChangeDelayConfig2.delayMinutes.coerceIn(

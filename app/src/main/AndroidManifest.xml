@@ -7,7 +7,6 @@
         tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- Android 16 Live Updates: the unlock countdown as a chip in the status bar. -->
-    <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
@@ -49,6 +48,14 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleTop"
+            android:theme="@style/Theme.Curbox.WarningFullScreen" />
+
+        <activity
+            android:name=".ui.activity.ScrollBreakActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:taskAffinity="app.boundary.blocker.scrollbreak"
             android:theme="@style/Theme.Curbox.WarningFullScreen" />
 
         <activity

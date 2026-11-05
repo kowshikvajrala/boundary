@@ -1,7 +1,6 @@
 package neth.iecal.curbox.ui.fragments.main.reducers.advanced
 
 import android.Manifest
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -29,10 +28,6 @@ import neth.iecal.curbox.utils.PermissionUtils
  * Add a row here whenever a feature needs a new permission.
  */
 internal object PermissionRows {
-    // Settings.ACTION_MANAGE_APP_PROMOTED_NOTIFICATIONS (Android 16).
-    private const val ACTION_MANAGE_APP_PROMOTED_NOTIFICATIONS =
-        "android.settings.MANAGE_APP_PROMOTED_NOTIFICATIONS"
-
     class Entry(
         val titleRes: Int,
         val descRes: Int,
@@ -58,11 +53,6 @@ internal object PermissionRows {
 
     /** Rows that are not needed to finish setup. */
     val optional = listOf(
-        // Live Updates (Android 16): the unlock countdown as a chip in the status bar.
-        Entry(R.string.permissions_live_updates, R.string.permissions_live_updates_desc, false,
-            { canPostLiveUpdates(it) },
-            { Intent(ACTION_MANAGE_APP_PROMOTED_NOTIFICATIONS).putExtra(Settings.EXTRA_APP_PACKAGE, it.packageName) },
-            isAvailable = { Build.VERSION.SDK_INT >= 36 }),
         Entry(R.string.permissions_battery, R.string.permissions_battery_desc, true,
             { (it.getSystemService(Context.POWER_SERVICE) as PowerManager).isIgnoringBatteryOptimizations(it.packageName) },
             { Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, packageUri(it)) }),
@@ -130,13 +120,6 @@ internal object PermissionRows {
 
     fun openFix(context: Context, entry: Entry) {
         runCatching { context.startActivity(entry.fix(context).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
-    }
-
-    // NotificationManager.canPostPromotedNotifications() is Android 16 API; this app compiles
-    // against Android 15, so it is called by name.
-    private fun canPostLiveUpdates(context: Context): Boolean {
-        val manager = context.getSystemService(NotificationManager::class.java)
-        return manager.javaClass.getMethod("canPostPromotedNotifications").invoke(manager) as Boolean
     }
 
     private fun appDetails(context: Context): Intent =

@@ -29,9 +29,6 @@ class TimerNotification(
     companion object {
         private const val TAG = "NotificationTimerMgr"
         private const val CHANNEL_ID = "TimerNotificationChannel"
-        // Notification.EXTRA_REQUEST_PROMOTED_ONGOING (Android 16). Asks for a Live Update, which
-        // shows the countdown as a chip in the status bar. Older versions ignore it.
-        private const val EXTRA_REQUEST_PROMOTED_ONGOING = "android.requestPromotedOngoing"
     }
 
     private val notificationManager: NotificationManager by lazy {
@@ -66,8 +63,6 @@ class TimerNotification(
         title: String = "Timer",
         timerId: String = "focusMode",
         breakdown: Map<String, Long> = emptyMap(),
-        // False keeps it a plain notification, without the status bar chip.
-        promoted: Boolean = true,
         onTickCallback: ((Long) -> Unit)? = null,
         onFinishCallback: (() -> Unit)? = null,
     ) {
@@ -86,8 +81,7 @@ class TimerNotification(
 
         // Setup the cached notification UI title
         notificationBuilder.setContentTitle(title)
-        notificationBuilder.extras.putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, promoted)
-        // A running clock in the notification, and in the status bar chip of a Live Update.
+        // A running clock in the notification.
         val now = System.currentTimeMillis()
         notificationBuilder
             .setWhen(if (isCountdown) now + totalMillis else now)
@@ -120,7 +114,7 @@ class TimerNotification(
         }
     }
 
-    /** A plain notification with no countdown and no status bar chip, listing [breakdown]. */
+    /** A notification with no countdown, listing [breakdown]. */
     fun showStill(title: String, timerId: String, breakdown: Map<String, Long>) {
         if (currentTimerId == timerId && timerJob == null) return
         stopTimer()
@@ -130,7 +124,6 @@ class TimerNotification(
             .setContentTitle(title)
             .setShowWhen(false)
             .setUsesChronometer(false)
-        notificationBuilder.extras.putBoolean(EXTRA_REQUEST_PROMOTED_ONGOING, false)
         updateNotificationUI(0L)
     }
 
@@ -192,7 +185,6 @@ class TimerNotification(
                         "$label  ${formatDuration((endMs - now).coerceAtLeast(0L))}"
                     }
                 }
-            // InboxStyle cannot be a Live Update, so the list uses BigTextStyle.
             val style = if (lines.size > 1) {
                 NotificationCompat.BigTextStyle().bigText(lines.joinToString("\n"))
             } else {

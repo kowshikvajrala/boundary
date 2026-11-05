@@ -16,6 +16,7 @@ data class Settings(
     val serviceProtectionConfig: ServiceProtectionConfig = ServiceProtectionConfig(),
     val antiUninstallConfig2: AntiUninstallConfig = AntiUninstallConfig(),
     val eyeBreakConfig: EyeBreakConfig = EyeBreakConfig(),
+    val scrollBreakConfig: ScrollBreakConfig = ScrollBreakConfig(),
     val settingsChangeDelayConfig2: SettingsChangeDelayConfig = SettingsChangeDelayConfig(),
     /** Apps that a payment pause can open, such as banking or UPI apps. */
     val paymentPauseApps: List<String> = listOf()

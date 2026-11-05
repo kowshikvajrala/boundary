@@ -8,9 +8,9 @@ import neth.iecal.curbox.utils.TimerNotification
 /**
  * One notification for every running unlock: app groups, keyword groups and short videos. It
  * lists all of them, so several blockers never post separate notifications that look the same.
- * It counts down the unlock of what is on screen, as a status bar chip on Android 16. With
- * nothing unlocked on screen it is a plain notification that counts down the unlock ending first,
- * or, when every unlock is paused, just lists them.
+ * It counts down the unlock of what is on screen. With nothing unlocked on screen it counts down
+ * the unlock ending first, or, when every unlock is paused, just lists them. There is no status
+ * bar chip (Live Update): it hid the other apps' notification icons.
  *
  * Fed by [WidgetTimers] with the merged unlock timers: wall clock end times, or minus the time
  * left for a paused unlock.
@@ -29,7 +29,7 @@ object UnlockNotification {
         val notification = timer ?: create(context).also { timer = it }
         val shown = pickShown(running, inFront)
         if (shown == null) {
-            // Unlocks pause when their apps are left. They stay listed, just without the chip.
+            // Unlocks pause when their apps are left. They stay listed, without a countdown.
             val paused = timers.filterValues { it < 0L }
             if (paused.isEmpty()) {
                 notification.stopTimer()
@@ -46,14 +46,13 @@ object UnlockNotification {
         notification.startTimer(
             totalMillis = shown.value - now,
             timerId = "unlocks:" + timers.entries.joinToString(",") { "${it.key}=${it.value}" } +
-                ";shown=${shown.key};chip=$isOnScreen",
+                ";shown=${shown.key};front=$isOnScreen",
             title = if (isOnScreen) {
                 context.getString(R.string.notification_unlocked_title_app, shown.key)
             } else {
                 context.getString(R.string.notification_unlocked_title)
             },
-            breakdown = timers,
-            promoted = isOnScreen
+            breakdown = timers
         )
     }
 
