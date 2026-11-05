@@ -59,9 +59,15 @@ class ScrollBreak {
         private const val CHANNEL_ID = "ScrollBreakChannel"
         private const val RELAUNCH_GAP_MS = 1_500L
         private const val KEEP_PAUSED_MS = 2_000L
-        private const val ACTIVITY_CHECK_MS = 5_000L
-        // Scrolling counts as going on for this long after the last scroll.
-        private const val SCROLLING_NOW_MS = 10_000L
+        private const val ACTIVITY_CHECK_MS = 3_000L
+        // Scrolling counts as going on when scrolls came in at least [SCROLLING_NOW_SECONDS]
+        // different seconds within [SCROLLING_NOW_MS], the last one within [SCROLLING_STOPPED_MS].
+        // One scroll alone, like a chat jumping to a new message or a sliding banner, is not
+        // enough. Typing within [TYPING_NOW_MS] stops it too, because typing moves the page.
+        private const val SCROLLING_NOW_MS = 12_000L
+        private const val SCROLLING_STOPPED_MS = 6_000L
+        private const val SCROLLING_NOW_SECONDS = 2
+        private const val TYPING_NOW_MS = 10_000L
         // Gives the app time to pause before the break screen covers it. Apps like YouTube only
         // move a video into a popup window when they are left while it is still playing.
         private const val PAUSE_BEFORE_SCREEN_MS = 400L
@@ -100,7 +106,9 @@ class ScrollBreak {
     private var breakForWatching = false
     private var breakAfterMinutes = 0
     private val pausedDuringBreak = mutableSetOf<String>()
-    private var lastScrollAtMs = 0L
+    // Seconds since boot in which the front app scrolled, newest last, at most a few kept.
+    private val recentScrollSeconds = ArrayDeque<Long>()
+    private var lastTypingAtMs = 0L
     private var isWatchingNow = false
     private var shownScrolling = false
     private var shownWatching = false
@@ -196,7 +204,13 @@ class ScrollBreak {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 // Boundary's own overlays send events too, so its own package never counts as in front.
                 if (packageName == service.packageName || packageName in passThrough) return
-                frontPackage = packageName
+                if (packageName != frontPackage) {
+                    // Scrolls and media of the app that was left say nothing about this one.
+                    recentScrollSeconds.clear()
+                    frontPackage = packageName
+                    isWatchingNow = isFrontAppPlaying()
+                    if (isScrollingNow() != shownScrolling || isWatchingNow != shownWatching) updateNotification()
+                }
                 if (breakEndsAtMs > System.currentTimeMillis() && packageName !in allowedDuringBreak) {
                     pausedDuringBreak += packageName
                     pauseBreakApps()
@@ -206,10 +220,17 @@ class ScrollBreak {
             AccessibilityEvent.TYPE_VIEW_SCROLLED ->
                 if (packageName == frontPackage) {
                     scrollSlots = scrollSlots or currentSlotBit()
-                    lastScrollAtMs = SystemClock.elapsedRealtime()
+                    val second = SystemClock.elapsedRealtime() / 1_000L
+                    if (recentScrollSeconds.lastOrNull() != second) {
+                        recentScrollSeconds.addLast(second)
+                        while (recentScrollSeconds.size > 8) recentScrollSeconds.removeFirst()
+                    }
                 }
             AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED ->
-                if (packageName == frontPackage) typingSlots = typingSlots or currentSlotBit()
+                if (packageName == frontPackage) {
+                    typingSlots = typingSlots or currentSlotBit()
+                    lastTypingAtMs = SystemClock.elapsedRealtime()
+                }
         }
     }
 
@@ -238,11 +259,25 @@ class ScrollBreak {
     }
 
     /** True when the app in front has a media session that is playing, such as a video. */
+    /**
+     * True when the app in front, or an app in a picture in picture popup, is playing media.
+     * Music from an app that is not on screen does not count.
+     */
     private fun isFrontAppPlaying(): Boolean {
-        val front = frontPackage ?: return false
         if (!config.isEnabled || !config.countWatching || breakEndsAtMs != 0L) return false
-        return playingSessions().any { it.packageName == front }
+        val playing = playingSessions()
+        if (playing.isEmpty()) return false
+        val onScreen = pipPackages() + listOfNotNull(frontPackage)
+        return playing.any { it.packageName in onScreen }
     }
+
+    /** Apps showing a picture in picture popup. Reads only each window's top node. */
+    private fun pipPackages(): Set<String> = runCatching {
+        service.windows
+            .filter { it.isInPictureInPictureMode }
+            .mapNotNull { it.root?.packageName?.toString() }
+            .toSet()
+    }.getOrDefault(emptySet())
 
     /** Media that is playing now. Empty without notification access. */
     private fun playingSessions() = runCatching {
@@ -271,8 +306,15 @@ class ScrollBreak {
         handler.postDelayed(activityCheckRunnable, ACTIVITY_CHECK_MS)
     }
 
-    private fun isScrollingNow() =
-        minuteStartMs != 0L && SystemClock.elapsedRealtime() - lastScrollAtMs < SCROLLING_NOW_MS
+    private fun isScrollingNow(): Boolean {
+        if (minuteStartMs == 0L || frontPackage == homePackage) return false
+        val now = SystemClock.elapsedRealtime()
+        if (now - lastTypingAtMs < TYPING_NOW_MS) return false
+        val last = recentScrollSeconds.lastOrNull() ?: return false
+        if (now - last * 1_000L >= SCROLLING_STOPPED_MS) return false
+        val since = (now - SCROLLING_NOW_MS) / 1_000L
+        return recentScrollSeconds.count { it >= since } >= SCROLLING_NOW_SECONDS
+    }
 
     /**
      * Time left before a break of one kind, if it went on without a stop. A minute that is going
@@ -285,8 +327,9 @@ class ScrollBreak {
 
     private fun endMinute() {
         val front = frontPackage
-        val counting = config.isEnabled && breakEndsAtMs == 0L && front != null && front != homePackage
-        val scrolled = counting && config.countScrolling &&
+        val counting = config.isEnabled && breakEndsAtMs == 0L
+        // A popup video can play over the home screen, so only scrolling needs an app in front.
+        val scrolled = counting && config.countScrolling && front != null && front != homePackage &&
             Integer.bitCount(scrollSlots) >= MIN_SCROLL_SLOTS &&
             Integer.bitCount(typingSlots) <= MAX_TYPING_SLOTS
         // Short videos with sound would match both, so a minute counts once, as scrolling.
@@ -366,6 +409,7 @@ class ScrollBreak {
         handler.postDelayed(endBreakRunnable, breakMs)
         pausedDuringBreak.clear()
         frontPackage?.let { pausedDuringBreak += it }
+        pausedDuringBreak += pipPackages()
         val wasPlaying = playingSessions().any { it.packageName in pausedDuringBreak }
         pauseBreakApps()
         handler.removeCallbacks(keepPausedRunnable)

@@ -1,0 +1,3 @@
+• Fixed: the scrolling countdown stops right away when you switch to another app. A chat jumping to a new message, a sliding banner or typing no longer starts it.
+• Fixed: a video playing in a picture in picture popup now counts as watching, over any app or the home screen. It is also paused when a break starts.
+• If popup watching does not count after updating, turn Boundary's accessibility service off and on once.
