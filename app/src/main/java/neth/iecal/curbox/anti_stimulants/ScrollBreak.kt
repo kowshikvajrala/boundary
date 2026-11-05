@@ -53,9 +53,17 @@ class ScrollBreak {
         private const val MAX_TYPING_SLOTS = 1
         private const val WATCH_SAMPLE_MS = 10_000L
         private const val MIN_WATCH_SAMPLES = 4
-        private const val NOTIFICATION_ID = 1006
+        private const val SCROLL_NOTIFICATION_ID = 1006
+        private const val WATCH_NOTIFICATION_ID = 1007
         private const val CHANNEL_ID = "ScrollBreakChannel"
         private const val RELAUNCH_GAP_MS = 1_500L
+        private const val KEEP_PAUSED_MS = 2_000L
+        private const val ACTIVITY_CHECK_MS = 5_000L
+        // Scrolling counts as going on for this long after the last scroll.
+        private const val SCROLLING_NOW_MS = 10_000L
+        // Gives the app time to pause before the break screen covers it. Apps like YouTube only
+        // move a video into a popup window when they are left while it is still playing.
+        private const val PAUSE_BEFORE_SCREEN_MS = 400L
 
         // The settings screen lives in another process, so it asks for the status by broadcast.
         const val ACTION_STATUS_REQUEST = "app.boundary.blocker.scroll_break.STATUS_REQUEST"
@@ -90,6 +98,11 @@ class ScrollBreak {
     private var breakEndsAtMs = 0L
     private var breakForWatching = false
     private var breakAfterMinutes = 0
+    private val pausedDuringBreak = mutableSetOf<String>()
+    private var lastScrollAtMs = 0L
+    private var isWatchingNow = false
+    private var shownScrolling = false
+    private var shownWatching = false
     private var lastLaunchMs = 0L
 
     private val minuteRunnable = object : Runnable {
@@ -100,11 +113,28 @@ class ScrollBreak {
     }
     private val watchSampleRunnable = object : Runnable {
         override fun run() {
-            if (isFrontAppPlaying()) watchSamples++
+            isWatchingNow = isFrontAppPlaying()
+            if (isWatchingNow) watchSamples++
             handler.postDelayed(this, WATCH_SAMPLE_MS)
         }
     }
     private val endBreakRunnable = Runnable { endBreak() }
+    // The notification countdowns run only while their kind is going on, so this checks often
+    // and redraws them when one starts or stops.
+    private val activityCheckRunnable = object : Runnable {
+        override fun run() {
+            if (isScrollingNow() != shownScrolling || isWatchingNow != shownWatching) updateNotification()
+            handler.postDelayed(this, ACTIVITY_CHECK_MS)
+        }
+    }
+    // Pressing play in the popup window during a break is undone within a moment.
+    private val keepPausedRunnable = object : Runnable {
+        override fun run() {
+            if (breakEndsAtMs == 0L) return
+            pauseBreakApps()
+            handler.postDelayed(this, KEEP_PAUSED_MS)
+        }
+    }
 
     private val statusRequestReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -167,11 +197,16 @@ class ScrollBreak {
                 if (packageName == service.packageName || packageName in passThrough) return
                 frontPackage = packageName
                 if (breakEndsAtMs > System.currentTimeMillis() && packageName !in allowedDuringBreak) {
+                    pausedDuringBreak += packageName
+                    pauseBreakApps()
                     launchBreakScreen()
                 }
             }
             AccessibilityEvent.TYPE_VIEW_SCROLLED ->
-                if (packageName == frontPackage) scrollSlots = scrollSlots or currentSlotBit()
+                if (packageName == frontPackage) {
+                    scrollSlots = scrollSlots or currentSlotBit()
+                    lastScrollAtMs = SystemClock.elapsedRealtime()
+                }
             AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED ->
                 if (packageName == frontPackage) typingSlots = typingSlots or currentSlotBit()
         }
@@ -205,11 +240,21 @@ class ScrollBreak {
     private fun isFrontAppPlaying(): Boolean {
         val front = frontPackage ?: return false
         if (!config.isEnabled || !config.countWatching || breakEndsAtMs != 0L) return false
-        return runCatching {
-            service.getSystemService(MediaSessionManager::class.java)
-                .getActiveSessions(ComponentName(service, LockedAppNotificationListener::class.java))
-                .any { it.packageName == front && it.playbackState?.state == PlaybackState.STATE_PLAYING }
-        }.getOrDefault(false) // No notification access: watching is not counted.
+        return playingSessions().any { it.packageName == front }
+    }
+
+    /** Media that is playing now. Empty without notification access. */
+    private fun playingSessions() = runCatching {
+        service.getSystemService(MediaSessionManager::class.java)
+            .getActiveSessions(ComponentName(service, LockedAppNotificationListener::class.java))
+            .filter { it.playbackState?.state == PlaybackState.STATE_PLAYING }
+    }.getOrDefault(emptyList())
+
+    /** Pauses what [pausedDuringBreak] apps play, so a video does not go on in a popup window. */
+    private fun pauseBreakApps() {
+        playingSessions()
+            .filter { it.packageName in pausedDuringBreak }
+            .forEach { runCatching { it.transportControls.pause() } }
     }
 
     private fun startMinute() {
@@ -221,6 +266,20 @@ class ScrollBreak {
         handler.postDelayed(minuteRunnable, MINUTE_MS)
         handler.removeCallbacks(watchSampleRunnable)
         handler.postDelayed(watchSampleRunnable, WATCH_SAMPLE_MS)
+        handler.removeCallbacks(activityCheckRunnable)
+        handler.postDelayed(activityCheckRunnable, ACTIVITY_CHECK_MS)
+    }
+
+    private fun isScrollingNow() =
+        minuteStartMs != 0L && SystemClock.elapsedRealtime() - lastScrollAtMs < SCROLLING_NOW_MS
+
+    /**
+     * Time left before a break of one kind, if it went on without a stop. A minute that is going
+     * on counts as used, so the countdown keeps moving inside it.
+     */
+    private fun remainingMs(minutes: Int, limit: Int, goingOn: Boolean): Long {
+        val inMinute = if (goingOn && minuteStartMs != 0L) SystemClock.elapsedRealtime() - minuteStartMs else 0L
+        return ((limit.coerceAtLeast(1) - minutes) * MINUTE_MS - inMinute).coerceAtLeast(0L)
     }
 
     private fun endMinute() {
@@ -289,7 +348,10 @@ class ScrollBreak {
         // A part minute is dropped, so a quick look at the lock screen never counts.
         handler.removeCallbacks(minuteRunnable)
         handler.removeCallbacks(watchSampleRunnable)
+        handler.removeCallbacks(activityCheckRunnable)
         minuteStartMs = 0L
+        isWatchingNow = false
+        updateNotification()
     }
 
     private fun startBreak(isWatching: Boolean, minutes: Int) {
@@ -301,7 +363,14 @@ class ScrollBreak {
         watchedMinutes = 0
         handler.removeCallbacks(endBreakRunnable)
         handler.postDelayed(endBreakRunnable, breakMs)
-        launchBreakScreen()
+        pausedDuringBreak.clear()
+        frontPackage?.let { pausedDuringBreak += it }
+        val wasPlaying = playingSessions().any { it.packageName in pausedDuringBreak }
+        pauseBreakApps()
+        handler.removeCallbacks(keepPausedRunnable)
+        handler.postDelayed(keepPausedRunnable, KEEP_PAUSED_MS)
+        if (wasPlaying) handler.postDelayed({ launchBreakScreen() }, PAUSE_BEFORE_SCREEN_MS) else launchBreakScreen()
+        broadcastStatus()
     }
 
     private fun launchBreakScreen() {
@@ -325,6 +394,8 @@ class ScrollBreak {
 
     private fun endBreak() {
         handler.removeCallbacks(endBreakRunnable)
+        handler.removeCallbacks(keepPausedRunnable)
+        pausedDuringBreak.clear()
         if (breakEndsAtMs == 0L) return
         breakEndsAtMs = 0L
         broadcastStatus()
@@ -347,13 +418,16 @@ class ScrollBreak {
     private val notificationManager by lazy { service.getSystemService(NotificationManager::class.java) }
 
     /**
-     * While counting it shows the minutes left before a break of each kind. During a break it
-     * counts down to its end.
+     * One notification for scrolling and one for watching, each with the minutes left before its
+     * break. During a break, the one that caused it counts down to its end and the other hides.
      */
     private fun updateNotification() {
         runCatching {
-            if (!config.isEnabled || !config.showNotification || !(config.countScrolling || config.countWatching)) {
-                notificationManager.cancel(NOTIFICATION_ID)
+            val shows = config.isEnabled && config.showNotification
+            val onBreak = breakEndsAtMs > System.currentTimeMillis()
+            if (!shows) {
+                notificationManager.cancel(SCROLL_NOTIFICATION_ID)
+                notificationManager.cancel(WATCH_NOTIFICATION_ID)
                 return
             }
             notificationManager.createNotificationChannel(
@@ -367,53 +441,90 @@ class ScrollBreak {
                     setShowBadge(false)
                 }
             )
-            val openSettings = PendingIntent.getActivity(
-                service,
-                NOTIFICATION_ID,
-                Intent(service, FragmentActivity::class.java)
-                    .putExtra("fragment", ScrollBreakFragment.FRAGMENT_ID)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            shownScrolling = isScrollingNow()
+            shownWatching = isWatchingNow
+            postKind(
+                SCROLL_NOTIFICATION_ID,
+                counts = config.countScrolling,
+                onBreak = onBreak,
+                isBreakKind = !breakForWatching,
+                title = R.string.scroll_break_notification_scroll_title,
+                pausedText = R.string.scroll_break_notification_scroll_paused,
+                goingOn = shownScrolling,
+                remainingMs = remainingMs(scrolledMinutes, config.scrollMinutes, shownScrolling)
             )
-            val builder = NotificationCompat.Builder(service, CHANNEL_ID)
-                .setSmallIcon(R.drawable.icon)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setOngoing(true)
-                .setOnlyAlertOnce(true)
-                .setContentIntent(openSettings)
-            if (breakEndsAtMs > System.currentTimeMillis()) {
-                builder.setContentTitle(service.getString(R.string.scroll_break_notification_break))
-                    .setWhen(breakEndsAtMs)
-                    .setShowWhen(true)
-                    .setUsesChronometer(true)
-                    .setChronometerCountDown(true)
-            } else {
-                val parts = mutableListOf<String>()
-                if (config.countScrolling) parts += service.getString(
-                    R.string.scroll_break_notification_scroll,
-                    (config.scrollMinutes - scrolledMinutes).coerceAtLeast(0)
-                )
-                if (config.countWatching) parts += service.getString(
-                    R.string.scroll_break_notification_watch,
-                    (config.watchMinutes - watchedMinutes).coerceAtLeast(0)
-                )
-                // The bar follows whichever kind is closer to its break.
-                val progress = maxOf(
-                    if (config.countScrolling) scrolledMinutes * 100 / config.scrollMinutes.coerceAtLeast(1) else 0,
-                    if (config.countWatching) watchedMinutes * 100 / config.watchMinutes.coerceAtLeast(1) else 0
-                )
-                builder.setContentTitle(service.getString(R.string.scroll_break_notification_title))
-                    .setContentText(parts.joinToString(" · "))
-                    .setShowWhen(false)
-                    .setProgress(100, progress.coerceIn(0, 100), false)
-            }
-            notificationManager.notify(NOTIFICATION_ID, builder.build())
+            postKind(
+                WATCH_NOTIFICATION_ID,
+                counts = config.countWatching,
+                onBreak = onBreak,
+                isBreakKind = breakForWatching,
+                title = R.string.scroll_break_notification_watch_title,
+                pausedText = R.string.scroll_break_notification_watch_paused,
+                goingOn = shownWatching,
+                remainingMs = remainingMs(watchedMinutes, config.watchMinutes, shownWatching)
+            )
         }
+    }
+
+    private fun postKind(
+        id: Int,
+        counts: Boolean,
+        onBreak: Boolean,
+        isBreakKind: Boolean,
+        title: Int,
+        pausedText: Int,
+        goingOn: Boolean,
+        remainingMs: Long
+    ) {
+        if (!counts || (onBreak && !isBreakKind)) {
+            notificationManager.cancel(id)
+            return
+        }
+        val openSettings = PendingIntent.getActivity(
+            service,
+            id,
+            Intent(service, FragmentActivity::class.java)
+                .putExtra("fragment", ScrollBreakFragment.FRAGMENT_ID)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val builder = NotificationCompat.Builder(service, CHANNEL_ID)
+            .setSmallIcon(R.drawable.icon)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setOngoing(true)
+            .setOnlyAlertOnce(true)
+            .setContentIntent(openSettings)
+        if (onBreak) {
+            builder.setContentTitle(service.getString(R.string.scroll_break_notification_break))
+                .setWhen(breakEndsAtMs)
+                .setShowWhen(true)
+                .setUsesChronometer(true)
+                .setChronometerCountDown(true)
+        } else if (goingOn) {
+            // A running clock down to the break, while scrolling or watching goes on.
+            builder.setContentTitle(service.getString(title))
+                .setContentText(service.getString(R.string.scroll_break_notification_running))
+                .setWhen(System.currentTimeMillis() + remainingMs)
+                .setShowWhen(true)
+                .setUsesChronometer(true)
+                .setChronometerCountDown(true)
+        } else {
+            val totalSeconds = remainingMs / 1_000L
+            builder.setContentTitle(service.getString(title))
+                .setContentText(
+                    service.getString(pausedText, "%d:%02d".format(totalSeconds / 60, totalSeconds % 60))
+                )
+                .setShowWhen(false)
+        }
+        notificationManager.notify(id, builder.build())
     }
 
     fun onDestroy() {
         handler.removeCallbacksAndMessages(null)
-        runCatching { notificationManager.cancel(NOTIFICATION_ID) }
+        runCatching {
+            notificationManager.cancel(SCROLL_NOTIFICATION_ID)
+            notificationManager.cancel(WATCH_NOTIFICATION_ID)
+        }
         settingsJob?.cancel()
         scope.cancel()
         runCatching { service.unregisterReceiver(screenReceiver) }

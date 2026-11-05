@@ -1,0 +1,2 @@
+• Changed: scrolling and watching now have their own notifications. Each shows a countdown to its break that runs while you scroll or watch, and stops when you do. During a break, the notification counts down until apps open again.
+• Fixed: when a break starts while you watch a video, the video is paused first, so it no longer keeps playing in a small popup window. If you press play in the popup during the break, it is paused again. This needs notification access.
