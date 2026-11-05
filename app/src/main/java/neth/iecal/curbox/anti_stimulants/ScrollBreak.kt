@@ -32,6 +32,7 @@ import neth.iecal.curbox.services.LockedAppNotificationListener
 import neth.iecal.curbox.ui.activity.FragmentActivity
 import neth.iecal.curbox.ui.activity.ScrollBreakActivity
 import neth.iecal.curbox.ui.fragments.main.reducers.anti_stimulants.ScrollBreakFragment
+import neth.iecal.curbox.utils.TimerNotificationLayout
 
 /**
  * Notices long stretches of scrolling or watching and then shows a break screen.
@@ -418,8 +419,9 @@ class ScrollBreak {
     private val notificationManager by lazy { service.getSystemService(NotificationManager::class.java) }
 
     /**
-     * One notification for scrolling and one for watching, each with the minutes left before its
-     * break. During a break, the one that caused it counts down to its end and the other hides.
+     * One notification for scrolling and one for watching, each shown only while that kind goes
+     * on, with a countdown to its break. During a break, the one that caused it counts down to
+     * its end and the other hides.
      */
     private fun updateNotification() {
         runCatching {
@@ -449,7 +451,7 @@ class ScrollBreak {
                 onBreak = onBreak,
                 isBreakKind = !breakForWatching,
                 title = R.string.scroll_break_notification_scroll_title,
-                pausedText = R.string.scroll_break_notification_scroll_paused,
+                icon = R.drawable.ic_notif_scroll,
                 goingOn = shownScrolling,
                 remainingMs = remainingMs(scrolledMinutes, config.scrollMinutes, shownScrolling)
             )
@@ -459,7 +461,7 @@ class ScrollBreak {
                 onBreak = onBreak,
                 isBreakKind = breakForWatching,
                 title = R.string.scroll_break_notification_watch_title,
-                pausedText = R.string.scroll_break_notification_watch_paused,
+                icon = R.drawable.ic_notif_watch,
                 goingOn = shownWatching,
                 remainingMs = remainingMs(watchedMinutes, config.watchMinutes, shownWatching)
             )
@@ -472,11 +474,11 @@ class ScrollBreak {
         onBreak: Boolean,
         isBreakKind: Boolean,
         title: Int,
-        pausedText: Int,
+        icon: Int,
         goingOn: Boolean,
         remainingMs: Long
     ) {
-        if (!counts || (onBreak && !isBreakKind)) {
+        if (!counts || (onBreak && !isBreakKind) || (!onBreak && !goingOn)) {
             notificationManager.cancel(id)
             return
         }
@@ -489,33 +491,22 @@ class ScrollBreak {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         val builder = NotificationCompat.Builder(service, CHANNEL_ID)
-            .setSmallIcon(R.drawable.icon)
+            .setSmallIcon(if (onBreak) R.drawable.ic_notif_break else icon)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setContentIntent(openSettings)
-        if (onBreak) {
-            builder.setContentTitle(service.getString(R.string.scroll_break_notification_break))
-                .setWhen(breakEndsAtMs)
-                .setShowWhen(true)
-                .setUsesChronometer(true)
-                .setChronometerCountDown(true)
-        } else if (goingOn) {
-            // A running clock down to the break, while scrolling or watching goes on.
-            builder.setContentTitle(service.getString(title))
-                .setContentText(service.getString(R.string.scroll_break_notification_running))
-                .setWhen(System.currentTimeMillis() + remainingMs)
-                .setShowWhen(true)
-                .setUsesChronometer(true)
-                .setChronometerCountDown(true)
-        } else {
-            val totalSeconds = remainingMs / 1_000L
-            builder.setContentTitle(service.getString(title))
-                .setContentText(
-                    service.getString(pausedText, "%d:%02d".format(totalSeconds / 60, totalSeconds % 60))
-                )
-                .setShowWhen(false)
-        }
+        val label = service.getString(if (onBreak) R.string.scroll_break_notification_break else title)
+        // Title and text for the lock screen and screen readers, which do not read the layout.
+        builder.setContentTitle(label)
+        if (!onBreak) builder.setContentText(service.getString(R.string.scroll_break_notification_running))
+        TimerNotificationLayout.apply(
+            builder,
+            service,
+            label = label,
+            endsAtMs = if (onBreak) breakEndsAtMs else System.currentTimeMillis() + remainingMs,
+            detail = if (onBreak) service.getString(R.string.scroll_break_notification_break_detail) else null
+        )
         notificationManager.notify(id, builder.build())
     }
 

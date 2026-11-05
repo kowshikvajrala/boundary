@@ -37,7 +37,7 @@ class TimerNotification(
 
     private val notificationBuilder by lazy {
         NotificationCompat.Builder(context.applicationContext, CHANNEL_ID)
-            .setSmallIcon(R.drawable.icon)
+            .setSmallIcon(R.drawable.ic_notif_unlock)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
@@ -52,6 +52,9 @@ class TimerNotification(
     // Label -> wall clock end time, listed under the main countdown. A negative value is a
     // paused unlock: minus the time it still has left.
     @Volatile private var breakdown: Map<String, Long> = emptyMap()
+    @Volatile private var title = ""
+    // Wall clock end of the countdown, or null for a still notification or a count up.
+    @Volatile private var endsAtMs: Long? = null
 
     init {
         createNotificationChannel()
@@ -79,15 +82,9 @@ class TimerNotification(
         this.breakdown = breakdown
         _timerState.value = TimerState.RUNNING
 
-        // Setup the cached notification UI title
+        this.title = title
+        this.endsAtMs = if (isCountdown) System.currentTimeMillis() + totalMillis else null
         notificationBuilder.setContentTitle(title)
-        // A running clock in the notification.
-        val now = System.currentTimeMillis()
-        notificationBuilder
-            .setWhen(if (isCountdown) now + totalMillis else now)
-            .setShowWhen(true)
-            .setUsesChronometer(true)
-            .setChronometerCountDown(isCountdown)
 
         timerJob = scope.launch {
             try {
@@ -120,10 +117,9 @@ class TimerNotification(
         stopTimer()
         currentTimerId = timerId
         this.breakdown = breakdown
-        notificationBuilder
-            .setContentTitle(title)
-            .setShowWhen(false)
-            .setUsesChronometer(false)
+        this.title = title
+        this.endsAtMs = null
+        notificationBuilder.setContentTitle(title)
         updateNotificationUI(0L)
     }
 
@@ -174,28 +170,42 @@ class TimerNotification(
         runCatching {
             val timeString = formatDuration(remainingMillis)
 
-            val now = System.currentTimeMillis()
             // Running unlocks first, soonest end first, then paused ones.
-            val lines = breakdown.entries
+            val sorted = breakdown.entries
                 .sortedWith(compareBy({ it.value < 0L }, { if (it.value < 0L) -it.value else it.value }))
-                .map { (label, endMs) ->
+            val lines = sorted.map { (label, endMs) ->
+                if (endMs < 0L) {
+                    context.getString(R.string.notification_unlock_paused_row, label, formatDuration(-endMs))
+                } else {
+                    "$label  ${formatDuration((endMs - System.currentTimeMillis()).coerceAtLeast(0L))}"
+                }
+            }
+            // With more than one unlock, expanding lists each with its own clock.
+            val rows = if (sorted.size > 1) {
+                sorted.map { (label, endMs) ->
                     if (endMs < 0L) {
-                        context.getString(R.string.notification_unlock_paused_row, label, formatDuration(-endMs))
+                        TimerNotificationLayout.Row(
+                            label, null, context.getString(R.string.notification_timer_paused, formatDuration(-endMs))
+                        )
                     } else {
-                        "$label  ${formatDuration((endMs - now).coerceAtLeast(0L))}"
+                        TimerNotificationLayout.Row(label, endMs)
                     }
                 }
-            val style = if (lines.size > 1) {
-                NotificationCompat.BigTextStyle().bigText(lines.joinToString("\n"))
             } else {
-                null
+                emptyList()
             }
-            val contentText = if (lines.isNotEmpty()) lines.joinToString(" · ") else timeString
-
-            val notification = notificationBuilder
-                .setContentText(contentText)
-                .setStyle(style)
-                .build()
+            // Text for the lock screen and screen readers, which do not read the layout.
+            notificationBuilder.setContentText(if (lines.isNotEmpty()) lines.joinToString(" · ") else timeString)
+            val countdownEnd = endsAtMs
+            TimerNotificationLayout.apply(
+                notificationBuilder,
+                context,
+                label = title,
+                endsAtMs = countdownEnd,
+                stillText = if (countdownEnd == null) context.getString(R.string.notification_timer_paused_short) else null,
+                rows = rows
+            )
+            val notification = notificationBuilder.build()
 
             notificationManager.notify(notificationId, notification)
         }.onFailure { exception ->

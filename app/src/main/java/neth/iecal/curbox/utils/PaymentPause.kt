@@ -205,17 +205,19 @@ object PaymentPause {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        return NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.icon)
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notif_payment)
             .setContentTitle(context.getString(R.string.payment_pause_notification_title))
             .setContentText(context.getString(R.string.payment_pause_notification_text))
-            .setWhen(endsAt)
-            .setShowWhen(true)
-            .setUsesChronometer(true)
-            .setChronometerCountDown(true)
             .setOngoing(true)
             .setContentIntent(open)
-            .build()
+        return TimerNotificationLayout.apply(
+            builder,
+            context,
+            label = context.getString(R.string.payment_pause_notification_title),
+            endsAtMs = endsAt,
+            detail = context.getString(R.string.payment_pause_notification_text)
+        ).build()
     }
 
     private fun notificationManager(context: Context) =

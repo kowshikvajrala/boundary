@@ -1,0 +1,3 @@
+• New look for every timer notification: a large countdown with a short label above it. Unlocks, payment pause, scrolling, watching and breaks each have their own small icon in the status bar.
+• With more than one app unlocked, expand the notification to see each one with its own countdown.
+• Changed: the scrolling notification shows only while you scroll, and the watching notification only while you watch.
