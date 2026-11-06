@@ -26,6 +26,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import neth.iecal.curbox.R
+import neth.iecal.curbox.blockers.WidgetTimers
 import neth.iecal.curbox.data.models.ScrollBreakConfig
 import neth.iecal.curbox.services.BaseBlockingService
 import neth.iecal.curbox.services.LockedAppNotificationListener
@@ -44,6 +45,8 @@ import neth.iecal.curbox.utils.TimerNotificationLayout
  * front was playing media in at least [MIN_WATCH_SAMPLES] of the 6 checks made every 10 seconds.
  * Seeing what plays needs notification access. Each count has its own limit and starts again
  * after [ScrollBreakConfig.resetMinutes] without it, or with the screen off that long.
+ * Scrolling in something the user unlocked (an app group, keyword group or short videos) does
+ * not count, because the unlock already limits that time.
  */
 class ScrollBreak {
 
@@ -109,6 +112,8 @@ class ScrollBreak {
     // Seconds since boot in which the front app scrolled, newest last, at most a few kept.
     private val recentScrollSeconds = ArrayDeque<Long>()
     private var lastTypingAtMs = 0L
+    // True while what is on screen has a running unlock. Checked on app switches and every few seconds.
+    private var isUnlockedNow = false
     private var isWatchingNow = false
     private var shownScrolling = false
     private var shownWatching = false
@@ -132,6 +137,7 @@ class ScrollBreak {
     // and redraws them when one starts or stops.
     private val activityCheckRunnable = object : Runnable {
         override fun run() {
+            refreshUnlocked()
             if (isScrollingNow() != shownScrolling || isWatchingNow != shownWatching) updateNotification()
             handler.postDelayed(this, ACTIVITY_CHECK_MS)
         }
@@ -208,6 +214,7 @@ class ScrollBreak {
                     // Scrolls and media of the app that was left say nothing about this one.
                     recentScrollSeconds.clear()
                     frontPackage = packageName
+                    refreshUnlocked()
                     isWatchingNow = isFrontAppPlaying()
                     if (isScrollingNow() != shownScrolling || isWatchingNow != shownWatching) updateNotification()
                 }
@@ -218,7 +225,7 @@ class ScrollBreak {
                 }
             }
             AccessibilityEvent.TYPE_VIEW_SCROLLED ->
-                if (packageName == frontPackage) {
+                if (packageName == frontPackage && !isUnlockedNow) {
                     scrollSlots = scrollSlots or currentSlotBit()
                     val second = SystemClock.elapsedRealtime() / 1_000L
                     if (recentScrollSeconds.lastOrNull() != second) {
@@ -250,6 +257,16 @@ class ScrollBreak {
         passThrough = (keyboards + "com.android.systemui").toSet()
         allowedDuringBreak = passThrough +
             listOfNotNull(homePackage, dialer, "com.android.server.telecom", service.packageName)
+    }
+
+    /** Scrolls made before an unlock started are dropped, so the countdown stops at once. */
+    private fun refreshUnlocked() {
+        val unlocked = runCatching { WidgetTimers.isUnlockedInFront() }.getOrDefault(false)
+        if (unlocked && !isUnlockedNow) {
+            recentScrollSeconds.clear()
+            scrollSlots = 0
+        }
+        isUnlockedNow = unlocked
     }
 
     private fun currentSlotBit(): Int {

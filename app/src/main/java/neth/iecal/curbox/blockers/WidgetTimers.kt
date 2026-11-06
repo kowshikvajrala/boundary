@@ -42,6 +42,15 @@ object WidgetTimers {
         send(context.applicationContext, Kind.UNLOCKS, force = false)
     }
 
+    /** True while an app group, keyword group or short video unlock of what is on screen runs. */
+    fun isUnlockedInFront(now: Long = System.currentTimeMillis()): Boolean {
+        val inFront = inFrontBySource.values.flatten()
+        if (inFront.isEmpty()) return false
+        return bySource.entries.any { (key, timers) ->
+            key.startsWith(Kind.UNLOCKS.name + "/") && inFront.any { (timers[it] ?: 0L) > now }
+        }
+    }
+
     /** Sends everything again, for a widget that was just added. */
     fun resendAll(context: Context) {
         Kind.values().forEach { send(context.applicationContext, it, force = true) }

@@ -1,0 +1,2 @@
+• New: scrolling in something you unlocked (an app group, a keyword group or short videos) no longer counts toward your scrolling break. The countdown comes back when the unlock ends or you leave.
+• Watching still counts in unlocked apps.
